@@ -1,0 +1,6 @@
+[h1]Archipelago Randomizer[/h1]
+Connects Shape of Dreams to an Archipelago multiworld. Achievements and world clears (worlds 1-5, per Traveler and difficulty) become location checks, and the Traveler, Memory, Essence and Lucid Dream unlocks, plus mastery and Stardust, are shuffled into the multiworld.
+
+Each seed is played on its own profile; your normal save is never touched.
+
+Early development build.

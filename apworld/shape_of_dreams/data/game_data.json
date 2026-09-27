@@ -1,0 +1,3680 @@
+{
+  "game": "Shape of Dreams",
+  "data_format_version": 2,
+  "extracted_from_game_version": "r.1.4.0.13_s",
+  "difficulties": [
+    {
+      "key": "NAP",
+      "name": "Nap",
+      "game_id": "diffEasy",
+      "rank": 0,
+      "has_locations": false
+    },
+    {
+      "key": "DEEP_SLEEP",
+      "name": "Deep Sleep",
+      "game_id": "diffNormal",
+      "rank": 1,
+      "has_locations": true
+    },
+    {
+      "key": "OMINOUS_DREAM",
+      "name": "Ominous Dream",
+      "game_id": "diffHard",
+      "rank": 2,
+      "has_locations": true
+    },
+    {
+      "key": "NIGHTMARE",
+      "name": "Nightmare",
+      "game_id": "diffNightmare",
+      "rank": 3,
+      "has_locations": true
+    }
+  ],
+  "travelers": [
+    {
+      "key": "Hero_Aurena",
+      "name": "Aurena",
+      "starts_unlocked": false,
+      "progressive_item": "Progressive Aurena",
+      "mastery_item": "Mastery: Aurena",
+      "skills": [
+        "St_D_BeautifulThreat",
+        "St_D_DisintegratingClaw",
+        "St_Q_GoldenBurst",
+        "St_Q_Reduction",
+        "St_R_ChainReaction",
+        "St_R_DangerousTheory"
+      ]
+    },
+    {
+      "key": "Hero_Bismuth",
+      "name": "Bismuth",
+      "starts_unlocked": false,
+      "progressive_item": "Progressive Bismuth",
+      "mastery_item": "Mastery: Bismuth",
+      "skills": [
+        "St_D_PrismaticEyes",
+        "St_QR_DistortedMind",
+        "St_QR_InfernalTales",
+        "St_QR_Innocence",
+        "St_QR_ValiantHeart"
+      ]
+    },
+    {
+      "key": "Hero_Cetus",
+      "name": "Cetus",
+      "starts_unlocked": false,
+      "progressive_item": "Progressive Cetus",
+      "mastery_item": "Mastery: Cetus",
+      "skills": [
+        "St_D_ChargedAnguillian",
+        "St_D_IcyVeins",
+        "St_Q_BigBorealChunk",
+        "St_Q_EmbracingTheChill",
+        "St_R_BackOff",
+        "St_R_FrozenFists"
+      ]
+    },
+    {
+      "key": "Hero_Lacerta",
+      "name": "Lacerta",
+      "starts_unlocked": true,
+      "progressive_item": "Progressive Lacerta",
+      "mastery_item": "Mastery: Lacerta",
+      "skills": [
+        "St_D_DoubleTap",
+        "St_D_SalamanderPowder",
+        "St_Q_HandCannon",
+        "St_Q_IncendiaryRounds",
+        "St_R_PrecisionShot",
+        "St_R_QuickTrigger"
+      ]
+    },
+    {
+      "key": "Hero_Mist",
+      "name": "Mist",
+      "starts_unlocked": true,
+      "progressive_item": "Progressive Mist",
+      "mastery_item": "Mastery: Mist",
+      "skills": [
+        "St_D_AstridsMasterpieceEnGarde",
+        "St_D_AstridsMasterpiecePriorite",
+        "St_Q_Fleche",
+        "St_Q_Lunge",
+        "St_R_Parry",
+        "St_R_UnbreakableDetermination"
+      ]
+    },
+    {
+      "key": "Hero_Nachia",
+      "name": "Nachia",
+      "starts_unlocked": false,
+      "progressive_item": "Progressive Nachia",
+      "mastery_item": "Mastery: Nachia",
+      "skills": [
+        "St_D_CircleOfLife",
+        "St_D_HeartOfThePack",
+        "St_Q_MoonlightPact",
+        "St_Q_SylvanCall",
+        "St_R_NaturesWhisper",
+        "St_R_SerpentineBlessing"
+      ]
+    },
+    {
+      "key": "Hero_Husk",
+      "name": "Shell",
+      "starts_unlocked": false,
+      "progressive_item": "Progressive Shell",
+      "mastery_item": "Mastery: Shell",
+      "skills": [
+        "St_D_ScarOfTheWind",
+        "St_D_TheKillingFlow",
+        "St_Q_DeathMark",
+        "St_Q_Laceration",
+        "St_R_AnnihilationStance",
+        "St_R_Deception"
+      ]
+    },
+    {
+      "key": "Hero_Vesper",
+      "name": "Vesper",
+      "starts_unlocked": false,
+      "progressive_item": "Progressive Vesper",
+      "mastery_item": "Mastery: Vesper",
+      "skills": [
+        "St_D_MercyOfEl",
+        "St_D_Resolve",
+        "St_Q_CruelSun",
+        "St_Q_Discipline",
+        "St_R_BaptismOfSun",
+        "St_R_SanctuaryOfEl"
+      ]
+    },
+    {
+      "key": "Hero_Yubar",
+      "name": "Yubar",
+      "starts_unlocked": false,
+      "progressive_item": "Progressive Yubar",
+      "mastery_item": "Mastery: Yubar",
+      "skills": [
+        "St_D_ConvergencePoint",
+        "St_D_ExoticMatter",
+        "St_Q_EtherealInfluence",
+        "St_Q_SuperNova",
+        "St_R_Cataclysm",
+        "St_R_Tranquility"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "name": "Progressive Aurena",
+      "key": "PROGRESSIVE_Hero_Aurena",
+      "kind": "progressive",
+      "classification": "progression",
+      "traveler": "Hero_Aurena",
+      "unlocks": [
+        "Hero_Aurena",
+        "St_Q_Reduction",
+        "St_R_ChainReaction",
+        "St_D_BeautifulThreat"
+      ],
+      "unlock_names": [
+        "Aurena",
+        "Reduction",
+        "Chain Reaction",
+        "Beautiful Threat"
+      ],
+      "id": 7710001
+    },
+    {
+      "name": "Progressive Bismuth",
+      "key": "PROGRESSIVE_Hero_Bismuth",
+      "kind": "progressive",
+      "classification": "progression",
+      "traveler": "Hero_Bismuth",
+      "unlocks": [
+        "Hero_Bismuth",
+        "St_QR_DistortedMind",
+        "St_QR_InfernalTales",
+        "St_QR_ValiantHeart"
+      ],
+      "unlock_names": [
+        "Bismuth",
+        "Distorted Mind",
+        "Tales of Hellfire",
+        "Valiant Heart"
+      ],
+      "id": 7710002
+    },
+    {
+      "name": "Progressive Cetus",
+      "key": "PROGRESSIVE_Hero_Cetus",
+      "kind": "progressive",
+      "classification": "progression",
+      "traveler": "Hero_Cetus",
+      "unlocks": [
+        "Hero_Cetus",
+        "St_Q_BigBorealChunk",
+        "St_R_FrozenFists",
+        "St_D_ChargedAnguillian"
+      ],
+      "unlock_names": [
+        "Cetus",
+        "Big Boreal Chunk",
+        "Teaching Manners",
+        "Charged Anguillian"
+      ],
+      "id": 7710003
+    },
+    {
+      "name": "Progressive Lacerta",
+      "key": "PROGRESSIVE_Hero_Lacerta",
+      "kind": "progressive",
+      "classification": "progression",
+      "traveler": "Hero_Lacerta",
+      "unlocks": [
+        "St_Q_IncendiaryRounds",
+        "St_R_PrecisionShot",
+        "St_D_DoubleTap"
+      ],
+      "unlock_names": [
+        "Incendiary Rounds",
+        "Precision Shot",
+        "Double Tap"
+      ],
+      "id": 7710004
+    },
+    {
+      "name": "Progressive Mist",
+      "key": "PROGRESSIVE_Hero_Mist",
+      "kind": "progressive",
+      "classification": "progression",
+      "traveler": "Hero_Mist",
+      "unlocks": [
+        "St_Q_Fleche",
+        "St_R_Parry",
+        "St_D_AstridsMasterpiecePriorite"
+      ],
+      "unlock_names": [
+        "Flèche",
+        "Parry",
+        "Astrid's Masterpiece - Priorité"
+      ],
+      "id": 7710005
+    },
+    {
+      "name": "Progressive Nachia",
+      "key": "PROGRESSIVE_Hero_Nachia",
+      "kind": "progressive",
+      "classification": "progression",
+      "traveler": "Hero_Nachia",
+      "unlocks": [
+        "Hero_Nachia",
+        "St_Q_MoonlightPact",
+        "St_R_SerpentineBlessing",
+        "St_D_CircleOfLife"
+      ],
+      "unlock_names": [
+        "Nachia",
+        "Moonlight Pact",
+        "Serpent's Blessing",
+        "Circle of Life"
+      ],
+      "id": 7710006
+    },
+    {
+      "name": "Progressive Shell",
+      "key": "PROGRESSIVE_Hero_Husk",
+      "kind": "progressive",
+      "classification": "progression",
+      "traveler": "Hero_Husk",
+      "unlocks": [
+        "Hero_Husk",
+        "St_Q_DeathMark",
+        "St_R_Deception",
+        "St_D_ScarOfTheWind"
+      ],
+      "unlock_names": [
+        "Shell",
+        "Death Mark",
+        "Deception",
+        "Scar of the Wind"
+      ],
+      "id": 7710007
+    },
+    {
+      "name": "Progressive Vesper",
+      "key": "PROGRESSIVE_Hero_Vesper",
+      "kind": "progressive",
+      "classification": "progression",
+      "traveler": "Hero_Vesper",
+      "unlocks": [
+        "Hero_Vesper",
+        "St_Q_Discipline",
+        "St_R_BaptismOfSun",
+        "St_D_MercyOfEl"
+      ],
+      "unlock_names": [
+        "Vesper",
+        "Discipline",
+        "Baptism of the Sun",
+        "El's Mercy"
+      ],
+      "id": 7710008
+    },
+    {
+      "name": "Progressive Yubar",
+      "key": "PROGRESSIVE_Hero_Yubar",
+      "kind": "progressive",
+      "classification": "progression",
+      "traveler": "Hero_Yubar",
+      "unlocks": [
+        "Hero_Yubar",
+        "St_Q_SuperNova",
+        "St_R_Tranquility",
+        "St_D_ConvergencePoint"
+      ],
+      "unlock_names": [
+        "Yubar",
+        "Supernova",
+        "Tranquility",
+        "Converging Stars"
+      ],
+      "id": 7710009
+    },
+    {
+      "name": "Memory: Blade Storm",
+      "key": "St_R_DancingBlades",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_R_DancingBlades"
+      ],
+      "id": 7710010
+    },
+    {
+      "name": "Memory: Blizzard",
+      "key": "St_L_Blizzard",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_L_Blizzard"
+      ],
+      "id": 7710011
+    },
+    {
+      "name": "Memory: Chain Lightning",
+      "key": "St_E_ChainLightning",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_E_ChainLightning"
+      ],
+      "id": 7710012
+    },
+    {
+      "name": "Memory: Clutches of Malice",
+      "key": "St_E_ClutchesOfMalice",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_E_ClutchesOfMalice"
+      ],
+      "id": 7710013
+    },
+    {
+      "name": "Memory: Coin Explosion",
+      "key": "St_L_CoinExplosion",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_L_CoinExplosion"
+      ],
+      "id": 7710014
+    },
+    {
+      "name": "Memory: Crimson Lance",
+      "key": "St_E_CrimsonLance",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_E_CrimsonLance"
+      ],
+      "id": 7710015
+    },
+    {
+      "name": "Memory: Cutthroat",
+      "key": "St_E_SliceThroat",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_E_SliceThroat"
+      ],
+      "id": 7710016
+    },
+    {
+      "name": "Memory: Flame Jet",
+      "key": "St_E_FlameJet",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_E_FlameJet"
+      ],
+      "id": 7710017
+    },
+    {
+      "name": "Memory: Flaming Whip",
+      "key": "St_R_FlamingWhip",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_R_FlamingWhip"
+      ],
+      "id": 7710018
+    },
+    {
+      "name": "Memory: Mass Cleanse",
+      "key": "St_E_MassCleanse",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_E_MassCleanse"
+      ],
+      "id": 7710019
+    },
+    {
+      "name": "Memory: Mental Corruption",
+      "key": "St_L_MentalCorruption",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_L_MentalCorruption"
+      ],
+      "id": 7710020
+    },
+    {
+      "name": "Memory: Mystic Dagger",
+      "key": "St_E_MysticDagger",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_E_MysticDagger"
+      ],
+      "id": 7710021
+    },
+    {
+      "name": "Memory: Orb of Light",
+      "key": "St_R_OrbOfLight",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_R_OrbOfLight"
+      ],
+      "id": 7710022
+    },
+    {
+      "name": "Memory: Pyrana's Fireball",
+      "key": "St_L_PyranasFireball",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_L_PyranasFireball"
+      ],
+      "id": 7710023
+    },
+    {
+      "name": "Memory: Sparkling Water Gun",
+      "key": "St_C_SparklingWaterGun",
+      "kind": "memory",
+      "classification": "useful",
+      "unlocks": [
+        "St_C_SparklingWaterGun"
+      ],
+      "id": 7710024
+    },
+    {
+      "name": "Essence: Apple of Discord",
+      "key": "Gem_L_ChaosApple",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_L_ChaosApple"
+      ],
+      "id": 7710025
+    },
+    {
+      "name": "Essence: Divine Faith",
+      "key": "Gem_L_DivineFaith",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_L_DivineFaith"
+      ],
+      "id": 7710026
+    },
+    {
+      "name": "Essence: Essence of Accuracy",
+      "key": "Gem_R_Accuracy",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_R_Accuracy"
+      ],
+      "id": 7710027
+    },
+    {
+      "name": "Essence: Essence of Adventure",
+      "key": "Gem_R_Adventure",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_R_Adventure"
+      ],
+      "id": 7710028
+    },
+    {
+      "name": "Essence: Essence of Blood Drops",
+      "key": "Gem_R_Blood",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_R_Blood"
+      ],
+      "id": 7710029
+    },
+    {
+      "name": "Essence: Essence of Blossoming",
+      "key": "Gem_E_Blossom",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_E_Blossom"
+      ],
+      "id": 7710030
+    },
+    {
+      "name": "Essence: Essence of Crimson",
+      "key": "Gem_E_Crimson",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_E_Crimson"
+      ],
+      "id": 7710031
+    },
+    {
+      "name": "Essence: Essence of Direness",
+      "key": "Gem_E_Direness",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_E_Direness"
+      ],
+      "id": 7710032
+    },
+    {
+      "name": "Essence: Essence of Fangs",
+      "key": "Gem_E_Fangs",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_E_Fangs"
+      ],
+      "id": 7710033
+    },
+    {
+      "name": "Essence: Essence of Finality",
+      "key": "Gem_E_Omega",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_E_Omega"
+      ],
+      "id": 7710034
+    },
+    {
+      "name": "Essence: Essence of Flexibility",
+      "key": "Gem_E_Flexibility",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_E_Flexibility"
+      ],
+      "id": 7710035
+    },
+    {
+      "name": "Essence: Essence of Insight",
+      "key": "Gem_E_Insight",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_E_Insight"
+      ],
+      "id": 7710036
+    },
+    {
+      "name": "Essence: Essence of Inversion",
+      "key": "Gem_E_Inversion",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_E_Inversion"
+      ],
+      "id": 7710037
+    },
+    {
+      "name": "Essence: Essence of Liberty",
+      "key": "Gem_L_Liberty",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_L_Liberty"
+      ],
+      "id": 7710038
+    },
+    {
+      "name": "Essence: Essence of Obsidian",
+      "key": "Gem_E_Obsidian",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_E_Obsidian"
+      ],
+      "id": 7710039
+    },
+    {
+      "name": "Essence: Essence of Overload",
+      "key": "Gem_E_Overload",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_E_Overload"
+      ],
+      "id": 7710040
+    },
+    {
+      "name": "Essence: Essence of Panic",
+      "key": "Gem_R_Panic",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_R_Panic"
+      ],
+      "id": 7710041
+    },
+    {
+      "name": "Essence: Essence of Predation",
+      "key": "Gem_E_Predation",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_E_Predation"
+      ],
+      "id": 7710042
+    },
+    {
+      "name": "Essence: Essence of Protection",
+      "key": "Gem_E_Protection",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_E_Protection"
+      ],
+      "id": 7710043
+    },
+    {
+      "name": "Essence: Essence of Rejuvenation",
+      "key": "Gem_R_Rejuvenation",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_R_Rejuvenation"
+      ],
+      "id": 7710044
+    },
+    {
+      "name": "Essence: Essence of Shock",
+      "key": "Gem_R_Shock",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_R_Shock"
+      ],
+      "id": 7710045
+    },
+    {
+      "name": "Essence: Essence of Snow",
+      "key": "Gem_R_Snow",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_R_Snow"
+      ],
+      "id": 7710046
+    },
+    {
+      "name": "Essence: Essence of Vengeance",
+      "key": "Gem_C_Vengeance",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_C_Vengeance"
+      ],
+      "id": 7710047
+    },
+    {
+      "name": "Essence: Essence of Wealth",
+      "key": "Gem_R_Wealth",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_R_Wealth"
+      ],
+      "id": 7710048
+    },
+    {
+      "name": "Essence: Essence of the Giant",
+      "key": "Gem_E_Might",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_E_Might"
+      ],
+      "id": 7710049
+    },
+    {
+      "name": "Essence: Essence of the Wound",
+      "key": "Gem_R_Wound",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_R_Wound"
+      ],
+      "id": 7710050
+    },
+    {
+      "name": "Essence: Eye of the Sun",
+      "key": "Gem_L_SolarEye",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_L_SolarEye"
+      ],
+      "id": 7710051
+    },
+    {
+      "name": "Essence: Heart of Gold",
+      "key": "Gem_L_HeartOfGold",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_L_HeartOfGold"
+      ],
+      "id": 7710052
+    },
+    {
+      "name": "Essence: Pure White",
+      "key": "Gem_L_PureWhite",
+      "kind": "essence",
+      "classification": "useful",
+      "unlocks": [
+        "Gem_L_PureWhite"
+      ],
+      "id": 7710053
+    },
+    {
+      "name": "Lucid Dream: Bland Star Soup",
+      "key": "LucidDream_BlandStarSoup",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_BlandStarSoup"
+      ],
+      "id": 7710054
+    },
+    {
+      "name": "Lucid Dream: Bon Voyage",
+      "key": "LucidDream_BonVoyage",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_BonVoyage"
+      ],
+      "id": 7710055
+    },
+    {
+      "name": "Lucid Dream: Embrace Mortality",
+      "key": "LucidDream_EmbraceMortality",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_EmbraceMortality"
+      ],
+      "id": 7710056
+    },
+    {
+      "name": "Lucid Dream: False Lifeline",
+      "key": "LucidDream_FalseLifeline",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_FalseLifeline"
+      ],
+      "id": 7710057
+    },
+    {
+      "name": "Lucid Dream: Fish Scales",
+      "key": "LucidDream_FishScales",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_FishScales"
+      ],
+      "id": 7710058
+    },
+    {
+      "name": "Lucid Dream: Grievous Wounds",
+      "key": "LucidDream_GrievousWounds",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_GrievousWounds"
+      ],
+      "id": 7710059
+    },
+    {
+      "name": "Lucid Dream: Harmless Whispers",
+      "key": "LucidDream_HarmlessWhispers",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_HarmlessWhispers"
+      ],
+      "id": 7710060
+    },
+    {
+      "name": "Lucid Dream: Kind Armadillo",
+      "key": "LucidDream_KindArmadillo",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_KindArmadillo"
+      ],
+      "id": 7710061
+    },
+    {
+      "name": "Lucid Dream: Mad Life",
+      "key": "LucidDream_MadLife",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_MadLife"
+      ],
+      "id": 7710062
+    },
+    {
+      "name": "Lucid Dream: Marsh of Destiny",
+      "key": "LucidDream_MarshOfDestiny",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_MarshOfDestiny"
+      ],
+      "id": 7710063
+    },
+    {
+      "name": "Lucid Dream: Overpopulation",
+      "key": "LucidDream_Overpopulation",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_Overpopulation"
+      ],
+      "id": 7710064
+    },
+    {
+      "name": "Lucid Dream: Prudent Jellyfish",
+      "key": "LucidDream_PrudentJellyfish",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_PrudentJellyfish"
+      ],
+      "id": 7710065
+    },
+    {
+      "name": "Lucid Dream: Sparkling Dream Flask",
+      "key": "LucidDream_SparklingDreamFlask",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_SparklingDreamFlask"
+      ],
+      "id": 7710066
+    },
+    {
+      "name": "Lucid Dream: The Darkest Urge",
+      "key": "LucidDream_TheDarkestUrge",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_TheDarkestUrge"
+      ],
+      "id": 7710067
+    },
+    {
+      "name": "Lucid Dream: WILD",
+      "key": "LucidDream_WILD",
+      "kind": "lucid_dream",
+      "classification": "useful",
+      "unlocks": [
+        "LucidDream_WILD"
+      ],
+      "id": 7710068
+    },
+    {
+      "name": "Mastery: Aurena",
+      "key": "MASTERY_Hero_Aurena",
+      "kind": "mastery",
+      "classification": "filler",
+      "traveler": "Hero_Aurena",
+      "id": 7710069
+    },
+    {
+      "name": "Mastery: Bismuth",
+      "key": "MASTERY_Hero_Bismuth",
+      "kind": "mastery",
+      "classification": "filler",
+      "traveler": "Hero_Bismuth",
+      "id": 7710070
+    },
+    {
+      "name": "Mastery: Cetus",
+      "key": "MASTERY_Hero_Cetus",
+      "kind": "mastery",
+      "classification": "filler",
+      "traveler": "Hero_Cetus",
+      "id": 7710071
+    },
+    {
+      "name": "Mastery: Lacerta",
+      "key": "MASTERY_Hero_Lacerta",
+      "kind": "mastery",
+      "classification": "filler",
+      "traveler": "Hero_Lacerta",
+      "id": 7710072
+    },
+    {
+      "name": "Mastery: Mist",
+      "key": "MASTERY_Hero_Mist",
+      "kind": "mastery",
+      "classification": "filler",
+      "traveler": "Hero_Mist",
+      "id": 7710073
+    },
+    {
+      "name": "Mastery: Nachia",
+      "key": "MASTERY_Hero_Nachia",
+      "kind": "mastery",
+      "classification": "filler",
+      "traveler": "Hero_Nachia",
+      "id": 7710074
+    },
+    {
+      "name": "Mastery: Shell",
+      "key": "MASTERY_Hero_Husk",
+      "kind": "mastery",
+      "classification": "filler",
+      "traveler": "Hero_Husk",
+      "id": 7710075
+    },
+    {
+      "name": "Mastery: Vesper",
+      "key": "MASTERY_Hero_Vesper",
+      "kind": "mastery",
+      "classification": "filler",
+      "traveler": "Hero_Vesper",
+      "id": 7710076
+    },
+    {
+      "name": "Mastery: Yubar",
+      "key": "MASTERY_Hero_Yubar",
+      "kind": "mastery",
+      "classification": "filler",
+      "traveler": "Hero_Yubar",
+      "id": 7710077
+    },
+    {
+      "name": "Stardust",
+      "key": "STARDUST",
+      "kind": "stardust",
+      "classification": "filler",
+      "id": 7710078
+    }
+  ],
+  "locations": [
+    {
+      "name": "Achievement: Balance Forever Lost",
+      "key": "ACH_BALANCE_FOREVER_LOST",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720001
+    },
+    {
+      "name": "Achievement: Naked and Unafraid",
+      "key": "ACH_BARE_SKIN_SUPREMACY",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720002
+    },
+    {
+      "name": "Achievement: BFR 9000",
+      "key": "ACH_BFR_9000",
+      "kind": "achievement",
+      "traveler": "Hero_Lacerta",
+      "build_dependent": false,
+      "id": 7720003
+    },
+    {
+      "name": "Achievement: Déjà vu",
+      "key": "ACH_BLACKCAT_DEJAVU",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720004
+    },
+    {
+      "name": "Achievement: Burning Love",
+      "key": "ACH_BURNING_LOVE",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720005
+    },
+    {
+      "name": "Achievement: Chaotic Good",
+      "key": "ACH_CHAOTIC_GOOD",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720006
+    },
+    {
+      "name": "Achievement: Clear Mind",
+      "key": "ACH_CLEAR_MIND",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720007
+    },
+    {
+      "name": "Achievement: Deceiving Looks",
+      "key": "ACH_DECEIVING_LOOKS",
+      "kind": "achievement",
+      "traveler": "Hero_Aurena",
+      "build_dependent": false,
+      "id": 7720008
+    },
+    {
+      "name": "Achievement: Desperate Hero",
+      "key": "ACH_DESPERATE_HERO",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720009
+    },
+    {
+      "name": "Achievement: Doll of Mana",
+      "key": "ACH_DOLL_OF_MANA",
+      "kind": "achievement",
+      "traveler": "Hero_Husk",
+      "build_dependent": false,
+      "id": 7720010
+    },
+    {
+      "name": "Achievement: Double Vision",
+      "key": "ACH_DOUBLE_VISION",
+      "kind": "achievement",
+      "traveler": "Hero_Bismuth",
+      "build_dependent": false,
+      "id": 7720011
+    },
+    {
+      "name": "Achievement: Electric Type",
+      "key": "ACH_ELECTRIC_TYPE",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720012
+    },
+    {
+      "name": "Achievement: Introduction to Elements",
+      "key": "ACH_ELEMENTALS_101",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720013
+    },
+    {
+      "name": "Achievement: Embrace Mortality",
+      "key": "ACH_EMBRACE_MORTALITY",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720014
+    },
+    {
+      "name": "Achievement: Empress of Pain",
+      "key": "ACH_EMPRESS_OF_PAIN",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720015
+    },
+    {
+      "name": "Achievement: Empty Canvas",
+      "key": "ACH_EMPTY_CANVAS",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720016
+    },
+    {
+      "name": "Achievement: Eternal Rest",
+      "key": "ACH_ETERNAL_REST",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720017
+    },
+    {
+      "name": "Achievement: Keep Calm and Carry On",
+      "key": "ACH_EVERYONE_LETS_NOT_PANIC",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720018
+    },
+    {
+      "name": "Achievement: Feels Like Home",
+      "key": "ACH_FEELS_LIKE_HOME",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720019
+    },
+    {
+      "name": "Achievement: Fight Fire with Fire",
+      "key": "ACH_FIGHTING_COLD_WITH_COLD",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": true,
+      "id": 7720020
+    },
+    {
+      "name": "Achievement: Flexible Diet",
+      "key": "ACH_FLEXIBLE_DIET",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720021
+    },
+    {
+      "name": "Achievement: Four of a Kind",
+      "key": "ACH_FOUR_OF_A_KIND",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": true,
+      "id": 7720022
+    },
+    {
+      "name": "Achievement: From the Abyss to the Summit",
+      "key": "ACH_FROM_ABYSS_TO_SUMMIT",
+      "kind": "achievement",
+      "traveler": "Hero_Cetus",
+      "build_dependent": false,
+      "id": 7720023
+    },
+    {
+      "name": "Achievement: Full Moon",
+      "key": "ACH_FULL_MOON",
+      "kind": "achievement",
+      "traveler": "Hero_Nachia",
+      "build_dependent": false,
+      "id": 7720024
+    },
+    {
+      "name": "Achievement: God Protects Me",
+      "key": "ACH_GOD_PROTECTS_ME",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720025
+    },
+    {
+      "name": "Achievement: Go with the Flow",
+      "key": "ACH_GO_WITH_THE_FLOW",
+      "kind": "achievement",
+      "traveler": "Hero_Mist",
+      "build_dependent": false,
+      "id": 7720026
+    },
+    {
+      "name": "Achievement: Heavier than Atlas",
+      "key": "ACH_HEAVIER_THAN_ATLAS",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720027
+    },
+    {
+      "name": "Achievement: Home Sweet Home",
+      "key": "ACH_HOME_SWEET_HOME",
+      "kind": "achievement",
+      "traveler": "Hero_Husk",
+      "build_dependent": false,
+      "id": 7720028
+    },
+    {
+      "name": "Achievement: Horns, Feathers, and Gold",
+      "key": "ACH_HORNS_FEATHERS_AND_GOLD",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720029
+    },
+    {
+      "name": "Achievement: Hotter Fire Wins",
+      "key": "ACH_HOTTER_FIRE_WINS",
+      "kind": "achievement",
+      "traveler": "Hero_Vesper",
+      "build_dependent": true,
+      "id": 7720030
+    },
+    {
+      "name": "Achievement: Hunters? What Hunters?",
+      "key": "ACH_HUNTERS_WHAT_HUNTERS",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720031
+    },
+    {
+      "name": "Achievement: Iceberg, the Great Communicator.",
+      "key": "ACH_ICEBERG_THE_GREAT_COMMUNICATOR",
+      "kind": "achievement",
+      "traveler": "Hero_Cetus",
+      "build_dependent": false,
+      "id": 7720032
+    },
+    {
+      "name": "Achievement: Immortality Achieved",
+      "key": "ACH_IMMORTALITY_ACHIEVED",
+      "kind": "achievement",
+      "traveler": "Hero_Aurena",
+      "build_dependent": false,
+      "id": 7720033
+    },
+    {
+      "name": "Achievement: In Carnage I Bloom",
+      "key": "ACH_IN_CARNAGE_I_BLOOM",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720034
+    },
+    {
+      "name": "Achievement: I Am Shell",
+      "key": "ACH_I_AM_SHELL",
+      "kind": "achievement",
+      "traveler": "Hero_Husk",
+      "build_dependent": false,
+      "id": 7720035
+    },
+    {
+      "name": "Achievement: Just Like the Old Days",
+      "key": "ACH_JUST_LIKE_THE_OLD_DAYS",
+      "kind": "achievement",
+      "traveler": "Hero_Lacerta",
+      "build_dependent": false,
+      "id": 7720036
+    },
+    {
+      "name": "Achievement: Now Now Stay Still",
+      "key": "ACH_JUST_STAY_STILL",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": true,
+      "id": 7720037
+    },
+    {
+      "name": "Achievement: Elemental Lord",
+      "key": "ACH_KING_OF_THE_ELEMENTALS",
+      "kind": "achievement",
+      "traveler": "Hero_Mist",
+      "build_dependent": false,
+      "id": 7720038
+    },
+    {
+      "name": "Achievement: AAAAAAAHH!!",
+      "key": "ACH_KYAAAAAA",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720039
+    },
+    {
+      "name": "Achievement: Leviathan on Land",
+      "key": "ACH_LEVIATHAN_ON_LAND",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720040
+    },
+    {
+      "name": "Achievement: A Piece of Cake",
+      "key": "ACH_LIKE_A_BREEZE",
+      "kind": "achievement",
+      "traveler": "Hero_Bismuth",
+      "build_dependent": false,
+      "id": 7720041
+    },
+    {
+      "name": "Achievement: Look! A Rainbow!",
+      "key": "ACH_LOOK_RAINBOW",
+      "kind": "achievement",
+      "traveler": "Hero_Bismuth",
+      "build_dependent": false,
+      "id": 7720042
+    },
+    {
+      "name": "Achievement: Loyal Customer",
+      "key": "ACH_LOYAL_CUSTOMER",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720043
+    },
+    {
+      "name": "Achievement: Master of Evasion",
+      "key": "ACH_MASTER_OF_EVASION",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720044
+    },
+    {
+      "name": "Achievement: Master of the Hammer",
+      "key": "ACH_MASTER_OF_HAMMER",
+      "kind": "achievement",
+      "traveler": "Hero_Vesper",
+      "build_dependent": false,
+      "id": 7720045
+    },
+    {
+      "name": "Achievement: Master of Mystic Arts",
+      "key": "ACH_MASTER_OF_MYSTIC_ARTS",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": true,
+      "id": 7720046
+    },
+    {
+      "name": "Achievement: Twinkle Twinkle",
+      "key": "ACH_ME_LOVE_GLOWY_STUFF",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": true,
+      "id": 7720047
+    },
+    {
+      "name": "Achievement: Midas Incarnate",
+      "key": "ACH_MIDAS_HIMSELF",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720048
+    },
+    {
+      "name": "Achievement: Mine and Craft",
+      "key": "ACH_MINE_AND_CRAFT",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720049
+    },
+    {
+      "name": "Achievement: M-M-M-MONSTER KILL!",
+      "key": "ACH_M_M_M_MONSTER_KILL",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720050
+    },
+    {
+      "name": "Achievement: Night of Counting the Stars",
+      "key": "ACH_NIGHT_OF_COUNTING_THE_STARS",
+      "kind": "achievement",
+      "traveler": "Hero_Yubar",
+      "build_dependent": false,
+      "id": 7720051
+    },
+    {
+      "name": "Achievement: That Tickles!",
+      "key": "ACH_NOT_EVEN_A_SCRATCH",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720052
+    },
+    {
+      "name": "Achievement: Novice Treasure Hunter",
+      "key": "ACH_NOVICE_TREASURE_HUNTER",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720053
+    },
+    {
+      "name": "Achievement: I've Got This!",
+      "key": "ACH_NO_NEED_FOR_YOUR_HELP",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720054
+    },
+    {
+      "name": "Achievement: Ode to the Stars",
+      "key": "ACH_ODE_TO_THE_STARS",
+      "kind": "achievement",
+      "traveler": "Hero_Yubar",
+      "build_dependent": false,
+      "id": 7720055
+    },
+    {
+      "name": "Achievement: Omega Point",
+      "key": "ACH_OMEGA_POINT",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": true,
+      "id": 7720056
+    },
+    {
+      "name": "Achievement: Once Upon a Time",
+      "key": "ACH_ONCE_UPON_A_TIME",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720057
+    },
+    {
+      "name": "Achievement: Overflowing Healing",
+      "key": "ACH_OVERFLOWING_HEALS",
+      "kind": "achievement",
+      "traveler": "Hero_Aurena",
+      "build_dependent": false,
+      "id": 7720058
+    },
+    {
+      "name": "Achievement: Peace Amid the Storm",
+      "key": "ACH_PEACE_AMID_THE_STORM",
+      "kind": "achievement",
+      "traveler": "Hero_Yubar",
+      "build_dependent": false,
+      "id": 7720059
+    },
+    {
+      "name": "Achievement: Peak Performance",
+      "key": "ACH_PEAK_PERFORMANCE",
+      "kind": "achievement",
+      "traveler": "Hero_Vesper",
+      "build_dependent": false,
+      "id": 7720060
+    },
+    {
+      "name": "Achievement: Pew Pew Pew!",
+      "key": "ACH_PEW_PEW_PEW",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720061
+    },
+    {
+      "name": "Achievement: Praise the Sun!",
+      "key": "ACH_PRAISE_THE_SUN",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720062
+    },
+    {
+      "name": "Achievement: Prayer for the Dreamers",
+      "key": "ACH_PRAYER_FOR_THE_DREAMERS",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720063
+    },
+    {
+      "name": "Achievement: Pure Imagination",
+      "key": "ACH_PURE_IMAGINATION",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720064
+    },
+    {
+      "name": "Achievement: Pyromaniac",
+      "key": "ACH_PYROMANIA",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720065
+    },
+    {
+      "name": "Achievement: Boundless Rage",
+      "key": "ACH_RAGE_WITHOUT_BOUNDS",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720066
+    },
+    {
+      "name": "Achievement: Reactivated",
+      "key": "ACH_REACTIVATED",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720067
+    },
+    {
+      "name": "Achievement: Reap What You Sow",
+      "key": "ACH_REAP_WHAT_YOU_SOW",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720068
+    },
+    {
+      "name": "Achievement: Whatever It Takes",
+      "key": "ACH_RUN_ME_LIKE_A_RACE_HORSE",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720069
+    },
+    {
+      "name": "Achievement: Barrier Battery",
+      "key": "ACH_SHIELD_BATTERY",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720070
+    },
+    {
+      "name": "Achievement: Shoot for the Moon",
+      "key": "ACH_SHOOT_FOR_THE_MOON",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720071
+    },
+    {
+      "name": "Achievement: Family Feud",
+      "key": "ACH_SIBLING_FIGHT",
+      "kind": "achievement",
+      "traveler": "Hero_Nachia",
+      "build_dependent": false,
+      "id": 7720072
+    },
+    {
+      "name": "Achievement: Snake in the Grass",
+      "key": "ACH_SNAKE_IN_THE_GRASS",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720073
+    },
+    {
+      "name": "Achievement: Support Specialist",
+      "key": "ACH_SUPPORT_MAIN",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": true,
+      "id": 7720074
+    },
+    {
+      "name": "Achievement: Suspiciously Wealthy Traveler",
+      "key": "ACH_SUSPICIOUSLY_WEALTHY_TRAVELER",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720075
+    },
+    {
+      "name": "Achievement: Taste of Their Own Medicine",
+      "key": "ACH_TASTE_OF_THEIR_OWN_MEDICINE",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720076
+    },
+    {
+      "name": "Achievement: Iron Body",
+      "key": "ACH_TEKKAI",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720077
+    },
+    {
+      "name": "Achievement: They're Just Big Cats",
+      "key": "ACH_THEYRE_JUST_BIG_CATS",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720078
+    },
+    {
+      "name": "Achievement: The Chill Washes Away Sins",
+      "key": "ACH_THE_CHILL_WASHES_AWAY_SINS",
+      "kind": "achievement",
+      "traveler": "Hero_Cetus",
+      "build_dependent": false,
+      "id": 7720079
+    },
+    {
+      "name": "Achievement: Reincarnation",
+      "key": "ACH_THE_CYCLE_OF_REBIRTH",
+      "kind": "achievement",
+      "traveler": "Hero_Nachia",
+      "build_dependent": false,
+      "id": 7720080
+    },
+    {
+      "name": "Achievement: The Eighth Trophy",
+      "key": "ACH_THE_EIGHTH_TROPHY",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720081
+    },
+    {
+      "name": "Achievement: The Road Not Taken",
+      "key": "ACH_THE_ROAD_NOT_TAKEN",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720082
+    },
+    {
+      "name": "Achievement: The True Ruler of the Forest",
+      "key": "ACH_THE_TRUE_FOREST_SOVEREIGN",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720083
+    },
+    {
+      "name": "Achievement: A Thousand Thunders",
+      "key": "ACH_THOUSAND_THUNDERS",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720084
+    },
+    {
+      "name": "Achievement: Transcendent Speed",
+      "key": "ACH_THROUGH_TIME_AND_SPACE",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720085
+    },
+    {
+      "name": "Achievement: True Support",
+      "key": "ACH_TRUE_SUPPORT",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720086
+    },
+    {
+      "name": "Achievement: Ultra Rapid Fire",
+      "key": "ACH_ULTRA_RAPID_FIRE",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720087
+    },
+    {
+      "name": "Achievement: Untouchable",
+      "key": "ACH_UNTOUCHABLE",
+      "kind": "achievement",
+      "traveler": "Hero_Lacerta",
+      "build_dependent": false,
+      "id": 7720088
+    },
+    {
+      "name": "Achievement: Thorny Vines Between the Rocks",
+      "key": "ACH_VINE_IN_CREVICES",
+      "kind": "achievement",
+      "traveler": "Hero_Mist",
+      "build_dependent": false,
+      "id": 7720089
+    },
+    {
+      "name": "Achievement: Vivid Dream",
+      "key": "ACH_VIVID_DREAM",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720090
+    },
+    {
+      "name": "Achievement: Who's the Prey Now",
+      "key": "ACH_WHOS_THE_PREY_NOW",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720091
+    },
+    {
+      "name": "Achievement: Why You Bully Me?",
+      "key": "ACH_WHY_YOU_BULLY_ME",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": false,
+      "id": 7720092
+    },
+    {
+      "name": "Achievement: Wrist-Friendly Build",
+      "key": "ACH_WRIST_FRIENDLY_BUILD",
+      "kind": "achievement",
+      "traveler": null,
+      "build_dependent": true,
+      "id": 7720093
+    },
+    {
+      "name": "World 1 Clear (Deep Sleep): Aurena",
+      "key": "CLEAR_W1_DEEP_SLEEP_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 1,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720094
+    },
+    {
+      "name": "World 1 Clear (Ominous Dream): Aurena",
+      "key": "CLEAR_W1_OMINOUS_DREAM_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 1,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720095
+    },
+    {
+      "name": "World 1 Clear (Nightmare): Aurena",
+      "key": "CLEAR_W1_NIGHTMARE_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 1,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720096
+    },
+    {
+      "name": "World 2 Clear (Deep Sleep): Aurena",
+      "key": "CLEAR_W2_DEEP_SLEEP_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 2,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720097
+    },
+    {
+      "name": "World 2 Clear (Ominous Dream): Aurena",
+      "key": "CLEAR_W2_OMINOUS_DREAM_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 2,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720098
+    },
+    {
+      "name": "World 2 Clear (Nightmare): Aurena",
+      "key": "CLEAR_W2_NIGHTMARE_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 2,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720099
+    },
+    {
+      "name": "World 3 Clear (Deep Sleep): Aurena",
+      "key": "CLEAR_W3_DEEP_SLEEP_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 3,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720100
+    },
+    {
+      "name": "World 3 Clear (Ominous Dream): Aurena",
+      "key": "CLEAR_W3_OMINOUS_DREAM_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 3,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720101
+    },
+    {
+      "name": "World 3 Clear (Nightmare): Aurena",
+      "key": "CLEAR_W3_NIGHTMARE_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 3,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720102
+    },
+    {
+      "name": "World 4 Clear (Deep Sleep): Aurena",
+      "key": "CLEAR_W4_DEEP_SLEEP_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 4,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720103
+    },
+    {
+      "name": "World 4 Clear (Ominous Dream): Aurena",
+      "key": "CLEAR_W4_OMINOUS_DREAM_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 4,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720104
+    },
+    {
+      "name": "World 4 Clear (Nightmare): Aurena",
+      "key": "CLEAR_W4_NIGHTMARE_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 4,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720105
+    },
+    {
+      "name": "World 5 Clear (Deep Sleep): Aurena",
+      "key": "CLEAR_W5_DEEP_SLEEP_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 5,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720106
+    },
+    {
+      "name": "World 5 Clear (Ominous Dream): Aurena",
+      "key": "CLEAR_W5_OMINOUS_DREAM_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 5,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720107
+    },
+    {
+      "name": "World 5 Clear (Nightmare): Aurena",
+      "key": "CLEAR_W5_NIGHTMARE_Hero_Aurena",
+      "kind": "world_clear",
+      "traveler": "Hero_Aurena",
+      "world": 5,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720108
+    },
+    {
+      "name": "World 1 Clear (Deep Sleep): Bismuth",
+      "key": "CLEAR_W1_DEEP_SLEEP_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 1,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720109
+    },
+    {
+      "name": "World 1 Clear (Ominous Dream): Bismuth",
+      "key": "CLEAR_W1_OMINOUS_DREAM_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 1,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720110
+    },
+    {
+      "name": "World 1 Clear (Nightmare): Bismuth",
+      "key": "CLEAR_W1_NIGHTMARE_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 1,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720111
+    },
+    {
+      "name": "World 2 Clear (Deep Sleep): Bismuth",
+      "key": "CLEAR_W2_DEEP_SLEEP_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 2,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720112
+    },
+    {
+      "name": "World 2 Clear (Ominous Dream): Bismuth",
+      "key": "CLEAR_W2_OMINOUS_DREAM_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 2,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720113
+    },
+    {
+      "name": "World 2 Clear (Nightmare): Bismuth",
+      "key": "CLEAR_W2_NIGHTMARE_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 2,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720114
+    },
+    {
+      "name": "World 3 Clear (Deep Sleep): Bismuth",
+      "key": "CLEAR_W3_DEEP_SLEEP_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 3,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720115
+    },
+    {
+      "name": "World 3 Clear (Ominous Dream): Bismuth",
+      "key": "CLEAR_W3_OMINOUS_DREAM_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 3,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720116
+    },
+    {
+      "name": "World 3 Clear (Nightmare): Bismuth",
+      "key": "CLEAR_W3_NIGHTMARE_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 3,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720117
+    },
+    {
+      "name": "World 4 Clear (Deep Sleep): Bismuth",
+      "key": "CLEAR_W4_DEEP_SLEEP_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 4,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720118
+    },
+    {
+      "name": "World 4 Clear (Ominous Dream): Bismuth",
+      "key": "CLEAR_W4_OMINOUS_DREAM_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 4,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720119
+    },
+    {
+      "name": "World 4 Clear (Nightmare): Bismuth",
+      "key": "CLEAR_W4_NIGHTMARE_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 4,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720120
+    },
+    {
+      "name": "World 5 Clear (Deep Sleep): Bismuth",
+      "key": "CLEAR_W5_DEEP_SLEEP_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 5,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720121
+    },
+    {
+      "name": "World 5 Clear (Ominous Dream): Bismuth",
+      "key": "CLEAR_W5_OMINOUS_DREAM_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 5,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720122
+    },
+    {
+      "name": "World 5 Clear (Nightmare): Bismuth",
+      "key": "CLEAR_W5_NIGHTMARE_Hero_Bismuth",
+      "kind": "world_clear",
+      "traveler": "Hero_Bismuth",
+      "world": 5,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720123
+    },
+    {
+      "name": "World 1 Clear (Deep Sleep): Cetus",
+      "key": "CLEAR_W1_DEEP_SLEEP_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 1,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720124
+    },
+    {
+      "name": "World 1 Clear (Ominous Dream): Cetus",
+      "key": "CLEAR_W1_OMINOUS_DREAM_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 1,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720125
+    },
+    {
+      "name": "World 1 Clear (Nightmare): Cetus",
+      "key": "CLEAR_W1_NIGHTMARE_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 1,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720126
+    },
+    {
+      "name": "World 2 Clear (Deep Sleep): Cetus",
+      "key": "CLEAR_W2_DEEP_SLEEP_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 2,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720127
+    },
+    {
+      "name": "World 2 Clear (Ominous Dream): Cetus",
+      "key": "CLEAR_W2_OMINOUS_DREAM_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 2,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720128
+    },
+    {
+      "name": "World 2 Clear (Nightmare): Cetus",
+      "key": "CLEAR_W2_NIGHTMARE_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 2,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720129
+    },
+    {
+      "name": "World 3 Clear (Deep Sleep): Cetus",
+      "key": "CLEAR_W3_DEEP_SLEEP_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 3,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720130
+    },
+    {
+      "name": "World 3 Clear (Ominous Dream): Cetus",
+      "key": "CLEAR_W3_OMINOUS_DREAM_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 3,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720131
+    },
+    {
+      "name": "World 3 Clear (Nightmare): Cetus",
+      "key": "CLEAR_W3_NIGHTMARE_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 3,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720132
+    },
+    {
+      "name": "World 4 Clear (Deep Sleep): Cetus",
+      "key": "CLEAR_W4_DEEP_SLEEP_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 4,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720133
+    },
+    {
+      "name": "World 4 Clear (Ominous Dream): Cetus",
+      "key": "CLEAR_W4_OMINOUS_DREAM_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 4,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720134
+    },
+    {
+      "name": "World 4 Clear (Nightmare): Cetus",
+      "key": "CLEAR_W4_NIGHTMARE_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 4,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720135
+    },
+    {
+      "name": "World 5 Clear (Deep Sleep): Cetus",
+      "key": "CLEAR_W5_DEEP_SLEEP_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 5,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720136
+    },
+    {
+      "name": "World 5 Clear (Ominous Dream): Cetus",
+      "key": "CLEAR_W5_OMINOUS_DREAM_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 5,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720137
+    },
+    {
+      "name": "World 5 Clear (Nightmare): Cetus",
+      "key": "CLEAR_W5_NIGHTMARE_Hero_Cetus",
+      "kind": "world_clear",
+      "traveler": "Hero_Cetus",
+      "world": 5,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720138
+    },
+    {
+      "name": "World 1 Clear (Deep Sleep): Lacerta",
+      "key": "CLEAR_W1_DEEP_SLEEP_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 1,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 0,
+      "id": 7720139
+    },
+    {
+      "name": "World 1 Clear (Ominous Dream): Lacerta",
+      "key": "CLEAR_W1_OMINOUS_DREAM_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 1,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 1,
+      "id": 7720140
+    },
+    {
+      "name": "World 1 Clear (Nightmare): Lacerta",
+      "key": "CLEAR_W1_NIGHTMARE_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 1,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 2,
+      "id": 7720141
+    },
+    {
+      "name": "World 2 Clear (Deep Sleep): Lacerta",
+      "key": "CLEAR_W2_DEEP_SLEEP_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 2,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 0,
+      "id": 7720142
+    },
+    {
+      "name": "World 2 Clear (Ominous Dream): Lacerta",
+      "key": "CLEAR_W2_OMINOUS_DREAM_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 2,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 1,
+      "id": 7720143
+    },
+    {
+      "name": "World 2 Clear (Nightmare): Lacerta",
+      "key": "CLEAR_W2_NIGHTMARE_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 2,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 2,
+      "id": 7720144
+    },
+    {
+      "name": "World 3 Clear (Deep Sleep): Lacerta",
+      "key": "CLEAR_W3_DEEP_SLEEP_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 3,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 0,
+      "id": 7720145
+    },
+    {
+      "name": "World 3 Clear (Ominous Dream): Lacerta",
+      "key": "CLEAR_W3_OMINOUS_DREAM_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 3,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 1,
+      "id": 7720146
+    },
+    {
+      "name": "World 3 Clear (Nightmare): Lacerta",
+      "key": "CLEAR_W3_NIGHTMARE_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 3,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 2,
+      "id": 7720147
+    },
+    {
+      "name": "World 4 Clear (Deep Sleep): Lacerta",
+      "key": "CLEAR_W4_DEEP_SLEEP_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 4,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 0,
+      "id": 7720148
+    },
+    {
+      "name": "World 4 Clear (Ominous Dream): Lacerta",
+      "key": "CLEAR_W4_OMINOUS_DREAM_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 4,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 1,
+      "id": 7720149
+    },
+    {
+      "name": "World 4 Clear (Nightmare): Lacerta",
+      "key": "CLEAR_W4_NIGHTMARE_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 4,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 2,
+      "id": 7720150
+    },
+    {
+      "name": "World 5 Clear (Deep Sleep): Lacerta",
+      "key": "CLEAR_W5_DEEP_SLEEP_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 5,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 0,
+      "id": 7720151
+    },
+    {
+      "name": "World 5 Clear (Ominous Dream): Lacerta",
+      "key": "CLEAR_W5_OMINOUS_DREAM_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 5,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 1,
+      "id": 7720152
+    },
+    {
+      "name": "World 5 Clear (Nightmare): Lacerta",
+      "key": "CLEAR_W5_NIGHTMARE_Hero_Lacerta",
+      "kind": "world_clear",
+      "traveler": "Hero_Lacerta",
+      "world": 5,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 2,
+      "id": 7720153
+    },
+    {
+      "name": "World 1 Clear (Deep Sleep): Mist",
+      "key": "CLEAR_W1_DEEP_SLEEP_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 1,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 0,
+      "id": 7720154
+    },
+    {
+      "name": "World 1 Clear (Ominous Dream): Mist",
+      "key": "CLEAR_W1_OMINOUS_DREAM_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 1,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 1,
+      "id": 7720155
+    },
+    {
+      "name": "World 1 Clear (Nightmare): Mist",
+      "key": "CLEAR_W1_NIGHTMARE_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 1,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 2,
+      "id": 7720156
+    },
+    {
+      "name": "World 2 Clear (Deep Sleep): Mist",
+      "key": "CLEAR_W2_DEEP_SLEEP_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 2,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 0,
+      "id": 7720157
+    },
+    {
+      "name": "World 2 Clear (Ominous Dream): Mist",
+      "key": "CLEAR_W2_OMINOUS_DREAM_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 2,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 1,
+      "id": 7720158
+    },
+    {
+      "name": "World 2 Clear (Nightmare): Mist",
+      "key": "CLEAR_W2_NIGHTMARE_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 2,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 2,
+      "id": 7720159
+    },
+    {
+      "name": "World 3 Clear (Deep Sleep): Mist",
+      "key": "CLEAR_W3_DEEP_SLEEP_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 3,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 0,
+      "id": 7720160
+    },
+    {
+      "name": "World 3 Clear (Ominous Dream): Mist",
+      "key": "CLEAR_W3_OMINOUS_DREAM_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 3,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 1,
+      "id": 7720161
+    },
+    {
+      "name": "World 3 Clear (Nightmare): Mist",
+      "key": "CLEAR_W3_NIGHTMARE_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 3,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 2,
+      "id": 7720162
+    },
+    {
+      "name": "World 4 Clear (Deep Sleep): Mist",
+      "key": "CLEAR_W4_DEEP_SLEEP_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 4,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 0,
+      "id": 7720163
+    },
+    {
+      "name": "World 4 Clear (Ominous Dream): Mist",
+      "key": "CLEAR_W4_OMINOUS_DREAM_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 4,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 1,
+      "id": 7720164
+    },
+    {
+      "name": "World 4 Clear (Nightmare): Mist",
+      "key": "CLEAR_W4_NIGHTMARE_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 4,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 2,
+      "id": 7720165
+    },
+    {
+      "name": "World 5 Clear (Deep Sleep): Mist",
+      "key": "CLEAR_W5_DEEP_SLEEP_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 5,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 0,
+      "id": 7720166
+    },
+    {
+      "name": "World 5 Clear (Ominous Dream): Mist",
+      "key": "CLEAR_W5_OMINOUS_DREAM_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 5,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 1,
+      "id": 7720167
+    },
+    {
+      "name": "World 5 Clear (Nightmare): Mist",
+      "key": "CLEAR_W5_NIGHTMARE_Hero_Mist",
+      "kind": "world_clear",
+      "traveler": "Hero_Mist",
+      "world": 5,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 2,
+      "id": 7720168
+    },
+    {
+      "name": "World 1 Clear (Deep Sleep): Nachia",
+      "key": "CLEAR_W1_DEEP_SLEEP_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 1,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720169
+    },
+    {
+      "name": "World 1 Clear (Ominous Dream): Nachia",
+      "key": "CLEAR_W1_OMINOUS_DREAM_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 1,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720170
+    },
+    {
+      "name": "World 1 Clear (Nightmare): Nachia",
+      "key": "CLEAR_W1_NIGHTMARE_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 1,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720171
+    },
+    {
+      "name": "World 2 Clear (Deep Sleep): Nachia",
+      "key": "CLEAR_W2_DEEP_SLEEP_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 2,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720172
+    },
+    {
+      "name": "World 2 Clear (Ominous Dream): Nachia",
+      "key": "CLEAR_W2_OMINOUS_DREAM_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 2,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720173
+    },
+    {
+      "name": "World 2 Clear (Nightmare): Nachia",
+      "key": "CLEAR_W2_NIGHTMARE_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 2,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720174
+    },
+    {
+      "name": "World 3 Clear (Deep Sleep): Nachia",
+      "key": "CLEAR_W3_DEEP_SLEEP_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 3,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720175
+    },
+    {
+      "name": "World 3 Clear (Ominous Dream): Nachia",
+      "key": "CLEAR_W3_OMINOUS_DREAM_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 3,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720176
+    },
+    {
+      "name": "World 3 Clear (Nightmare): Nachia",
+      "key": "CLEAR_W3_NIGHTMARE_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 3,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720177
+    },
+    {
+      "name": "World 4 Clear (Deep Sleep): Nachia",
+      "key": "CLEAR_W4_DEEP_SLEEP_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 4,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720178
+    },
+    {
+      "name": "World 4 Clear (Ominous Dream): Nachia",
+      "key": "CLEAR_W4_OMINOUS_DREAM_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 4,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720179
+    },
+    {
+      "name": "World 4 Clear (Nightmare): Nachia",
+      "key": "CLEAR_W4_NIGHTMARE_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 4,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720180
+    },
+    {
+      "name": "World 5 Clear (Deep Sleep): Nachia",
+      "key": "CLEAR_W5_DEEP_SLEEP_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 5,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720181
+    },
+    {
+      "name": "World 5 Clear (Ominous Dream): Nachia",
+      "key": "CLEAR_W5_OMINOUS_DREAM_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 5,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720182
+    },
+    {
+      "name": "World 5 Clear (Nightmare): Nachia",
+      "key": "CLEAR_W5_NIGHTMARE_Hero_Nachia",
+      "kind": "world_clear",
+      "traveler": "Hero_Nachia",
+      "world": 5,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720183
+    },
+    {
+      "name": "World 1 Clear (Deep Sleep): Shell",
+      "key": "CLEAR_W1_DEEP_SLEEP_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 1,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720184
+    },
+    {
+      "name": "World 1 Clear (Ominous Dream): Shell",
+      "key": "CLEAR_W1_OMINOUS_DREAM_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 1,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720185
+    },
+    {
+      "name": "World 1 Clear (Nightmare): Shell",
+      "key": "CLEAR_W1_NIGHTMARE_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 1,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720186
+    },
+    {
+      "name": "World 2 Clear (Deep Sleep): Shell",
+      "key": "CLEAR_W2_DEEP_SLEEP_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 2,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720187
+    },
+    {
+      "name": "World 2 Clear (Ominous Dream): Shell",
+      "key": "CLEAR_W2_OMINOUS_DREAM_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 2,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720188
+    },
+    {
+      "name": "World 2 Clear (Nightmare): Shell",
+      "key": "CLEAR_W2_NIGHTMARE_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 2,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720189
+    },
+    {
+      "name": "World 3 Clear (Deep Sleep): Shell",
+      "key": "CLEAR_W3_DEEP_SLEEP_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 3,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720190
+    },
+    {
+      "name": "World 3 Clear (Ominous Dream): Shell",
+      "key": "CLEAR_W3_OMINOUS_DREAM_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 3,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720191
+    },
+    {
+      "name": "World 3 Clear (Nightmare): Shell",
+      "key": "CLEAR_W3_NIGHTMARE_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 3,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720192
+    },
+    {
+      "name": "World 4 Clear (Deep Sleep): Shell",
+      "key": "CLEAR_W4_DEEP_SLEEP_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 4,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720193
+    },
+    {
+      "name": "World 4 Clear (Ominous Dream): Shell",
+      "key": "CLEAR_W4_OMINOUS_DREAM_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 4,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720194
+    },
+    {
+      "name": "World 4 Clear (Nightmare): Shell",
+      "key": "CLEAR_W4_NIGHTMARE_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 4,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720195
+    },
+    {
+      "name": "World 5 Clear (Deep Sleep): Shell",
+      "key": "CLEAR_W5_DEEP_SLEEP_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 5,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720196
+    },
+    {
+      "name": "World 5 Clear (Ominous Dream): Shell",
+      "key": "CLEAR_W5_OMINOUS_DREAM_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 5,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720197
+    },
+    {
+      "name": "World 5 Clear (Nightmare): Shell",
+      "key": "CLEAR_W5_NIGHTMARE_Hero_Husk",
+      "kind": "world_clear",
+      "traveler": "Hero_Husk",
+      "world": 5,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720198
+    },
+    {
+      "name": "World 1 Clear (Deep Sleep): Vesper",
+      "key": "CLEAR_W1_DEEP_SLEEP_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 1,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720199
+    },
+    {
+      "name": "World 1 Clear (Ominous Dream): Vesper",
+      "key": "CLEAR_W1_OMINOUS_DREAM_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 1,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720200
+    },
+    {
+      "name": "World 1 Clear (Nightmare): Vesper",
+      "key": "CLEAR_W1_NIGHTMARE_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 1,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720201
+    },
+    {
+      "name": "World 2 Clear (Deep Sleep): Vesper",
+      "key": "CLEAR_W2_DEEP_SLEEP_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 2,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720202
+    },
+    {
+      "name": "World 2 Clear (Ominous Dream): Vesper",
+      "key": "CLEAR_W2_OMINOUS_DREAM_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 2,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720203
+    },
+    {
+      "name": "World 2 Clear (Nightmare): Vesper",
+      "key": "CLEAR_W2_NIGHTMARE_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 2,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720204
+    },
+    {
+      "name": "World 3 Clear (Deep Sleep): Vesper",
+      "key": "CLEAR_W3_DEEP_SLEEP_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 3,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720205
+    },
+    {
+      "name": "World 3 Clear (Ominous Dream): Vesper",
+      "key": "CLEAR_W3_OMINOUS_DREAM_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 3,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720206
+    },
+    {
+      "name": "World 3 Clear (Nightmare): Vesper",
+      "key": "CLEAR_W3_NIGHTMARE_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 3,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720207
+    },
+    {
+      "name": "World 4 Clear (Deep Sleep): Vesper",
+      "key": "CLEAR_W4_DEEP_SLEEP_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 4,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720208
+    },
+    {
+      "name": "World 4 Clear (Ominous Dream): Vesper",
+      "key": "CLEAR_W4_OMINOUS_DREAM_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 4,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720209
+    },
+    {
+      "name": "World 4 Clear (Nightmare): Vesper",
+      "key": "CLEAR_W4_NIGHTMARE_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 4,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720210
+    },
+    {
+      "name": "World 5 Clear (Deep Sleep): Vesper",
+      "key": "CLEAR_W5_DEEP_SLEEP_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 5,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720211
+    },
+    {
+      "name": "World 5 Clear (Ominous Dream): Vesper",
+      "key": "CLEAR_W5_OMINOUS_DREAM_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 5,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720212
+    },
+    {
+      "name": "World 5 Clear (Nightmare): Vesper",
+      "key": "CLEAR_W5_NIGHTMARE_Hero_Vesper",
+      "kind": "world_clear",
+      "traveler": "Hero_Vesper",
+      "world": 5,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720213
+    },
+    {
+      "name": "World 1 Clear (Deep Sleep): Yubar",
+      "key": "CLEAR_W1_DEEP_SLEEP_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 1,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720214
+    },
+    {
+      "name": "World 1 Clear (Ominous Dream): Yubar",
+      "key": "CLEAR_W1_OMINOUS_DREAM_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 1,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720215
+    },
+    {
+      "name": "World 1 Clear (Nightmare): Yubar",
+      "key": "CLEAR_W1_NIGHTMARE_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 1,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720216
+    },
+    {
+      "name": "World 2 Clear (Deep Sleep): Yubar",
+      "key": "CLEAR_W2_DEEP_SLEEP_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 2,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720217
+    },
+    {
+      "name": "World 2 Clear (Ominous Dream): Yubar",
+      "key": "CLEAR_W2_OMINOUS_DREAM_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 2,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720218
+    },
+    {
+      "name": "World 2 Clear (Nightmare): Yubar",
+      "key": "CLEAR_W2_NIGHTMARE_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 2,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720219
+    },
+    {
+      "name": "World 3 Clear (Deep Sleep): Yubar",
+      "key": "CLEAR_W3_DEEP_SLEEP_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 3,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720220
+    },
+    {
+      "name": "World 3 Clear (Ominous Dream): Yubar",
+      "key": "CLEAR_W3_OMINOUS_DREAM_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 3,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720221
+    },
+    {
+      "name": "World 3 Clear (Nightmare): Yubar",
+      "key": "CLEAR_W3_NIGHTMARE_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 3,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720222
+    },
+    {
+      "name": "World 4 Clear (Deep Sleep): Yubar",
+      "key": "CLEAR_W4_DEEP_SLEEP_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 4,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720223
+    },
+    {
+      "name": "World 4 Clear (Ominous Dream): Yubar",
+      "key": "CLEAR_W4_OMINOUS_DREAM_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 4,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720224
+    },
+    {
+      "name": "World 4 Clear (Nightmare): Yubar",
+      "key": "CLEAR_W4_NIGHTMARE_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 4,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720225
+    },
+    {
+      "name": "World 5 Clear (Deep Sleep): Yubar",
+      "key": "CLEAR_W5_DEEP_SLEEP_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 5,
+      "difficulty": "DEEP_SLEEP",
+      "copies_required": 1,
+      "id": 7720226
+    },
+    {
+      "name": "World 5 Clear (Ominous Dream): Yubar",
+      "key": "CLEAR_W5_OMINOUS_DREAM_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 5,
+      "difficulty": "OMINOUS_DREAM",
+      "copies_required": 2,
+      "id": 7720227
+    },
+    {
+      "name": "World 5 Clear (Nightmare): Yubar",
+      "key": "CLEAR_W5_NIGHTMARE_Hero_Yubar",
+      "kind": "world_clear",
+      "traveler": "Hero_Yubar",
+      "world": 5,
+      "difficulty": "NIGHTMARE",
+      "copies_required": 3,
+      "id": 7720228
+    }
+  ],
+  "location_groups": {
+    "Achievements": [
+      "Achievement: Balance Forever Lost",
+      "Achievement: Naked and Unafraid",
+      "Achievement: BFR 9000",
+      "Achievement: Déjà vu",
+      "Achievement: Burning Love",
+      "Achievement: Chaotic Good",
+      "Achievement: Clear Mind",
+      "Achievement: Deceiving Looks",
+      "Achievement: Desperate Hero",
+      "Achievement: Doll of Mana",
+      "Achievement: Double Vision",
+      "Achievement: Electric Type",
+      "Achievement: Introduction to Elements",
+      "Achievement: Embrace Mortality",
+      "Achievement: Empress of Pain",
+      "Achievement: Empty Canvas",
+      "Achievement: Eternal Rest",
+      "Achievement: Keep Calm and Carry On",
+      "Achievement: Feels Like Home",
+      "Achievement: Fight Fire with Fire",
+      "Achievement: Flexible Diet",
+      "Achievement: Four of a Kind",
+      "Achievement: From the Abyss to the Summit",
+      "Achievement: Full Moon",
+      "Achievement: God Protects Me",
+      "Achievement: Go with the Flow",
+      "Achievement: Heavier than Atlas",
+      "Achievement: Home Sweet Home",
+      "Achievement: Horns, Feathers, and Gold",
+      "Achievement: Hotter Fire Wins",
+      "Achievement: Hunters? What Hunters?",
+      "Achievement: Iceberg, the Great Communicator.",
+      "Achievement: Immortality Achieved",
+      "Achievement: In Carnage I Bloom",
+      "Achievement: I Am Shell",
+      "Achievement: Just Like the Old Days",
+      "Achievement: Now Now Stay Still",
+      "Achievement: Elemental Lord",
+      "Achievement: AAAAAAAHH!!",
+      "Achievement: Leviathan on Land",
+      "Achievement: A Piece of Cake",
+      "Achievement: Look! A Rainbow!",
+      "Achievement: Loyal Customer",
+      "Achievement: Master of Evasion",
+      "Achievement: Master of the Hammer",
+      "Achievement: Master of Mystic Arts",
+      "Achievement: Twinkle Twinkle",
+      "Achievement: Midas Incarnate",
+      "Achievement: Mine and Craft",
+      "Achievement: M-M-M-MONSTER KILL!",
+      "Achievement: Night of Counting the Stars",
+      "Achievement: That Tickles!",
+      "Achievement: Novice Treasure Hunter",
+      "Achievement: I've Got This!",
+      "Achievement: Ode to the Stars",
+      "Achievement: Omega Point",
+      "Achievement: Once Upon a Time",
+      "Achievement: Overflowing Healing",
+      "Achievement: Peace Amid the Storm",
+      "Achievement: Peak Performance",
+      "Achievement: Pew Pew Pew!",
+      "Achievement: Praise the Sun!",
+      "Achievement: Prayer for the Dreamers",
+      "Achievement: Pure Imagination",
+      "Achievement: Pyromaniac",
+      "Achievement: Boundless Rage",
+      "Achievement: Reactivated",
+      "Achievement: Reap What You Sow",
+      "Achievement: Whatever It Takes",
+      "Achievement: Barrier Battery",
+      "Achievement: Shoot for the Moon",
+      "Achievement: Family Feud",
+      "Achievement: Snake in the Grass",
+      "Achievement: Support Specialist",
+      "Achievement: Suspiciously Wealthy Traveler",
+      "Achievement: Taste of Their Own Medicine",
+      "Achievement: Iron Body",
+      "Achievement: They're Just Big Cats",
+      "Achievement: The Chill Washes Away Sins",
+      "Achievement: Reincarnation",
+      "Achievement: The Eighth Trophy",
+      "Achievement: The Road Not Taken",
+      "Achievement: The True Ruler of the Forest",
+      "Achievement: A Thousand Thunders",
+      "Achievement: Transcendent Speed",
+      "Achievement: True Support",
+      "Achievement: Ultra Rapid Fire",
+      "Achievement: Untouchable",
+      "Achievement: Thorny Vines Between the Rocks",
+      "Achievement: Vivid Dream",
+      "Achievement: Who's the Prey Now",
+      "Achievement: Why You Bully Me?",
+      "Achievement: Wrist-Friendly Build"
+    ],
+    "World Clears": [
+      "World 1 Clear (Deep Sleep): Aurena",
+      "World 1 Clear (Ominous Dream): Aurena",
+      "World 1 Clear (Nightmare): Aurena",
+      "World 2 Clear (Deep Sleep): Aurena",
+      "World 2 Clear (Ominous Dream): Aurena",
+      "World 2 Clear (Nightmare): Aurena",
+      "World 3 Clear (Deep Sleep): Aurena",
+      "World 3 Clear (Ominous Dream): Aurena",
+      "World 3 Clear (Nightmare): Aurena",
+      "World 4 Clear (Deep Sleep): Aurena",
+      "World 4 Clear (Ominous Dream): Aurena",
+      "World 4 Clear (Nightmare): Aurena",
+      "World 5 Clear (Deep Sleep): Aurena",
+      "World 5 Clear (Ominous Dream): Aurena",
+      "World 5 Clear (Nightmare): Aurena",
+      "World 1 Clear (Deep Sleep): Bismuth",
+      "World 1 Clear (Ominous Dream): Bismuth",
+      "World 1 Clear (Nightmare): Bismuth",
+      "World 2 Clear (Deep Sleep): Bismuth",
+      "World 2 Clear (Ominous Dream): Bismuth",
+      "World 2 Clear (Nightmare): Bismuth",
+      "World 3 Clear (Deep Sleep): Bismuth",
+      "World 3 Clear (Ominous Dream): Bismuth",
+      "World 3 Clear (Nightmare): Bismuth",
+      "World 4 Clear (Deep Sleep): Bismuth",
+      "World 4 Clear (Ominous Dream): Bismuth",
+      "World 4 Clear (Nightmare): Bismuth",
+      "World 5 Clear (Deep Sleep): Bismuth",
+      "World 5 Clear (Ominous Dream): Bismuth",
+      "World 5 Clear (Nightmare): Bismuth",
+      "World 1 Clear (Deep Sleep): Cetus",
+      "World 1 Clear (Ominous Dream): Cetus",
+      "World 1 Clear (Nightmare): Cetus",
+      "World 2 Clear (Deep Sleep): Cetus",
+      "World 2 Clear (Ominous Dream): Cetus",
+      "World 2 Clear (Nightmare): Cetus",
+      "World 3 Clear (Deep Sleep): Cetus",
+      "World 3 Clear (Ominous Dream): Cetus",
+      "World 3 Clear (Nightmare): Cetus",
+      "World 4 Clear (Deep Sleep): Cetus",
+      "World 4 Clear (Ominous Dream): Cetus",
+      "World 4 Clear (Nightmare): Cetus",
+      "World 5 Clear (Deep Sleep): Cetus",
+      "World 5 Clear (Ominous Dream): Cetus",
+      "World 5 Clear (Nightmare): Cetus",
+      "World 1 Clear (Deep Sleep): Lacerta",
+      "World 1 Clear (Ominous Dream): Lacerta",
+      "World 1 Clear (Nightmare): Lacerta",
+      "World 2 Clear (Deep Sleep): Lacerta",
+      "World 2 Clear (Ominous Dream): Lacerta",
+      "World 2 Clear (Nightmare): Lacerta",
+      "World 3 Clear (Deep Sleep): Lacerta",
+      "World 3 Clear (Ominous Dream): Lacerta",
+      "World 3 Clear (Nightmare): Lacerta",
+      "World 4 Clear (Deep Sleep): Lacerta",
+      "World 4 Clear (Ominous Dream): Lacerta",
+      "World 4 Clear (Nightmare): Lacerta",
+      "World 5 Clear (Deep Sleep): Lacerta",
+      "World 5 Clear (Ominous Dream): Lacerta",
+      "World 5 Clear (Nightmare): Lacerta",
+      "World 1 Clear (Deep Sleep): Mist",
+      "World 1 Clear (Ominous Dream): Mist",
+      "World 1 Clear (Nightmare): Mist",
+      "World 2 Clear (Deep Sleep): Mist",
+      "World 2 Clear (Ominous Dream): Mist",
+      "World 2 Clear (Nightmare): Mist",
+      "World 3 Clear (Deep Sleep): Mist",
+      "World 3 Clear (Ominous Dream): Mist",
+      "World 3 Clear (Nightmare): Mist",
+      "World 4 Clear (Deep Sleep): Mist",
+      "World 4 Clear (Ominous Dream): Mist",
+      "World 4 Clear (Nightmare): Mist",
+      "World 5 Clear (Deep Sleep): Mist",
+      "World 5 Clear (Ominous Dream): Mist",
+      "World 5 Clear (Nightmare): Mist",
+      "World 1 Clear (Deep Sleep): Nachia",
+      "World 1 Clear (Ominous Dream): Nachia",
+      "World 1 Clear (Nightmare): Nachia",
+      "World 2 Clear (Deep Sleep): Nachia",
+      "World 2 Clear (Ominous Dream): Nachia",
+      "World 2 Clear (Nightmare): Nachia",
+      "World 3 Clear (Deep Sleep): Nachia",
+      "World 3 Clear (Ominous Dream): Nachia",
+      "World 3 Clear (Nightmare): Nachia",
+      "World 4 Clear (Deep Sleep): Nachia",
+      "World 4 Clear (Ominous Dream): Nachia",
+      "World 4 Clear (Nightmare): Nachia",
+      "World 5 Clear (Deep Sleep): Nachia",
+      "World 5 Clear (Ominous Dream): Nachia",
+      "World 5 Clear (Nightmare): Nachia",
+      "World 1 Clear (Deep Sleep): Shell",
+      "World 1 Clear (Ominous Dream): Shell",
+      "World 1 Clear (Nightmare): Shell",
+      "World 2 Clear (Deep Sleep): Shell",
+      "World 2 Clear (Ominous Dream): Shell",
+      "World 2 Clear (Nightmare): Shell",
+      "World 3 Clear (Deep Sleep): Shell",
+      "World 3 Clear (Ominous Dream): Shell",
+      "World 3 Clear (Nightmare): Shell",
+      "World 4 Clear (Deep Sleep): Shell",
+      "World 4 Clear (Ominous Dream): Shell",
+      "World 4 Clear (Nightmare): Shell",
+      "World 5 Clear (Deep Sleep): Shell",
+      "World 5 Clear (Ominous Dream): Shell",
+      "World 5 Clear (Nightmare): Shell",
+      "World 1 Clear (Deep Sleep): Vesper",
+      "World 1 Clear (Ominous Dream): Vesper",
+      "World 1 Clear (Nightmare): Vesper",
+      "World 2 Clear (Deep Sleep): Vesper",
+      "World 2 Clear (Ominous Dream): Vesper",
+      "World 2 Clear (Nightmare): Vesper",
+      "World 3 Clear (Deep Sleep): Vesper",
+      "World 3 Clear (Ominous Dream): Vesper",
+      "World 3 Clear (Nightmare): Vesper",
+      "World 4 Clear (Deep Sleep): Vesper",
+      "World 4 Clear (Ominous Dream): Vesper",
+      "World 4 Clear (Nightmare): Vesper",
+      "World 5 Clear (Deep Sleep): Vesper",
+      "World 5 Clear (Ominous Dream): Vesper",
+      "World 5 Clear (Nightmare): Vesper",
+      "World 1 Clear (Deep Sleep): Yubar",
+      "World 1 Clear (Ominous Dream): Yubar",
+      "World 1 Clear (Nightmare): Yubar",
+      "World 2 Clear (Deep Sleep): Yubar",
+      "World 2 Clear (Ominous Dream): Yubar",
+      "World 2 Clear (Nightmare): Yubar",
+      "World 3 Clear (Deep Sleep): Yubar",
+      "World 3 Clear (Ominous Dream): Yubar",
+      "World 3 Clear (Nightmare): Yubar",
+      "World 4 Clear (Deep Sleep): Yubar",
+      "World 4 Clear (Ominous Dream): Yubar",
+      "World 4 Clear (Nightmare): Yubar",
+      "World 5 Clear (Deep Sleep): Yubar",
+      "World 5 Clear (Ominous Dream): Yubar",
+      "World 5 Clear (Nightmare): Yubar"
+    ],
+    "Build-Dependent Achievements": [
+      "Achievement: Fight Fire with Fire",
+      "Achievement: Four of a Kind",
+      "Achievement: Hotter Fire Wins",
+      "Achievement: Now Now Stay Still",
+      "Achievement: Master of Mystic Arts",
+      "Achievement: Twinkle Twinkle",
+      "Achievement: Omega Point",
+      "Achievement: Support Specialist",
+      "Achievement: Wrist-Friendly Build"
+    ],
+    "Aurena": [
+      "Achievement: Deceiving Looks",
+      "Achievement: Immortality Achieved",
+      "Achievement: Overflowing Healing",
+      "World 1 Clear (Deep Sleep): Aurena",
+      "World 1 Clear (Ominous Dream): Aurena",
+      "World 1 Clear (Nightmare): Aurena",
+      "World 2 Clear (Deep Sleep): Aurena",
+      "World 2 Clear (Ominous Dream): Aurena",
+      "World 2 Clear (Nightmare): Aurena",
+      "World 3 Clear (Deep Sleep): Aurena",
+      "World 3 Clear (Ominous Dream): Aurena",
+      "World 3 Clear (Nightmare): Aurena",
+      "World 4 Clear (Deep Sleep): Aurena",
+      "World 4 Clear (Ominous Dream): Aurena",
+      "World 4 Clear (Nightmare): Aurena",
+      "World 5 Clear (Deep Sleep): Aurena",
+      "World 5 Clear (Ominous Dream): Aurena",
+      "World 5 Clear (Nightmare): Aurena"
+    ],
+    "Bismuth": [
+      "Achievement: Double Vision",
+      "Achievement: A Piece of Cake",
+      "Achievement: Look! A Rainbow!",
+      "World 1 Clear (Deep Sleep): Bismuth",
+      "World 1 Clear (Ominous Dream): Bismuth",
+      "World 1 Clear (Nightmare): Bismuth",
+      "World 2 Clear (Deep Sleep): Bismuth",
+      "World 2 Clear (Ominous Dream): Bismuth",
+      "World 2 Clear (Nightmare): Bismuth",
+      "World 3 Clear (Deep Sleep): Bismuth",
+      "World 3 Clear (Ominous Dream): Bismuth",
+      "World 3 Clear (Nightmare): Bismuth",
+      "World 4 Clear (Deep Sleep): Bismuth",
+      "World 4 Clear (Ominous Dream): Bismuth",
+      "World 4 Clear (Nightmare): Bismuth",
+      "World 5 Clear (Deep Sleep): Bismuth",
+      "World 5 Clear (Ominous Dream): Bismuth",
+      "World 5 Clear (Nightmare): Bismuth"
+    ],
+    "Cetus": [
+      "Achievement: From the Abyss to the Summit",
+      "Achievement: Iceberg, the Great Communicator.",
+      "Achievement: The Chill Washes Away Sins",
+      "World 1 Clear (Deep Sleep): Cetus",
+      "World 1 Clear (Ominous Dream): Cetus",
+      "World 1 Clear (Nightmare): Cetus",
+      "World 2 Clear (Deep Sleep): Cetus",
+      "World 2 Clear (Ominous Dream): Cetus",
+      "World 2 Clear (Nightmare): Cetus",
+      "World 3 Clear (Deep Sleep): Cetus",
+      "World 3 Clear (Ominous Dream): Cetus",
+      "World 3 Clear (Nightmare): Cetus",
+      "World 4 Clear (Deep Sleep): Cetus",
+      "World 4 Clear (Ominous Dream): Cetus",
+      "World 4 Clear (Nightmare): Cetus",
+      "World 5 Clear (Deep Sleep): Cetus",
+      "World 5 Clear (Ominous Dream): Cetus",
+      "World 5 Clear (Nightmare): Cetus"
+    ],
+    "Lacerta": [
+      "Achievement: BFR 9000",
+      "Achievement: Just Like the Old Days",
+      "Achievement: Untouchable",
+      "World 1 Clear (Deep Sleep): Lacerta",
+      "World 1 Clear (Ominous Dream): Lacerta",
+      "World 1 Clear (Nightmare): Lacerta",
+      "World 2 Clear (Deep Sleep): Lacerta",
+      "World 2 Clear (Ominous Dream): Lacerta",
+      "World 2 Clear (Nightmare): Lacerta",
+      "World 3 Clear (Deep Sleep): Lacerta",
+      "World 3 Clear (Ominous Dream): Lacerta",
+      "World 3 Clear (Nightmare): Lacerta",
+      "World 4 Clear (Deep Sleep): Lacerta",
+      "World 4 Clear (Ominous Dream): Lacerta",
+      "World 4 Clear (Nightmare): Lacerta",
+      "World 5 Clear (Deep Sleep): Lacerta",
+      "World 5 Clear (Ominous Dream): Lacerta",
+      "World 5 Clear (Nightmare): Lacerta"
+    ],
+    "Mist": [
+      "Achievement: Go with the Flow",
+      "Achievement: Elemental Lord",
+      "Achievement: Thorny Vines Between the Rocks",
+      "World 1 Clear (Deep Sleep): Mist",
+      "World 1 Clear (Ominous Dream): Mist",
+      "World 1 Clear (Nightmare): Mist",
+      "World 2 Clear (Deep Sleep): Mist",
+      "World 2 Clear (Ominous Dream): Mist",
+      "World 2 Clear (Nightmare): Mist",
+      "World 3 Clear (Deep Sleep): Mist",
+      "World 3 Clear (Ominous Dream): Mist",
+      "World 3 Clear (Nightmare): Mist",
+      "World 4 Clear (Deep Sleep): Mist",
+      "World 4 Clear (Ominous Dream): Mist",
+      "World 4 Clear (Nightmare): Mist",
+      "World 5 Clear (Deep Sleep): Mist",
+      "World 5 Clear (Ominous Dream): Mist",
+      "World 5 Clear (Nightmare): Mist"
+    ],
+    "Nachia": [
+      "Achievement: Full Moon",
+      "Achievement: Family Feud",
+      "Achievement: Reincarnation",
+      "World 1 Clear (Deep Sleep): Nachia",
+      "World 1 Clear (Ominous Dream): Nachia",
+      "World 1 Clear (Nightmare): Nachia",
+      "World 2 Clear (Deep Sleep): Nachia",
+      "World 2 Clear (Ominous Dream): Nachia",
+      "World 2 Clear (Nightmare): Nachia",
+      "World 3 Clear (Deep Sleep): Nachia",
+      "World 3 Clear (Ominous Dream): Nachia",
+      "World 3 Clear (Nightmare): Nachia",
+      "World 4 Clear (Deep Sleep): Nachia",
+      "World 4 Clear (Ominous Dream): Nachia",
+      "World 4 Clear (Nightmare): Nachia",
+      "World 5 Clear (Deep Sleep): Nachia",
+      "World 5 Clear (Ominous Dream): Nachia",
+      "World 5 Clear (Nightmare): Nachia"
+    ],
+    "Shell": [
+      "Achievement: Doll of Mana",
+      "Achievement: Home Sweet Home",
+      "Achievement: I Am Shell",
+      "World 1 Clear (Deep Sleep): Shell",
+      "World 1 Clear (Ominous Dream): Shell",
+      "World 1 Clear (Nightmare): Shell",
+      "World 2 Clear (Deep Sleep): Shell",
+      "World 2 Clear (Ominous Dream): Shell",
+      "World 2 Clear (Nightmare): Shell",
+      "World 3 Clear (Deep Sleep): Shell",
+      "World 3 Clear (Ominous Dream): Shell",
+      "World 3 Clear (Nightmare): Shell",
+      "World 4 Clear (Deep Sleep): Shell",
+      "World 4 Clear (Ominous Dream): Shell",
+      "World 4 Clear (Nightmare): Shell",
+      "World 5 Clear (Deep Sleep): Shell",
+      "World 5 Clear (Ominous Dream): Shell",
+      "World 5 Clear (Nightmare): Shell"
+    ],
+    "Vesper": [
+      "Achievement: Hotter Fire Wins",
+      "Achievement: Master of the Hammer",
+      "Achievement: Peak Performance",
+      "World 1 Clear (Deep Sleep): Vesper",
+      "World 1 Clear (Ominous Dream): Vesper",
+      "World 1 Clear (Nightmare): Vesper",
+      "World 2 Clear (Deep Sleep): Vesper",
+      "World 2 Clear (Ominous Dream): Vesper",
+      "World 2 Clear (Nightmare): Vesper",
+      "World 3 Clear (Deep Sleep): Vesper",
+      "World 3 Clear (Ominous Dream): Vesper",
+      "World 3 Clear (Nightmare): Vesper",
+      "World 4 Clear (Deep Sleep): Vesper",
+      "World 4 Clear (Ominous Dream): Vesper",
+      "World 4 Clear (Nightmare): Vesper",
+      "World 5 Clear (Deep Sleep): Vesper",
+      "World 5 Clear (Ominous Dream): Vesper",
+      "World 5 Clear (Nightmare): Vesper"
+    ],
+    "Yubar": [
+      "Achievement: Night of Counting the Stars",
+      "Achievement: Ode to the Stars",
+      "Achievement: Peace Amid the Storm",
+      "World 1 Clear (Deep Sleep): Yubar",
+      "World 1 Clear (Ominous Dream): Yubar",
+      "World 1 Clear (Nightmare): Yubar",
+      "World 2 Clear (Deep Sleep): Yubar",
+      "World 2 Clear (Ominous Dream): Yubar",
+      "World 2 Clear (Nightmare): Yubar",
+      "World 3 Clear (Deep Sleep): Yubar",
+      "World 3 Clear (Ominous Dream): Yubar",
+      "World 3 Clear (Nightmare): Yubar",
+      "World 4 Clear (Deep Sleep): Yubar",
+      "World 4 Clear (Ominous Dream): Yubar",
+      "World 4 Clear (Nightmare): Yubar",
+      "World 5 Clear (Deep Sleep): Yubar",
+      "World 5 Clear (Ominous Dream): Yubar",
+      "World 5 Clear (Nightmare): Yubar"
+    ],
+    "Deep Sleep": [
+      "World 1 Clear (Deep Sleep): Aurena",
+      "World 2 Clear (Deep Sleep): Aurena",
+      "World 3 Clear (Deep Sleep): Aurena",
+      "World 4 Clear (Deep Sleep): Aurena",
+      "World 5 Clear (Deep Sleep): Aurena",
+      "World 1 Clear (Deep Sleep): Bismuth",
+      "World 2 Clear (Deep Sleep): Bismuth",
+      "World 3 Clear (Deep Sleep): Bismuth",
+      "World 4 Clear (Deep Sleep): Bismuth",
+      "World 5 Clear (Deep Sleep): Bismuth",
+      "World 1 Clear (Deep Sleep): Cetus",
+      "World 2 Clear (Deep Sleep): Cetus",
+      "World 3 Clear (Deep Sleep): Cetus",
+      "World 4 Clear (Deep Sleep): Cetus",
+      "World 5 Clear (Deep Sleep): Cetus",
+      "World 1 Clear (Deep Sleep): Lacerta",
+      "World 2 Clear (Deep Sleep): Lacerta",
+      "World 3 Clear (Deep Sleep): Lacerta",
+      "World 4 Clear (Deep Sleep): Lacerta",
+      "World 5 Clear (Deep Sleep): Lacerta",
+      "World 1 Clear (Deep Sleep): Mist",
+      "World 2 Clear (Deep Sleep): Mist",
+      "World 3 Clear (Deep Sleep): Mist",
+      "World 4 Clear (Deep Sleep): Mist",
+      "World 5 Clear (Deep Sleep): Mist",
+      "World 1 Clear (Deep Sleep): Nachia",
+      "World 2 Clear (Deep Sleep): Nachia",
+      "World 3 Clear (Deep Sleep): Nachia",
+      "World 4 Clear (Deep Sleep): Nachia",
+      "World 5 Clear (Deep Sleep): Nachia",
+      "World 1 Clear (Deep Sleep): Shell",
+      "World 2 Clear (Deep Sleep): Shell",
+      "World 3 Clear (Deep Sleep): Shell",
+      "World 4 Clear (Deep Sleep): Shell",
+      "World 5 Clear (Deep Sleep): Shell",
+      "World 1 Clear (Deep Sleep): Vesper",
+      "World 2 Clear (Deep Sleep): Vesper",
+      "World 3 Clear (Deep Sleep): Vesper",
+      "World 4 Clear (Deep Sleep): Vesper",
+      "World 5 Clear (Deep Sleep): Vesper",
+      "World 1 Clear (Deep Sleep): Yubar",
+      "World 2 Clear (Deep Sleep): Yubar",
+      "World 3 Clear (Deep Sleep): Yubar",
+      "World 4 Clear (Deep Sleep): Yubar",
+      "World 5 Clear (Deep Sleep): Yubar"
+    ],
+    "Ominous Dream": [
+      "World 1 Clear (Ominous Dream): Aurena",
+      "World 2 Clear (Ominous Dream): Aurena",
+      "World 3 Clear (Ominous Dream): Aurena",
+      "World 4 Clear (Ominous Dream): Aurena",
+      "World 5 Clear (Ominous Dream): Aurena",
+      "World 1 Clear (Ominous Dream): Bismuth",
+      "World 2 Clear (Ominous Dream): Bismuth",
+      "World 3 Clear (Ominous Dream): Bismuth",
+      "World 4 Clear (Ominous Dream): Bismuth",
+      "World 5 Clear (Ominous Dream): Bismuth",
+      "World 1 Clear (Ominous Dream): Cetus",
+      "World 2 Clear (Ominous Dream): Cetus",
+      "World 3 Clear (Ominous Dream): Cetus",
+      "World 4 Clear (Ominous Dream): Cetus",
+      "World 5 Clear (Ominous Dream): Cetus",
+      "World 1 Clear (Ominous Dream): Lacerta",
+      "World 2 Clear (Ominous Dream): Lacerta",
+      "World 3 Clear (Ominous Dream): Lacerta",
+      "World 4 Clear (Ominous Dream): Lacerta",
+      "World 5 Clear (Ominous Dream): Lacerta",
+      "World 1 Clear (Ominous Dream): Mist",
+      "World 2 Clear (Ominous Dream): Mist",
+      "World 3 Clear (Ominous Dream): Mist",
+      "World 4 Clear (Ominous Dream): Mist",
+      "World 5 Clear (Ominous Dream): Mist",
+      "World 1 Clear (Ominous Dream): Nachia",
+      "World 2 Clear (Ominous Dream): Nachia",
+      "World 3 Clear (Ominous Dream): Nachia",
+      "World 4 Clear (Ominous Dream): Nachia",
+      "World 5 Clear (Ominous Dream): Nachia",
+      "World 1 Clear (Ominous Dream): Shell",
+      "World 2 Clear (Ominous Dream): Shell",
+      "World 3 Clear (Ominous Dream): Shell",
+      "World 4 Clear (Ominous Dream): Shell",
+      "World 5 Clear (Ominous Dream): Shell",
+      "World 1 Clear (Ominous Dream): Vesper",
+      "World 2 Clear (Ominous Dream): Vesper",
+      "World 3 Clear (Ominous Dream): Vesper",
+      "World 4 Clear (Ominous Dream): Vesper",
+      "World 5 Clear (Ominous Dream): Vesper",
+      "World 1 Clear (Ominous Dream): Yubar",
+      "World 2 Clear (Ominous Dream): Yubar",
+      "World 3 Clear (Ominous Dream): Yubar",
+      "World 4 Clear (Ominous Dream): Yubar",
+      "World 5 Clear (Ominous Dream): Yubar"
+    ],
+    "Nightmare": [
+      "World 1 Clear (Nightmare): Aurena",
+      "World 2 Clear (Nightmare): Aurena",
+      "World 3 Clear (Nightmare): Aurena",
+      "World 4 Clear (Nightmare): Aurena",
+      "World 5 Clear (Nightmare): Aurena",
+      "World 1 Clear (Nightmare): Bismuth",
+      "World 2 Clear (Nightmare): Bismuth",
+      "World 3 Clear (Nightmare): Bismuth",
+      "World 4 Clear (Nightmare): Bismuth",
+      "World 5 Clear (Nightmare): Bismuth",
+      "World 1 Clear (Nightmare): Cetus",
+      "World 2 Clear (Nightmare): Cetus",
+      "World 3 Clear (Nightmare): Cetus",
+      "World 4 Clear (Nightmare): Cetus",
+      "World 5 Clear (Nightmare): Cetus",
+      "World 1 Clear (Nightmare): Lacerta",
+      "World 2 Clear (Nightmare): Lacerta",
+      "World 3 Clear (Nightmare): Lacerta",
+      "World 4 Clear (Nightmare): Lacerta",
+      "World 5 Clear (Nightmare): Lacerta",
+      "World 1 Clear (Nightmare): Mist",
+      "World 2 Clear (Nightmare): Mist",
+      "World 3 Clear (Nightmare): Mist",
+      "World 4 Clear (Nightmare): Mist",
+      "World 5 Clear (Nightmare): Mist",
+      "World 1 Clear (Nightmare): Nachia",
+      "World 2 Clear (Nightmare): Nachia",
+      "World 3 Clear (Nightmare): Nachia",
+      "World 4 Clear (Nightmare): Nachia",
+      "World 5 Clear (Nightmare): Nachia",
+      "World 1 Clear (Nightmare): Shell",
+      "World 2 Clear (Nightmare): Shell",
+      "World 3 Clear (Nightmare): Shell",
+      "World 4 Clear (Nightmare): Shell",
+      "World 5 Clear (Nightmare): Shell",
+      "World 1 Clear (Nightmare): Vesper",
+      "World 2 Clear (Nightmare): Vesper",
+      "World 3 Clear (Nightmare): Vesper",
+      "World 4 Clear (Nightmare): Vesper",
+      "World 5 Clear (Nightmare): Vesper",
+      "World 1 Clear (Nightmare): Yubar",
+      "World 2 Clear (Nightmare): Yubar",
+      "World 3 Clear (Nightmare): Yubar",
+      "World 4 Clear (Nightmare): Yubar",
+      "World 5 Clear (Nightmare): Yubar"
+    ]
+  }
+}

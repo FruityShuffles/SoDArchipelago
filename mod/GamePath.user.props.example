@@ -1,0 +1,6 @@
+<!-- Copy to GamePath.user.props (git-ignored) to point the build at a non-default install. -->
+<Project>
+  <PropertyGroup>
+    <GameDir>D:\SteamLibrary\steamapps\common\Shape of Dreams</GameDir>
+  </PropertyGroup>
+</Project>

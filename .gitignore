@@ -1,0 +1,17 @@
+# .NET
+bin/
+obj/
+*.user
+.vs/
+mod/GamePath.user.props
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Build output
+dist/
+
+# Decompiled game source (never commit; copyrighted)
+decompiled/

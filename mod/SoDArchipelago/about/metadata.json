@@ -1,0 +1,13 @@
+{
+  "id": "com.sodarchipelago.archipelago",
+  "name": "Archipelago",
+  "author": "SoDArchipelago contributors",
+  "modVer": "0.2.0",
+  "supportedGameVer": [
+    "*"
+  ],
+  "assemblies": [
+    "Archipelago.MultiClient.Net.dll",
+    "SoDArchipelago.dll"
+  ]
+}
