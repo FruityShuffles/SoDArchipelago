@@ -21,9 +21,8 @@ namespace SoDArchipelago
 
         private void Awake()
         {
-            // Must be registered before any method that touches MultiClient.Net is compiled: the loader loads every mod
-            // assembly under a renamed identity (Name_<ticks>), so our reference to Archipelago.MultiClient.Net
-            // doesn't resolve on its own.
+            // MultiClient.Net is merged into this DLL (see the csproj), but it was built against Newtonsoft.Json 11. Register
+            // the fallback before any method that touches it is compiled.
             AppDomain.CurrentDomain.AssemblyResolve += ResolveAssembly;
             Initialize();
         }
@@ -139,19 +138,15 @@ namespace SoDArchipelago
             if (_feed.Count > FeedSize) _feed.RemoveAt(0);
         }
 
-        // The mod loader loads mod assemblies from bytes under a renamed identity (Name_<ticks>), and the game ships
-        // Newtonsoft.Json 13 while MultiClient.Net may ask for another version. Point both at the loaded copies; after a
-        // live reload the newest (last loaded) copy wins.
+        // The game ships Newtonsoft.Json 13 while the merged MultiClient.Net code asks for 11. Mono already binds that on
+        // its own when the loader checks our types; this is a fallback that points it at the game's copy if it ever asks.
         private static Assembly ResolveAssembly(object sender, ResolveEventArgs args)
         {
             var wanted = new AssemblyName(args.Name).Name;
-            if (wanted != "Archipelago.MultiClient.Net" && wanted != "Newtonsoft.Json") return null;
+            if (wanted != "Newtonsoft.Json") return null;
             Assembly found = null;
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                var name = asm.GetName().Name;
-                if (name == wanted || name.StartsWith(wanted + "_", StringComparison.Ordinal)) found = asm;
-            }
+                if (asm.GetName().Name == wanted) found = asm;
             Debug.Log($"[AP] Resolved {args.Name} -> {found?.FullName ?? "<not found>"}");
             return found;
         }

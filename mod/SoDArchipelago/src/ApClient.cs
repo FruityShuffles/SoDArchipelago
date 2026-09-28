@@ -9,6 +9,7 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SoDArchipelago
 {
@@ -226,19 +227,23 @@ namespace SoDArchipelago
         }
 
         // DESIGN.md step 3: bind only from the title screen, never in a lobby or a run: the lobby's Travelers and the run's
-        // loot pool were built from the unbound (vanilla) unlocks.
+        // loot pool were built from the unbound (vanilla) unlocks. LobbyManager exists on the title screen too (it owns the
+        // online lobby service), so check its current lobby, as the game's own EOSManager does.
         private static bool CanBindNow(out string why)
         {
+            string scene = SceneManager.GetActiveScene().name;
+            bool title = scene == "Title";
             bool client = Mirror.NetworkClient.active, server = Mirror.NetworkServer.active;
-            bool lobby = ManagerBase<LobbyManager>.softInstance != null;
+            var lobbyManager = ManagerBase<LobbyManager>.softInstance;
+            bool lobby = lobbyManager != null && lobbyManager.service != null && lobbyManager.service.currentLobby != null;
             bool run = NetworkedManagerBase<GameManager>.instance != null;
-            if (!client && !server && !lobby && !run)
+            if (title && !client && !server && !lobby && !run)
             {
                 why = null;
                 return true;
             }
             why = "Binding only works on the title screen, not in a lobby or a run.";
-            Log.Info($"Bind refused: networkClient={client} networkServer={server} lobby={lobby} run={run}");
+            Log.Info($"Bind refused: scene={scene} networkClient={client} networkServer={server} onlineLobby={lobby} run={run}");
             return false;
         }
 

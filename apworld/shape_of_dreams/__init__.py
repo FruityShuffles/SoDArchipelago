@@ -19,7 +19,7 @@ class SoDWeb(WebWorld):
         "English",
         "setup_en.md",
         "setup/en",
-        ["SoDArchipelago contributors"],
+        ["Chainfire"],
     )]
 
 

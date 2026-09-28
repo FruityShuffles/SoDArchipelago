@@ -12,6 +12,8 @@ whole log, or at least every `[AP]` line, plus anything in the "Report" lines be
 
 **Never test on your main profile.** Everything below uses throwaway profiles.
 
+Results so far (2026-09-27) and the list of what is still untested: AGENTS.md "Status".
+
 ## 0. Setup
 
 1. Build and deploy the mod: `dotnet build mod/SoDArchipelago.sln` (copies it to `<game>/Mods/SoDArchipelago/`).
@@ -63,9 +65,8 @@ whole log, or at least every `[AP]` line, plus anything in the "Report" lines be
    - `[AP] Profile created: 'AP Test' path=... marker=<none>`
 2. Console: `ap_connect`.
    - `[AP] Connecting to localhost:38281 as SoDTest...`
-   - `[AP] Resolved Archipelago.MultiClient.Net, ... -> Archipelago.MultiClient.Net_<ticks>, ...` (the mod loader renames
-     mod assemblies; this proves the resolver works)
-   - **Report** whether a `[AP] Resolved Newtonsoft.Json, Version=11.0.0.0 ...` line appears (AGENTS.md item 2).
+   - **Report** whether a `[AP] Resolved Newtonsoft.Json, Version=11.0.0.0 ...` line appears (AGENTS.md item 2; none is
+     expected, since MultiClient.Net is merged into our DLL and Mono binds its Newtonsoft 11 references on its own).
    - `[AP] Room seed <seed>; wanted marker Archipelago:<seed>:SoDTest; loaded profile 'AP Test' marker <none>`
    - `[AP] Fresh-profile check: completed achievements=0, recorded runs=0, Traveler play count=0, ...`
    - `[AP] Profile 'AP Test' isn't bound yet. Type ap_bind to log in and bind it ...`
@@ -83,8 +84,9 @@ whole log, or at least every `[AP]` line, plus anything in the "Report" lines be
      (AGENTS.md item 3). To test `wss://` too, connect once to a real archipelago.gg room (any seed with a Shape of
      Dreams slot) on a second throwaway profile.
    - **Report** whether binding was refused with `Binding only works on the title screen` even though you were on the
-     title screen. The `[AP] Bind refused: networkClient=... networkServer=... lobby=... run=...` line shows which
-     check fired.
+     title screen. The `[AP] Bind refused: scene=... networkClient=... networkServer=... onlineLobby=... run=...` line
+     shows which check fired. (The first in-game test hit this: the check treated the always-present `LobbyManager` as a
+     lobby. Fixed 2026-09-27.)
 5. **Bind is refused outside the title screen.** On a second fresh profile: `ap_connect`, open a lobby, `ap_bind`
    → `Binding only works on the title screen, not in a lobby or a run.` Go back to the title screen and load "AP Test".
 6. **Guard: wrong profile.** Switch to another (unbound) profile in profile selection.

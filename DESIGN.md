@@ -71,8 +71,8 @@ In vanilla each achievement unlocks exactly one thing, which gives 93 unlocks. A
 - **Filler targets:** filler alone gives exactly **35 mastery on every Traveler** (the highest mastery any star or
   star slot requires) and **46,800 Stardust**. That covers the 45,275 needed for every star level, plus a buffer for
   star slot unlocks (40 + 20 × n Stardust per extra slot, where n counts from 0 past the Traveler's default slot count
-  for that star type). **(verify)** The mod logs each Traveler's star slot counts and their total cost at startup
-  (`[AP] Star slots ...`); check the 1,525 buffer against it.
+  for that star type). Checked in-game: the slots cost 4,740, so filler falls 3,215 short of buying every slot too;
+  accepted (see "Open questions").
 - Vanilla run rewards (Stardust, mastery points) are not counted toward these targets and stay as they are.
 
 ### Alternate memory order
@@ -196,12 +196,14 @@ Every AP seed/slot gets its own game profile. Your normal save must never be rea
 
 1. The player creates a new profile in the game's own UI.
 2. They connect from the title screen and confirm "bind this profile to <seed>/<slot>" (`ap_bind`). Binding only works
-   on the title screen, never in a lobby or a run (Mirror client/server inactive, no `LobbyManager`, no `GameManager`):
+   on the title screen, never in a lobby or a run (`Title` scene, no current online lobby, Mirror client/server
+   inactive, no `GameManager`):
    the lobby's Travelers and a run's loot pool were built from the unbound unlocks.
 3. The mod refuses to bind a profile that isn't fresh: it must have no completed achievements and no runs played. There
    is also a deliberate override for recovery (`ap_bind_force`). *Built test:* no completed achievements, no recorded
-   game results (`lastGameResults`, `recentlyConcededGames`) and a total Traveler play count of 0. **(verify)** Whether
-   the tutorial run makes a new profile fail it; the mod logs the numbers.
+   game results (`lastGameResults`, `recentlyConcededGames`) and a total Traveler play count of 0. In-game 2026-09-27: a
+   never-played profile with `didPlayTutorial=True` passes (0 runs, play count 0). **(verify)** Whether actually
+   finishing the tutorial run makes a new profile fail it; the mod logs the numbers.
    **Bind after login.** `ap_bind` doesn't write the marker. It logs in provisionally; nothing acts on the profile,
    because every action needs Bound. Only after `LoginSuccessful` and the slot_data version/hash check does the mod write
    the marker, after re-checking that the same profile is loaded (attempt and profile generation unchanged), that it is
@@ -266,10 +268,13 @@ zone-loaded event is an RPC to every client.)
 ## Open questions to settle during the build
 - ~~Map the game's difficulty IDs~~ The asset catalog has `diffTutorial`, `diffEasy`, `diffNormal`, `diffHard`,
   `diffNightmare` and `diffLimbo`. The build maps Nap = `diffEasy`, Deep Sleep = `diffNormal` (the default),
-  Ominous Dream = `diffHard`, Nightmare = `diffNightmare`. **(verify)** The mod logs each id's in-game name at startup
-  (`[AP] Difficulty ids -> display names`); the order is an assumption until that line is checked.
+  Ominous Dream = `diffHard`, Nightmare = `diffNightmare`. Verified in-game 2026-09-27 (`[AP] Difficulty ids -> display
+  names`: Tutorial, Nap, Deep Sleep, Ominous Dream, Nightmare, Limbo). The build has 4 worlds per loop
+  (`zoneCountByTier=[1,1,1,1]`).
 - ~~World-clear detection~~ Zone transition, world = `currentZoneIndex` on arrival (see "Locations").
-- Star slot counts per Traveler (the Stardust buffer): still open, logged at startup. ~~Mastery cap~~,
+- ~~Star slot counts per Traveler (the Stardust buffer)~~ Logged in-game 2026-09-27: 80 buyable slots cost 4,740
+  Stardust, more than the 1,525 buffer, so filler alone falls 3,215 short of buying everything. **Accepted as is**
+  (Stardust stays +650): vanilla run and achievement Stardust covers the rest. ~~Mastery cap~~,
   ~~fresh-profile test~~ and ~~UnknownFate~~: see above.
 - ~~`isAlteringGameplay`~~ Kept on.
 - ~~DeathLink for a joining co-op player~~ Accepted as a known limitation (see "DeathLink").

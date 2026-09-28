@@ -31,6 +31,8 @@
 
   <ItemGroup>
     <PackageReference Include="Archipelago.MultiClient.Net" Version="6.7.1" />
+    <!-- Build tool only: merges MultiClient.Net into our DLL (target MergeMultiClient). -->
+    <PackageReference Include="ILRepack" Version="2.0.48" PrivateAssets="all" ExcludeAssets="runtime" />
   </ItemGroup>
 
   <!-- Game / engine assemblies: compile-time only, never copied. Add more from Managed\ as needed. -->
@@ -55,14 +57,26 @@
            Text="Shape of Dreams not found at '$(GameDir)'. Set SOD_GAME_DIR or create mod\GamePath.user.props." />
   </Target>
 
-  <!-- Lay out the mod folder the in-game mod manager expects: <Mods>\SoDArchipelago\{about\, *.dll}. -->
-  <Target Name="DeployMod" AfterTargets="Build" Condition="'$(DeployToGame)' == 'true'">
+  <!-- The mod loader checks every type of each mod DLL (IsAssignableFrom) before any of our code runs, and loads mod DLLs
+       under renamed identities, so a separate Archipelago.MultiClient.Net.dll can't be resolved from ours at that point.
+       Merging it into SoDArchipelago.dll leaves no reference to resolve. -->
+  <Target Name="MergeMultiClient" AfterTargets="Build"
+          Inputs="$(OutDir)SoDArchipelago.dll;$(OutDir)Archipelago.MultiClient.Net.dll"
+          Outputs="$(OutDir)merged\SoDArchipelago.dll">
+    <MakeDir Directories="$(OutDir)merged" />
+    <Exec Command="&quot;$(ILRepack)&quot; /lib:&quot;$(GameManagedDir)&quot; /out:&quot;$(OutDir)merged\SoDArchipelago.dll&quot; &quot;$(OutDir)SoDArchipelago.dll&quot; &quot;$(OutDir)Archipelago.MultiClient.Net.dll&quot;" />
+  </Target>
+
+  <!-- Lay out the mod folder the in-game mod manager expects: <Mods>\SoDArchipelago\{about\, SoDArchipelago.dll}. -->
+  <Target Name="DeployMod" AfterTargets="MergeMultiClient" Condition="'$(DeployToGame)' == 'true'">
     <ItemGroup>
       <ModAbout Include="about\**\*" />
-      <ModDll Include="$(OutDir)SoDArchipelago.dll;$(OutDir)SoDArchipelago.pdb;$(OutDir)Archipelago.MultiClient.Net.dll" />
+      <ModDll Include="$(OutDir)merged\SoDArchipelago.dll;$(OutDir)merged\SoDArchipelago.pdb" />
     </ItemGroup>
     <Copy SourceFiles="@(ModAbout)" DestinationFolder="$(ModDeployDir)\about\%(RecursiveDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(ModDll)" DestinationFolder="$(ModDeployDir)" SkipUnchangedFiles="true" Condition="Exists('%(FullPath)')" />
+    <!-- Left over from builds before the merge. -->
+    <Delete Files="$(ModDeployDir)\Archipelago.MultiClient.Net.dll" />
     <Message Importance="high" Text="Deployed mod to $(ModDeployDir)" />
   </Target>
 
