@@ -1,8 +1,29 @@
 [h1]Archipelago Randomizer[/h1]
-Connects Shape of Dreams to an Archipelago multiworld. Achievements and world clears (worlds 1-5, per Traveler and difficulty) become location checks, and the Traveler, Memory, Essence and Lucid Dream unlocks, plus mastery and Stardust, are shuffled into the multiworld.
+Connects Shape of Dreams to an Archipelago multiworld. Achievements and world clears (worlds 1-5, per Traveler and difficulty) become location checks, and the Traveler, Memory, Essence and Lucid Dream unlocks, plus mastery and Stardust, are shuffled into the multiworld. You can play solo or co-op with other players that are or are not running Archipelago.
 
-Each seed is played on its own profile; your normal save is never touched.
+Each seed should be played on its own fresh Shape of Dreams save profile.
 
-To generate a seed you need the Shape of Dreams apworld: download [b]shape_of_dreams.apworld[/b] from the [url=https://github.com/FruityShuffles/SoDArchipelago/releases]GitHub releases[/url], using the release that matches this mod's version. Setup guide: [url=https://github.com/FruityShuffles/SoDArchipelago/blob/main/apworld/shape_of_dreams/docs/setup_en.md]setup_en.md[/url].
+[h2]Early development build[/h2]
+Solo play works: received items, achievement checks, world clears and DeathLink. Winning runs, Ominous Dream and Nightmare, offline play and co-op haven't been tested yet.  Expect bugs, and please report them.
 
-Early development build.
+[h2]Getting started[/h2]
+[list]
+[*]Download [b]shape_of_dreams.apworld[/b] from the [url=https://github.com/FruityShuffles/SoDArchipelago/releases]GitHub releases[/url] (the release matching this mod's version) and install it in Archipelago 0.6.4 or newer.
+[*]Follow the [url=https://github.com/FruityShuffles/SoDArchipelago/blob/main/apworld/shape_of_dreams/docs/setup_en.md]setup guide[/url]: make a new profile, enter your server, slot and password in the mod's settings, then type ap_connect and ap_bind in the console.
+[/list]
+
+[h2]Network use[/h2]
+The mod connects only to the Archipelago server you enter in its settings (archipelago.gg or a server you host yourself). It contacts no other server. Achievements completed on an Archipelago profile are not sent to Steam.
+
+[h2]Known limitations[/h2]
+[list]
+[*]In co-op, a player who joins someone else's lobby can't receive DeathLinks. Meaning an archipelago player should host lobbies.
+[/list]
+
+[h2]Reporting bugs[/h2]
+Open an issue on [url=https://github.com/FruityShuffles/SoDArchipelago/issues]GitHub[/url] with:
+[list]
+[*]what you did, what you expected and what happened,
+[*]the mod version and your Archipelago version,
+[*]your game log: %USERPROFILE%\AppData\LocalLow\Lizard Smoothie\Shape of Dreams\Player.log (Player-prev.log is the previous session). The mod's lines start with [noparse][AP][/noparse].
+[/list]
