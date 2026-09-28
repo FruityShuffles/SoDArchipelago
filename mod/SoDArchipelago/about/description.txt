@@ -1,10 +1,12 @@
 [h1]Archipelago Randomizer[/h1]
-Connects Shape of Dreams to an Archipelago multiworld. Achievements and world clears (worlds 1-5, per Traveler and difficulty) become location checks, and the Traveler, Memory, Essence and Lucid Dream unlocks, plus mastery and Stardust, are shuffled into the multiworld. You can play solo or co-op with other players that are or are not running Archipelago.
+[url=https://archipelago.gg/]Archipelago[/url] is a multi-game randomizer. Players in different games share one shuffled item pool, so what you find can be someone else's item, and theirs can be yours.
+
+This mod connects Shape of Dreams to an Archipelago multiworld. Achievements and world clears (worlds 1-5, per Traveler and difficulty) become location checks, and the Traveler, Memory, Essence and Lucid Dream unlocks, plus mastery and Stardust, are shuffled into the multiworld. You can play solo or co-op with other players, whether or not they run Archipelago.
 
 Each seed should be played on its own fresh Shape of Dreams save profile.
 
 [h2]Early development build[/h2]
-Solo play works: received items, achievement checks, world clears and DeathLink. Winning runs, Ominous Dream and Nightmare, offline play and co-op haven't been tested yet.  Expect bugs, and please report them.
+Solo play works: received items, achievement checks, world clears and DeathLink. Winning runs, Ominous Dream and Nightmare, offline play and co-op haven't been tested yet. Expect bugs, and please report them.
 
 [h2]Getting started[/h2]
 [list]
@@ -17,7 +19,7 @@ The mod connects only to the Archipelago server you enter in its settings (archi
 
 [h2]Known limitations[/h2]
 [list]
-[*]In co-op, a player who joins someone else's lobby can't receive DeathLinks. Meaning an archipelago player should host lobbies.
+[*]In co-op, a player who joins someone else's lobby can't receive DeathLinks. An Archipelago player should host co-op lobbies.
 [/list]
 
 [h2]Reporting bugs[/h2]
