@@ -15,3 +15,10 @@ dist/
 
 # Decompiled game source (never commit; copyrighted)
 decompiled/
+
+# AI tooling (kept local, not published)
+.claude/
+AGENTS.md
+CLAUDE.md
+CLAUDE.local.md
+.mcp.json
