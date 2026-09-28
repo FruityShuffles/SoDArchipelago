@@ -42,7 +42,7 @@ Results so far (2026-09-27) and the list of what is still untested: AGENTS.md "S
 ## 1. Mod loads (AGENTS.md "Not yet verified" 1-5)
 
 1. Start the game, enable **Archipelago** in the mod manager if needed.
-   - `[AP] Loaded com.sodarchipelago.archipelago 0.2.0; data format 2, extracted from game r.1.4.0.13_s; running game ...`
+   - `[AP] Loaded com.sodarchipelago.archipelago 0.3.0; data format 2, extracted from game r.1.4.0.13_s; running game ...`
    - No `Failed to load com.sodarchipelago.archipelago` line from `[DewMod]`.
 2. Open the mod's config in the mod manager. **Report:** do Server / Slot / Password fields show up and save?
 3. Open the console and type `ap_status`.
