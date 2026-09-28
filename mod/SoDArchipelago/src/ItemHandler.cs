@@ -76,6 +76,17 @@ namespace SoDArchipelago
                          $"applied {stardustCopies}");
             }
 
+            // Known limitation: the game's startup stats recovery may have restored mastery without our counters, in which
+            // case the packs below are applied a second time. Report it once per recovery (ApRecords.CheckStatsRecovery).
+            var recoveries = ApRecords.CheckStatsRecovery();
+            if (recoveries.Count > 0)
+            {
+                statsDirty = true;
+                Log.Warn("The game recovered lost mastery progress for this profile (" + string.Join(", ", recoveries) +
+                         "). Mastery items received before that may be applied a second time.");
+                ApClient.Say("The game restored lost mastery progress; some Mastery items may count twice.");
+            }
+
             // Mastery: value (DewProfileStats) and counter both live in the stats file.
             foreach (var traveler in GameData.Travelers.Values)
             {

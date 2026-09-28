@@ -22,10 +22,11 @@ namespace SoDArchipelago
             ApClient.SendLocations(new[] { loc.Id });
         }
 
-        // World clear = the Traveler moves on from world N (to world N+1, or into the ending zone after world 5).
-        // ZoneManager.currentZoneIndex starts at -1, is 0 in world 1 and keeps counting through loops, so on arrival it
-        // equals the number of the world just left. It is a SyncVar set long before this RPC fires (the room load
-        // happens in between), so it is current on joining clients too.
+        // World clear, worlds 1-4 = the Traveler moves on from world N: to world N+1, or after world 4 into Zone_Primus
+        // (world 5) or the next loop. ZoneManager.currentZoneIndex starts at -1, is 0 in world 1 and keeps counting
+        // through loops, so on arrival it equals the number of the world just left. It is a SyncVar set long before this
+        // RPC fires (the room load happens in between), so it is current on joining clients too. World 5 (Primus) has no
+        // zone change after it; GoalHandler clears it on a Pure White Dream win.
         public static void OnZoneLoaded(EventInfoLoadZone info)
         {
             var zm = NetworkedManagerBase<ZoneManager>.instance;
@@ -40,25 +41,35 @@ namespace SoDArchipelago
             if (!ProfileGuard.Marked) return;
             if (!info.isTraveling || info.isLoadingFromSave || string.IsNullOrEmpty(info.from)) return;
             int world = zoneIndex;
-            if (world < 1 || world > 5)
+            if (world < 1 || world > GameData.NormalWorlds)
             {
-                Log.Info($"No world clear: left world {world} (only worlds 1-5 count; loops send nothing).");
+                Log.Info($"No world clear: left world {world} (only worlds 1-{GameData.NormalWorlds} of the first " +
+                         "loop count here; later loops send nothing).");
                 return;
             }
+            RecordClears(new[] { world }, difficulty, hero, "moved on");
+        }
+
+        // Records and sends the clears of the given worlds for this Traveler, at this difficulty and every lower one
+        // (DESIGN.md "Cumulative"). Used for zone changes and for the endings (GoalHandler). Marked profiles only.
+        public static void RecordClears(IReadOnlyCollection<int> worlds, string difficulty, string hero, string why)
+        {
+            if (!ProfileGuard.Marked) return;
             int rank = GameData.RankOfGameDifficulty(difficulty);
             if (hero == null || !GameData.Travelers.ContainsKey(hero))
             {
-                Log.Warn($"World {world} cleared, but the local Traveler '{hero}' is unknown.");
+                Log.Warn($"World(s) {string.Join(",", worlds)} cleared ({why}), but the local Traveler '{hero}' is unknown.");
                 return;
             }
 
-            var keys = GameData.Difficulties
-                .Where(d => d.HasLocations && d.Rank <= rank)
-                .Select(d => GameData.WorldClearKey(world, d.Key, hero))
+            var keys = worlds
+                .SelectMany(w => GameData.Difficulties
+                    .Where(d => d.HasLocations && d.Rank <= rank)
+                    .Select(d => GameData.WorldClearKey(w, d.Key, hero)))
                 .ToList();
             if (keys.Count == 0)
             {
-                Log.Info($"World {world} cleared on '{difficulty}', which has no checks.");
+                Log.Info($"World(s) {string.Join(",", worlds)} cleared on '{difficulty}' ({why}), which has no checks.");
                 return;
             }
 
@@ -66,7 +77,7 @@ namespace SoDArchipelago
             foreach (var key in keys) added |= ApRecords.AddClear(key);
             if (added) DewSave.SaveProfileMain();
             var ids = keys.Select(k => GameData.LocationsByKey[k]).ToList();
-            Log.Info($"Check: world {world} cleared as {hero} on {difficulty}: " +
+            Log.Info($"Check: world(s) {string.Join(",", worlds)} cleared as {hero} on {difficulty} ({why}): " +
                      string.Join(", ", ids.Select(l => l.Name)) + (ProfileGuard.Bound ? "" : " - offline, sent on reconnect"));
             ApClient.SendLocations(ids.Select(l => l.Id).ToList());
         }

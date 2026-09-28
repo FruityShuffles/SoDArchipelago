@@ -14,15 +14,33 @@ Nothing has been released yet, so item/location IDs can still change. Once a ver
 | Achievements (`ACH_*`) | 93 | default | Every achievement in `RawData/en-US/achievements.json`. None are excluded. |
 | World clears | 135 | **priority** | 5 worlds × 3 difficulties × 9 Travelers. These are the only priority locations. |
 
-- **World clear** = the Traveler you are playing kills that world's final boss, or moves on to the next world.
-  Use whichever is easier to detect reliably. *Built:* moving on (`ZoneManager.ClientEvent_OnZoneLoaded`, traveling, not
+- **World structure** (corrected 2026-09-27). A loop has **4 normal worlds**. Beating the world 4 boss opens two rifts:
+  the normal exit (next loop) and the Dream rift (`Rift_Sidetrack_TheDream`, only in the last world's boss room). The Dream
+  rift travels to `Zone_Primus`, which is **world 5**: a shop, then `Shrine_PrimusDoor` (a room change inside the zone) to
+  the Primus boss. When Primus dies (`Mon_Primus_BossPrimusAeron.OnDeath` → `Primus_Ending.StartPrimusDeath`, server),
+  the players are teleported to the ending area (a teleport inside the same room, not a room or zone load). Interacting
+  with the white light pillar plays the ending cutscene, which calls `ConcludePureWhiteDream`.
+- **World clear, worlds 1–4** = moving on to the next world (`ZoneManager.ClientEvent_OnZoneLoaded`, traveling, not
   loading a save). On arrival `currentZoneIndex` equals the number of the world just left (it starts at -1, is 0 in
-  world 1 and keeps counting through loops). Leaving world 5 is always a zone change: into `Zone_Primus` (the Pure White
-  Dream ending, through `Rift_Sidetrack_TheDream`) or into the next loop.
+  world 1 and keeps counting through loops). Leaving world 4 is always a zone change: into `Zone_Primus` or into the
+  next loop. Only indexes 1–4 count (index 5 is leaving loop 2's first world, not a World 5 clear).
+- **World clear, world 5** = beating Primus, detected as a **Pure White Dream win** (decided 2026-09-27). *Built:* on
+  `GameResultManager.ClientEvent_OnGameConcluded` with `result == ResultType.PureWhiteDream`, record and send the World 5
+  clears (same hook as the Starless Path rule). That hook also fires on death (`GameOver`) and concede (`Conceded`), so
+  the result type must be checked. The zone-change rule can't detect world 5: the index on arrival in `Zone_Primus` is 4
+  (world 4), and nothing after Primus is a zone change. Accepted trade-off: quitting after killing Primus but before
+  touching the light sends nothing for that run (the run isn't won either).
+- **Starless Path win = full clear** (decided 2026-09-27). A Starless Path ending (`ResultType.StarlessPath`) counts as
+  clearing **all five worlds** for the Traveler played, at the run's difficulty (cumulative, like any clear). It's
+  needed because the Starless Path is always entered partway through a world, before its boss (the Guiding Compass
+  quest can't start in a boss room, and side-path rifts only spawn in combat rooms), and the run ends there with no
+  zone change. So the zone-change rule alone would never clear the world it was entered from, or any later world.
+  *Built:* on `GameResultManager.ClientEvent_OnGameConcluded` with `StarlessPath`, record and send the clears for
+  worlds 1–5. Logic is unchanged: a Starless Path win needs the same Traveler copies as the clears it sends.
 - **Difficulties:** Deep Sleep, Ominous Dream, Nightmare. Nap has no locations.
 - **Cumulative:** a clear on a higher difficulty also sends the same world's checks for every lower difficulty
   (Nightmare sends Nightmare, Ominous Dream and Deep Sleep).
-- **Loops** past world 5 send nothing. Limbo (`diffLimbo`) is its own difficulty id, which isn't one of the four
+- **Loops:** worlds 1–4 of later loops send nothing. Limbo (`diffLimbo`) is its own difficulty id, which isn't one of the four
   mapped difficulties, so it sends no world clears and its wins don't count for the goal *(resolved from code)*.
 - **Boss-kill locations are removed.** They duplicated world clears and achievements.
 - **Naming:** `Achievement: <display name>` (unchanged) and `World <n> Clear (<Difficulty>): <Traveler>`, for example
@@ -118,7 +136,14 @@ Win a run at `goal_difficulty` **or harder** with `goal_traveler_count` **differ
 | `death_link` | toggle | off | |
 
 Remove `boss_locations` and `travelers_required_for_goal`. `slot_data` must carry everything the mod needs: goal
-settings, pack values, death_link, and the data version.
+settings, pack values, death_link, the data version and the data hash.
+
+**Data compatibility.** `game_data.json` carries `data_format_version` (the JSON layout) and `data_hash`: a SHA-256 of
+every field the mod or the generator acts on (IDs, keys, kinds, unlocks, logic data, the difficulty ids and ranks),
+leaving out display names (`apworld/shape_of_dreams/data/data_hash.py`). The mod refuses a seed unless both equal its own embedded
+copy, so an old mod can't silently play a seed generated after a game update added items or locations. IDs are also
+kept in `id_history` (every key→ID ever assigned, including retired keys), so an ID is never reused for other content
+and a key that disappears and comes back keeps its ID.
 
 ## Client mod behavior
 
@@ -152,6 +177,13 @@ settings, pack values, death_link, and the data version.
   Stardust counter (`AP:applied:STARDUST=<n>`). The mastery counters (`AP:applied:MASTERY_<Traveler>=<n>`) live in
   `DewProfileStats.recoveredLossPoints`, in the `stats` file, so each is written in the same save as the value it
   protects.
+- **Known limitation: the game's stats recovery** (accepted 2026-09-27). At startup, before mods load, the game compares
+  the `stats` file with its daily backups. If total mastery or play time went down, it adds the lost mastery levels back
+  (`DewProfileStats.GetRecoveryDelta`) but not our mastery counters, so Mastery items applied between that backup and
+  the loss get applied a second time. There's no exact repair: that needs the backups' counters. The over-grant is
+  bounded filler, so the mod only reports it: each new `loss_…` entry the game adds to `recoveredLossPoints` after
+  binding logs a warning and shows a notice once (`AP:seenloss:<entry>`; entries from before the binding are marked seen
+  at bind time).
 - **The unlock record.** `DewProfile.Validate` runs on every profile load and re-derives unlocks from achievements: it
   locks the target of every incomplete achievement and unlocks the target of every completed one. `UnlockHero` also
   unlocks a Traveler's alternate memories whose achievement is complete. On a marked profile the mod therefore keeps
@@ -163,20 +195,32 @@ settings, pack values, death_link, and the data version.
 Every AP seed/slot gets its own game profile. Your normal save must never be read or written by AP logic.
 
 1. The player creates a new profile in the game's own UI.
-2. They connect from the title screen and confirm "bind this profile to <seed>/<slot>".
+2. They connect from the title screen and confirm "bind this profile to <seed>/<slot>" (`ap_bind`). Binding only works
+   on the title screen, never in a lobby or a run (Mirror client/server inactive, no `LobbyManager`, no `GameManager`):
+   the lobby's Travelers and a run's loot pool were built from the unbound unlocks.
 3. The mod refuses to bind a profile that isn't fresh: it must have no completed achievements and no runs played. There
    is also a deliberate override for recovery (`ap_bind_force`). *Built test:* no completed achievements, no recorded
    game results (`lastGameResults`, `recentlyConcededGames`) and a total Traveler play count of 0. **(verify)** Whether
    the tutorial run makes a new profile fail it; the mod logs the numbers.
+   **Bind after login.** `ap_bind` doesn't write the marker. It logs in provisionally; nothing acts on the profile,
+   because every action needs Bound. Only after `LoginSuccessful` and the slot_data version/hash check does the mod write
+   the marker, after re-checking that the same profile is loaded (attempt and profile generation unchanged), that it is
+   still fresh (unless forced) and that it is still on the title screen. A wrong slot name or password never marks a
+   profile.
 4. On bind, write a marker into `DewProfile.experienceFlags`, e.g. `Archipelago:<seed>:<slot>`. It's a free-form
   string list that the game only reads with `Contains`. The marker travels with the profile (Steam Cloud, moves)
   and can't get separated from it.
-5. **Seed check before login.** `ConnectAsync` returns `RoomState.Seed`. If it doesn't match the loaded profile's
-   marker, refuse and don't log in.
+5. **Seed check before login.** `ConnectAsync` returns `RoomState.Seed`. If the loaded profile carries a marker and it
+   doesn't match, refuse and don't log in. An unmarked profile logs in only through `ap_bind` (step 3).
 6. **A single guard before every action** (send, apply, suppress, gate): the loaded profile carries the marker for
-   the current session's seed/slot, and `DewSave.profileMainPath` is not null (the Transient profile has a null
-   path). Hook `DewSave.LoadProfile` and `DewSave.CreateProfile` to re-check. On a switch, disconnect, and drop queued
-   work that was tagged with the old profile.
+   the current session's seed/slot, `DewSave.profileMainPath` is not null (the Transient profile has a null path), and
+   the last profile load didn't fail. Hook `DewSave.LoadProfile` (with its result), `CreateProfile` and `ConvertProfile`
+   to re-check. On a switch or a failed load, disconnect, and drop queued work that was tagged with the old profile. A
+   failed `LoadProfile` can leave a mix of two profiles loaded (e.g. the new main file with the old stats), so AP stays
+   off until the next successful load. The Steam block (step 8) checks the raw marker instead, because it runs inside
+   `LoadProfile`, before that flag is updated.
+   A connection that is still being made is tracked from the start, so a disconnect (new `ap_connect`, profile switch,
+   unloading the mod) closes its socket too.
 7. A **marked profile** always gets AP behavior (reward suppression, gating), **even offline**. An **unmarked
    profile** always gets pure vanilla behavior.
 8. **Block the Steam achievement sync on marked profiles** (`DewSave.SyncAchievements` and the

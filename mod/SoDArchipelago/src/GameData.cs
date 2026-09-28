@@ -53,7 +53,14 @@ namespace SoDArchipelago
         }
 
         public static int DataFormatVersion { get; private set; }
+        // Fingerprint of the IDs, keys and logic data (apworld data/data_hash.py). Must equal the seed's slot_data.
+        public static string DataHash { get; private set; }
         public static string ExtractedFromGameVersion { get; private set; }
+
+        // Worlds whose clear is detected by moving on to the next zone (a loop has 4 worlds). World 5 is Primus, cleared
+        // by a Pure White Dream win (DESIGN.md "World structure").
+        public const int NormalWorlds = 4;
+        public const int PrimusWorld = 5;
 
         public static readonly Dictionary<long, Item> ItemsById = new Dictionary<long, Item>();
         public static readonly Dictionary<string, Item> ItemsByKey = new Dictionary<string, Item>();
@@ -82,6 +89,7 @@ namespace SoDArchipelago
             var root = JObject.Parse(reader.ReadToEnd());
 
             DataFormatVersion = (int)root["data_format_version"];
+            DataHash = (string)root["data_hash"];
             ExtractedFromGameVersion = (string)root["extracted_from_game_version"];
 
             foreach (var e in root["items"])

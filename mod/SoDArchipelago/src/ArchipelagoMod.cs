@@ -75,8 +75,9 @@ namespace SoDArchipelago
             harmony.PatchAll(typeof(ArchipelagoMod).Assembly);
             Diagnostics.LogStartup();
 
-            // The profile was loaded (and validated) at game start, before this mod was loaded, so enforce the AP unlock
-            // state now.
+            // The profile was loaded (and validated) at game start, before this mod was loaded, so check that load and
+            // enforce the AP unlock state now.
+            ProfileGuard.CheckStartupLoad();
             Log.Info($"Loaded profile '{DewSave.profileMain?.name}' path={DewSave.profileMainPath ?? "<transient>"} " +
                      $"marker={ProfileGuard.MarkerOf(DewSave.profileMain) ?? "<none>"}");
             if (ProfileGuard.Marked && UnlockState.Enforce(DewSave.profileMain, "mod load") > 0)
@@ -105,12 +106,12 @@ namespace SoDArchipelago
             Log.Info("Unloaded");
         }
 
-        // ProfilePatches: a profile was loaded, created or converted.
-        internal static void OnProfileLoaded(string how)
+        // ProfilePatches: a profile was loaded (ok = LoadProfile's result), created or converted.
+        internal static void OnProfileLoaded(string how, bool ok)
         {
             try
             {
-                ProfileGuard.OnProfileLoaded(how);
+                ProfileGuard.OnProfileLoaded(how, ok);
                 ApClient.OnProfileChanged();
                 if (ProfileGuard.Marked && !ProfileGuard.Bound)
                     ApClient.Say("Archipelago profile loaded (offline). Type ap_connect to connect.");
@@ -158,7 +159,7 @@ namespace SoDArchipelago
         [ConsoleCommand("Connect to Archipelago with the server, slot and password from the mod config.", "ap_connect")]
         private void ApConnect() => ApClient.Connect(config.server, config.slot, config.password);
 
-        [ConsoleCommand("Bind the loaded (fresh) profile to the seed and slot you are connecting to.", "ap_bind")]
+        [ConsoleCommand("Log in and bind the loaded (fresh) profile to the seed and slot you are connecting to.", "ap_bind")]
         private void ApBind() => ApClient.ConfirmBind(force: false);
 
         [ConsoleCommand("Bind the loaded profile even if it isn't fresh (recovery only).", "ap_bind_force")]

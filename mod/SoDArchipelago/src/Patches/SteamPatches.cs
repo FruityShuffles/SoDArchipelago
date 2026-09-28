@@ -12,9 +12,10 @@ namespace SoDArchipelago.Patches
     [HarmonyPatch(typeof(DewSave), nameof(DewSave.SyncAchievements))]
     internal static class SyncAchievementsPatch
     {
+        // MarkerPresent, not Marked: this runs inside DewSave.LoadProfile, before the load postfix updates LoadFailed.
         private static bool Prefix()
         {
-            if (!ProfileGuard.Marked) return true;
+            if (!ProfileGuard.MarkerPresent) return true;
             Log.Info("Skipped the Steam achievement sync (Archipelago profile)");
             return false;
         }
@@ -37,7 +38,7 @@ namespace SoDArchipelago.Patches
 
         private static bool Prefix(string __0, ref bool __result)
         {
-            if (!ProfileGuard.Marked) return true;
+            if (!ProfileGuard.MarkerPresent) return true;
             if (!_logged)
             {
                 _logged = true;

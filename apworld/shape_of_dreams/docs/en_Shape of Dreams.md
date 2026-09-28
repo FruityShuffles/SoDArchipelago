@@ -15,10 +15,11 @@ There are 228 locations.
 
 - **Achievements (93):** completing any achievement sends its check. You still get the achievement's usual Stardust
   bonus, but not its usual unlock. That unlock is an item somewhere in the multiworld.
-- **World clears (135):** clearing world 1 to 5 as each of the 9 Travelers, on Deep Sleep, Ominous Dream and
-  Nightmare. A world counts as cleared when you move on from it (to the next world, or into the ending after world 5).
-  Clearing a world on a harder difficulty also sends that world's checks for the easier difficulties. Nap has no
-  checks, and loops past world 5 send nothing.
+- **World clears (135):** clearing worlds 1 to 5 as each of the 9 Travelers, on Deep Sleep, Ominous Dream and
+  Nightmare. Worlds 1 to 4 count as cleared when you move on from them (to the next world, or after world 4 into the
+  Pure White Dream or the next loop). World 5 is Primus: it counts as cleared when you win the Pure White Dream ending.
+  Winning the Starless Path ending clears all five worlds at once. Clearing a world on a harder difficulty also sends
+  that world's checks for the easier difficulties. Nap has no checks, and the worlds of later loops send nothing.
 
 World clears are **priority locations**, so they tend to hold progression items. Achievements can hold anything.
 

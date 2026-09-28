@@ -102,6 +102,7 @@ class ShapeOfDreamsWorld(World):
     def fill_slot_data(self) -> Dict[str, Any]:
         return {
             "data_format_version": GAME_DATA["data_format_version"],
+            "data_hash": GAME_DATA["data_hash"],
             "extracted_from_game_version": GAME_DATA["extracted_from_game_version"],
             "world_version": self.world_version.as_simple_string(),
             "goal_difficulty": self.options.goal_difficulty.current_key,

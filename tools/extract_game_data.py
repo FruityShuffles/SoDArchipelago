@@ -3,8 +3,10 @@
 The JSON is the single source of truth for item/location names, keys and IDs. The apworld (Python) reads it, and
 the client mod (C#) embeds it, so both sides always agree. DESIGN.md describes the model this file implements.
 
-IDs are stable: existing key->id assignments in the current game_data.json are kept, and only new entries get fresh
-IDs. Never renumber by hand. `--renumber` throws the old IDs away; only use it before the first release.
+IDs are stable: every key->id assignment ever made is kept in the JSON's "id_history" (including keys the game has since
+removed), so a key always keeps its ID, a removed key that comes back gets its old ID again, and a retired ID is never
+given to anything else. Only new keys get fresh IDs, above every ID in the history. Never renumber by hand.
+`--renumber` throws the history away; only use it before the first release.
 
 Usage:
     python tools/extract_game_data.py [--game-dir "C:/.../Shape of Dreams"] [--renumber]
@@ -13,6 +15,7 @@ The game dir falls back to $SOD_GAME_DIR, then the default Steam path.
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import os
 import re
@@ -21,11 +24,18 @@ from pathlib import Path
 
 DEFAULT_GAME_DIR = r"C:\Program Files (x86)\Steam\steamapps\common\Shape of Dreams"
 REPO_ROOT = Path(__file__).resolve().parent.parent
-OUT_PATH = REPO_ROOT / "apworld" / "shape_of_dreams" / "data" / "game_data.json"
+DATA_DIR = REPO_ROOT / "apworld" / "shape_of_dreams" / "data"
+OUT_PATH = DATA_DIR / "game_data.json"
 
 # Bump when the JSON layout changes in a way the mod has to know about. The mod refuses slot_data from a different
-# data version, so a seed generated with one apworld can't silently be played with an incompatible mod.
-DATA_FORMAT_VERSION = 2
+# data version, so a seed generated with one apworld can't silently be played with an incompatible mod. Content changes
+# (new achievements after a game update, ...) are caught by "data_hash" instead.
+DATA_FORMAT_VERSION = 3
+
+# The apworld's data_hash.py, loaded by path: importing it as a package module would pull in Archipelago.
+_spec = importlib.util.spec_from_file_location("sod_data_hash", DATA_DIR / "data_hash.py")
+data_hash = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(data_hash)
 
 ITEM_ID_BASE = 7_710_000
 LOCATION_ID_BASE = 7_720_000
@@ -241,24 +251,32 @@ def main() -> int:
         groups[diff["name"]] = [l["name"] for l in locations if l.get("difficulty") == diff["key"]]
 
     # --- IDs ---------------------------------------------------------------------------------------------------------
-    old_ids: dict[str, dict[str, int]] = {"items": {}, "locations": {}}
+    # id_history holds every key->id ever assigned. Older files without it: rebuild it from their live entries.
+    history: dict[str, dict[str, int]] = {"items": {}, "locations": {}}
     if OUT_PATH.exists() and not args.renumber:
         old = json.loads(OUT_PATH.read_text(encoding="utf-8"))
-        for section in old_ids:
-            old_ids[section] = {e["key"]: e["id"] for e in old.get(section, [])}
+        for section in history:
+            history[section] = dict(old.get("id_history", {}).get(section, {}))
+            for e in old.get(section, []):
+                history[section].setdefault(e["key"], e["id"])
     for section, entries, base in (("items", items, ITEM_ID_BASE), ("locations", locations, LOCATION_ID_BASE)):
-        known = old_ids[section]
+        known = history[section]
+        if len(set(known.values())) != len(known):
+            fail(f"id_history.{section} assigns one ID to several keys")
         next_id = max(known.values(), default=base) + 1
         for e in entries:
             if e["key"] in known:
                 e["id"] = known[e["key"]]
             else:
-                e["id"] = next_id
+                e["id"] = known[e["key"]] = next_id
                 next_id += 1
+    retired = {s: sorted(set(history[s]) - {e["key"] for e in entries})
+               for s, entries in (("items", items), ("locations", locations))}
 
     out = {
         "game": "Shape of Dreams",
         "data_format_version": DATA_FORMAT_VERSION,
+        "data_hash": "",
         "extracted_from_game_version": game_version,
         "difficulties": DIFFICULTIES,
         "travelers": [{
@@ -275,7 +293,13 @@ def main() -> int:
         "items": sorted(items, key=lambda e: e["id"]),
         "locations": sorted(locations, key=lambda e: e["id"]),
         "location_groups": groups,
+        # Every key->id ever assigned, live or retired. Never edit by hand; see the module docstring.
+        "id_history": {s: dict(sorted(history[s].items(), key=lambda kv: kv[1])) for s in history},
     }
+    out["data_hash"] = data_hash.compute(out)
+    for section, keys in retired.items():
+        if keys:
+            print(f"note: retired {section} (kept in id_history): {', '.join(keys)}")
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUT_PATH.write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     counts = {k: sum(1 for i in items if i["kind"] == k) for k in dict.fromkeys(i["kind"] for i in items)}

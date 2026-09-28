@@ -26,11 +26,15 @@ isn't bound to the slot you're connected to, so your normal save is safe.
    - `ap_server archipelago.gg:38281` (the address and port of the room)
    - `ap_slot YourSlotName`
    - `ap_password yourpassword` (only if the room has one)
-3. In the console, type `ap_connect`. The first time, the mod asks you to bind the new profile: type `ap_bind`. The
-   profile is now bound to that seed and slot for good.
+3. On the title screen, type `ap_connect` in the console. The first time, the mod asks you to bind the new profile:
+   type `ap_bind`. The mod logs in first and only binds the profile if that works (so a mistyped slot name or password
+   binds nothing). The profile is then bound to that seed and slot for good. Binding only works on the title screen,
+   not in a lobby or a run.
 4. Play. Next time, load the same profile and type `ap_connect`. That's all.
 
 If you connect with the wrong profile loaded, the mod refuses and tells you which seed and slot the profile belongs to.
+It also refuses a seed generated with a different version of the game data than the mod has (for example after a
+game update): use the apworld and the mod from the same release.
 It only binds a profile that has no completed achievements and no runs yet. If you really need to bind a profile that
 isn't fresh (for example, to recover a seed after deleting its profile), `ap_bind_force` skips that check. It still
 never takes over a profile that is bound to a different seed.

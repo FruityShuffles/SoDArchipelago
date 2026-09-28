@@ -38,9 +38,19 @@ namespace SoDArchipelago
 
         public static bool IsMarked(DewProfile p) => MarkerOf(p) != null;
 
-        // The Transient profile (profileMainPath == null) is never treated as bound, even if it somehow carries a marker.
+        // True after DewSave.LoadProfile returned false, until the next successful load/create/convert. A failed load can
+        // leave a mix of two profiles loaded (e.g. the new main file with the old stats), so AP must not act on it.
+        public static bool LoadFailed { get; private set; }
+
+        // Marked: the loaded profile is a real, successfully loaded profile bound to some seed/slot. The Transient
+        // profile (profileMainPath == null) never counts, even if it somehow carries a marker.
         public static bool Marked =>
-            DewSave.profileMainPath != null && DewSave.profileMain != null && IsMarked(DewSave.profileMain);
+            !LoadFailed && DewSave.profileMainPath != null && DewSave.profileMain != null && IsMarked(DewSave.profileMain);
+
+        // The raw marker check, without the load-validity condition. Only for the Steam write block: it must hold while
+        // DewSave.LoadProfile is still running (SyncAchievements is called inside it, before our postfix can clear
+        // LoadFailed), and blocking Steam writes is the safe side anyway.
+        public static bool MarkerPresent => DewSave.profileMain != null && IsMarked(DewSave.profileMain);
 
         public static bool Bound =>
             SessionMarker != null && Marked && MarkerOf(DewSave.profileMain) == SessionMarker;
@@ -60,12 +70,13 @@ namespace SoDArchipelago
             return completed == 0 && results == 0 && plays == 0;
         }
 
-        // Writes the marker into the loaded profile (DESIGN.md step 4) and saves it right away.
+        // Writes the marker into the loaded profile (DESIGN.md step 4) and saves it right away. Called only after the AP
+        // login for this seed/slot succeeded (ApClient.OnLoggedIn), so a wrong slot or password never marks a profile.
         public static bool Bind(string marker)
         {
-            if (DewSave.profileMainPath == null || DewSave.profileMain == null)
+            if (LoadFailed || DewSave.profileMainPath == null || DewSave.profileMain == null)
             {
-                Log.Info("Can't bind the transient profile. Create a profile first.");
+                Log.Info("Can't bind the transient profile or a profile that failed to load.");
                 return false;
             }
             var existing = MarkerOf(DewSave.profileMain);
@@ -76,17 +87,46 @@ namespace SoDArchipelago
             }
             DewSave.profileMain.experienceFlags.Add(marker);
             UnlockState.Enforce(DewSave.profileMain, "bind");
+            // Stats-recovery events from before the binding are none of AP's business (ApRecords.CheckStatsRecovery).
+            if (ApRecords.AcknowledgeStatsRecoveries() > 0) DewSave.SaveProfileStats(immediate: true);
             DewSave.SaveProfileMain(immediate: true);
             Log.Info($"Bound profile '{DewSave.profileMain.name}' ({DewSave.profileMainPath}) to {marker}");
             return true;
         }
 
-        // DewSave.LoadProfile / CreateProfile / ConvertProfile postfix.
-        internal static void OnProfileLoaded(string how)
+        // Mod load: the startup profile load ran before our patches existed, and the game ignores its result. Nothing was
+        // loaded before it, so a load that failed partway leaves the main profile or the stats missing, except when
+        // DewProfileStats.Validate threw after the stats were assigned. Validate only fills in missing defaults, so on a
+        // marked profile it is run again here: harmless on a good profile, and it throws again on the broken one.
+        // (Unmarked profiles get only the null check: AP code doesn't touch them.)
+        internal static void CheckStartupLoad()
+        {
+            bool ok = DewSave.profileMain != null && DewSave.profileStats != null;
+            if (ok && IsMarked(DewSave.profileMain))
+            {
+                try
+                {
+                    DewSave.profileStats.Validate();
+                }
+                catch (Exception e)
+                {
+                    Log.Warn("The loaded profile's stats don't validate: " + e.Message);
+                    ok = false;
+                }
+            }
+            LoadFailed = !ok;
+            if (LoadFailed) Log.Warn("The startup profile load looks incomplete; AP stays off until a profile loads " +
+                                     "successfully.");
+        }
+
+        // DewSave.LoadProfile / CreateProfile / ConvertProfile postfix. `ok` is LoadProfile's result (always true for the
+        // other two).
+        internal static void OnProfileLoaded(string how, bool ok)
         {
             _generation++;
-            Log.Info($"Profile {how}: '{DewSave.profileMain?.name}' path={DewSave.profileMainPath ?? "<transient>"} " +
-                     $"marker={MarkerOf(DewSave.profileMain) ?? "<none>"}");
+            LoadFailed = !ok;
+            Log.Info($"Profile {how}{(ok ? "" : " FAILED")}: '{DewSave.profileMain?.name}' " +
+                     $"path={DewSave.profileMainPath ?? "<transient>"} marker={MarkerOf(DewSave.profileMain) ?? "<none>"}");
             ProfileChanged?.Invoke();
         }
     }
@@ -172,6 +212,31 @@ namespace SoDArchipelago
             list.RemoveAll(f => f.StartsWith(prefix, StringComparison.Ordinal));
             list.Add(prefix + count);
         }
+
+        // Known limitation (DESIGN.md "Received items"): at startup, before mods load, the game's stats rollback check
+        // (DewSave, via DewProfileStats.GetRecoveryDelta) can restore lost mastery levels without restoring the AP
+        // mastery counters kept next to them, so those packs would be applied again. There's no exact repair, so each new
+        // recovery (a "loss_..." entry the game adds to recoveredLossPoints) is reported once. Returns the new entries
+        // and marks them as seen.
+        private const string LossPrefix = "loss_";
+        private const string SeenLossPrefix = "AP:seenloss:";
+
+        public static List<string> CheckStatsRecovery()
+        {
+            var found = new List<string>();
+            if (!ProfileGuard.Marked) return found;
+            var list = StatsFlags;
+            foreach (var f in list.ToList())
+                if (f.StartsWith(LossPrefix, StringComparison.Ordinal) && !list.Contains(SeenLossPrefix + f))
+                {
+                    found.Add(f);
+                    list.Add(SeenLossPrefix + f);
+                }
+            return found;
+        }
+
+        // At bind time: every recovery so far happened before AP, so mark them all as seen without reporting them.
+        public static int AcknowledgeStatsRecoveries() => CheckStatsRecovery().Count;
     }
 
     public static class Log

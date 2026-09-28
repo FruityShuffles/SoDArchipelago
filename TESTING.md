@@ -68,27 +68,37 @@ whole log, or at least every `[AP]` line, plus anything in the "Report" lines be
    - **Report** whether a `[AP] Resolved Newtonsoft.Json, Version=11.0.0.0 ...` line appears (AGENTS.md item 2).
    - `[AP] Room seed <seed>; wanted marker Archipelago:<seed>:SoDTest; loaded profile 'AP Test' marker <none>`
    - `[AP] Fresh-profile check: completed achievements=0, recorded runs=0, Traveler play count=0, ...`
-   - `[AP] Profile 'AP Test' isn't bound yet. Type ap_bind ...`
+   - `[AP] Profile 'AP Test' isn't bound yet. Type ap_bind to log in and bind it ...`
    - If instead it says the profile isn't fresh, **report the fresh-profile line** (e.g. whether the tutorial counts).
-3. `ap_bind`.
+3. **Bind needs a working login.** First `ap_slot WrongName`, `ap_connect`, `ap_bind`:
+   - `[AP] Logging in; the profile is bound once the login succeeds.` then `[AP] Login failed: ... Nothing was bound.`
+   - `ap_status` still shows `marker=<none>`. Set the right slot (`ap_slot SoDTest`) and `ap_connect` again.
+4. `ap_bind`.
    - `[AP] Bound profile 'AP Test' (...) to Archipelago:<seed>:SoDTest`
    - `[AP] Connected: seed <seed>, slot SoDTest (profile 'AP Test').`
-   - `[AP] slot_data: data_format_version=2, ..., death_link=True`, `[AP] DeathLink enabled.`
+   - `[AP] slot_data: data_format_version=3, data_hash=<hash>, ..., death_link=True`, `[AP] DeathLink enabled.`
    - `[AP] Resending 0 checks (0 achievements, 0 world clears)`
    - `[AP] Goal: 0/1 Travelers have won at rank 1+ ()`
    - On screen: `Archipelago: SoDTest` top-left. This proves `wss://`-then-`ws://` connection works under Unity Mono
      (AGENTS.md item 3). To test `wss://` too, connect once to a real archipelago.gg room (any seed with a Shape of
      Dreams slot) on a second throwaway profile.
-4. **Guard: wrong profile.** Switch to another (unbound) profile in profile selection.
+   - **Report** whether binding was refused with `Binding only works on the title screen` even though you were on the
+     title screen. The `[AP] Bind refused: networkClient=... networkServer=... lobby=... run=...` line shows which
+     check fired.
+5. **Bind is refused outside the title screen.** On a second fresh profile: `ap_connect`, open a lobby, `ap_bind`
+   → `Binding only works on the title screen, not in a lobby or a run.` Go back to the title screen and load "AP Test".
+6. **Guard: wrong profile.** Switch to another (unbound) profile in profile selection.
    - `[AP] Profile loaded: '<other>' ... marker=<none>` then `[AP] Profile switched, so Archipelago disconnected...`
    - `ap_connect` on that profile must **not** log in: it asks for `ap_bind` (fresh) or refuses (not fresh). Don't bind
      it; switch back to "AP Test".
    - `[AP] Archipelago profile loaded (offline). Type ap_connect to connect.` and the red
      **OFFLINE — checks will send on reconnect** notice.
-5. **Guard: other seed.** (Optional) Generate a second seed, host it, `ap_connect` while "AP Test" is loaded.
+7. **Guard: other seed.** (Optional) Generate a second seed, host it, `ap_connect` while "AP Test" is loaded.
    - `[AP] ... The loaded profile 'AP Test' belongs to a different seed/slot (...)` and no login.
-6. **Steam sync.** After loading "AP Test": `[AP] Skipped the Steam achievement sync (Archipelago profile)`.
-7. Reconnect: `ap_connect` on "AP Test" logs straight in (no bind prompt).
+8. **Steam sync.** After loading "AP Test": `[AP] Skipped the Steam achievement sync (Archipelago profile)`.
+9. Reconnect: `ap_connect` on "AP Test" logs straight in (no bind prompt).
+10. **Abandoned connect.** `ap_server 10.255.255.1:38281` (an address that doesn't answer), `ap_connect`, then right
+    away `ap_disconnect`. No `Connected`/`Room seed` line appears later, and no error follows. Put the server back.
 
 ## 3. Received items
 
@@ -130,11 +140,13 @@ In the **server window**:
 1. Start a run on **Deep Sleep** as Lacerta. On the lobby → run: `[AP] Run ready: difficulty=diffNormal (...) bleedOuts=... hero=Hero_Lacerta host=True marked=True bound=True`.
 2. Clear world 1 and travel to world 2.
    - `[AP] Zone loaded: from='Zone_...' to='Zone_...' traveling=True fromSave=False zoneIndex=1 loop=0 difficulty=diffNormal (...) hero=Hero_Lacerta`
-   - `[AP] Check: world 1 cleared as Hero_Lacerta on diffNormal: World 1 Clear (Deep Sleep): Lacerta`
+   - `[AP] Check: world(s) 1 cleared as Hero_Lacerta on diffNormal (moved on): World 1 Clear (Deep Sleep): Lacerta`
    - The run's very first zone logs `from=''` and sends nothing.
-3. **Report** every `Zone loaded` line of a full run, including world 5 → the ending (Pure White Dream is a separate
-   zone, `Zone_Primus`, so leaving world 5 should log `zoneIndex=5` and send the World 5 clear). If you loop instead,
-   the next world should also be `zoneIndex=5`, and world 6 onwards must log `No world clear ... loops send nothing`.
+   - At startup, `[AP] Build content: zoneCountByTier=[...] (worlds per loop = 4)` must say 4.
+3. **Report** every `Zone loaded` line of a full run. Beating world 4's boss and taking the Dream rift must log
+   `to='Zone_Primus' ... zoneIndex=4` and send **World 4** (not World 5). Nothing is sent in Primus (shop, door, boss).
+   Touching the white light ends the run: see section 6 for the World 5 clear. If you loop instead, loop 2's first world
+   is also `zoneIndex=4` (World 4), and leaving it must log `No world clear: left world 5 ...` (it isn't Primus).
 4. On a harder difficulty (Ominous Dream or Nightmare; logic expects Lacerta copies for those, but the mod never blocks
    you), one clear sends that difficulty and every lower one: e.g. `World 1 Clear (Nightmare): Lacerta,
    World 1 Clear (Ominous Dream): Lacerta, World 1 Clear (Deep Sleep): Lacerta`.
@@ -144,9 +156,12 @@ In the **server window**:
 
 1. Win the Deep Sleep run (reach the Pure White Dream or the Starless Path).
    - `[AP] Game concluded: result=PureWhiteDream difficulty=diffNormal (...) hero=Hero_Lacerta visitedWorlds=...`
+   - Pure White Dream: `[AP] Check: world(s) 5 cleared as Hero_Lacerta on diffNormal (Pure White Dream): World 5 Clear
+     (Deep Sleep): Lacerta`. Starless Path instead: `world(s) 1,2,3,4,5 cleared ... (Starless Path)` with all five.
    - `[AP] Recorded win: Hero_Lacerta on diffNormal`, `[AP] Goal: 1/1 ...`, `[AP] Goal complete!`
    - The server shows the goal.
-2. **Report** any `result=UnknownFate` (the code says it only exists in demo builds).
+2. Die in a run (or concede): `[AP] Game concluded: result=GameOver ...` (or `Conceded`) and **no** `Check:` line.
+3. **Report** any `result=UnknownFate` (the code says it only exists in demo builds).
 
 ## 7. Offline play
 

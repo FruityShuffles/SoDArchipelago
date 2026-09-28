@@ -8,8 +8,13 @@ namespace SoDArchipelago
     // the run at the end of the demo's content (PlayGameManager.LoadNextZone), so it never counts.
     // Wins are recorded in the bound profile (Traveler + difficulty id), so they count even when won offline, and the
     // goal is re-checked on every connect.
+    //
+    // The endings also send world clears (DESIGN.md "World structure"): a Pure White Dream win is the Primus (world 5)
+    // clear, since nothing after Primus is a zone change; a Starless Path win clears all five worlds. This event also
+    // fires on death (GameOver) and concede (Conceded), which send nothing.
     public static class GoalHandler
     {
+        private static readonly int[] AllWorlds = Enumerable.Range(1, GameData.PrimusWorld).ToArray();
         private static bool _sentThisSession;
 
         public static void OnGameConcluded(DewGameResult result)
@@ -19,8 +24,12 @@ namespace SoDArchipelago
                      $"({Diagnostics.DifficultyName(result?.difficulty)}) hero={local?.heroType} " +
                      $"visitedWorlds={result?.visitedWorlds}");
             if (!ProfileGuard.Marked || result == null || local == null) return;
-            if (result.result != DewGameResult.ResultType.PureWhiteDream &&
-                result.result != DewGameResult.ResultType.StarlessPath)
+            if (result.result == DewGameResult.ResultType.PureWhiteDream)
+                CheckHandler.RecordClears(new[] { GameData.PrimusWorld }, result.difficulty, local.heroType,
+                    "Pure White Dream");
+            else if (result.result == DewGameResult.ResultType.StarlessPath)
+                CheckHandler.RecordClears(AllWorlds, result.difficulty, local.heroType, "Starless Path");
+            else
                 return;
             if (ApRecords.AddWin(local.heroType, result.difficulty))
             {
