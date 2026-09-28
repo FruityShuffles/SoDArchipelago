@@ -43,6 +43,7 @@ namespace SoDArchipelago
                     if (!ApRecords.AddUnlock(target)) continue;
                     mainDirty = true;
                     var what = item.UnlockNames != null ? $"{item.Name} ({item.UnlockNames[n - 1]})" : item.Name;
+                    if (ApRecords.IsForced(target)) what += " - no longer forced";
                     ApClient.Say($"Received {what}{from}{nextRun}");
                     continue;
                 }

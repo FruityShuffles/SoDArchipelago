@@ -42,6 +42,13 @@ unlock_item_counts: Dict[str, int] = {
 }
 
 mastery_item_names: List[str] = [t["mastery_item"] for t in GAME_DATA["travelers"]]
+
+# DESIGN.md "Forced Lucid Dreams": dream name (the item name without its prefix) -> item name, per LucidDream type.
+LUCID_DREAM_PREFIX = "Lucid Dream: "
+lucid_dreams_by_type: Dict[str, Dict[str, str]] = {}
+for _e in GAME_DATA["items"]:
+    if _e["kind"] == "lucid_dream":
+        lucid_dreams_by_type.setdefault(_e["lucid_dream_type"], {})[_e["name"][len(LUCID_DREAM_PREFIX):]] = _e["name"]
 STARDUST = "Stardust"
 
 

@@ -67,7 +67,9 @@ namespace SoDArchipelago
             CallOnNetworkedManager<GameManager>(gm =>
             {
                 DeathLinkHandler.Reset();
+                ForcedDreams.OnRunStarting();
                 GameManager.CallOnReady(Diagnostics.LogRunStart);
+                GameManager.CallOnReady(ForcedDreams.OnRunReady);
                 return DeathLinkHandler.Reset;
             });
 
@@ -86,6 +88,7 @@ namespace SoDArchipelago
         private void Update()
         {
             ApClient.Pump();
+            ForcedDreams.UpdateLobby();
             if (_itemsDirty)
             {
                 _itemsDirty = false;
@@ -100,6 +103,7 @@ namespace SoDArchipelago
             ApClient.ItemsChanged -= OnItemsChanged;
             ApClient.DeathLinkReceived -= DeathLinkHandler.OnDeathLinkReceived;
             ApClient.Disconnect(null);
+            ForcedDreams.Cleanup();
             harmony.UnpatchAll(harmony.Id);
             AppDomain.CurrentDomain.AssemblyResolve -= ResolveAssembly;
             Log.Info("Unloaded");
@@ -125,6 +129,7 @@ namespace SoDArchipelago
         private static void OnLoggedIn()
         {
             if (UnlockState.Enforce(DewSave.profileMain, "connect") > 0) DewSave.SaveProfileMain();
+            ForcedDreams.OnLoggedIn();
             CheckHandler.ResendAll();
             ItemHandler.ProcessAll("connect");
             GoalHandler.OnLoggedIn();

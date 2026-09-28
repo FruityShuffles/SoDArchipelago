@@ -1,0 +1,54 @@
+# Example player options for Shape of Dreams. Change what you like, then put this file in Archipelago's Players folder.
+# The game info page explains every option.
+
+name: YourName
+game: Shape of Dreams
+requires:
+  version: 0.6.4
+
+Shape of Dreams:
+  # Lowest difficulty a winning run counts at for your goal: deep_sleep, ominous_dream or nightmare.
+  goal_difficulty: nightmare
+
+  # How many different Travelers must win a run (1-9).
+  goal_traveler_count: 9
+
+  # "Mastery: <Traveler>" items per Traveler (0-15). The rest of the filler is Stardust.
+  mastery_packs_per_traveler: 7
+
+  # Mastery levels per Mastery item (1-35).
+  mastery_pack_value: 5
+
+  # Stardust per Stardust item (1-10000).
+  stardust_pack_value: 650
+
+  # Forced Lucid Dreams: the listed dreams are on in every run until you receive their "Lucid Dream: <name>" item.
+  # Those items become progression. A run only counts for world clears and the goal if every still-forced dream is on.
+  #
+  # Evil Lucid Dreams:
+  #   Fish Scales        Damage from monsters also lowers your max health until the next world (30% of it, 40% from
+  #                      bosses, less for melee Travelers). Guidance shrines restore some. Shields can't exceed your
+  #                      max health.
+  #   Grievous Wounds    Healing and shields on Travelers are halved.
+  #   Mad Life           Monsters predict your movement and aim where you're going.
+  #   Marsh of Destiny   Each world starts with a Seed of Torment shrine that offers rewards in exchange for making
+  #                      monsters stronger (health, armor, speed, Mirage Skins, curses, boss skills).
+  #   Overpopulation     50% more monsters (bosses excluded).
+  #   Prudent Jellyfish  Cooldown reduction is half as strong, and ability haste and Memory upgrades can shorten a
+  #                      cooldown by at most half.
+  forced_evil_lucid_dreams: []
+  # For example: forced_evil_lucid_dreams: ["Grievous Wounds", "Overpopulation"]
+
+  # Chaotic Lucid Dreams:
+  #   Embrace Mortality      Everyone deals double damage, Travelers and monsters alike.
+  #   Harmless Whispers      Bosses can be crowd-controlled, but get +15% health, +10% damage and extra tenacity, and
+  #                          shield themselves when controlled too often.
+  #   Sparkling Dream Flask  Health potions and Guidance shrines give Dream Dust instead of healing.
+  #   The Darkest Urge       Monsters fight each other. A monster that kills another levels up: more health, damage
+  #                          and speed, and a full heal.
+  #   WILD                   Every monster except bosses is a Hunter.
+  forced_chaotic_lucid_dreams: []
+  # For example: forced_chaotic_lucid_dreams: ["WILD"]
+
+  # When you are knocked down, everyone on DeathLink dies, and the other way round: true or false.
+  death_link: false

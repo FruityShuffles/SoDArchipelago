@@ -141,6 +141,7 @@ namespace SoDArchipelago
         private const string WinPrefix = "AP:win:";
         private const string UnlockPrefix = "AP:unlock:";
         private const string AppliedPrefix = "AP:applied:";
+        private const string ForcedPrefix = "AP:forced:";
 
         private static List<string> MainFlags => DewSave.profileMain.experienceFlags;
 
@@ -156,6 +157,28 @@ namespace SoDArchipelago
         {
             if (!ProfileGuard.Marked || MainFlags.Contains(UnlockPrefix + target)) return false;
             MainFlags.Add(UnlockPrefix + target);
+            return true;
+        }
+
+        // Forced Lucid Dreams (DESIGN.md "Forced Lucid Dreams"): the seed's forced list, copied from slot_data on every
+        // login so forcing also works offline. A dream stays forced until its unlock is in the unlock record.
+        public static List<string> Forced() =>
+            ProfileGuard.Marked
+                ? MainFlags.Where(f => f.StartsWith(ForcedPrefix, StringComparison.Ordinal))
+                    .Select(f => f.Substring(ForcedPrefix.Length)).ToList()
+                : new List<string>();
+
+        public static bool IsForced(string lucidDream) =>
+            ProfileGuard.Marked && MainFlags.Contains(ForcedPrefix + lucidDream);
+
+        // Replaces the forced list; true if it changed.
+        public static bool SetForced(ICollection<string> lucidDreams)
+        {
+            if (!ProfileGuard.Marked) return false;
+            var current = Forced();
+            if (current.Count == lucidDreams.Count && lucidDreams.All(current.Contains)) return false;
+            MainFlags.RemoveAll(f => f.StartsWith(ForcedPrefix, StringComparison.Ordinal));
+            foreach (var key in lucidDreams) MainFlags.Add(ForcedPrefix + key);
             return true;
         }
 

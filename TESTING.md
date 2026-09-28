@@ -200,3 +200,20 @@ DESIGN.md "DeathLink"). A knockdown of the joining player's Traveler must still 
 
 Disable and re-enable the mod in the mod manager while on the title screen: `[AP] Unloaded`, then a new `[AP] Loaded`
 with no errors, and `ap_connect` still works.
+
+## 11. Forced Lucid Dreams (DESIGN.md "Forced Lucid Dreams")
+
+Needs a seed with forced dreams, e.g. a YAML with `forced_evil_lucid_dreams: ["Grievous Wounds"]` and
+`forced_chaotic_lucid_dreams: ["WILD"]`, on a new profile.
+
+1. `ap_connect`: `[AP] Forced Lucid Dreams: Grievous Wounds, WILD (released: )`.
+2. Host a lobby (normal mode): the feed shows `Archipelago forces these Lucid Dreams on until you receive them: ...`,
+   and both dreams are active (with the locked icon). Clicking one doesn't turn it off.
+3. Start a run: `[AP] Forced Lucid Dreams this run: ... missing: none`. Clearing world 1 sends its check.
+4. `/send SoDTest Lucid Dream: WILD`: `Received Lucid Dream: WILD - no longer forced`. In the next lobby WILD can be
+   turned off. Start a run without it: `missing: none` (WILD is released), and only Grievous Wounds is forced.
+5. Joining player (co-op): join a lobby whose host doesn't have Grievous Wounds on. At run start the feed shows
+   `Forced Lucid Dreams missing (Grievous Wounds): world clears and wins won't count this run.`, and leaving world 1
+   logs `Not counted (world 1 clear): ...` and sends nothing. Achievements still send.
+6. Limbo lobby: no forcing, no start-condition message.
+7. Profile check: the Limbo mode stays locked on a profile with 4+ forced Evil dreams and no released ones.

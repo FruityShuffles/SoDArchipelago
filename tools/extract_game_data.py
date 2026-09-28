@@ -102,6 +102,26 @@ BUILD_DEPENDENT_ACHIEVEMENTS = [
     "ACH_MASTER_OF_MYSTIC_ARTS",  # Master of Mystic Arts
 ]
 
+# DESIGN.md "Forced Lucid Dreams": each Lucid Dream's LucidDream.type. RawData doesn't have it (it's a prefab field), so
+# it was read from the game's asset bundle on 2026-09-28 (game r.1.4.0.13_s). Only Evil and Chaotic dreams can be forced.
+LUCID_DREAM_TYPE = {
+    "LucidDream_BlandStarSoup": "good",
+    "LucidDream_BonVoyage": "good",
+    "LucidDream_FalseLifeline": "good",
+    "LucidDream_KindArmadillo": "good",
+    "LucidDream_FishScales": "evil",
+    "LucidDream_GrievousWounds": "evil",
+    "LucidDream_MadLife": "evil",
+    "LucidDream_MarshOfDestiny": "evil",
+    "LucidDream_Overpopulation": "evil",
+    "LucidDream_PrudentJellyfish": "evil",
+    "LucidDream_EmbraceMortality": "chaotic",
+    "LucidDream_HarmlessWhispers": "chaotic",
+    "LucidDream_SparklingDreamFlask": "chaotic",
+    "LucidDream_TheDarkestUrge": "chaotic",
+    "LucidDream_WILD": "chaotic",
+}
+
 # Difficulties, easiest first. "rank" orders them for "this difficulty or harder". "game_id" is the
 # GameSettingsManager.difficulty / DewGameResult.difficulty string. The ids come from the asset catalog; the mapping to
 # display names is ordered by the in-game list and is logged by the mod at startup ("[AP] Difficulty ...") so it can be
@@ -185,6 +205,9 @@ def main() -> int:
     for key in list(ACHIEVEMENT_TRAVELER) + BUILD_DEPENDENT_ACHIEVEMENTS:
         if key not in achievements:
             fail(f"{key} is not in achievements.json")
+    lucid_targets = sorted(k for k in targets if k.startswith("LucidDream_"))
+    if sorted(LUCID_DREAM_TYPE) != lucid_targets:
+        fail(f"LUCID_DREAM_TYPE must list exactly the Lucid Dreams: {lucid_targets}")
 
     # --- Items -------------------------------------------------------------------------------------------------------
     items: list[dict] = []
@@ -204,9 +227,12 @@ def main() -> int:
         items.append({"name": f"Essence: {essences[key]['name']}", "key": key, "kind": "essence",
                       "classification": "useful", "unlocks": [key]})
     # RawData has no Lucid Dream names, so derive them from the type name.
-    for key in sorted(k for k in targets if k.startswith("LucidDream_")):
+    # "lucid_dream_type" only decides which forced-dream option accepts the dream; it isn't in data_hash, because the
+    # seed's slot_data carries the resolved keys.
+    for key in lucid_targets:
         items.append({"name": f"Lucid Dream: {split_camel(key[len('LucidDream_'):])}", "key": key,
-                      "kind": "lucid_dream", "classification": "useful", "unlocks": [key]})
+                      "kind": "lucid_dream", "classification": "useful", "unlocks": [key],
+                      "lucid_dream_type": LUCID_DREAM_TYPE[key]})
     for hero in trav_order:
         items.append({"name": f"Mastery: {trav_name[hero]}", "key": f"MASTERY_{hero}", "kind": "mastery",
                       "classification": "filler", "traveler": hero})

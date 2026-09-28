@@ -8,6 +8,19 @@
   with `shape_of_dreams.apworld` installed (double-click it, or copy it into Archipelago's `custom_worlds` folder).
   Download it from the [SoDArchipelago releases](https://github.com/FruityShuffles/SoDArchipelago/releases).
 
+## Your YAML
+
+New to Archipelago? The [Archipelago setup guide](https://archipelago.gg/tutorial/Archipelago/setup/en) explains what
+a YAML is and how to generate and host a game. Shape of Dreams has no options page on archipelago.gg, so get your YAML
+one of these ways:
+
+- Start from the [example YAML](https://github.com/FruityShuffles/SoDArchipelago/blob/main/examples/Shape%20of%20Dreams.yaml),
+  which describes every option.
+- With the apworld installed, click **Generate Template Options** in the Archipelago Launcher. The template is written
+  to `Players/Templates`.
+
+Generate the game on your own computer. You can then upload it to archipelago.gg to host it.
+
 ## Installing the mod
 
 1. Subscribe to [Archipelago Randomizer](https://steamcommunity.com/sharedfiles/filedetails/?id=3809735647) on the

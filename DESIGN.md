@@ -61,7 +61,7 @@ In vanilla each achievement unlocks exactly one thing, which gives 93 unlocks. A
 | progression | `Progressive Lacerta`, `Progressive Mist` | 3 each (6) | They start unlocked, so every copy is an alternate memory |
 | useful | `Memory: <name>` (general, non-Traveler Memories locked behind achievements) | 15 | Makes the Memory able to drop in runs |
 | useful | `Essence: <name>` | 29 | Makes the Essence able to drop in runs |
-| useful | `Lucid Dream: <name>` | 15 | Unlocks the Lucid Dream modifier |
+| useful | `Lucid Dream: <name>` | 15 | Unlocks the Lucid Dream modifier. A **forced** dream's item is progression and releases it (see "Forced Lucid Dreams") |
 | filler | `Mastery: <Traveler>` (one item per Traveler) | 7 per Traveler (63) | +5 mastery levels to that Traveler |
 | filler | `Stardust` | the rest (72) | +650 Stardust |
 
@@ -134,9 +134,49 @@ Win a run at `goal_difficulty` **or harder** with `goal_traveler_count` **differ
 | `mastery_pack_value` | range 1–35 | 5 | levels per pack |
 | `stardust_pack_value` | range 1–10,000 | 650 | Stardust fills every remaining filler slot, so it can't be 0 |
 | `death_link` | toggle | off | |
+| `forced_evil_lucid_dreams` | set of Evil Lucid Dream names | empty | See "Forced Lucid Dreams" |
+| `forced_chaotic_lucid_dreams` | set of Chaotic Lucid Dream names | empty | See "Forced Lucid Dreams" |
 
 Remove `boss_locations` and `travelers_required_for_goal`. `slot_data` must carry everything the mod needs: goal
-settings, pack values, death_link, the data version and the data hash.
+settings, pack values, death_link, the forced Lucid Dreams (`forced_lucid_dreams`: both sets' keys), the data version
+and the data hash.
+
+## Forced Lucid Dreams
+
+An optional challenge modeled on the Reverse Heat option of the Hades randomizer (Polycosmos), decided 2026-09-28.
+The player lists Lucid Dreams that start **forced on**. Each one stays on in every run until its `Lucid Dream: <name>`
+item is received, which **releases** it: from then on it's a normal unlocked dream the player can turn on or off.
+
+- **Two options, both empty (off) by default:** `forced_evil_lucid_dreams` and `forced_chaotic_lucid_dreams`. Each only
+  accepts dreams of its own type. Good dreams can't be forced: they make runs easier.
+- **The types** (`LucidDream.type`, stored in the prefabs, read from the asset bundle 2026-09-28; the extractor's
+  `LUCID_DREAM_TYPE` table):
+  - Evil (6): Fish Scales, Grievous Wounds, Mad Life, Marsh of Destiny, Overpopulation, Prudent Jellyfish.
+  - Chaotic (5): Embrace Mortality, Harmless Whispers, Sparkling Dream Flask, The Darkest Urge, WILD.
+  - Good (4): Bland Star Soup, Bon Voyage, False Lifeline, Kind Armadillo.
+- **No new items.** A forced dream's existing item is its release. Pool, IDs and `data_hash` are unchanged.
+- **Forced dreams' items are progression** (Evil and Chaotic alike), so fill puts them in the priority world clears:
+  removing these modifiers is key to winning. No access rule needs them; a seed may ask for a win with every forced dream
+  still on. That's the challenge the player opted into.
+- **No "minimal" variant** (dreams forced permanently, with no release item). It has no multiworld part: players can
+  already turn dreams on themselves.
+- **Stored in the profile.** On every login the mod copies `forced_lucid_dreams` into the profile's AP records
+  (`AP:forced:<LucidDream_*>` in `experienceFlags`), so forcing also works offline. "Still forced" = in that list and
+  not yet in the unlock record. Forced dreams are **not** unlocked in the profile before their item arrives: Limbo opens
+  when 4 Evil dreams are unlocked (`GameMod_Limbo.IsLimboUnlocked`), and that would open it early. In the lobby a forced
+  dream therefore shows the locked icon while active.
+- **Lobby enforcement** (the host only; `activeLucidDreams` is a server setting). The technique Limbo uses to keep only
+  Evil dreams on (`GameMod_Limbo.EnforceGameRules`), turned around, in either lobby mode: the mod's `Update` adds every
+  still-forced dream to `GameSettingsManager.activeLucidDreams` (`AddLucidDream`) whenever it's missing, and a
+  `PlayLobbyManager.AddStartGameCondition` refuses to start with "Forced by Archipelago: ..." if one is still missing.
+  Skipped in Limbo lobbies (Limbo removes non-Evil dreams itself, and Limbo sends no checks) and when continuing a saved
+  run (its dreams come from the save).
+- **A run only counts if every still-forced dream is active.** When a run is ready (`GameManager.CallOnReady`), the mod
+  compares the still-forced dreams with the dreams in effect (the `LucidDream` actors, plus the synced
+  `activeLucidDreams`). If one is missing, that run's world clears and wins are not recorded or sent, and the player is
+  told. Achievements always count. The same rule applies to the host (where it always passes) and to a player who joined
+  someone else's lobby (who can't force anything). A continued run is checked the same way.
+- **Timing:** a dream released mid-run can be turned off from the next lobby (Lucid Dreams are chosen in the lobby).
 
 **Data compatibility.** `game_data.json` carries `data_format_version` (the JSON layout) and `data_hash`: a SHA-256 of
 every field the mod or the generator acts on (IDs, keys, kinds, unlocks, logic data, the difficulty ids and ranks),
@@ -245,7 +285,7 @@ and sent on reconnect. An **always-visible "OFFLINE — checks will send on reco
 guide explains that offline play delays other players' items.
 
 ### Co-op
-No special handling. Each player's own profile, mod and slot are independent. The shared loot pool is the union of
+No special handling, except for Forced Lucid Dreams (see there). Each player's own profile, mod and slot are independent. The shared loot pool is the union of
 the players' unlocks, which is vanilla co-op behavior. **(verify)** That achievement and world-clear events fire on a
 joining client, not only on the host. (From code they should: achievements are tracked per client, and the
 zone-loaded event is an RPC to every client.)

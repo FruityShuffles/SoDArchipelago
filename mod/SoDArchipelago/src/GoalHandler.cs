@@ -11,7 +11,8 @@ namespace SoDArchipelago
     //
     // The endings also send world clears (DESIGN.md "World structure"): a Pure White Dream win is the Primus (world 5)
     // clear, since nothing after Primus is a zone change; a Starless Path win clears all five worlds. This event also
-    // fires on death (GameOver) and concede (Conceded), which send nothing.
+    // fires on death (GameOver) and concede (Conceded), which send nothing. A run missing a still-forced Lucid Dream
+    // records nothing (ForcedDreams).
     public static class GoalHandler
     {
         private static readonly int[] AllWorlds = Enumerable.Range(1, GameData.PrimusWorld).ToArray();
@@ -24,6 +25,7 @@ namespace SoDArchipelago
                      $"({Diagnostics.DifficultyName(result?.difficulty)}) hero={local?.heroType} " +
                      $"visitedWorlds={result?.visitedWorlds}");
             if (!ProfileGuard.Marked || result == null || local == null) return;
+            if (!result.result.IsWin() || !ForcedDreams.RunCounts($"{result.result} win")) return;
             if (result.result == DewGameResult.ResultType.PureWhiteDream)
                 CheckHandler.RecordClears(new[] { GameData.PrimusWorld }, result.difficulty, local.heroType,
                     "Pure White Dream");

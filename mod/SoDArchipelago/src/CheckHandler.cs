@@ -47,6 +47,7 @@ namespace SoDArchipelago
                          "loop count here; later loops send nothing).");
                 return;
             }
+            if (!ForcedDreams.RunCounts($"world {world} clear")) return;
             RecordClears(new[] { world }, difficulty, hero, "moved on");
         }
 

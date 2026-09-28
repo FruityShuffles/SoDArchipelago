@@ -794,6 +794,7 @@
       "unlocks": [
         "LucidDream_BlandStarSoup"
       ],
+      "lucid_dream_type": "good",
       "id": 7710054
     },
     {
@@ -804,6 +805,7 @@
       "unlocks": [
         "LucidDream_BonVoyage"
       ],
+      "lucid_dream_type": "good",
       "id": 7710055
     },
     {
@@ -814,6 +816,7 @@
       "unlocks": [
         "LucidDream_EmbraceMortality"
       ],
+      "lucid_dream_type": "chaotic",
       "id": 7710056
     },
     {
@@ -824,6 +827,7 @@
       "unlocks": [
         "LucidDream_FalseLifeline"
       ],
+      "lucid_dream_type": "good",
       "id": 7710057
     },
     {
@@ -834,6 +838,7 @@
       "unlocks": [
         "LucidDream_FishScales"
       ],
+      "lucid_dream_type": "evil",
       "id": 7710058
     },
     {
@@ -844,6 +849,7 @@
       "unlocks": [
         "LucidDream_GrievousWounds"
       ],
+      "lucid_dream_type": "evil",
       "id": 7710059
     },
     {
@@ -854,6 +860,7 @@
       "unlocks": [
         "LucidDream_HarmlessWhispers"
       ],
+      "lucid_dream_type": "chaotic",
       "id": 7710060
     },
     {
@@ -864,6 +871,7 @@
       "unlocks": [
         "LucidDream_KindArmadillo"
       ],
+      "lucid_dream_type": "good",
       "id": 7710061
     },
     {
@@ -874,6 +882,7 @@
       "unlocks": [
         "LucidDream_MadLife"
       ],
+      "lucid_dream_type": "evil",
       "id": 7710062
     },
     {
@@ -884,6 +893,7 @@
       "unlocks": [
         "LucidDream_MarshOfDestiny"
       ],
+      "lucid_dream_type": "evil",
       "id": 7710063
     },
     {
@@ -894,6 +904,7 @@
       "unlocks": [
         "LucidDream_Overpopulation"
       ],
+      "lucid_dream_type": "evil",
       "id": 7710064
     },
     {
@@ -904,6 +915,7 @@
       "unlocks": [
         "LucidDream_PrudentJellyfish"
       ],
+      "lucid_dream_type": "evil",
       "id": 7710065
     },
     {
@@ -914,6 +926,7 @@
       "unlocks": [
         "LucidDream_SparklingDreamFlask"
       ],
+      "lucid_dream_type": "chaotic",
       "id": 7710066
     },
     {
@@ -924,6 +937,7 @@
       "unlocks": [
         "LucidDream_TheDarkestUrge"
       ],
+      "lucid_dream_type": "chaotic",
       "id": 7710067
     },
     {
@@ -934,6 +948,7 @@
       "unlocks": [
         "LucidDream_WILD"
       ],
+      "lucid_dream_type": "chaotic",
       "id": 7710068
     },
     {

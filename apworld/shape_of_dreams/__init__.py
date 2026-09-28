@@ -1,11 +1,11 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Set
 
 from BaseClasses import CollectionState, ItemClassification, LocationProgressType, Region, Tutorial
 from worlds.AutoWorld import WebWorld, World
 
 from .data import GAME_DATA
 from .items import (GAME_NAME, STARDUST, SoDItem, item_name_groups, item_name_to_id, item_table,
-                    mastery_item_names, travelers, unlock_item_counts)
+                    lucid_dreams_by_type, mastery_item_names, travelers, unlock_item_counts)
 from .locations import SoDLocation, location_name_groups, location_name_to_id, location_table
 from .options import SoDOptions, option_groups
 
@@ -33,15 +33,24 @@ class ShapeOfDreamsWorld(World):
     options_dataclass = SoDOptions
     options: SoDOptions
     origin_region_name = "Menu"
+    # Item names of the forced Lucid Dreams (DESIGN.md "Forced Lucid Dreams"), set in generate_early.
+    forced_lucid_dreams: Set[str] = frozenset()
 
     item_name_to_id = item_name_to_id
     location_name_to_id = location_name_to_id
     item_name_groups = item_name_groups
     location_name_groups = location_name_groups
 
+    def generate_early(self) -> None:
+        evil, chaotic = self.options.forced_evil_lucid_dreams.value, self.options.forced_chaotic_lucid_dreams.value
+        self.forced_lucid_dreams = ({lucid_dreams_by_type["evil"][d] for d in evil} |
+                                    {lucid_dreams_by_type["chaotic"][d] for d in chaotic})
+
     def create_item(self, name: str) -> SoDItem:
         data = item_table[name]
-        return SoDItem(name, data.classification, data.id, self.player)
+        # A forced dream's release is key to winning, so it's progression: fill puts it in the priority world clears.
+        classification = ItemClassification.progression if name in self.forced_lucid_dreams else data.classification
+        return SoDItem(name, classification, data.id, self.player)
 
     def get_filler_item_name(self) -> str:
         return STARDUST
@@ -112,4 +121,5 @@ class ShapeOfDreamsWorld(World):
             "mastery_pack_value": self.options.mastery_pack_value.value,
             "stardust_pack_value": self.options.stardust_pack_value.value,
             "death_link": bool(self.options.death_link.value),
+            "forced_lucid_dreams": sorted(item_table[name].key for name in self.forced_lucid_dreams),
         }

@@ -427,6 +427,18 @@ namespace SoDArchipelago
         public static bool GetBool(string key) => SlotData != null && SlotData.TryGetValue(key, out var v) && v != null &&
                                                   Convert.ToBoolean(v);
 
+        // A slot_data list (a JArray from MultiClient.Net) as strings; empty when it's missing (older seeds).
+        public static List<string> GetStringList(string key)
+        {
+            var list = new List<string>();
+            if (SlotData == null || !SlotData.TryGetValue(key, out var v) || v is string ||
+                !(v is System.Collections.IEnumerable values))
+                return list;
+            foreach (var value in values)
+                if (value != null) list.Add(value.ToString());
+            return list;
+        }
+
         private static int GetInt(Dictionary<string, object> data, string key, int fallback)
         {
             if (data == null || !data.TryGetValue(key, out var v) || v == null) return fallback;

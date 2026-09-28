@@ -69,6 +69,21 @@ ending, the Pure White Dream or the Starless Path.
 | `mastery_pack_value` | 5 | 1–35 | Mastery levels per Mastery item |
 | `stardust_pack_value` | 650 | 1–10,000 | Stardust per Stardust item |
 | `death_link` | off | | When you are knocked down, everyone on DeathLink dies, and the other way round. |
+| `forced_evil_lucid_dreams` | none | see below | Evil Lucid Dreams forced on in every run until you receive their Lucid Dream item |
+| `forced_chaotic_lucid_dreams` | none | see below | The same for Chaotic Lucid Dreams |
+
+### Forced Lucid Dreams
+
+The listed dreams stay on in every run until you receive their `Lucid Dream: <name>` item. After that you can turn
+them on or off as usual. A forced dream's item is progression. Only the lobby host's forced dreams are turned on automatically.
+
+- Evil: `Fish Scales`, `Grievous Wounds`, `Mad Life`, `Marsh of Destiny`, `Overpopulation`, `Prudent Jellyfish`
+- Chaotic: `Embrace Mortality`, `Harmless Whispers`, `Sparkling Dream Flask`, `The Darkest Urge`, `WILD`
+
+```yaml
+forced_evil_lucid_dreams: ["Grievous Wounds", "Overpopulation"]
+forced_chaotic_lucid_dreams: ["WILD"]
+```
 
 ## Playing offline
 
