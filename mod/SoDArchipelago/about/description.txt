@@ -3,4 +3,6 @@ Connects Shape of Dreams to an Archipelago multiworld. Achievements and world cl
 
 Each seed is played on its own profile; your normal save is never touched.
 
+To generate a seed you need the Shape of Dreams apworld: download [b]shape_of_dreams.apworld[/b] from the [url=https://github.com/FruityShuffles/SoDArchipelago/releases]GitHub releases[/url], using the release that matches this mod's version. Setup guide: [url=https://github.com/FruityShuffles/SoDArchipelago/blob/main/apworld/shape_of_dreams/docs/setup_en.md]setup_en.md[/url].
+
 Early development build.
