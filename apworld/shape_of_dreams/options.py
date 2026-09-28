@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Choice, DeathLink, OptionGroup, OptionSet, PerGameCommonOptions, Range, Toggle
+from Options import Choice, DeathLink, DefaultOnToggle, OptionGroup, OptionSet, PerGameCommonOptions, Range
 
 from .items import lucid_dreams_by_type
 
@@ -86,7 +86,7 @@ class ForcedChaoticLucidDreams(OptionSet):
     default = frozenset()
 
 
-class ShuffleStarRequirements(Toggle):
+class ShuffleStarRequirements(DefaultOnToggle):
     """Shuffles the mastery level each constellation star needs before you can buy it. Stars only trade levels with
     stars of the same Traveler (or the common stars) and the same category, so each group keeps its usual levels."""
     display_name = "Shuffle Star Requirements"

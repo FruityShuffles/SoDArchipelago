@@ -52,7 +52,7 @@ Shape of Dreams:
 
   # Shuffles the mastery level each constellation star needs before you can buy it: true or false. Stars only trade
   # levels with stars of the same Traveler (or the common stars) and the same category.
-  shuffle_star_requirements: false
+  shuffle_star_requirements: true
 
   # When you are knocked down, everyone on DeathLink dies, and the other way round: true or false.
   death_link: false

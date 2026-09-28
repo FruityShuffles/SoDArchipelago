@@ -136,7 +136,7 @@ Win a run at `goal_difficulty` **or harder** with `goal_traveler_count` **differ
 | `death_link` | toggle | off | |
 | `forced_evil_lucid_dreams` | set of Evil Lucid Dream names | empty | See "Forced Lucid Dreams" |
 | `forced_chaotic_lucid_dreams` | set of Chaotic Lucid Dream names | empty | See "Forced Lucid Dreams" |
-| `shuffle_star_requirements` | toggle | off | See "Shuffled star requirements" |
+| `shuffle_star_requirements` | toggle | on | See "Shuffled star requirements" |
 
 Remove `boss_locations` and `travelers_required_for_goal`. `slot_data` must carry everything the mod needs: goal
 settings, pack values, death_link, the forced Lucid Dreams (`forced_lucid_dreams`: both sets' keys), the shuffled star
@@ -184,7 +184,7 @@ item is received, which **releases** it: from then on it's a normal unlocked dre
 An optional shuffle of the mastery level each constellation star needs before it can be bought (decided 2026-09-28).
 No new numbers: stars trade their vanilla requirements with each other.
 
-- **Option:** `shuffle_star_requirements`, a toggle, off by default.
+- **Option:** `shuffle_star_requirements`, a toggle, on by default.
 - **Groups: mastery type × category.** A star only trades levels with stars of the same Traveler (or the common stars,
   which need total mastery) and the same category (Destruction, Life, Imagination, Flexible). That's 3 common groups and
   4 per Traveler (39 groups, 305 stars). Each group keeps its vanilla set of levels, so Flexible stars stay on their

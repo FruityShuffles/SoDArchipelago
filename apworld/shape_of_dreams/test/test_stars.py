@@ -15,12 +15,17 @@ class TestStarData(SoDTestBase):
         self.assertEqual(max(s["required_level"] for s in GAME_DATA["stars"] if s["traveler"] is None), 75)
         self.assertEqual(max(s["required_level"] for s in GAME_DATA["stars"] if s["traveler"]), 35)
 
-    def test_default_shuffles_nothing(self) -> None:
+
+class TestVanillaStars(SoDTestBase):
+    options = {"shuffle_star_requirements": False}
+
+    def test_off_shuffles_nothing(self) -> None:
         self.assertEqual(self.world.fill_slot_data()["star_requirements"], {})
 
 
 class TestShuffledStars(SoDTestBase):
-    options = {"shuffle_star_requirements": True}
+    def test_on_by_default(self) -> None:
+        self.assertTrue(self.world.options.shuffle_star_requirements)
 
     def test_levels_stay_in_their_group(self) -> None:
         shuffled = self.world.fill_slot_data()["star_requirements"]
