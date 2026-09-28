@@ -1,0 +1,17 @@
+# Baseline test YAML (TESTING.md). Never edit this file: copy it into the Archipelago checkout's Players/ folder and
+# change the copy when a test needs other options. Every option is spelled out so a change to an option's default
+# doesn't change the test seed.
+
+name: SoDTest
+game: Shape of Dreams
+
+Shape of Dreams:
+  goal_difficulty: deep_sleep
+  goal_traveler_count: 1
+  mastery_packs_per_traveler: 7
+  mastery_pack_value: 5
+  stardust_pack_value: 650
+  forced_evil_lucid_dreams: []
+  forced_chaotic_lucid_dreams: []
+  shuffle_star_requirements: true
+  death_link: true

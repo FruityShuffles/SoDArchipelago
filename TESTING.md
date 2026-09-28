@@ -19,16 +19,9 @@ Results so far (2026-09-27) and the list of what is still untested: AGENTS.md "S
 1. Build and deploy the mod: `dotnet build mod/SoDArchipelago.sln` (copies it to `<game>/Mods/SoDArchipelago/`).
 2. Archipelago checkout (0.6.8) with a Python 3.13 venv, as in AGENTS.md "Commands". Copy `apworld/shape_of_dreams` into
    its `worlds/` folder (or install `dist/shape_of_dreams.apworld`).
-3. Put this YAML in the checkout's `Players/` folder (and nothing else):
-
-   ```yaml
-   name: SoDTest
-   game: Shape of Dreams
-   Shape of Dreams:
-     goal_difficulty: deep_sleep
-     goal_traveler_count: 1
-     death_link: true
-   ```
+3. Copy [`testing/SoDTest.yaml`](testing/SoDTest.yaml) into the checkout's `Players/` folder (and nothing else). It's
+   the baseline: slot `SoDTest`, one Deep Sleep win for the goal, DeathLink and shuffled star requirements on, no forced
+   dreams. Never edit it in the repo; a test that needs other options changes the copy.
 
 4. Generate and host it:
 
@@ -246,18 +239,11 @@ with no mods. Not covered: an AP player joining someone else's lobby, and two AP
 1. Build and deploy the current mod: `dotnet build mod/SoDArchipelago.sln`. The v0.2.0 build doesn't have forced dreams
    or the star shuffle. Don't also subscribe to the Workshop item on this PC.
 2. A new seed, because the "AP Test" seed has neither option. Copy `apworld/shape_of_dreams` into the checkout's
-   `worlds/`, and replace `Players/SoDTest.yaml` with:
+   `worlds/`, copy [`testing/SoDTest.yaml`](testing/SoDTest.yaml) over `Players/SoDTest.yaml`, and in the copy set:
 
    ```yaml
-   name: SoDTest
-   game: Shape of Dreams
-   Shape of Dreams:
-     goal_difficulty: deep_sleep
-     goal_traveler_count: 1
-     death_link: true
      forced_evil_lucid_dreams: ["Grievous Wounds"]
      forced_chaotic_lucid_dreams: ["Harmless Whispers"]
-     shuffle_star_requirements: true
    ```
 
    Generate and host it as in step 0. The old seed's profile "AP Test" can't connect to it (it's bound to the old seed).
