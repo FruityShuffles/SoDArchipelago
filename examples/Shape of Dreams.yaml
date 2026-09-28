@@ -50,5 +50,9 @@ Shape of Dreams:
   forced_chaotic_lucid_dreams: []
   # For example: forced_chaotic_lucid_dreams: ["WILD"]
 
+  # Shuffles the mastery level each constellation star needs before you can buy it: true or false. Stars only trade
+  # levels with stars of the same Traveler (or the common stars) and the same category.
+  shuffle_star_requirements: false
+
   # When you are knocked down, everyone on DeathLink dies, and the other way round: true or false.
   death_link: false

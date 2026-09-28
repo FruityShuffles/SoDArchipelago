@@ -3693,6 +3693,1838 @@
       "World 5 Clear (Nightmare): Yubar"
     ]
   },
+  "stars": [
+    {
+      "key": "Se_Star_Aurena_D_AbilityPower",
+      "traveler": "Hero_Aurena",
+      "category": "Destruction",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Aurena_D_AtkSpd",
+      "traveler": "Hero_Aurena",
+      "category": "Destruction",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Aurena_D_AttackDamage",
+      "traveler": "Hero_Aurena",
+      "category": "Destruction",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Aurena_D_BonusStatOnLowHp",
+      "traveler": "Hero_Aurena",
+      "category": "Destruction",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Aurena_F_CR_ChargedCast",
+      "traveler": "Hero_Aurena",
+      "category": "Flexible",
+      "required_level": 35
+    },
+    {
+      "key": "Se_Star_Aurena_F_CR_EarnGold",
+      "traveler": "Hero_Aurena",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Aurena_F_CR_GlobalHeal",
+      "traveler": "Hero_Aurena",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Aurena_F_CR_NoHealCooldownReduction",
+      "traveler": "Hero_Aurena",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Aurena_F_DT_LowerThresholdBiggerHeals",
+      "traveler": "Hero_Aurena",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Aurena_F_DT_TwiceWithPenalty",
+      "traveler": "Hero_Aurena",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Aurena_F_DT_UnstoppableAndRemoveDelusion",
+      "traveler": "Hero_Aurena",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Aurena_F_GB_LessDamageLessSacrifice",
+      "traveler": "Hero_Aurena",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Aurena_F_GB_NoSacrificeAfterDodge",
+      "traveler": "Hero_Aurena",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Aurena_F_GB_NoWitherNoSacrifice",
+      "traveler": "Hero_Aurena",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Aurena_F_RE_AtkEffect",
+      "traveler": "Hero_Aurena",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Aurena_F_RE_CooldownButNoHeal",
+      "traveler": "Hero_Aurena",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Aurena_F_RE_MoreProjMoreSacrifice",
+      "traveler": "Hero_Aurena",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Aurena_I_BonusFromStones",
+      "traveler": "Hero_Aurena",
+      "category": "Imagination",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Aurena_I_GoldEveryZone",
+      "traveler": "Hero_Aurena",
+      "category": "Imagination",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Aurena_I_GoldOnMerchantDamage",
+      "traveler": "Hero_Aurena",
+      "category": "Imagination",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Aurena_I_PotionGold",
+      "traveler": "Hero_Aurena",
+      "category": "Imagination",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Aurena_I_RevealWorld",
+      "traveler": "Hero_Aurena",
+      "category": "Imagination",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Aurena_L_Armor",
+      "traveler": "Hero_Aurena",
+      "category": "Life",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Aurena_L_ArmorOnLowHp",
+      "traveler": "Hero_Aurena",
+      "category": "Life",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Aurena_L_HealAmpOnLowHp",
+      "traveler": "Hero_Aurena",
+      "category": "Life",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Aurena_L_HealAmpWithPenalty",
+      "traveler": "Hero_Aurena",
+      "category": "Life",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Aurena_L_ShareHeal",
+      "traveler": "Hero_Aurena",
+      "category": "Life",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Aurena_L_SpeedOnDamage",
+      "traveler": "Hero_Aurena",
+      "category": "Life",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Bismuth_D_AtkSpd",
+      "traveler": "Hero_Bismuth",
+      "category": "Destruction",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Bismuth_D_AtkSpdFromDismantle",
+      "traveler": "Hero_Bismuth",
+      "category": "Destruction",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Bismuth_D_BonusAttackEffect",
+      "traveler": "Hero_Bismuth",
+      "category": "Destruction",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Bismuth_D_Conquerer",
+      "traveler": "Hero_Bismuth",
+      "category": "Destruction",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Bismuth_D_SkillHasteAndAutoCast",
+      "traveler": "Hero_Bismuth",
+      "category": "Destruction",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Bismuth_F_DM_BonusOnFullCharge",
+      "traveler": "Hero_Bismuth",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Bismuth_F_DM_MoreShootNoMove",
+      "traveler": "Hero_Bismuth",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Bismuth_F_DM_NonFullChargeCooldown",
+      "traveler": "Hero_Bismuth",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Bismuth_F_IN_Elementals",
+      "traveler": "Hero_Bismuth",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Bismuth_F_IN_LessCooldownLessMissiles",
+      "traveler": "Hero_Bismuth",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Bismuth_F_IN_MoreProjByAtkSpd",
+      "traveler": "Hero_Bismuth",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Bismuth_F_IT_AddedDurationOnHit",
+      "traveler": "Hero_Bismuth",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Bismuth_F_IT_InnerDamage",
+      "traveler": "Hero_Bismuth",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Bismuth_F_IT_SmallerRingAddDisplacement",
+      "traveler": "Hero_Bismuth",
+      "category": "Flexible",
+      "required_level": 35
+    },
+    {
+      "key": "Se_Star_Bismuth_F_IT_SmallerRingMoreDamage",
+      "traveler": "Hero_Bismuth",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Bismuth_F_VH_FullCharge",
+      "traveler": "Hero_Bismuth",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Bismuth_F_VH_ResetOnDodge",
+      "traveler": "Hero_Bismuth",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Bismuth_F_VH_Shield",
+      "traveler": "Hero_Bismuth",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Bismuth_I_DismantleMemoryDreamDust",
+      "traveler": "Hero_Bismuth",
+      "category": "Imagination",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Bismuth_I_KnowledgeBook",
+      "traveler": "Hero_Bismuth",
+      "category": "Imagination",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Bismuth_I_RevealWorld",
+      "traveler": "Hero_Bismuth",
+      "category": "Imagination",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Bismuth_I_SecretJournal",
+      "traveler": "Hero_Bismuth",
+      "category": "Imagination",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Bismuth_I_ShopDiscount",
+      "traveler": "Hero_Bismuth",
+      "category": "Imagination",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Bismuth_I_TreasureWithHealthPenalty",
+      "traveler": "Hero_Bismuth",
+      "category": "Imagination",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Bismuth_L_ContinuousSpeed",
+      "traveler": "Hero_Bismuth",
+      "category": "Life",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Bismuth_L_DodgeNoDashMoreCharges",
+      "traveler": "Hero_Bismuth",
+      "category": "Life",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Bismuth_L_SecondWindWithPenalty",
+      "traveler": "Hero_Bismuth",
+      "category": "Life",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Cetus_D_AdApUpByBonusHp",
+      "traveler": "Hero_Cetus",
+      "category": "Destruction",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Cetus_D_ApUpByColdSkillCounts",
+      "traveler": "Hero_Cetus",
+      "category": "Destruction",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Cetus_D_StackStatsOnTakenDamage",
+      "traveler": "Hero_Cetus",
+      "category": "Destruction",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Cetus_D_StatsUpWhileShielded",
+      "traveler": "Hero_Cetus",
+      "category": "Destruction",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Cetus_F_BA_CdReductionOnKill",
+      "traveler": "Hero_Cetus",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Cetus_F_BA_ChargeMsNoShield",
+      "traveler": "Hero_Cetus",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Cetus_F_BA_LightningEcho",
+      "traveler": "Hero_Cetus",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Cetus_F_BI_FastChargeTakeDamageUp",
+      "traveler": "Hero_Cetus",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Cetus_F_BI_MaxChargeTimePerLevel",
+      "traveler": "Hero_Cetus",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Cetus_F_BI_SelfDamageAoeCold",
+      "traveler": "Hero_Cetus",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Cetus_F_EM_ChaseTarget",
+      "traveler": "Hero_Cetus",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Cetus_F_EM_DamageUpSelfDamage",
+      "traveler": "Hero_Cetus",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Cetus_F_EM_InfiniteDuration",
+      "traveler": "Hero_Cetus",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Cetus_F_FR_CdReductionOnTakeDamage",
+      "traveler": "Hero_Cetus",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Cetus_F_FR_ChangeToUltHitReset",
+      "traveler": "Hero_Cetus",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Cetus_F_FR_RecastCdrNoKnockback",
+      "traveler": "Hero_Cetus",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Cetus_I_ColdDiscountFireSurcharge",
+      "traveler": "Hero_Cetus",
+      "category": "Imagination",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Cetus_I_ColdSkillOnEnterWorld",
+      "traveler": "Hero_Cetus",
+      "category": "Imagination",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Cetus_I_FirstColdGemQualityBoost",
+      "traveler": "Hero_Cetus",
+      "category": "Imagination",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Cetus_I_GetDreamDustOnBossKill",
+      "traveler": "Hero_Cetus",
+      "category": "Imagination",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Cetus_I_StartWithResources",
+      "traveler": "Hero_Cetus",
+      "category": "Imagination",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Cetus_L_ArmorBuffOnShield",
+      "traveler": "Hero_Cetus",
+      "category": "Life",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Cetus_L_DodgeCdReductionOnHit",
+      "traveler": "Hero_Cetus",
+      "category": "Life",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Cetus_L_FrostResistAndBuff",
+      "traveler": "Hero_Cetus",
+      "category": "Life",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Cetus_L_HealOnApDamage",
+      "traveler": "Hero_Cetus",
+      "category": "Life",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Cetus_L_IncreaseDealtShield",
+      "traveler": "Hero_Cetus",
+      "category": "Life",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Cetus_L_MaxHpDamagePenalty",
+      "traveler": "Hero_Cetus",
+      "category": "Life",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Cetus_L_ScalingHealth",
+      "traveler": "Hero_Cetus",
+      "category": "Life",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_D_AbilityPower",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_D_AttackDamage",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_D_AttackSpeed",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_D_BossDamageAmp",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_D_CritChance",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_D_CritDamage",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 60
+    },
+    {
+      "key": "Se_Star_D_CritUpHitDecay",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 75
+    },
+    {
+      "key": "Se_Star_D_DamageBonusOnAllElemental",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 55
+    },
+    {
+      "key": "Se_Star_D_DarkAmp",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 50
+    },
+    {
+      "key": "Se_Star_D_FireAmp",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_D_LightAmp",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 40
+    },
+    {
+      "key": "Se_Star_D_LowerADScalingAP",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 65
+    },
+    {
+      "key": "Se_Star_D_LowerAPScalingAD",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 65
+    },
+    {
+      "key": "Se_Star_D_LowerASHigherAD",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 50
+    },
+    {
+      "key": "Se_Star_D_RiftFirstCastDamageUp",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 70
+    },
+    {
+      "key": "Se_Star_D_ScalingAbilityPower",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_D_ScalingAttackDamage",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_D_ScalingAttackSpeedWithPenalty",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 45
+    },
+    {
+      "key": "Se_Star_D_ShieldDamageAmp",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 40
+    },
+    {
+      "key": "Se_Star_D_TempAbilityPower",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 35
+    },
+    {
+      "key": "Se_Star_D_TempAttackDamage",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 45
+    },
+    {
+      "key": "Se_Star_D_UltimateChargeSpeed",
+      "traveler": null,
+      "category": "Destruction",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Husk_D_AttackDamage",
+      "traveler": "Hero_Husk",
+      "category": "Destruction",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Husk_D_CritAmp",
+      "traveler": "Hero_Husk",
+      "category": "Destruction",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Husk_D_DamageAmpOnLowHpTarget",
+      "traveler": "Hero_Husk",
+      "category": "Destruction",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Husk_D_DamageOverTimeCritWithPenalty",
+      "traveler": "Hero_Husk",
+      "category": "Destruction",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Husk_D_DarkAttackWithPenalty",
+      "traveler": "Hero_Husk",
+      "category": "Destruction",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Husk_D_MovementSkillHaste",
+      "traveler": "Hero_Husk",
+      "category": "Destruction",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Husk_D_ScalingAdAndAtkSpd",
+      "traveler": "Hero_Husk",
+      "category": "Destruction",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Husk_F_AS_AddedDurationOnHit",
+      "traveler": "Hero_Husk",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Husk_F_AS_NoShockwaveFasterAttack",
+      "traveler": "Hero_Husk",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Husk_F_AS_NonUltimate",
+      "traveler": "Hero_Husk",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Husk_F_DC_EndMovespeedToBonusAttackspeed",
+      "traveler": "Hero_Husk",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Husk_F_DC_EnhanceMaxStealthTime",
+      "traveler": "Hero_Husk",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Husk_F_DC_RecentDamageHoTWhileStealth",
+      "traveler": "Hero_Husk",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Husk_F_DE_HighAmpMissReset",
+      "traveler": "Hero_Husk",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Husk_F_DE_HitHealMissPenalty",
+      "traveler": "Hero_Husk",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Husk_F_DE_MarkHitDodgeCDR",
+      "traveler": "Hero_Husk",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Husk_F_LA_BlueFormOnly",
+      "traveler": "Hero_Husk",
+      "category": "Flexible",
+      "required_level": 35
+    },
+    {
+      "key": "Se_Star_Husk_F_LA_DodgeResetOnRed",
+      "traveler": "Hero_Husk",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Husk_F_LA_QuickBlueForm",
+      "traveler": "Hero_Husk",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Husk_F_LA_SingleTargetCooldown",
+      "traveler": "Hero_Husk",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Husk_I_BossKillPlatinumCoin",
+      "traveler": "Hero_Husk",
+      "category": "Imagination",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Husk_I_ShopIntimidation",
+      "traveler": "Hero_Husk",
+      "category": "Imagination",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Husk_L_DodgeChargesAndRangeWithPenalty",
+      "traveler": "Hero_Husk",
+      "category": "Life",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Husk_L_DodgeCooldownOnKillOrAttack",
+      "traveler": "Hero_Husk",
+      "category": "Life",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Husk_L_DodgeCooldownOnKillWithEmptyCharges",
+      "traveler": "Hero_Husk",
+      "category": "Life",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Husk_L_FatalHitProtectionWithPenalty",
+      "traveler": "Hero_Husk",
+      "category": "Life",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_I_AdditionalChaosChance",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_I_DismantleBonus",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_I_DismantleDustToBonusGold",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_I_DismantleReroll",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 60
+    },
+    {
+      "key": "Se_Star_I_DreamDustOnKillChance",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 45
+    },
+    {
+      "key": "Se_Star_I_ExtraChaosOptionGoldOnUse",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_I_FirstBossGemDrop",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 75
+    },
+    {
+      "key": "Se_Star_I_FirstGemUpgrade",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 40
+    },
+    {
+      "key": "Se_Star_I_GemOnMiniBossKill",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 70
+    },
+    {
+      "key": "Se_Star_I_GoldPerCrit",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 55
+    },
+    {
+      "key": "Se_Star_I_GoldRiskAndReturn",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 55
+    },
+    {
+      "key": "Se_Star_I_KillGoldBonus",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_I_MawDiscountAndProtection",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 65
+    },
+    {
+      "key": "Se_Star_I_MoreShopItems",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 35
+    },
+    {
+      "key": "Se_Star_I_MoreShrineItems",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 65
+    },
+    {
+      "key": "Se_Star_I_ShopDiscount",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_I_ShopRefreshToken",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 50
+    },
+    {
+      "key": "Se_Star_I_StartGold",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_I_StartSkill",
+      "traveler": null,
+      "category": "Imagination",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_L_Armor",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_L_ArmorOnTravel",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 60
+    },
+    {
+      "key": "Se_Star_L_DamageReductionFromChilled",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 40
+    },
+    {
+      "key": "Se_Star_L_DodgeCooldown",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 50
+    },
+    {
+      "key": "Se_Star_L_DodgeCooldownOnLowHealth",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 55
+    },
+    {
+      "key": "Se_Star_L_ElementalResistance",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 35
+    },
+    {
+      "key": "Se_Star_L_FatalHitProtection",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_L_GuidanceShrineDiscount",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_L_HealOnAttack",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 45
+    },
+    {
+      "key": "Se_Star_L_HealOnKill",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_L_IgnoreDelusion",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 40
+    },
+    {
+      "key": "Se_Star_L_IncreaseMaxHealthByGuidance",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 50
+    },
+    {
+      "key": "Se_Star_L_MaxHealth",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_L_MaxHealthUpHealDown",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 65
+    },
+    {
+      "key": "Se_Star_L_PeriodicScalingArmor",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 65
+    },
+    {
+      "key": "Se_Star_L_PostHitDamageImmune",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 60
+    },
+    {
+      "key": "Se_Star_L_PotionChance",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_L_PotionHealAmount",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_L_PotionOnBuyOrSell",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 70
+    },
+    {
+      "key": "Se_Star_L_ReceivedHealingAndShieldBonus",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 35
+    },
+    {
+      "key": "Se_Star_L_ScalingMaxHealth",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_L_TempArmor",
+      "traveler": null,
+      "category": "Life",
+      "required_level": 45
+    },
+    {
+      "key": "Se_Star_Lacerta_D_AbilityPower",
+      "traveler": "Hero_Lacerta",
+      "category": "Destruction",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Lacerta_D_AttackDamage",
+      "traveler": "Hero_Lacerta",
+      "category": "Destruction",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Lacerta_D_AttackRange",
+      "traveler": "Hero_Lacerta",
+      "category": "Destruction",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Lacerta_D_AttackSpeed",
+      "traveler": "Hero_Lacerta",
+      "category": "Destruction",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Lacerta_F_HC_KnockbackAndSlow",
+      "traveler": "Hero_Lacerta",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Lacerta_F_HC_NearDamage",
+      "traveler": "Hero_Lacerta",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Lacerta_F_HC_NoDelayDoubleCast",
+      "traveler": "Hero_Lacerta",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Lacerta_F_HC_ResetOnDodge",
+      "traveler": "Hero_Lacerta",
+      "category": "Flexible",
+      "required_level": 35
+    },
+    {
+      "key": "Se_Star_Lacerta_F_IR_AoEDamage",
+      "traveler": "Hero_Lacerta",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Lacerta_F_IR_MoreShots",
+      "traveler": "Hero_Lacerta",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Lacerta_F_IR_RechargeAmmoAmpBurnDamage",
+      "traveler": "Hero_Lacerta",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Lacerta_F_PS_ChargeSpeed",
+      "traveler": "Hero_Lacerta",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Lacerta_F_PS_CooldownReset",
+      "traveler": "Hero_Lacerta",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Lacerta_F_PS_SlowerStronger",
+      "traveler": "Hero_Lacerta",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Lacerta_F_QT_AddedCharges",
+      "traveler": "Hero_Lacerta",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Lacerta_F_QT_AttackEffect",
+      "traveler": "Hero_Lacerta",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Lacerta_F_QT_RapidFire",
+      "traveler": "Hero_Lacerta",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Lacerta_I_BonusFromStones",
+      "traveler": "Hero_Lacerta",
+      "category": "Imagination",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Lacerta_I_BossBounty",
+      "traveler": "Hero_Lacerta",
+      "category": "Imagination",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Lacerta_I_ShopDiscount",
+      "traveler": "Hero_Lacerta",
+      "category": "Imagination",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Lacerta_I_ShopMoreItemsWithPenalty",
+      "traveler": "Hero_Lacerta",
+      "category": "Imagination",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Lacerta_L_DodgeCharges",
+      "traveler": "Hero_Lacerta",
+      "category": "Life",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Lacerta_L_SpeedAfterDodge",
+      "traveler": "Hero_Lacerta",
+      "category": "Life",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Mist_D_AttackDamage",
+      "traveler": "Hero_Mist",
+      "category": "Destruction",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Mist_D_BonusOnDash",
+      "traveler": "Hero_Mist",
+      "category": "Destruction",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Mist_D_BossDamageOnHighHp",
+      "traveler": "Hero_Mist",
+      "category": "Destruction",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Mist_D_HunterDamage",
+      "traveler": "Hero_Mist",
+      "category": "Destruction",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Mist_D_ScalingAD",
+      "traveler": "Hero_Mist",
+      "category": "Destruction",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Mist_F_FL_DecreasedCooldownAndCharge",
+      "traveler": "Hero_Mist",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Mist_F_FL_Lightning",
+      "traveler": "Hero_Mist",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Mist_F_FL_MaxRangeExplosion",
+      "traveler": "Hero_Mist",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Mist_F_LG_ChainAttack",
+      "traveler": "Hero_Mist",
+      "category": "Flexible",
+      "required_level": 35
+    },
+    {
+      "key": "Se_Star_Mist_F_LG_IncreasedCooldownReduction",
+      "traveler": "Hero_Mist",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Mist_F_LG_RangeAndSpeed",
+      "traveler": "Hero_Mist",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Mist_F_LG_SingleTarget",
+      "traveler": "Hero_Mist",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Mist_F_PR_AllDirections",
+      "traveler": "Hero_Mist",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Mist_F_PR_PerfectParry",
+      "traveler": "Hero_Mist",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Mist_F_PR_ShieldAndCrit",
+      "traveler": "Hero_Mist",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Mist_F_UD_ExplosionDamage",
+      "traveler": "Hero_Mist",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Mist_F_UD_HealLostHealth",
+      "traveler": "Hero_Mist",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Mist_F_UD_NonUltimate",
+      "traveler": "Hero_Mist",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Mist_I_BonusOnCatPet",
+      "traveler": "Hero_Mist",
+      "category": "Imagination",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Mist_I_CamillasGift",
+      "traveler": "Hero_Mist",
+      "category": "Imagination",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Mist_I_StartGoldWithPenalty",
+      "traveler": "Hero_Mist",
+      "category": "Imagination",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Mist_L_AddedDodgeWithPenalty",
+      "traveler": "Hero_Mist",
+      "category": "Life",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Mist_L_ArmorWithPenalty",
+      "traveler": "Hero_Mist",
+      "category": "Life",
+      "required_level": 3
+    },
+    {
+      "key": "Se_Star_Mist_L_DodgeCooldownWithPenalty",
+      "traveler": "Hero_Mist",
+      "category": "Life",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Mist_L_MovSpeed",
+      "traveler": "Hero_Mist",
+      "category": "Life",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Mist_L_PotionShield",
+      "traveler": "Hero_Mist",
+      "category": "Life",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Nachia_D_AbilityPower",
+      "traveler": "Hero_Nachia",
+      "category": "Destruction",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Nachia_D_CanineLover",
+      "traveler": "Hero_Nachia",
+      "category": "Destruction",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Nachia_D_SkillHaste",
+      "traveler": "Hero_Nachia",
+      "category": "Destruction",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Nachia_D_SummonAtkSpd",
+      "traveler": "Hero_Nachia",
+      "category": "Destruction",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Nachia_F_MP_NachiaHeal",
+      "traveler": "Hero_Nachia",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Nachia_F_MP_NoJump",
+      "traveler": "Hero_Nachia",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Nachia_F_MP_StrongerFenrirNoCast",
+      "traveler": "Hero_Nachia",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Nachia_F_NW_LessCooldownLessAtkSpd",
+      "traveler": "Hero_Nachia",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Nachia_F_NW_MovSpeed",
+      "traveler": "Hero_Nachia",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Nachia_F_NW_Teleport",
+      "traveler": "Hero_Nachia",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Nachia_F_SB_DurationBonus",
+      "traveler": "Hero_Nachia",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Nachia_F_SB_SecondWind",
+      "traveler": "Hero_Nachia",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Nachia_F_SB_StrongerBuffNoSelf",
+      "traveler": "Hero_Nachia",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Nachia_F_SC_AtkEffect",
+      "traveler": "Hero_Nachia",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Nachia_F_SC_AtkSpd",
+      "traveler": "Hero_Nachia",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Nachia_F_SC_MoreSummons",
+      "traveler": "Hero_Nachia",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Nachia_F_SC_SummonDmgReduction",
+      "traveler": "Hero_Nachia",
+      "category": "Flexible",
+      "required_level": 35
+    },
+    {
+      "key": "Se_Star_Nachia_I_ForestKillDreamDust",
+      "traveler": "Hero_Nachia",
+      "category": "Imagination",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Nachia_I_ForestShopDiscount",
+      "traveler": "Hero_Nachia",
+      "category": "Imagination",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Nachia_I_ForestStartDreamDust",
+      "traveler": "Hero_Nachia",
+      "category": "Imagination",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Nachia_I_SummonKillGold",
+      "traveler": "Hero_Nachia",
+      "category": "Imagination",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Nachia_L_AllyUnstoppable",
+      "traveler": "Hero_Nachia",
+      "category": "Life",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Nachia_L_HealAndShieldAmp",
+      "traveler": "Hero_Nachia",
+      "category": "Life",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Nachia_L_SelfWaltz",
+      "traveler": "Hero_Nachia",
+      "category": "Life",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Nachia_L_SummonBonus",
+      "traveler": "Hero_Nachia",
+      "category": "Life",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Nachia_L_WaltzArmor",
+      "traveler": "Hero_Nachia",
+      "category": "Life",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Nachia_L_WaltzDurationWithPenalty",
+      "traveler": "Hero_Nachia",
+      "category": "Life",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Vesper_D_ADWithNearbyBurning",
+      "traveler": "Hero_Vesper",
+      "category": "Destruction",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Vesper_D_AtkSpd",
+      "traveler": "Hero_Vesper",
+      "category": "Destruction",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Vesper_D_AtkSpdWithPenalty",
+      "traveler": "Hero_Vesper",
+      "category": "Destruction",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Vesper_D_BossHunterAmpWithPenalty",
+      "traveler": "Hero_Vesper",
+      "category": "Destruction",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Vesper_D_ConvertAPToAD",
+      "traveler": "Hero_Vesper",
+      "category": "Destruction",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Vesper_F_BS_ADWithArmor",
+      "traveler": "Hero_Vesper",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Vesper_F_BS_AddedDurationPerAtk",
+      "traveler": "Hero_Vesper",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Vesper_F_BS_ExplosionOnEnd",
+      "traveler": "Hero_Vesper",
+      "category": "Flexible",
+      "required_level": 35
+    },
+    {
+      "key": "Se_Star_Vesper_F_BS_MovSpd",
+      "traveler": "Hero_Vesper",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Vesper_F_CS_ColdDamage",
+      "traveler": "Hero_Vesper",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Vesper_F_CS_LingeringBenefits",
+      "traveler": "Hero_Vesper",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Vesper_F_CS_UnlockMoveWithPenalty",
+      "traveler": "Hero_Vesper",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Vesper_F_DP_FarTargetBonus",
+      "traveler": "Hero_Vesper",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Vesper_F_DP_PointCast",
+      "traveler": "Hero_Vesper",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Vesper_F_DP_SwitchToMelee",
+      "traveler": "Hero_Vesper",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Vesper_F_SE_FullOffense",
+      "traveler": "Hero_Vesper",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Vesper_F_SE_Invulnerability",
+      "traveler": "Hero_Vesper",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Vesper_F_SE_PointCast",
+      "traveler": "Hero_Vesper",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Vesper_I_ShopDiscount",
+      "traveler": "Hero_Vesper",
+      "category": "Imagination",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Vesper_I_StartGold",
+      "traveler": "Hero_Vesper",
+      "category": "Imagination",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Vesper_L_Armor",
+      "traveler": "Hero_Vesper",
+      "category": "Life",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Vesper_L_ArmorOnLowHealth",
+      "traveler": "Hero_Vesper",
+      "category": "Life",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Vesper_L_EmpowerDodgeShield",
+      "traveler": "Hero_Vesper",
+      "category": "Life",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Vesper_L_FireResistance",
+      "traveler": "Hero_Vesper",
+      "category": "Life",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Vesper_L_Health",
+      "traveler": "Hero_Vesper",
+      "category": "Life",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Vesper_L_ScalingArmor",
+      "traveler": "Hero_Vesper",
+      "category": "Life",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Vesper_L_ScalingHealth",
+      "traveler": "Hero_Vesper",
+      "category": "Life",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Vesper_L_SlowSpeedMoreHealth",
+      "traveler": "Hero_Vesper",
+      "category": "Life",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Yubar_D_ADAPWithPenalty",
+      "traveler": "Hero_Yubar",
+      "category": "Destruction",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Yubar_D_APOnDodge",
+      "traveler": "Hero_Yubar",
+      "category": "Destruction",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Yubar_D_APPerLightSkill",
+      "traveler": "Hero_Yubar",
+      "category": "Destruction",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Yubar_D_AbilityPower",
+      "traveler": "Hero_Yubar",
+      "category": "Destruction",
+      "required_level": 0
+    },
+    {
+      "key": "Se_Star_Yubar_D_BonusDamageToLight",
+      "traveler": "Hero_Yubar",
+      "category": "Destruction",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Yubar_D_ConvertADToAP",
+      "traveler": "Hero_Yubar",
+      "category": "Destruction",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Yubar_D_ScalingAP",
+      "traveler": "Hero_Yubar",
+      "category": "Destruction",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Yubar_D_SkillHaste",
+      "traveler": "Hero_Yubar",
+      "category": "Destruction",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Yubar_F_CC_DamageOverTime",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Yubar_F_CC_IncreaseAD",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Yubar_F_CC_LongerDuration",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Yubar_F_CC_MeteorPerLightSkill",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 35
+    },
+    {
+      "key": "Se_Star_Yubar_F_EI_AutoExplosion",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Yubar_F_EI_BiggerExplosion",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Yubar_F_EI_DashNoProjectile",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 35
+    },
+    {
+      "key": "Se_Star_Yubar_F_EI_NoRootMoreDamage",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Yubar_F_SN_Artillery",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Yubar_F_SN_AutoExplosion",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Yubar_F_SN_DodgeReset",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Yubar_F_SN_PullEnemy",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 35
+    },
+    {
+      "key": "Se_Star_Yubar_F_TQ_EssenceCooldown",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 15
+    },
+    {
+      "key": "Se_Star_Yubar_F_TQ_LowerCooldownNoInvul",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 5
+    },
+    {
+      "key": "Se_Star_Yubar_F_TQ_ReducedCooldownAndDuration",
+      "traveler": "Hero_Yubar",
+      "category": "Flexible",
+      "required_level": 25
+    },
+    {
+      "key": "Se_Star_Yubar_I_DisintegrateDreamDust",
+      "traveler": "Hero_Yubar",
+      "category": "Imagination",
+      "required_level": 10
+    },
+    {
+      "key": "Se_Star_Yubar_I_MoreDreamDustWithPenalty",
+      "traveler": "Hero_Yubar",
+      "category": "Imagination",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Yubar_I_StarCookie",
+      "traveler": "Hero_Yubar",
+      "category": "Imagination",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Yubar_L_DodgeChargeWithLongerCooldown",
+      "traveler": "Hero_Yubar",
+      "category": "Life",
+      "required_level": 30
+    },
+    {
+      "key": "Se_Star_Yubar_L_DodgeCooldownWithShorterRange",
+      "traveler": "Hero_Yubar",
+      "category": "Life",
+      "required_level": 20
+    },
+    {
+      "key": "Se_Star_Yubar_L_DodgeRange",
+      "traveler": "Hero_Yubar",
+      "category": "Life",
+      "required_level": 10
+    }
+  ],
   "id_history": {
     "items": {
       "PROGRESSIVE_Hero_Aurena": 7710001,

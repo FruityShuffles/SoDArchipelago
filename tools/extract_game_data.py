@@ -144,6 +144,8 @@ CLEAR_COPIES_REQUIRED = {
 
 STARDUST_KEY = "STARDUST"
 
+STAR_CATEGORIES = ("Destruction", "Flexible", "Imagination", "Life")
+
 
 def split_camel(s: str) -> str:
     words = re.sub(r"(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", " ", s).split(" ")
@@ -173,6 +175,7 @@ def main() -> int:
     memories = load(raw, "memories")
     essences = load(raw, "essences")
     achievements = load(raw, "achievements")
+    stars = load(raw, "stars")
     game_version = (Path(args.game_dir) / "version.txt").read_text().strip()
 
     targets = {a["unlocked"]: key for key, a in achievements.items() if a.get("unlocked")}
@@ -276,6 +279,22 @@ def main() -> int:
     for diff in clear_diffs:
         groups[diff["name"]] = [l["name"] for l in locations if l.get("difficulty") == diff["key"]]
 
+    # --- Stars (DESIGN.md "Shuffled star requirements") -------------------------------------------------------------
+    # Not items or locations: the generator only shuffles their mastery requirements, and slot_data carries the result
+    # by key, so none of this is in data_hash. "traveler" is null for the common stars (they need total mastery).
+    star_list: list[dict] = []
+    for key in sorted(stars):
+        st = stars[key]
+        hero = st["heroType"] or None
+        if hero is not None and hero not in travelers:
+            fail(f"{key}: unknown Traveler {hero}")
+        if st["isRequiredLevelTotalMastery"] != (hero is None):
+            fail(f"{key}: expected Traveler stars to need Traveler mastery and common stars total mastery")
+        if st["category"] not in STAR_CATEGORIES:
+            fail(f"{key}: unknown star category {st['category']}")
+        star_list.append({"key": key, "traveler": hero, "category": st["category"],
+                          "required_level": st["requiredLevel"]})
+
     # --- IDs ---------------------------------------------------------------------------------------------------------
     # id_history holds every key->id ever assigned. Older files without it: rebuild it from their live entries.
     history: dict[str, dict[str, int]] = {"items": {}, "locations": {}}
@@ -319,6 +338,7 @@ def main() -> int:
         "items": sorted(items, key=lambda e: e["id"]),
         "locations": sorted(locations, key=lambda e: e["id"]),
         "location_groups": groups,
+        "stars": star_list,
         # Every key->id ever assigned, live or retired. Never edit by hand; see the module docstring.
         "id_history": {s: dict(sorted(history[s].items(), key=lambda kv: kv[1])) for s in history},
     }
@@ -330,7 +350,7 @@ def main() -> int:
     OUT_PATH.write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     counts = {k: sum(1 for i in items if i["kind"] == k) for k in dict.fromkeys(i["kind"] for i in items)}
     loc_counts = {k: sum(1 for l in locations if l["kind"] == k) for k in dict.fromkeys(l["kind"] for l in locations)}
-    print(f"wrote {OUT_PATH.relative_to(REPO_ROOT)}: items {counts}, locations {loc_counts}")
+    print(f"wrote {OUT_PATH.relative_to(REPO_ROOT)}: items {counts}, locations {loc_counts}, stars {len(star_list)}")
     return 0
 
 

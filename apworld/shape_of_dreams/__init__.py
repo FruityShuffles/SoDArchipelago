@@ -8,6 +8,7 @@ from .items import (GAME_NAME, STARDUST, SoDItem, item_name_groups, item_name_to
                     lucid_dreams_by_type, mastery_item_names, travelers, unlock_item_counts)
 from .locations import SoDLocation, location_name_groups, location_name_to_id, location_table
 from .options import SoDOptions, option_groups
+from .stars import shuffle_star_requirements
 
 
 class SoDWeb(WebWorld):
@@ -35,6 +36,8 @@ class ShapeOfDreamsWorld(World):
     origin_region_name = "Menu"
     # Item names of the forced Lucid Dreams (DESIGN.md "Forced Lucid Dreams"), set in generate_early.
     forced_lucid_dreams: Set[str] = frozenset()
+    # Star key -> shuffled mastery requirement (DESIGN.md "Shuffled star requirements"); empty when the option is off.
+    star_requirements: Dict[str, int] = {}
 
     item_name_to_id = item_name_to_id
     location_name_to_id = location_name_to_id
@@ -45,6 +48,8 @@ class ShapeOfDreamsWorld(World):
         evil, chaotic = self.options.forced_evil_lucid_dreams.value, self.options.forced_chaotic_lucid_dreams.value
         self.forced_lucid_dreams = ({lucid_dreams_by_type["evil"][d] for d in evil} |
                                     {lucid_dreams_by_type["chaotic"][d] for d in chaotic})
+        if self.options.shuffle_star_requirements:
+            self.star_requirements = shuffle_star_requirements(self.random)
 
     def create_item(self, name: str) -> SoDItem:
         data = item_table[name]
@@ -122,4 +127,5 @@ class ShapeOfDreamsWorld(World):
             "stardust_pack_value": self.options.stardust_pack_value.value,
             "death_link": bool(self.options.death_link.value),
             "forced_lucid_dreams": sorted(item_table[name].key for name in self.forced_lucid_dreams),
+            "star_requirements": dict(sorted(self.star_requirements.items())),
         }

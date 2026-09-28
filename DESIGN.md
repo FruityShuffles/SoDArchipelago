@@ -136,10 +136,11 @@ Win a run at `goal_difficulty` **or harder** with `goal_traveler_count` **differ
 | `death_link` | toggle | off | |
 | `forced_evil_lucid_dreams` | set of Evil Lucid Dream names | empty | See "Forced Lucid Dreams" |
 | `forced_chaotic_lucid_dreams` | set of Chaotic Lucid Dream names | empty | See "Forced Lucid Dreams" |
+| `shuffle_star_requirements` | toggle | off | See "Shuffled star requirements" |
 
 Remove `boss_locations` and `travelers_required_for_goal`. `slot_data` must carry everything the mod needs: goal
-settings, pack values, death_link, the forced Lucid Dreams (`forced_lucid_dreams`: both sets' keys), the data version
-and the data hash.
+settings, pack values, death_link, the forced Lucid Dreams (`forced_lucid_dreams`: both sets' keys), the shuffled star
+requirements (`star_requirements`), the data version and the data hash.
 
 ## Forced Lucid Dreams
 
@@ -178,6 +179,39 @@ item is received, which **releases** it: from then on it's a normal unlocked dre
   someone else's lobby (who can't force anything). A continued run is checked the same way.
 - **Timing:** a dream released mid-run can be turned off from the next lobby (Lucid Dreams are chosen in the lobby).
 
+## Shuffled star requirements
+
+An optional shuffle of the mastery level each constellation star needs before it can be bought (decided 2026-09-28).
+No new numbers: stars trade their vanilla requirements with each other.
+
+- **Option:** `shuffle_star_requirements`, a toggle, off by default.
+- **Groups: mastery type × category.** A star only trades levels with stars of the same Traveler (or the common stars,
+  which need total mastery) and the same category (Destruction, Life, Imagination, Flexible). That's 3 common groups and
+  4 per Traveler (39 groups, 305 stars). Each group keeps its vanilla set of levels, so Flexible stars stay on their
+  5/15/25/35 steps, and the highest requirement stays 35 per Traveler and 75 total: the filler targets (35 mastery per
+  Traveler) still cover every star.
+- **No logic.** Stars and mastery aren't in logic. Pool, IDs and `data_hash` are unchanged.
+- **Generation:** the apworld shuffles each group with the seed's random in `generate_early` and sends every star's level
+  as `star_requirements` in slot_data (`{Se_Star_*: level}`; empty when off). No spoiler section: the constellation
+  screen shows every requirement. The extractor writes the star list (`stars`: key, Traveler, category, vanilla level,
+  from `RawData/en-US/stars.json`) to `game_data.json`, outside `data_hash`, so older seeds keep working and get vanilla
+  requirements.
+- **How the game uses it** *(resolved from code)*: the requirement is the `StarEffect.requiredLevel` field of the star
+  prefab. Only the lobby's constellation screens read it: the buy check (`UI_Lobby_Constellations_StarDetails`), the
+  locked look (`UI_Lobby_Constellations_StarItem`), the number on the icon (`UI_StarIcon`) and the list order
+  (`UI_Lobby_Constellations_StarList`). Nothing checks it at run start or on profile load, so a star already bought stays
+  usable whatever its requirement becomes.
+- **Stored in the profile.** On every login the mod copies `star_requirements` into the profile's AP records
+  (`AP:star:<Se_Star_*>=<level>` in `experienceFlags`), so the levels also apply offline. Keys the game doesn't have are
+  logged and skipped; a star missing from the list (e.g. new in a game update) keeps its vanilla level.
+- **Applied in memory, locally.** The game unloads and reloads prefabs (`DewResources.UnloadUnused` on the title screen,
+  lobby entry and zone loads), so the mod sets `requiredLevel` on every star `DewResources` hands out: postfixes on
+  `DewResources.Load` (fresh loads and guid lookups, e.g. `AssetRef`) and the non-generic `DewResources.GetByType` (its
+  cache skips `Load`). It remembers each star instance with its vanilla level, and on mod load, profile change and login
+  updates every instance it has seen. Unmarked profiles get vanilla levels; unloading the mod puts them back. The game's
+  JSON overrides could also change `requiredLevel`, but they are fixed files, not per seed, and the host sends them to
+  joining players; the mod's change never leaves the local game, so a non-AP co-op player is unaffected.
+
 **Data compatibility.** `game_data.json` carries `data_format_version` (the JSON layout) and `data_hash`: a SHA-256 of
 every field the mod or the generator acts on (IDs, keys, kinds, unlocks, logic data, the difficulty ids and ranks),
 leaving out display names (`apworld/shape_of_dreams/data/data_hash.py`). The mod refuses a seed unless both equal its own embedded
@@ -213,8 +247,9 @@ and a key that disappears and comes back keeps its ID.
   so partial progress is kept.
 - **Where the records live.** New JSON fields would be dropped on the game's next save, so AP data goes into string
   lists the game only reads with `Contains`: `DewProfile.experienceFlags` holds the binding marker, the unlock record
-  (`AP:unlock:<target>`), world clears (`AP:clear:<location key>`), wins (`AP:win:<Traveler>:<difficulty id>`) and the
-  Stardust counter (`AP:applied:STARDUST=<n>`). The mastery counters (`AP:applied:MASTERY_<Traveler>=<n>`) live in
+  (`AP:unlock:<target>`), world clears (`AP:clear:<location key>`), wins (`AP:win:<Traveler>:<difficulty id>`), the
+  Stardust counter (`AP:applied:STARDUST=<n>`), the forced Lucid Dreams (`AP:forced:<key>`) and the shuffled star
+  requirements (`AP:star:<key>=<level>`). The mastery counters (`AP:applied:MASTERY_<Traveler>=<n>`) live in
   `DewProfileStats.recoveredLossPoints`, in the `stats` file, so each is written in the same save as the value it
   protects.
 - **Known limitation: the game's stats recovery** (accepted 2026-09-27). At startup, before mods load, the game compares

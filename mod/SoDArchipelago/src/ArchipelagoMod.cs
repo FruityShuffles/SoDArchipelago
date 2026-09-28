@@ -83,6 +83,7 @@ namespace SoDArchipelago
                      $"marker={ProfileGuard.MarkerOf(DewSave.profileMain) ?? "<none>"}");
             if (ProfileGuard.Marked && UnlockState.Enforce(DewSave.profileMain, "mod load") > 0)
                 DewSave.SaveProfileMain();
+            StarRequirements.Refresh();
         }
 
         private void Update()
@@ -105,6 +106,7 @@ namespace SoDArchipelago
             ApClient.Disconnect(null);
             ForcedDreams.Cleanup();
             harmony.UnpatchAll(harmony.Id);
+            StarRequirements.Cleanup();
             AppDomain.CurrentDomain.AssemblyResolve -= ResolveAssembly;
             Log.Info("Unloaded");
         }
@@ -115,6 +117,7 @@ namespace SoDArchipelago
             try
             {
                 ProfileGuard.OnProfileLoaded(how, ok);
+                StarRequirements.Refresh();
                 ApClient.OnProfileChanged();
                 if (ProfileGuard.Marked && !ProfileGuard.Bound)
                     ApClient.Say("Archipelago profile loaded (offline). Type ap_connect to connect.");
@@ -130,6 +133,7 @@ namespace SoDArchipelago
         {
             if (UnlockState.Enforce(DewSave.profileMain, "connect") > 0) DewSave.SaveProfileMain();
             ForcedDreams.OnLoggedIn();
+            StarRequirements.OnLoggedIn();
             CheckHandler.ResendAll();
             ItemHandler.ProcessAll("connect");
             GoalHandler.OnLoggedIn();

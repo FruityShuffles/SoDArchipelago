@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Choice, DeathLink, OptionGroup, OptionSet, PerGameCommonOptions, Range
+from Options import Choice, DeathLink, OptionGroup, OptionSet, PerGameCommonOptions, Range, Toggle
 
 from .items import lucid_dreams_by_type
 
@@ -86,6 +86,12 @@ class ForcedChaoticLucidDreams(OptionSet):
     default = frozenset()
 
 
+class ShuffleStarRequirements(Toggle):
+    """Shuffles the mastery level each constellation star needs before you can buy it. Stars only trade levels with
+    stars of the same Traveler (or the common stars) and the same category, so each group keeps its usual levels."""
+    display_name = "Shuffle Star Requirements"
+
+
 @dataclass
 class SoDOptions(PerGameCommonOptions):
     goal_difficulty: GoalDifficulty
@@ -95,6 +101,7 @@ class SoDOptions(PerGameCommonOptions):
     stardust_pack_value: StardustPackValue
     forced_evil_lucid_dreams: ForcedEvilLucidDreams
     forced_chaotic_lucid_dreams: ForcedChaoticLucidDreams
+    shuffle_star_requirements: ShuffleStarRequirements
     death_link: DeathLink
 
 
@@ -102,4 +109,5 @@ option_groups = [
     OptionGroup("Goal", [GoalDifficulty, GoalTravelerCount]),
     OptionGroup("Filler", [MasteryPacksPerTraveler, MasteryPackValue, StardustPackValue]),
     OptionGroup("Forced Lucid Dreams", [ForcedEvilLucidDreams, ForcedChaoticLucidDreams]),
+    OptionGroup("Constellation", [ShuffleStarRequirements]),
 ]

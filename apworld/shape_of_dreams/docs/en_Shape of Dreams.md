@@ -71,6 +71,7 @@ ending, the Pure White Dream or the Starless Path.
 | `death_link` | off | | When you are knocked down, everyone on DeathLink dies, and the other way round. |
 | `forced_evil_lucid_dreams` | none | see below | Evil Lucid Dreams forced on in every run until you receive their Lucid Dream item |
 | `forced_chaotic_lucid_dreams` | none | see below | The same for Chaotic Lucid Dreams |
+| `shuffle_star_requirements` | off | | Shuffles the mastery level each constellation star needs, among stars of the same Traveler (or the common stars) and category |
 
 ### Forced Lucid Dreams
 

@@ -8,6 +8,7 @@ using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -437,6 +438,16 @@ namespace SoDArchipelago
             foreach (var value in values)
                 if (value != null) list.Add(value.ToString());
             return list;
+        }
+
+        // A slot_data object of ints (a JObject from MultiClient.Net); empty when it's missing (older seeds).
+        public static Dictionary<string, int> GetIntMap(string key)
+        {
+            var map = new Dictionary<string, int>();
+            if (SlotData == null || !SlotData.TryGetValue(key, out var v) || !(v is JObject obj)) return map;
+            foreach (var property in obj.Properties())
+                if (property.Value.Type == JTokenType.Integer) map[property.Name] = (int)property.Value;
+            return map;
         }
 
         private static int GetInt(Dictionary<string, object> data, string key, int fallback)

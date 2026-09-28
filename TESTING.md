@@ -217,3 +217,102 @@ Needs a seed with forced dreams, e.g. a YAML with `forced_evil_lucid_dreams: ["G
    logs `Not counted (world 1 clear): ...` and sends nothing. Achievements still send.
 6. Limbo lobby: no forcing, no start-condition message.
 7. Profile check: the Limbo mode stays locked on a profile with 4+ forced Evil dreams and no released ones.
+
+## 12. Shuffled star requirements (DESIGN.md "Shuffled star requirements")
+
+Needs a seed with `shuffle_star_requirements: true`, on a new profile. The `[AP] slot_data:` line lists every star's
+level under `star_requirements`; compare a few with the vanilla levels in `RawData/en-US/stars.json` (`requiredLevel`).
+
+1. `ap_connect`: `[AP] Star requirements: shuffled for 305 stars (...)`.
+2. Lobby → Constellations: the level on each star icon, the locked look, the list order and the "requires mastery"
+   text on a locked star all show the seed's levels. A star at 0 in the seed can be bought on the fresh profile; a vanilla
+   level-0 star that the seed moved up can't.
+3. `/send SoDTest Mastery: Lacerta` (+5 levels): Lacerta's stars at 5 or less in the seed unlock.
+4. Reload: play into a run, go back to the lobby (the game unloads and reloads prefabs): the levels are still the seed's.
+5. Offline: `ap_disconnect`, back to the title screen and into a lobby: still the seed's levels.
+6. Switch to an unbound profile: `[AP] Star requirements: vanilla`, and the constellation shows vanilla levels. Switch
+   back: shuffled again.
+7. Live reload: disable the mod in the Mod Manager: vanilla levels; enable it: shuffled again.
+8. Co-op (non-AP joiner): the joiner's constellation shows vanilla levels.
+
+## 13. Co-op session: host + non-AP friend, forced dreams and shuffled stars
+
+One session that covers a winning run and the goal [5.3, 6.1], co-op with a friend who doesn't run Archipelago [9],
+Forced Lucid Dreams [11] and shuffled star requirements [12]. You host on this PC; the friend joins from their own PC
+with no mods. Not covered: an AP player joining someone else's lobby, and two AP players in one lobby.
+
+### Setup
+
+1. Build and deploy the current mod: `dotnet build mod/SoDArchipelago.sln`. The v0.2.0 build doesn't have forced dreams
+   or the star shuffle. Don't also subscribe to the Workshop item on this PC.
+2. A new seed, because the "AP Test" seed has neither option. Copy `apworld/shape_of_dreams` into the checkout's
+   `worlds/`, and replace `Players/SoDTest.yaml` with:
+
+   ```yaml
+   name: SoDTest
+   game: Shape of Dreams
+   Shape of Dreams:
+     goal_difficulty: deep_sleep
+     goal_traveler_count: 1
+     death_link: true
+     forced_evil_lucid_dreams: ["Grievous Wounds"]
+     forced_chaotic_lucid_dreams: ["Harmless Whispers"]
+     shuffle_star_requirements: true
+   ```
+
+   Generate and host it as in step 0. The old seed's profile "AP Test" can't connect to it (it's bound to the old seed).
+3. In the game: create a new profile, **"AP Coop"**, then `ap_connect` and `ap_bind`.
+   - `[AP] Bound profile 'AP Coop' ...`, `Connected: seed ...`
+   - `[AP] Forced Lucid Dreams: Grievous Wounds, Harmless Whispers (released: )`
+   - `[AP] Star requirements: shuffled for 305 stars (...)`
+   - The `[AP] slot_data:` line lists `star_requirements`; keep it for step B.
+4. Optional, for DeathLink: `python -u tools/deathlink_test.py ws://localhost:38281 SoDTest` in the venv.
+
+### A. Stars, solo, before the friend joins [12.2, 12.3]
+
+1. Lobby → Constellations. Pick three stars and compare with the slot_data line: the number on the icon, the locked
+   look, the list order and the "requires mastery" text use the seed's levels. **Report** any star that shows its vanilla
+   level (`requiredLevel` in `RawData/en-US/stars.json`) instead.
+2. Buy a star that is 0 in the seed; try a vanilla level-0 star that the seed moved up (it must be locked).
+3. `/send SoDTest Mastery: Lacerta`: Lacerta's stars at 5 or less in the seed unlock. Equip one for the run.
+
+### B. Host the lobby, friend joins [11.2, 12.8, 9]
+
+1. Host a lobby (normal mode, Deep Sleep). The feed shows `Archipelago forces these Lucid Dreams on until you receive
+   them: Grievous Wounds, Harmless Whispers`. Both are active with the locked icon; clicking one doesn't turn it off.
+2. The friend joins. **Report:** does the friend's constellation show vanilla levels? (It must.)
+3. **Report** which Memories/Essences drop during the run that "AP Coop" hasn't unlocked (the loot pool is the union
+   of both players' unlocks, so the friend's unlocks can drop for you too).
+
+### C. The run [5, 8, 9, 11.3]
+
+1. Start: `[AP] Run ready: ... host=True marked=True bound=True` and
+   `[AP] Forced Lucid Dreams this run: ... missing: none`.
+2. Each world you leave sends `[AP] Check: world(s) N cleared as <Traveler> on diffNormal (moved on): ...`.
+   **Report** every `Zone loaded` line. The Dream rift after world 4's boss must log `to='Zone_Primus' ... zoneIndex=4`
+   and send World 4, and nothing is sent inside Primus.
+3. Achievements either player triggers for you send `[AP] Check: Achievement: ...`.
+4. DeathLink: your knockdown logs `Local Traveler knocked out; sending DeathLink.` The **friend's** knockdown sends
+   nothing. Enter in the helper knocks your Traveler out (`Knocked out by a received DeathLink; not sending one back.`).
+5. Mid-run, `/send SoDTest Lucid Dream: Harmless Whispers`:
+   `[AP] Received Lucid Dream: Harmless Whispers - no longer forced (server) (next run)`. The run still counts.
+
+### D. Win and goal [5.3, 6.1]
+
+1. Pure White Dream: `[AP] Game concluded: result=PureWhiteDream ...`, `World 5 Clear (Deep Sleep): <Traveler>`,
+   `[AP] Recorded win: ...`, `[AP] Goal: 1/1 ...`, `[AP] Goal complete!`, and the server shows the goal.
+   Starless Path instead: `world(s) 1,2,3,4,5 cleared ... (Starless Path)` and the same win and goal lines.
+2. A lost run instead: `result=GameOver` and no `Check:` line. Try again.
+
+### E. Back in the lobby [11.4, 12.4]
+
+1. Harmless Whispers can now be turned off; Grievous Wounds is still forced. Start a run without Harmless Whispers:
+   `missing: none`.
+2. Constellations still show the seed's levels (the game reloaded the stars when the lobby opened).
+
+### Optional, if there's time
+
+- A clear on Ominous Dream or Nightmare sends that difficulty and every lower one [5.4].
+- Quit mid-run and continue it: `fromSave=True` and nothing sent [5.5].
+- `ap_disconnect`, clear a world, `ap_connect`: the clear is resent [7].
+- Switch to an unbound profile: `[AP] Star requirements: vanilla` [12.6].

@@ -142,6 +142,7 @@ namespace SoDArchipelago
         private const string UnlockPrefix = "AP:unlock:";
         private const string AppliedPrefix = "AP:applied:";
         private const string ForcedPrefix = "AP:forced:";
+        private const string StarPrefix = "AP:star:";
 
         private static List<string> MainFlags => DewSave.profileMain.experienceFlags;
 
@@ -179,6 +180,34 @@ namespace SoDArchipelago
             if (current.Count == lucidDreams.Count && lucidDreams.All(current.Contains)) return false;
             MainFlags.RemoveAll(f => f.StartsWith(ForcedPrefix, StringComparison.Ordinal));
             foreach (var key in lucidDreams) MainFlags.Add(ForcedPrefix + key);
+            return true;
+        }
+
+        // Shuffled star requirements (DESIGN.md "Shuffled star requirements"): the seed's level per star key, copied from
+        // slot_data on every login so it also applies offline. Empty when the option is off.
+        public static Dictionary<string, int> Stars()
+        {
+            var levels = new Dictionary<string, int>();
+            if (!ProfileGuard.Marked) return levels;
+            foreach (var f in MainFlags)
+            {
+                if (!f.StartsWith(StarPrefix, StringComparison.Ordinal)) continue;
+                int sep = f.LastIndexOf('=');
+                if (sep > StarPrefix.Length && int.TryParse(f.Substring(sep + 1), out var level))
+                    levels[f.Substring(StarPrefix.Length, sep - StarPrefix.Length)] = level;
+            }
+            return levels;
+        }
+
+        // Replaces the star levels; true if they changed.
+        public static bool SetStars(IDictionary<string, int> levels)
+        {
+            if (!ProfileGuard.Marked) return false;
+            var current = Stars();
+            if (current.Count == levels.Count && levels.All(kv => current.TryGetValue(kv.Key, out var l) && l == kv.Value))
+                return false;
+            MainFlags.RemoveAll(f => f.StartsWith(StarPrefix, StringComparison.Ordinal));
+            foreach (var kv in levels) MainFlags.Add(StarPrefix + kv.Key + "=" + kv.Value);
             return true;
         }
 
