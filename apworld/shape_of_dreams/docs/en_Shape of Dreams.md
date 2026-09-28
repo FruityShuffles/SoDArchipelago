@@ -2,7 +2,7 @@
 
 ## What does randomization do to this game?
 
-In vanilla Shape of Dreams, every achievement unlocks one thing: a Traveler, a Memory, an Essence or a Lucid Dream.
+In vanilla Shape of Dreams, the in-game achievement system is used to unlock Travelers, Memories, Essences and Lucid Dream run modifiers.
 In Archipelago those 93 unlocks are shuffled into the multiworld as items, and achievements and world clears become
 the checks that send items to you and to the other players.
 
@@ -13,50 +13,51 @@ slot the first time you connect.
 
 There are 228 locations.
 
-- **Achievements (93):** completing any achievement sends its check. You still get the achievement's usual Stardust
-  bonus, but not its usual unlock. That unlock is an item somewhere in the multiworld.
+- **Achievements (93):** completing any achievement sends its check. You do not get the usual unlock for the achievement.
+  That unlock is an item somewhere in the multiworld.
 - **World clears (135):** clearing worlds 1 to 5 as each of the 9 Travelers, on Deep Sleep, Ominous Dream and
-  Nightmare. Worlds 1 to 4 count as cleared when you move on from them (to the next world, or after world 4 into the
-  Pure White Dream or the next loop). World 5 is Primus: it counts as cleared when you win the Pure White Dream ending.
-  Winning the Starless Path ending clears all five worlds at once. Clearing a world on a harder difficulty also sends
+  Nightmare. Winning through any ending clears all worlds. Clearing a world on a harder difficulty also sends
   that world's checks for the easier difficulties. Nap has no checks, and the worlds of later loops send nothing.
 
 World clears are **priority locations**, so they tend to hold progression items. Achievements can hold anything.
 
-Location groups you can use in `exclude_locations` / `priority_locations`: `Achievements`, `World Clears`,
-`Build-Dependent Achievements` (achievements that need specific Memories in your build), one group per Traveler
-(e.g. `Aurena`: that Traveler's achievements and world clears) and one per difficulty (`Deep Sleep`,
-`Ominous Dream`, `Nightmare`).
+### Customizing your checks
+
+You can customize which checks may hold important items using these location groups:
+
+- `exclude_locations`: those checks only get filler (Stardust, Mastery, or another game's filler), so you never have to
+  do them to progress.
+- `priority_locations`: those checks get progression items. World clears are already priority; excluding one overrides that.
+
+| If you want to… | Put this in your YAML |
+|---|---|
+| Play on an easier difficulty without progression getting stuck behind Nightmare runs | `exclude_locations: [Nightmare]` |
+| Not get stuck waiting for a lucky build | `exclude_locations: [Build-Dependent Achievements]`: the 9 achievements that need specific Memories in your build. |
+| Focus on winning runs and not chase in-game achievements | `exclude_locations: [Achievements]` |
+| Skip a Traveler you don't enjoy | `exclude_locations: [Aurena]` (that Traveler's achievements and world clears), with `goal_traveler_count` below 9 |
+| Get your progression from a Traveler you like | `priority_locations: [Aurena]` |
+
+Groups: `Achievements`, `World Clears`, `Build-Dependent Achievements`, one per Traveler (`Aurena`, `Bismuth`, `Cetus`,
+`Lacerta`, `Mist`, `Nachia`, `Shell`, `Vesper`, `Yubar`) and one per difficulty (`Deep Sleep`, `Ominous Dream`,
+`Nightmare`).
+
+You should leave at least 93 checks un-excluded. Your 93 unlocks can't go on excluded checks, so excluding more
+makes generation fail.
 
 ## What items can I receive?
 
-- **Progressive Traveler** (progression). For Aurena, Bismuth, Cetus, Nachia, Shell, Vesper and Yubar, the first copy
-  unlocks the Traveler and the next three unlock their three alternate Memories (Q, then R, then Identity). Lacerta and
-  Mist start unlocked, so each of their three copies is an alternate Memory.
-- **Memory / Essence / Lucid Dream unlocks** (useful): the other 59 achievement unlocks. A Memory or Essence can drop in
-  runs once you have it. A Lucid Dream can be selected in the lobby.
+- **Progressive Traveler** (progression). The first copy unlocks the Traveler and the next three unlock their three alternate Memories (Q, then R, then Identity).
+- **Memory / Essence / Lucid Dream unlocks** (useful). Unlocked Memories or Essences can drop in runs. Unlocked Lucid Dream run modifiers
+   can be selected in the lobby.
 - **Mastery: \<Traveler\>** (filler): +5 mastery levels for that Traveler.
 - **Stardust** (filler): +650 Stardust.
 
-With default settings the filler alone gives every Traveler 35 mastery (the most any star or star slot needs) and
-enough Stardust to buy every star in the constellation, with some left over for star slots. There are no traps.
-
-Unlocks take effect the way they do in vanilla. Everything is saved to your profile straight away, but the loot pool
-is built when a run starts and Travelers, loadouts and Lucid Dreams are picked in the lobby. An item that can't change
-the run you're in is marked "(next run)".
-
-## Which Travelers and difficulties do I need? (logic)
-
-- An achievement that has to be done as a specific Traveler needs that Traveler.
-- A Deep Sleep world clear needs that Traveler.
-- An Ominous Dream world clear needs the Traveler plus one alternate Memory (Lacerta and Mist: one copy).
-- A Nightmare world clear needs the Traveler plus two alternate Memories (Lacerta and Mist: two copies).
+With default settings the filler alone gives every Traveler 35 mastery and enough Stardust to buy every constellation star.
 
 ## What is the goal?
 
 Win a run at `goal_difficulty` or harder with `goal_traveler_count` different Travelers. A win is reaching either
-ending, the Pure White Dream or the Starless Path. Logic only requires you to have enough Travelers unlocked; it never
-requires their Memories for the goal.
+ending, the Pure White Dream or the Starless Path.
 
 ## Options
 
@@ -67,19 +68,12 @@ requires their Memories for the goal.
 | `mastery_packs_per_traveler` | 7 | 0–15 | Mastery items per Traveler. The rest of the filler is Stardust |
 | `mastery_pack_value` | 5 | 1–35 | Mastery levels per Mastery item |
 | `stardust_pack_value` | 650 | 1–10,000 | Stardust per Stardust item |
-| `death_link` | off | | When you are knocked down, everyone on DeathLink dies, and the other way round. In co-op, only the host receives DeathLinks (see Co-op) |
+| `death_link` | off | | When you are knocked down, everyone on DeathLink dies, and the other way round. |
 
 ## Playing offline
 
-You can play a bound profile without being connected, using the items you have already received. Checks are recorded
-in the profile and sent when you reconnect, and the mod shows an "OFFLINE" notice the whole time. Other players won't
-get the items from those checks until you reconnect.
+You can play a bound profile offline using the items you have already received. Checks are recorded in the profile and sent when you reconnect.
 
 ## Co-op
 
-Each player uses their own profile, mod and slot. The loot pool of a co-op run is the union of every player's unlocks,
-as in vanilla.
-
-**DeathLink in co-op:** only the host of a co-op run can be killed by a DeathLink. The game only lets the host kill a
-Traveler, so if you join someone else's game, DeathLinks sent to you do nothing. The mod shows the DeathLink with
-"can't be applied". You still send DeathLinks when you are knocked down. Solo players and the host are not affected.
+Non-crossplay co-op is fully supported with other players regardless of whether they are also playing Archipelago or not. The only limitation is that a player who joins someone else's lobby can't receive DeathLinks.
