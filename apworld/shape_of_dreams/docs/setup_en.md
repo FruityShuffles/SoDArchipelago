@@ -3,15 +3,16 @@
 ## Required software
 
 - Shape of Dreams (Steam)
-- The SoDArchipelago client mod (the `SoDArchipelago` folder)
+- The [Archipelago Randomizer](https://steamcommunity.com/sharedfiles/filedetails/?id=3809735647) mod from the Steam Workshop
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases) 0.6.4 or newer, to generate and host games,
   with `shape_of_dreams.apworld` installed (double-click it, or copy it into Archipelago's `custom_worlds` folder).
   Download it from the [SoDArchipelago releases](https://github.com/FruityShuffles/SoDArchipelago/releases).
 
 ## Installing the mod
 
-1. Copy the `SoDArchipelago` folder into `<Shape of Dreams install>/Mods/`.
-2. Start the game and enable **Archipelago** in the in-game mod manager.
+1. Subscribe to [Archipelago Randomizer](https://steamcommunity.com/sharedfiles/filedetails/?id=3809735647) on the
+   Steam Workshop.
+2. Start the game and enable **Archipelago Randomizer** in the in-game mod manager.
 
 ## One profile per seed
 
