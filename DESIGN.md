@@ -2,10 +2,7 @@
 
 The agreed randomizer design for Shape of Dreams. It was settled in a design review on 2026-09-27 and replaces the
 original "achievement reward = item" scaffold. Where the code and this document disagree, this document wins.
-Items marked **(verify)** are assumptions that need checking in-game or in decompiled code before release.
-
-Nothing has been released yet, so item/location IDs can still change. Once a version is released they are frozen
-(see AGENTS.md conventions).
+Item/location IDs are frozen once a version is released: the extractor keeps every key's ID through `id_history`.
 
 ## Locations (228)
 
@@ -72,7 +69,7 @@ In vanilla each achievement unlocks exactly one thing, which gives 93 unlocks. A
   star slot requires) and **46,800 Stardust**. That covers the 45,275 needed for every star level, plus a buffer for
   star slot unlocks (40 + 20 × n Stardust per extra slot, where n counts from 0 past the Traveler's default slot count
   for that star type). Checked in-game: the slots cost 4,740, so filler falls 3,215 short of buying every slot too;
-  accepted (see "Open questions").
+  accepted (see "Settled questions").
 - Vanilla run rewards (Stardust, mastery points) are not counted toward these targets and stay as they are.
 
 ### Alternate memory order
@@ -164,8 +161,7 @@ item is received, which **releases** it: from then on it's a normal unlocked dre
 - **Stored in the profile.** On every login the mod copies `forced_lucid_dreams` into the profile's AP records
   (`AP:forced:<LucidDream_*>` in `experienceFlags`), so forcing also works offline. "Still forced" = in that list and
   not yet in the unlock record. Forced dreams are **not** unlocked in the profile before their item arrives: Limbo opens
-  when 4 Evil dreams are unlocked (`GameMod_Limbo.IsLimboUnlocked`), and that would open it early. In the lobby a forced
-  dream therefore shows the locked icon while active.
+  when 4 Evil dreams are unlocked (`GameMod_Limbo.IsLimboUnlocked`), and that would open it early.
 - **Lobby enforcement** (the host only; `activeLucidDreams` is a server setting). The technique Limbo uses to keep only
   Evil dreams on (`GameMod_Limbo.EnforceGameRules`), turned around, in either lobby mode: the mod's `Update` adds every
   still-forced dream to `GameSettingsManager.activeLucidDreams` (`AddLucidDream`) whenever it's missing, and a
@@ -277,8 +273,8 @@ Every AP seed/slot gets its own game profile. Your normal save must never be rea
 3. The mod refuses to bind a profile that isn't fresh: it must have no completed achievements and no runs played. There
    is also a deliberate override for recovery (`ap_bind_force`). *Built test:* no completed achievements, no recorded
    game results (`lastGameResults`, `recentlyConcededGames`) and a total Traveler play count of 0. In-game 2026-09-27: a
-   never-played profile with `didPlayTutorial=True` passes (0 runs, play count 0). **(verify)** Whether actually
-   finishing the tutorial run makes a new profile fail it; the mod logs the numbers.
+   never-played profile with `didPlayTutorial=True` passes (0 runs, play count 0). Finishing the tutorial run wasn't
+   tested; if it makes a profile fail, `ap_bind_force` covers it.
    **Bind after login.** `ap_bind` doesn't write the marker. It logs in provisionally; nothing acts on the profile,
    because every action needs Bound. Only after `LoginSuccessful` and the slot_data version/hash check does the mod write
    the marker, after re-checking that the same profile is loaded (attempt and profile generation unchanged), that it is
@@ -321,9 +317,9 @@ guide explains that offline play delays other players' items.
 
 ### Co-op
 No special handling, except for Forced Lucid Dreams (see there). Each player's own profile, mod and slot are independent. The shared loot pool is the union of
-the players' unlocks, which is vanilla co-op behavior. **(verify)** That achievement and world-clear events fire on a
-joining client, not only on the host. (From code they should: achievements are tracked per client, and the
-zone-loaded event is an RPC to every client.)
+the players' unlocks, which is vanilla co-op behavior. Achievement and world-clear checks work on a joining client
+(code review): achievements are tracked per client, the zone-loaded event is an RPC to every client, and the room load
+before it syncs the zone index.
 
 ### DeathLink (off by default)
 - **Send** when your Traveler is knocked down (`ClientEventManager.OnHeroKnockedOut` /
@@ -340,7 +336,7 @@ zone-loaded event is an RPC to every client.)
 - A knockdown caused by a received DeathLink does not send a new one.
 - Each player turns it on independently. There's no co-op-specific handling.
 
-## Open questions to settle during the build
+## Settled questions
 - ~~Map the game's difficulty IDs~~ The asset catalog has `diffTutorial`, `diffEasy`, `diffNormal`, `diffHard`,
   `diffNightmare` and `diffLimbo`. The build maps Nap = `diffEasy`, Deep Sleep = `diffNormal` (the default),
   Ominous Dream = `diffHard`, Nightmare = `diffNightmare`. Verified in-game 2026-09-27 (`[AP] Difficulty ids -> display

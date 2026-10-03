@@ -8,7 +8,7 @@ In this randomizer, achievements and world clears are the checks, and the Travel
 unlocks (plus Mastery and Stardust) are the items. Each seed is played on its own game profile, so your normal save is
 never touched.
 
-**Early development build.** Please [report bugs](https://github.com/FruityShuffles/SoDArchipelago/issues).
+Please [report bugs](https://github.com/FruityShuffles/SoDArchipelago/issues).
 
 ## Options
 

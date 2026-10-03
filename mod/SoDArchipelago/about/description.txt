@@ -5,9 +5,6 @@ This mod connects Shape of Dreams to an Archipelago multiworld. Achievements and
 
 Each seed should be played on its own fresh Shape of Dreams save profile.
 
-[h2]Early development build[/h2]
-Expect bugs, and please report them.
-
 [h2]Options[/h2]
 Set these in your YAML. The [url=https://github.com/FruityShuffles/SoDArchipelago/blob/main/examples/Shape%20of%20Dreams.yaml]example YAML[/url] explains every one.
 [list]

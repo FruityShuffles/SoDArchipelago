@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SoDArchipelago
 {
-    // [AP] log lines that answer DESIGN.md's open (verify) questions from one play session. Everything is wrapped in
+    // [AP] diagnostic log lines (startup data, profile and run state) for bug reports. Everything is wrapped in
     // try/catch: diagnostics must never break the game.
     public static class Diagnostics
     {

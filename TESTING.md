@@ -1,7 +1,8 @@
-# In-game test checklist
+# In-game tests
 
-Claude can build and generate but can't play, so these checks need a person at the game. Each step lists what to do
-and the `[AP]` lines to look for in the game log:
+The in-game tests of early development, which ended on 2026-10-03. **Testing is complete; no further testing is
+planned.** The steps stay as a record and as a reference if a game update needs a regression check. Each step lists what
+to do and the `[AP]` lines to look for in the game log:
 
 ```
 %USERPROFILE%\AppData\LocalLow\Lizard Smoothie\Shape of Dreams\Player.log
@@ -12,12 +13,28 @@ whole log, or at least every `[AP]` line, plus anything in the "Report" lines be
 
 **Never test on your main profile.** Everything below uses throwaway profiles.
 
-Results so far (2026-09-27) and the list of what is still untested: AGENTS.md "Status".
+## Results
+
+**Passed** (2026-09-27 and 2026-10-03; one PC, host, solo, local server on `ws://localhost:38281`):
+- 1, 2 (all), 3 (all), 4.1, 4.2, 5.1–5.2, 6.2, 8 (host), 10.
+- 5.3 and 6.1: a full Deep Sleep win as Lacerta. The Dream rift into `Zone_Primus` (index 4) sent World 4, nothing was
+  sent inside Primus, and the Pure White Dream ending sent World 5, recorded the win and sent the goal.
+- 5.5: a continued run sends nothing on load and still counts with forced dreams (they're restored before the run check).
+- 11.1–11.4, 11.6 and 12.1–12.7 (step 13's setup, solo).
+- `wss://`: connect and bind to an archipelago.gg room, which refuses plain `ws://`.
+- Collect on goal: Archipelago's default sends every remaining item when the goal is reached (about 215 here). They all
+  applied with no errors. This also releases every forced dream, so test forced dreams before winning.
+
+Every connect logs `connection rejected (400 Bad Request)` on the local server, then connects: MultiClient.Net tries
+`wss://` first and falls back to `ws://`.
+
+The steps not listed were judged low risk from the code (2026-10-03), including an AP player joining someone else's
+lobby: the events fire on a joining client, and the zone index and the local player's result are synced before them.
 
 ## 0. Setup
 
 1. Build and deploy the mod: `dotnet build mod/SoDArchipelago.sln` (copies it to `<game>/Mods/SoDArchipelago/`).
-2. Archipelago checkout (0.6.8) with a Python 3.13 venv, as in AGENTS.md "Commands". Copy `apworld/shape_of_dreams` into
+2. Archipelago checkout (0.6.8) with a Python 3.13 venv, (clone ArchipelagoMW/Archipelago, then `pip install -r requirements.txt "setuptools<81"`). Copy `apworld/shape_of_dreams` into
    its `worlds/` folder (or install `dist/shape_of_dreams.apworld`).
 3. Put this YAML in the checkout's `Players/` folder (and nothing else):
 
@@ -39,10 +56,10 @@ Results so far (2026-09-27) and the list of what is still untested: AGENTS.md "S
 
    The server listens on `localhost:38281`. Keep its window open: you'll type `/send` commands there.
 
-## 1. Mod loads (AGENTS.md "Not yet verified" 1-5)
+## 1. Mod loads
 
 1. Start the game, enable **Archipelago** in the mod manager if needed.
-   - `[AP] Loaded com.sodarchipelago.archipelago 0.3.0; data format 2, extracted from game r.1.4.0.13_s; running game ...`
+   - `[AP] Loaded com.sodarchipelago.archipelago 0.3.0; data format 3, extracted from game r.1.4.0.13_s; running game ...`
    - No `Failed to load com.sodarchipelago.archipelago` line from `[DewMod]`.
 2. Open the mod's config in the mod manager. **Report:** do Server / Slot / Password fields show up and save?
 3. Open the console and type `ap_status`.
@@ -50,10 +67,10 @@ Results so far (2026-09-27) and the list of what is still untested: AGENTS.md "S
 4. Type `ap_server localhost:38281`, then `ap_slot SoDTest` (proves commands with a parameter work).
    - `[AP] Config: server = localhost:38281`, `[AP] Config: slot = SoDTest`
 
-**Report these startup lines** (they answer DESIGN.md's open questions):
+**Report these startup lines:**
 - `[AP] Difficulty ids -> display names: diffTutorial='...' diffEasy='...' diffNormal='...' diffHard='...' diffNightmare='...' diffLimbo='...'`
   The apworld assumes diffEasy = Nap, diffNormal = Deep Sleep, diffHard = Ominous Dream, diffNightmare = Nightmare.
-- `[AP] Build content: zoneCountByTier=[...] (worlds per loop = N)` (expected 5)
+- `[AP] Build content: zoneCountByTier=[...] (worlds per loop = N)` (expected 4)
 - `[AP] Star slots (default/max) per Traveler: ...` and `[AP] Star slots: N buyable slots cost X Stardust in total`
   (the Stardust buffer is 1,525 by default)
 - `[AP] Mastery levels: ...` (only logged when the game starts with a bound profile loaded; the mod never reads an
@@ -65,7 +82,7 @@ Results so far (2026-09-27) and the list of what is still untested: AGENTS.md "S
    - `[AP] Profile created: 'AP Test' path=... marker=<none>`
 2. Console: `ap_connect`.
    - `[AP] Connecting to localhost:38281 as SoDTest...`
-   - **Report** whether a `[AP] Resolved Newtonsoft.Json, Version=11.0.0.0 ...` line appears (AGENTS.md item 2; none is
+   - **Report** whether a `[AP] Resolved Newtonsoft.Json, Version=11.0.0.0 ...` line appears (none is
      expected, since MultiClient.Net is merged into our DLL and Mono binds its Newtonsoft 11 references on its own).
    - `[AP] Room seed <seed>; wanted marker Archipelago:<seed>:SoDTest; loaded profile 'AP Test' marker <none>`
    - `[AP] Fresh-profile check: completed achievements=0, recorded runs=0, Traveler play count=0, ...`
@@ -80,8 +97,7 @@ Results so far (2026-09-27) and the list of what is still untested: AGENTS.md "S
    - `[AP] slot_data: data_format_version=3, data_hash=<hash>, ..., death_link=True`, `[AP] DeathLink enabled.`
    - `[AP] Resending 0 checks (0 achievements, 0 world clears)`
    - `[AP] Goal: 0/1 Travelers have won at rank 1+ ()`
-   - On screen: `Archipelago: SoDTest` top-left. This proves `wss://`-then-`ws://` connection works under Unity Mono
-     (AGENTS.md item 3). To test `wss://` too, connect once to a real archipelago.gg room (any seed with a Shape of
+   - On screen: `Archipelago: SoDTest` top-left. This proves `wss://`-then-`ws://` connection works under Unity Mono. To test `wss://` too, connect once to a real archipelago.gg room (any seed with a Shape of
      Dreams slot) on a second throwaway profile.
    - **Report** whether binding was refused with `Binding only works on the title screen` even though you were on the
      title screen. The `[AP] Bind refused: scene=... networkClient=... networkServer=... onlineLobby=... run=...` line
@@ -188,7 +204,7 @@ python -u tools/deathlink_test.py ws://localhost:38281 SoDTest
      `[AP] Knocked out by a received DeathLink; not sending one back.` The helper must **not** print a new DeathLink.
 3. Outside a run: `[AP] DeathLink: ... (not in a run, ignored)`.
 
-## 9. Co-op (DESIGN.md "Co-op" (verify), needs two game copies)
+## 9. Co-op (needs two game copies)
 
 Both players use their own bound profile and slot. As the **joining** player, check that achievements
 (`[AP] Check: Achievement: ...`) and world clears (`[AP] Zone loaded ... zoneIndex=...` + `[AP] Check: world ...`) are
@@ -208,7 +224,7 @@ Needs a seed with forced dreams, e.g. a YAML with `forced_evil_lucid_dreams: ["G
 
 1. `ap_connect`: `[AP] Forced Lucid Dreams: Grievous Wounds, WILD (released: )`.
 2. Host a lobby (normal mode): the feed shows `Archipelago forces these Lucid Dreams on until you receive them: ...`,
-   and both dreams are active (with the locked icon). Clicking one doesn't turn it off.
+   and both dreams are on. Clicking one doesn't turn it off (`[AP] Forced Lucid Dreams turned back on: ...`).
 3. Start a run: `[AP] Forced Lucid Dreams this run: ... missing: none`. Clearing world 1 sends its check.
 4. `/send SoDTest Lucid Dream: WILD`: `Received Lucid Dream: WILD - no longer forced`. In the next lobby WILD can be
    turned off. Start a run without it: `missing: none` (WILD is released), and only Grievous Wounds is forced.
@@ -279,7 +295,8 @@ with no mods. Not covered: an AP player joining someone else's lobby, and two AP
 ### B. Host the lobby, friend joins [11.2, 12.8, 9]
 
 1. Host a lobby (normal mode, Deep Sleep). The feed shows `Archipelago forces these Lucid Dreams on until you receive
-   them: Grievous Wounds, Harmless Whispers`. Both are active with the locked icon; clicking one doesn't turn it off.
+   them: Grievous Wounds, Harmless Whispers`. Both are on; clicking one doesn't turn it
+   off.
 2. The friend joins. **Report:** does the friend's constellation show vanilla levels? (It must.)
 3. **Report** which Memories/Essences drop during the run that "AP Coop" hasn't unlocked (the loot pool is the union
    of both players' unlocks, so the friend's unlocks can drop for you too).

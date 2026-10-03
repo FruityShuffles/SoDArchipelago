@@ -9,7 +9,7 @@
 | `examples/` | The example player YAML |
 | `tools/` | Game data extraction, apworld packaging and test helpers |
 | [`DESIGN.md`](DESIGN.md) | How the randomizer works, in detail |
-| [`TESTING.md`](TESTING.md) | The in-game test checklist |
+| [`TESTING.md`](TESTING.md) | The in-game tests and their results |
 
 ## Building
 
