@@ -54,14 +54,17 @@ In vanilla each achievement unlocks exactly one thing, which gives 93 unlocks. A
 
 | Class | Item | Copies | Effect |
 |---|---|---|---|
-| progression | `Progressive <Traveler>` for Aurena, Bismuth, Cetus, Nachia, Shell, Vesper, Yubar | 4 each (28) | 1st copy unlocks the Traveler; copies 2–4 unlock their 3 alternate memories in the fixed order below |
-| progression | `Progressive Lacerta`, `Progressive Mist` | 3 each (6) | They start unlocked, so every copy is an alternate memory |
+| progression | `Progressive <Traveler>` | 4 per Traveler (36), 2 of them starting items (34 in the pool) | 1st copy unlocks the Traveler; copies 2–4 unlock their 3 alternate memories in the fixed order below |
 | useful | `Memory: <name>` (general, non-Traveler Memories locked behind achievements) | 15 | Makes the Memory able to drop in runs |
 | useful | `Essence: <name>` | 29 | Makes the Essence able to drop in runs |
 | useful | `Lucid Dream: <name>` | 15 | Unlocks the Lucid Dream modifier. A **forced** dream's item is progression and releases it (see "Forced Lucid Dreams") |
 | filler | `Mastery: <Traveler>` (one item per Traveler) | 7 per Traveler (63) | +5 mastery levels to that Traveler |
 | filler | `Stardust` | the rest (72) | +650 Stardust |
 
+- **Starting Travelers** (replaces vanilla's Lacerta and Mist): each seed picks 2 random Travelers in `generate_early`
+  (`self.random.sample` of the sorted Traveler keys). One copy of each one's progressive item is precollected
+  (`push_precollected`): it appears in the spoiler's "Starting Items", and the server sends it to the mod as a received
+  item from location −2. There's no option and no slot_data field.
 - **No traps.**
 - **Déjà vu is untouched.** It's the Pure White Dream carry-over system that costs Stardust.
 - **Counts:** 34 progression + 59 useful + 63 mastery + 72 Stardust = 228, equal to the location count.
@@ -86,8 +89,8 @@ order: **Q → R → Identity**.
 | Shell (`Hero_Husk`) | Traveler | Death Mark (Q) | Deception (R) | Scar of the Wind (Identity) |
 | Vesper | Traveler | Discipline (Q) | Baptism of the Sun (R) | El's Mercy (Identity) |
 | Yubar | Traveler | Supernova (Q) | Tranquility (R) | Converging Stars (Identity) |
-| Lacerta | — | Incendiary Rounds (Q) | Precision Shot (R) | Double Tap (Identity) |
-| Mist | — | Flèche (Q) | Parry (R) | Astrid's Masterpiece - Priorité (Identity) |
+| Lacerta | Traveler | Incendiary Rounds (Q) | Precision Shot (R) | Double Tap (Identity) |
+| Mist | Traveler | Flèche (Q) | Parry (R) | Astrid's Masterpiece - Priorité (Identity) |
 
 The order lives in one data table in the extractor. It is not derived from anything.
 
@@ -95,14 +98,16 @@ The order lives in one data table in the extractor. It is not derived from anyth
 
 "Copies" means how many of that Traveler's progressive item you have received.
 
-| Location | Locked Travelers need | Lacerta / Mist need |
-|---|---|---|
-| Achievement that requires a Traveler (e.g. "as Aurena") | 1 copy | nothing |
-| Any other achievement | nothing | nothing |
-| World clear, Deep Sleep | 1 copy | nothing |
-| World clear, Ominous Dream | 2 copies (Traveler + 1 memory) | 1 copy |
-| World clear, Nightmare | 3 copies (Traveler + 2 memories) | 2 copies |
-| Goal | `goal_traveler_count` Travelers unlocked (Lacerta and Mist count). **No memory requirement.** | |
+The rules are the same for every Traveler. A starting Traveler's precollected copy counts.
+
+| Location | Needs |
+|---|---|
+| Achievement that requires a Traveler (e.g. "as Aurena") | 1 copy |
+| Any other achievement | nothing |
+| World clear, Deep Sleep | 1 copy |
+| World clear, Ominous Dream | 2 copies (Traveler + 1 memory) |
+| World clear, Nightmare | 3 copies (Traveler + 2 memories) |
+| Goal | `goal_traveler_count` Travelers unlocked (the starting ones count). **No memory requirement.** |
 
 - Nothing requires a Traveler's third memory. It stays progression, but the logic never waits on it.
 - **Achievement → Traveler mapping:** use a hand-maintained table or parse "as <Traveler>" from the description.
@@ -261,6 +266,19 @@ and a key that disappears and comes back keeps its ID.
   its own record of what AP has granted, and after `Validate`, on mod load, on connect and after items it sets every
   managed unlock (the 93 targets, plus a locked Traveler's own memories) to match, using the game's `Unlock*`/`Lock*`
   functions. This works offline too.
+- **Travelers come only from items.** A Traveler is unlocked if and only if the unlock record has it; the starting
+  Travelers' precollected copies arrive as received items (location −2, shown as "(starting item)"). `Validate` unlocks
+  Lacerta and Mist and locks the rest on every load; the unlock record undoes that.
+  - **Profiles bound before random starting Travelers** have no record for Lacerta and Mist. Binding now also writes
+    `AP:format:2`; a marked profile without it keeps Lacerta and Mist unlocked (offline play; the mod refuses those
+    seeds online).
+  - **The binding save already has the starting Travelers.** On bind, the received items (sent in the same server
+    reply as `Connected`) are applied before the bound profile's first save. Binding waits for that first item sync;
+    if it doesn't come within 5 s, the mod disconnects and binds nothing.
+- **Preferred Traveler.** The lobby spawns `PreferredGameSettings.hero` through `DewPlayer.CmdSetHeroType` without a lock
+  check (neither does the server), and a missing lobby-type entry defaults to Lacerta. On a marked profile, a prefix on
+  `CmdSetHeroType` replaces a locked Traveler with the first unlocked one in `Dew.HeroOrder` and stores it back; after
+  every unlock sync the profile's existing preferred-settings entries are repaired the same way.
 
 ### Save profile binding
 Every AP seed/slot gets its own game profile. Your normal save must never be read or written by AP logic.

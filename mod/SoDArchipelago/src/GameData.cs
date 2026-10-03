@@ -36,7 +36,6 @@ namespace SoDArchipelago
         {
             public string Key;
             public string Name;
-            public bool StartsUnlocked;
             public string ProgressiveItem;
             public string MasteryItem;
             public List<string> Skills; // every Q/R/Identity memory (base and alternate)
@@ -130,7 +129,6 @@ namespace SoDArchipelago
                 {
                     Key = (string)e["key"],
                     Name = (string)e["name"],
-                    StartsUnlocked = (bool)e["starts_unlocked"],
                     ProgressiveItem = (string)e["progressive_item"],
                     MasteryItem = (string)e["mastery_item"],
                     Skills = e["skills"].Select(s => (string)s).ToList(),

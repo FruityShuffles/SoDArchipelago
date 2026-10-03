@@ -1,7 +1,7 @@
 from collections import Counter
 
 from . import SoDTestBase
-from ..items import STARDUST, mastery_item_names
+from ..items import STARDUST, mastery_item_names, travelers
 from ..locations import location_table
 
 
@@ -22,11 +22,12 @@ class _PoolTest(SoDTestBase):
         self.assertEqual(pool[STARDUST], 135 - 9 * self.packs)
 
     def test_progressive_copies(self) -> None:
+        # Each starting Traveler's first copy is a starting item, not in the pool.
         pool = self._pool()
-        for traveler in ("Aurena", "Bismuth", "Cetus", "Nachia", "Shell", "Vesper", "Yubar"):
-            self.assertEqual(pool[f"Progressive {traveler}"], 4)
-        for traveler in ("Lacerta", "Mist"):
-            self.assertEqual(pool[f"Progressive {traveler}"], 3)
+        for key, t in travelers.items():
+            expected = 3 if key in self.world.starting_travelers else 4
+            self.assertEqual(pool[t["progressive_item"]], expected, key)
+        self.assertEqual(sum(pool[t["progressive_item"]] for t in travelers.values()), 34)
 
 
 class TestDefaultPool(_PoolTest):

@@ -13,6 +13,34 @@ namespace SoDArchipelago.Patches
         }
     }
 
+    // The lobby spawns the lobby type's preferred Traveler without a lock check, and a lobby type with no saved settings
+    // yet defaults to Lacerta (DESIGN.md "Received items"). On a marked profile, a locked Traveler is replaced with the
+    // first unlocked one, which also becomes the preference it came from.
+    [HarmonyPatch(typeof(DewPlayer), nameof(DewPlayer.CmdSetHeroType))]
+    internal static class SetHeroTypePatch
+    {
+        private static void Prefix(DewPlayer __instance, ref string newType)
+        {
+            if (!__instance.isLocalPlayer || !ProfileGuard.Marked) return;
+            var profile = DewSave.profileMain;
+            if (newType != null && !UnlockState.IsHeroLocked(profile, newType)) return;
+            var replacement = UnlockState.FirstUnlockedHero(profile);
+            if (replacement == null)
+            {
+                Log.Warn($"No Traveler is unlocked; leaving {newType} as the lobby Traveler.");
+                return;
+            }
+            var preferred = NetworkedManagerBase<GameSettingsManager>.instance?.GetLocalPreferredGameSettings();
+            if (preferred != null && preferred.hero == newType)
+            {
+                preferred.hero = replacement;
+                DewSave.SaveProfileMain();
+            }
+            Log.Info($"{newType} is locked; the lobby Traveler is {replacement} instead.");
+            newType = replacement;
+        }
+    }
+
     // DESIGN.md "Save profile binding" step 6: re-check the binding whenever the loaded profile changes. LoadProfile can
     // fail partway (returns false) after replacing some of the loaded profile's parts; that is reported as a failed load.
     [HarmonyPatch(typeof(DewSave), nameof(DewSave.LoadProfile), typeof(string))]

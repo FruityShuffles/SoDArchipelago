@@ -43,7 +43,8 @@ isn't bound to the slot you're connected to, so your normal save profile will be
 3. Enable Developer Mode in the in-game Gameplay settings. This will allow you to use the F1 key to open up the console.
    The first time you press F1, you may need to click the square icon that appears on the right side of the screen to open the console.
 4. On the title screen (not the lobby), type `ap_connect` in the console. The first time, the mod asks you to bind your selected game profile:
-   type `ap_bind`. The profile is then bound to that seed and slot for good.
+   type `ap_bind`. The profile is then bound to that seed and slot for good, and your 2 random starting Travelers are
+   unlocked.
 5. Play. If you restart the game, load the same profile and type `ap_connect` to reconnect to the archipelago server.
 
 Steam achievements aren't updated while you are playing on an Archipelago bound profile.

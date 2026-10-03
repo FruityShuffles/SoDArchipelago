@@ -8,6 +8,7 @@ using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
+using Archipelago.MultiClient.Net.Packets;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -91,6 +92,14 @@ namespace SoDArchipelago
         private static string _pendingMarker;
         private static BindRequest _bindRequest;
 
+        // Binding waits for the first item sync, so the binding save already has the starting Travelers (DESIGN.md
+        // "Received items"). The server sends them in the same reply as Connected, but MultiClient.Net completes the
+        // login before it reads them. A seed always has starting items, so without that sync nothing is bound.
+        private const float BindItemWaitSeconds = 5f;
+        private static int _itemsSyncedAttempt = -1;
+        private static LoginSuccessful _waitingLogin;
+        private static float _waitingLoginDeadline;
+
         public static IReadOnlyList<ItemInfo> ReceivedItems =>
             (IReadOnlyList<ItemInfo>)_conn?.Session.Items.AllItemsReceived ?? Array.Empty<ItemInfo>();
 
@@ -130,6 +139,12 @@ namespace SoDArchipelago
 
             session.Socket.SocketClosed += reason => Enqueue(attempt, () => Disconnect("Connection closed: " + reason));
             session.Items.ItemReceived += _ => Enqueue(attempt, () => ItemsChanged?.Invoke());
+            // Subscribed after MultiClient.Net's own handler, so every item of the packet is in ReceivedItems by now.
+            session.Socket.PacketReceived += packet =>
+            {
+                if (packet is ReceivedItemsPacket received && received.Index == 0)
+                    Enqueue(attempt, () => OnItemsSynced(attempt));
+            };
             session.MessageLog.OnMessageReceived += message =>
             {
                 // Items we receive get their own notification from ItemHandler; skip other players' traffic.
@@ -277,7 +292,16 @@ namespace SoDArchipelago
 
         private static string NothingBound() => _bindRequest != null ? " Nothing was bound." : "";
 
-        private static void OnLoggedIn(LoginSuccessful ok)
+        private static void OnItemsSynced(int attempt)
+        {
+            _itemsSyncedAttempt = attempt;
+            var waiting = _waitingLogin;
+            if (waiting == null) return;
+            _waitingLogin = null;
+            OnLoggedIn(waiting, waited: true);
+        }
+
+        private static void OnLoggedIn(LoginSuccessful ok, bool waited = false)
         {
             var marker = ProfileGuard.Marker(Seed, SlotName);
             var slotData = ok.SlotData ?? new Dictionary<string, object>();
@@ -302,6 +326,12 @@ namespace SoDArchipelago
                 return;
             }
             var current = ProfileGuard.MarkerOf(DewSave.profileMain);
+            if (current == null && !waited && _itemsSyncedAttempt != _attempt)
+            {
+                _waitingLogin = ok;
+                _waitingLoginDeadline = Time.realtimeSinceStartup + BindItemWaitSeconds;
+                return;
+            }
             if (current == null && !BindAfterLogin(marker))
                 return;
             if (ProfileGuard.MarkerOf(DewSave.profileMain) != marker)
@@ -331,7 +361,20 @@ namespace SoDArchipelago
                 Log.Info("DeathLink enabled.");
             }
 
-            LoggedIn?.Invoke();
+            try
+            {
+                LoggedIn?.Invoke();
+            }
+            finally
+            {
+                // The first save of a newly bound profile, after LoggedIn applied the received items.
+                if (current == null)
+                {
+                    DewSave.SaveProfileMain(immediate: true);
+                    Log.Info($"Saved the newly bound profile '{DewSave.profileMain.name}' " +
+                             $"({ReceivedItems.Count} items received).");
+                }
+            }
         }
 
         // The provisional login succeeded: write the marker if the ap_bind request still matches what is loaded.
@@ -372,6 +415,7 @@ namespace SoDArchipelago
             _deathLink = null;
             _pendingMarker = null;
             _bindRequest = null;
+            _waitingLogin = null;
             SlotData = null;
             ProfileGuard.SetSessionMarker(null);
             var wasActive = Status != State.Disconnected;
@@ -472,6 +516,9 @@ namespace SoDArchipelago
                 try { work.Action(); }
                 catch (Exception e) { Debug.LogException(e); }
             }
+
+            if (_waitingLogin != null && Time.realtimeSinceStartup >= _waitingLoginDeadline)
+                Disconnect($"The server sent no items within {BindItemWaitSeconds} s of logging in. Nothing was bound.");
         }
 
         // Called when a profile is loaded, created or converted (or a load failed).

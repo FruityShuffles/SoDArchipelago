@@ -70,8 +70,9 @@ namespace SoDArchipelago
             return completed == 0 && results == 0 && plays == 0;
         }
 
-        // Writes the marker into the loaded profile (DESIGN.md step 4) and saves it right away. Called only after the AP
-        // login for this seed/slot succeeded (ApClient.OnLoggedIn), so a wrong slot or password never marks a profile.
+        // Writes the marker into the loaded profile (DESIGN.md step 4). Called only after the AP login for this seed/slot
+        // succeeded (ApClient.OnLoggedIn), so a wrong slot or password never marks a profile. The caller saves the main
+        // profile once the received items (the starting Travelers) are applied, so it's never saved without them.
         public static bool Bind(string marker)
         {
             if (LoadFailed || DewSave.profileMainPath == null || DewSave.profileMain == null)
@@ -86,10 +87,10 @@ namespace SoDArchipelago
                 return existing == marker;
             }
             DewSave.profileMain.experienceFlags.Add(marker);
+            DewSave.profileMain.experienceFlags.Add(ApRecords.FormatFlag);
             UnlockState.Enforce(DewSave.profileMain, "bind");
             // Stats-recovery events from before the binding are none of AP's business (ApRecords.CheckStatsRecovery).
             if (ApRecords.AcknowledgeStatsRecoveries() > 0) DewSave.SaveProfileStats(immediate: true);
-            DewSave.SaveProfileMain(immediate: true);
             Log.Info($"Bound profile '{DewSave.profileMain.name}' ({DewSave.profileMainPath}) to {marker}");
             return true;
         }
@@ -143,6 +144,12 @@ namespace SoDArchipelago
         private const string AppliedPrefix = "AP:applied:";
         private const string ForcedPrefix = "AP:forced:";
         private const string StarPrefix = "AP:star:";
+
+        // Written at bind time since random starting Travelers: every Traveler comes from the unlock record. A marked
+        // profile without it was bound earlier and keeps Lacerta and Mist (UnlockState).
+        public const string FormatFlag = "AP:format:2";
+
+        public static bool HasFormatFlag(DewProfile p) => p.experienceFlags.Contains(FormatFlag);
 
         private static List<string> MainFlags => DewSave.profileMain.experienceFlags;
 

@@ -17,7 +17,7 @@ class GoalDifficulty(Choice):
 
 class GoalTravelerCount(Range):
     """How many different Travelers must win a run (at Goal Difficulty or harder) to complete your goal.
-    Lacerta and Mist start unlocked; the other Travelers must be received first."""
+    You start with 2 random Travelers; the others must be received first."""
     display_name = "Goal Traveler Count"
     range_start = 1
     range_end = 9

@@ -119,6 +119,7 @@ namespace SoDArchipelago
         private static string Sender(Archipelago.MultiClient.Net.Models.ItemInfo info)
         {
             var name = ApClient.PlayerName(info);
+            if (info.LocationId == -2) return " (starting item)";
             if (info.LocationId < 0) return " (server)";
             return name == ApClient.SlotName ? "" : $" from {name}";
         }

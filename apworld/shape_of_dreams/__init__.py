@@ -39,6 +39,8 @@ class ShapeOfDreamsWorld(World):
     forced_lucid_dreams: Set[str] = frozenset()
     # Star key -> shuffled mastery requirement (DESIGN.md "Shuffled star requirements"); empty when the option is off.
     star_requirements: Dict[str, int] = {}
+    # The 2 Travelers whose first progressive copy is precollected (DESIGN.md "Items"), set in generate_early.
+    starting_travelers: List[str] = []
 
     item_name_to_id = item_name_to_id
     location_name_to_id = location_name_to_id
@@ -51,6 +53,7 @@ class ShapeOfDreamsWorld(World):
                                     {lucid_dreams_by_type["chaotic"][d] for d in chaotic})
         if self.options.shuffle_star_requirements:
             self.star_requirements = shuffle_star_requirements(self.random)
+        self.starting_travelers = self.random.sample(sorted(travelers), 2)
 
     def create_item(self, name: str) -> SoDItem:
         data = item_table[name]
@@ -78,6 +81,11 @@ class ShapeOfDreamsWorld(World):
         pool: List[SoDItem] = []
         for name, copies in unlock_item_counts.items():
             pool += [self.create_item(name) for _ in range(copies)]
+        # Each starting Traveler's first copy is a starting item instead of a pool item.
+        for traveler in self.starting_travelers:
+            item = next(i for i in pool if i.name == travelers[traveler]["progressive_item"])
+            pool.remove(item)
+            self.multiworld.push_precollected(item)
         for name in mastery_item_names:
             pool += [self.create_item(name) for _ in range(self.options.mastery_packs_per_traveler.value)]
         remaining = len(location_table) - len(pool)
@@ -86,29 +94,17 @@ class ShapeOfDreamsWorld(World):
         pool += [self.create_item(STARDUST) for _ in range(remaining)]
         self.multiworld.itempool += pool
 
-    def _copies_rule(self, traveler: str, copies: int):
-        item = travelers[traveler]["progressive_item"]
-        if copies <= 0:
-            return None
-        return lambda state: state.has(item, self.player, copies)
-
     def _unlocked_travelers(self, state: CollectionState) -> int:
-        return sum(1 for key, t in travelers.items()
-                   if t["starts_unlocked"] or state.has(t["progressive_item"], self.player))
+        return sum(1 for t in travelers.values() if state.has(t["progressive_item"], self.player))
 
     def set_rules(self) -> None:
         for name, data in location_table.items():
             if data.traveler is None:
                 continue
-            starts_unlocked = travelers[data.traveler]["starts_unlocked"]
-            if data.kind == "world_clear":
-                copies = data.copies_required
-            else:
-                # An achievement that must be done as a Traveler needs that Traveler (DESIGN.md "Logic").
-                copies = 0 if starts_unlocked else 1
-            rule = self._copies_rule(data.traveler, copies)
-            if rule:
-                self.get_location(name).access_rule = rule
+            # An achievement that must be done as a Traveler needs that Traveler (DESIGN.md "Logic").
+            copies = data.copies_required if data.kind == "world_clear" else 1
+            item = travelers[data.traveler]["progressive_item"]
+            self.get_location(name).access_rule =                 lambda state, item=item, copies=copies: state.has(item, self.player, copies)
 
         required = self.options.goal_traveler_count.value
         self.get_location("Goal").access_rule = lambda state: self._unlocked_travelers(state) >= required

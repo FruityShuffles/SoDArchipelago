@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -136,6 +137,8 @@ namespace SoDArchipelago
             StarRequirements.OnLoggedIn();
             CheckHandler.ResendAll();
             ItemHandler.ProcessAll("connect");
+            Log.Info("Unlocked Travelers: " + string.Join(", ",
+                Dew.HeroOrder.Where(h => !UnlockState.IsHeroLocked(DewSave.profileMain, h))));
             GoalHandler.OnLoggedIn();
         }
 

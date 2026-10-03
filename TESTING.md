@@ -25,6 +25,9 @@ whole log, or at least every `[AP]` line, plus anything in the "Report" lines be
 - Collect on goal: Archipelago's default sends every remaining item when the goal is reached (about 215 here). They all
   applied with no errors. This also releases every forced dream, so test forced dreams before winning.
 
+**0.4.0, random starting Travelers** (2026-10-03, same setup, starters Aurena and Yubar): 14.1–14.4 passed. 14.5
+(tutorial), 14.6 (profiles bound before 0.4.0) and 14.7 (co-op) were not tested.
+
 Every connect logs `connection rejected (400 Bad Request)` on the local server, then connects: MultiClient.Net tries
 `wss://` first and falls back to `ws://`.
 
@@ -333,3 +336,29 @@ with no mods. Not covered: an AP player joining someone else's lobby, and two AP
 - Quit mid-run and continue it: `fromSave=True` and nothing sent [5.5].
 - `ap_disconnect`, clear a world, `ap_connect`: the clear is resent [7].
 - Switch to an unbound profile: `[AP] Star requirements: vanilla` [12.6].
+
+## 14. Random starting Travelers (0.4.0, issue #1)
+
+The seed starts with 2 random Travelers instead of Lacerta and Mist. Use a seed whose starting Travelers (the spoiler's
+"Starting Items") are neither Lacerta nor Mist. Claude hosts it and sends items with `/send`.
+
+1. **Fresh bind.** Create a new profile, `ap_connect`, `ap_bind`. The feed shows `Received Progressive <Traveler>
+   (<Traveler>) (starting item)` for both starting Travelers. Log:
+   - `[AP] Unlock state enforced (bind) ...: -Hero_Lacerta, ..., -Hero_Mist, ...` (vanilla's starters locked).
+   - `[AP] Unlock state enforced (received items) ...: +<starter>, +<starter>, preferred[default] Hero_Lacerta-><first>`,
+     where `<first>` is the first starting Traveler in the game's order (Lacerta, Mist, Yubar, Vesper, Aurena, Bismuth,
+     Nachia, Shell, Cetus).
+   - `[AP] Unlocked Travelers: <both starters>`, then `[AP] Saved the newly bound profile ...`.
+   **Report:** the Traveler the lobby opens on (Dream Alone), and that only the 2 starters are selectable.
+2. **A lobby type the profile hasn't used yet.** Limbo needs 4 Evil Lucid Dreams: Claude sends them. Enter Limbo:
+   `[AP] Hero_Lacerta is locked; the lobby Traveler is <first> instead.` and the lobby opens on `<first>`.
+3. **Receiving Lacerta.** `/send SoDTest Progressive Lacerta`: `Received Progressive Lacerta (Lacerta)`. She is selectable
+   with her default memories; her alternate memories stay locked.
+4. **Restart.** Quit, restart, load the profile (offline): the same 3 Travelers are unlocked, nothing else.
+   `ap_connect`: no unlock changes.
+5. **Tutorial.** Play the tutorial (title screen). **Report** which Traveler it uses. Back on the title screen, the next
+   Dream Alone lobby opens on an unlocked Traveler.
+6. **Profile bound before this change.** Load **AP Solo 2** (offline, don't connect): Lacerta and Mist are still
+   unlocked, plus whatever that seed sent. Load the new profile again afterwards.
+7. **Co-op join** (optional, needs a second game copy): join a friend's lobby with the new profile. The lobby
+   opens on an unlocked Traveler.

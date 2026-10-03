@@ -1,7 +1,7 @@
 {
   "game": "Shape of Dreams",
-  "data_format_version": 3,
-  "data_hash": "8b011d444847acda47e6b5a30c0c5690791ac1949e6bfa0b35a4f8f12fcf0472",
+  "data_format_version": 4,
+  "data_hash": "cd25df83742e349c4e6c101c09e1496bb38b59e1c0e2c22a3ad2765aa34e6248",
   "extracted_from_game_version": "r.1.4.0.13_s",
   "difficulties": [
     {
@@ -37,7 +37,6 @@
     {
       "key": "Hero_Aurena",
       "name": "Aurena",
-      "starts_unlocked": false,
       "progressive_item": "Progressive Aurena",
       "mastery_item": "Mastery: Aurena",
       "skills": [
@@ -52,7 +51,6 @@
     {
       "key": "Hero_Bismuth",
       "name": "Bismuth",
-      "starts_unlocked": false,
       "progressive_item": "Progressive Bismuth",
       "mastery_item": "Mastery: Bismuth",
       "skills": [
@@ -66,7 +64,6 @@
     {
       "key": "Hero_Cetus",
       "name": "Cetus",
-      "starts_unlocked": false,
       "progressive_item": "Progressive Cetus",
       "mastery_item": "Mastery: Cetus",
       "skills": [
@@ -81,7 +78,6 @@
     {
       "key": "Hero_Lacerta",
       "name": "Lacerta",
-      "starts_unlocked": true,
       "progressive_item": "Progressive Lacerta",
       "mastery_item": "Mastery: Lacerta",
       "skills": [
@@ -96,7 +92,6 @@
     {
       "key": "Hero_Mist",
       "name": "Mist",
-      "starts_unlocked": true,
       "progressive_item": "Progressive Mist",
       "mastery_item": "Mastery: Mist",
       "skills": [
@@ -111,7 +106,6 @@
     {
       "key": "Hero_Nachia",
       "name": "Nachia",
-      "starts_unlocked": false,
       "progressive_item": "Progressive Nachia",
       "mastery_item": "Mastery: Nachia",
       "skills": [
@@ -126,7 +120,6 @@
     {
       "key": "Hero_Husk",
       "name": "Shell",
-      "starts_unlocked": false,
       "progressive_item": "Progressive Shell",
       "mastery_item": "Mastery: Shell",
       "skills": [
@@ -141,7 +134,6 @@
     {
       "key": "Hero_Vesper",
       "name": "Vesper",
-      "starts_unlocked": false,
       "progressive_item": "Progressive Vesper",
       "mastery_item": "Mastery: Vesper",
       "skills": [
@@ -156,7 +148,6 @@
     {
       "key": "Hero_Yubar",
       "name": "Yubar",
-      "starts_unlocked": false,
       "progressive_item": "Progressive Yubar",
       "mastery_item": "Mastery: Yubar",
       "skills": [
@@ -237,11 +228,13 @@
       "classification": "progression",
       "traveler": "Hero_Lacerta",
       "unlocks": [
+        "Hero_Lacerta",
         "St_Q_IncendiaryRounds",
         "St_R_PrecisionShot",
         "St_D_DoubleTap"
       ],
       "unlock_names": [
+        "Lacerta",
         "Incendiary Rounds",
         "Precision Shot",
         "Double Tap"
@@ -255,11 +248,13 @@
       "classification": "progression",
       "traveler": "Hero_Mist",
       "unlocks": [
+        "Hero_Mist",
         "St_Q_Fleche",
         "St_R_Parry",
         "St_D_AstridsMasterpiecePriorite"
       ],
       "unlock_names": [
+        "Mist",
         "Flèche",
         "Parry",
         "Astrid's Masterpiece - Priorité"
@@ -2233,7 +2228,7 @@
       "traveler": "Hero_Lacerta",
       "world": 1,
       "difficulty": "DEEP_SLEEP",
-      "copies_required": 0,
+      "copies_required": 1,
       "id": 7720139
     },
     {
@@ -2243,7 +2238,7 @@
       "traveler": "Hero_Lacerta",
       "world": 1,
       "difficulty": "OMINOUS_DREAM",
-      "copies_required": 1,
+      "copies_required": 2,
       "id": 7720140
     },
     {
@@ -2253,7 +2248,7 @@
       "traveler": "Hero_Lacerta",
       "world": 1,
       "difficulty": "NIGHTMARE",
-      "copies_required": 2,
+      "copies_required": 3,
       "id": 7720141
     },
     {
@@ -2263,7 +2258,7 @@
       "traveler": "Hero_Lacerta",
       "world": 2,
       "difficulty": "DEEP_SLEEP",
-      "copies_required": 0,
+      "copies_required": 1,
       "id": 7720142
     },
     {
@@ -2273,7 +2268,7 @@
       "traveler": "Hero_Lacerta",
       "world": 2,
       "difficulty": "OMINOUS_DREAM",
-      "copies_required": 1,
+      "copies_required": 2,
       "id": 7720143
     },
     {
@@ -2283,7 +2278,7 @@
       "traveler": "Hero_Lacerta",
       "world": 2,
       "difficulty": "NIGHTMARE",
-      "copies_required": 2,
+      "copies_required": 3,
       "id": 7720144
     },
     {
@@ -2293,7 +2288,7 @@
       "traveler": "Hero_Lacerta",
       "world": 3,
       "difficulty": "DEEP_SLEEP",
-      "copies_required": 0,
+      "copies_required": 1,
       "id": 7720145
     },
     {
@@ -2303,7 +2298,7 @@
       "traveler": "Hero_Lacerta",
       "world": 3,
       "difficulty": "OMINOUS_DREAM",
-      "copies_required": 1,
+      "copies_required": 2,
       "id": 7720146
     },
     {
@@ -2313,7 +2308,7 @@
       "traveler": "Hero_Lacerta",
       "world": 3,
       "difficulty": "NIGHTMARE",
-      "copies_required": 2,
+      "copies_required": 3,
       "id": 7720147
     },
     {
@@ -2323,7 +2318,7 @@
       "traveler": "Hero_Lacerta",
       "world": 4,
       "difficulty": "DEEP_SLEEP",
-      "copies_required": 0,
+      "copies_required": 1,
       "id": 7720148
     },
     {
@@ -2333,7 +2328,7 @@
       "traveler": "Hero_Lacerta",
       "world": 4,
       "difficulty": "OMINOUS_DREAM",
-      "copies_required": 1,
+      "copies_required": 2,
       "id": 7720149
     },
     {
@@ -2343,7 +2338,7 @@
       "traveler": "Hero_Lacerta",
       "world": 4,
       "difficulty": "NIGHTMARE",
-      "copies_required": 2,
+      "copies_required": 3,
       "id": 7720150
     },
     {
@@ -2353,7 +2348,7 @@
       "traveler": "Hero_Lacerta",
       "world": 5,
       "difficulty": "DEEP_SLEEP",
-      "copies_required": 0,
+      "copies_required": 1,
       "id": 7720151
     },
     {
@@ -2363,7 +2358,7 @@
       "traveler": "Hero_Lacerta",
       "world": 5,
       "difficulty": "OMINOUS_DREAM",
-      "copies_required": 1,
+      "copies_required": 2,
       "id": 7720152
     },
     {
@@ -2373,7 +2368,7 @@
       "traveler": "Hero_Lacerta",
       "world": 5,
       "difficulty": "NIGHTMARE",
-      "copies_required": 2,
+      "copies_required": 3,
       "id": 7720153
     },
     {
@@ -2383,7 +2378,7 @@
       "traveler": "Hero_Mist",
       "world": 1,
       "difficulty": "DEEP_SLEEP",
-      "copies_required": 0,
+      "copies_required": 1,
       "id": 7720154
     },
     {
@@ -2393,7 +2388,7 @@
       "traveler": "Hero_Mist",
       "world": 1,
       "difficulty": "OMINOUS_DREAM",
-      "copies_required": 1,
+      "copies_required": 2,
       "id": 7720155
     },
     {
@@ -2403,7 +2398,7 @@
       "traveler": "Hero_Mist",
       "world": 1,
       "difficulty": "NIGHTMARE",
-      "copies_required": 2,
+      "copies_required": 3,
       "id": 7720156
     },
     {
@@ -2413,7 +2408,7 @@
       "traveler": "Hero_Mist",
       "world": 2,
       "difficulty": "DEEP_SLEEP",
-      "copies_required": 0,
+      "copies_required": 1,
       "id": 7720157
     },
     {
@@ -2423,7 +2418,7 @@
       "traveler": "Hero_Mist",
       "world": 2,
       "difficulty": "OMINOUS_DREAM",
-      "copies_required": 1,
+      "copies_required": 2,
       "id": 7720158
     },
     {
@@ -2433,7 +2428,7 @@
       "traveler": "Hero_Mist",
       "world": 2,
       "difficulty": "NIGHTMARE",
-      "copies_required": 2,
+      "copies_required": 3,
       "id": 7720159
     },
     {
@@ -2443,7 +2438,7 @@
       "traveler": "Hero_Mist",
       "world": 3,
       "difficulty": "DEEP_SLEEP",
-      "copies_required": 0,
+      "copies_required": 1,
       "id": 7720160
     },
     {
@@ -2453,7 +2448,7 @@
       "traveler": "Hero_Mist",
       "world": 3,
       "difficulty": "OMINOUS_DREAM",
-      "copies_required": 1,
+      "copies_required": 2,
       "id": 7720161
     },
     {
@@ -2463,7 +2458,7 @@
       "traveler": "Hero_Mist",
       "world": 3,
       "difficulty": "NIGHTMARE",
-      "copies_required": 2,
+      "copies_required": 3,
       "id": 7720162
     },
     {
@@ -2473,7 +2468,7 @@
       "traveler": "Hero_Mist",
       "world": 4,
       "difficulty": "DEEP_SLEEP",
-      "copies_required": 0,
+      "copies_required": 1,
       "id": 7720163
     },
     {
@@ -2483,7 +2478,7 @@
       "traveler": "Hero_Mist",
       "world": 4,
       "difficulty": "OMINOUS_DREAM",
-      "copies_required": 1,
+      "copies_required": 2,
       "id": 7720164
     },
     {
@@ -2493,7 +2488,7 @@
       "traveler": "Hero_Mist",
       "world": 4,
       "difficulty": "NIGHTMARE",
-      "copies_required": 2,
+      "copies_required": 3,
       "id": 7720165
     },
     {
@@ -2503,7 +2498,7 @@
       "traveler": "Hero_Mist",
       "world": 5,
       "difficulty": "DEEP_SLEEP",
-      "copies_required": 0,
+      "copies_required": 1,
       "id": 7720166
     },
     {
@@ -2513,7 +2508,7 @@
       "traveler": "Hero_Mist",
       "world": 5,
       "difficulty": "OMINOUS_DREAM",
-      "copies_required": 1,
+      "copies_required": 2,
       "id": 7720167
     },
     {
@@ -2523,7 +2518,7 @@
       "traveler": "Hero_Mist",
       "world": 5,
       "difficulty": "NIGHTMARE",
-      "copies_required": 2,
+      "copies_required": 3,
       "id": 7720168
     },
     {

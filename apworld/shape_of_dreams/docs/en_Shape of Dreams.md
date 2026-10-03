@@ -4,7 +4,8 @@
 
 In vanilla Shape of Dreams, the in-game achievement system is used to unlock Travelers, Memories, Essences and Lucid Dream run modifiers.
 In Archipelago those 93 unlocks are shuffled into the multiworld as items, and achievements and world clears become
-the checks that send items to you and to the other players.
+the checks that send items to you and to the other players. Lacerta and Mist are items too: you start with 2 random
+Travelers instead.
 
 Your normal save is never touched. Each seed is played on its own game profile, which the client mod binds to your
 slot the first time you connect.
@@ -47,6 +48,7 @@ makes generation fail.
 ## What items can I receive?
 
 - **Progressive Traveler** (progression). The first copy unlocks the Traveler and the next three unlock their three alternate Memories (Q, then R, then Identity).
+  Your 2 starting Travelers' first copies are starting items (`(starting item)` in the message feed).
 - **Memory / Essence / Lucid Dream unlocks** (useful). Unlocked Memories or Essences can drop in runs. Unlocked Lucid Dream run modifiers
    can be selected in the lobby.
 - **Mastery: \<Traveler\>** (filler): +5 mastery levels for that Traveler.

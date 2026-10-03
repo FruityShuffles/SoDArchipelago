@@ -20,6 +20,7 @@ import json
 import os
 import re
 import sys
+from collections import Counter
 from pathlib import Path
 
 DEFAULT_GAME_DIR = r"C:\Program Files (x86)\Steam\steamapps\common\Shape of Dreams"
@@ -30,7 +31,7 @@ OUT_PATH = DATA_DIR / "game_data.json"
 # Bump when the JSON layout changes in a way the mod has to know about. The mod refuses slot_data from a different
 # data version, so a seed generated with one apworld can't silently be played with an incompatible mod. Content changes
 # (new achievements after a game update, ...) are caught by "data_hash" instead.
-DATA_FORMAT_VERSION = 3
+DATA_FORMAT_VERSION = 4
 
 # The apworld's data_hash.py, loaded by path: importing it as a package module would pull in Archipelago.
 _spec = importlib.util.spec_from_file_location("sod_data_hash", DATA_DIR / "data_hash.py")
@@ -134,13 +135,8 @@ DIFFICULTIES = [
 ]
 WORLDS = [1, 2, 3, 4, 5]
 
-# DESIGN.md "Logic": copies of the Traveler's progressive item a world clear needs, for locked Travelers and for the
-# Travelers that start unlocked (Lacerta, Mist). Their first copy is already an alternate memory.
-CLEAR_COPIES_REQUIRED = {
-    "DEEP_SLEEP": {"locked": 1, "starting": 0},
-    "OMINOUS_DREAM": {"locked": 2, "starting": 1},
-    "NIGHTMARE": {"locked": 3, "starting": 2},
-}
+# DESIGN.md "Logic": copies of the Traveler's progressive item a world clear needs (the first copy is the Traveler).
+CLEAR_COPIES_REQUIRED = {"DEEP_SLEEP": 1, "OMINOUS_DREAM": 2, "NIGHTMARE": 3}
 
 STARDUST_KEY = "STARDUST"
 
@@ -182,9 +178,8 @@ def main() -> int:
     if len(targets) != len(achievements):
         fail("expected every achievement to unlock exactly one distinct target")
 
-    # Travelers, alphabetical by display name. Gated = locked behind an achievement in vanilla.
+    # Travelers, alphabetical by display name.
     trav_order = sorted(travelers, key=lambda k: travelers[k]["name"])
-    gated = {k for k in trav_order if k in targets}
     trav_name = {k: travelers[k]["name"] for k in trav_order}
 
     # --- Validate the hand tables against RawData --------------------------------------------------------------------
@@ -215,7 +210,8 @@ def main() -> int:
     # --- Items -------------------------------------------------------------------------------------------------------
     items: list[dict] = []
     for hero in trav_order:
-        unlocks = ([hero] if hero in gated else []) + ALT_MEMORY_ORDER[hero]
+        # Every Traveler is an unlock, including vanilla's starting ones: each seed precollects 2 random Travelers.
+        unlocks = [hero] + ALT_MEMORY_ORDER[hero]
         unlock_names = [trav_name[k] if k in travelers else memories[k]["name"] for k in unlocks]
         items.append({"name": f"Progressive {trav_name[hero]}", "key": f"PROGRESSIVE_{hero}", "kind": "progressive",
                       "classification": "progression", "traveler": hero, "unlocks": unlocks,
@@ -241,9 +237,9 @@ def main() -> int:
                       "classification": "filler", "traveler": hero})
     items.append({"name": "Stardust", "key": STARDUST_KEY, "kind": "stardust", "classification": "filler"})
 
-    covered = [u for i in items for u in i.get("unlocks", [])]
-    if sorted(covered) != sorted(targets):
-        fail("unlock items don't cover every achievement target exactly once")
+    covered = Counter(u for i in items for u in i.get("unlocks", []))
+    if covered != Counter(set(targets) | set(trav_order)):
+        fail("unlock items don't cover every achievement target and every Traveler exactly once")
 
     # --- Locations ---------------------------------------------------------------------------------------------------
     locations: list[dict] = []
@@ -255,7 +251,7 @@ def main() -> int:
     for hero in trav_order:
         for world in WORLDS:
             for diff in clear_diffs:
-                req = CLEAR_COPIES_REQUIRED[diff["key"]]["locked" if hero in gated else "starting"]
+                req = CLEAR_COPIES_REQUIRED[diff["key"]]
                 locations.append({"name": f"World {world} Clear ({diff['name']}): {trav_name[hero]}",
                                   "key": f"CLEAR_W{world}_{diff['key']}_{hero}", "kind": "world_clear",
                                   "traveler": hero, "world": world, "difficulty": diff["key"],
@@ -327,7 +323,6 @@ def main() -> int:
         "travelers": [{
             "key": hero,
             "name": trav_name[hero],
-            "starts_unlocked": hero not in gated,
             "progressive_item": f"Progressive {trav_name[hero]}",
             "mastery_item": f"Mastery: {trav_name[hero]}",
             # Every Q/R/Identity memory of this Traveler (base and alternate). The mod protects the lock status of

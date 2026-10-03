@@ -19,7 +19,7 @@ def compute(game_data: dict) -> str:
                          for e in game_data["items"]), key=lambda e: e["id"]),
         "locations": sorted((_pick(e, ("id", "key", "kind", "traveler", "world", "difficulty", "copies_required"))
                              for e in game_data["locations"]), key=lambda e: e["id"]),
-        "travelers": sorted((_pick(t, ("key", "starts_unlocked", "skills", "progressive_item", "mastery_item"))
+        "travelers": sorted((_pick(t, ("key", "skills", "progressive_item", "mastery_item"))
                              for t in game_data["travelers"]), key=lambda t: t["key"]),
         "difficulties": [_pick(d, ("key", "game_id", "rank", "has_locations")) for d in game_data["difficulties"]],
     }
