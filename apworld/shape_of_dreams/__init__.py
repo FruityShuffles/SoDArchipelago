@@ -13,6 +13,7 @@ from .stars import shuffle_star_requirements
 
 class SoDWeb(WebWorld):
     theme = "dirt"
+    bug_report_page = "https://github.com/FruityShuffles/SoDArchipelago/issues"
     option_groups = option_groups
     tutorials = [Tutorial(
         "Multiworld Setup Guide",

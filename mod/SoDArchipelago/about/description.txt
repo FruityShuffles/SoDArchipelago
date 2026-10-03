@@ -6,7 +6,17 @@ This mod connects Shape of Dreams to an Archipelago multiworld. Achievements and
 Each seed should be played on its own fresh Shape of Dreams save profile.
 
 [h2]Early development build[/h2]
-Solo play works: received items, achievement checks, world clears and DeathLink. Winning runs, Ominous Dream and Nightmare, offline play and co-op haven't been tested yet. Expect bugs, and please report them.
+Expect bugs, and please report them.
+
+[h2]Options[/h2]
+Set these in your YAML. The [url=https://github.com/FruityShuffles/SoDArchipelago/blob/main/examples/Shape%20of%20Dreams.yaml]example YAML[/url] explains every one.
+[list]
+[*][b]Goal:[/b] the lowest difficulty a win counts at, and how many different Travelers must win (1-9).
+[*][b]Forced Lucid Dreams:[/b] pick Evil or Chaotic Lucid Dreams to be forced on in every run until you receive their item.
+[*][b]Shuffled constellation stars:[/b] the mastery level each star needs is shuffled (on by default).
+[*][b]DeathLink:[/b] when one player is knocked down, everyone on DeathLink goes down.
+[*][b]Pool and checks:[/b] how much Mastery and Stardust the filler gives, and which checks (by Traveler, difficulty or achievement type) are important or excluded.
+[/list]
 
 [h2]Getting started[/h2]
 [list]

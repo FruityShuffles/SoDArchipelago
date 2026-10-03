@@ -54,6 +54,12 @@ makes generation fail.
 
 With default settings the filler alone gives every Traveler 35 mastery and enough Stardust to buy every constellation star.
 
+## What do I see when I send or receive an item?
+
+A message feed in the top-left corner of the screen shows `Received <item> from <player>` and the items you send to
+other players. If you receive an unlock or Mastery during a run, its message ends with `(next run)`: it applies from
+your next run.
+
 ## What is the goal?
 
 Win a run at `goal_difficulty` or harder with `goal_traveler_count` different Travelers. A win is reaching either

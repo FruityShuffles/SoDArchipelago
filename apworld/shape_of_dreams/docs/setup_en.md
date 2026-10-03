@@ -2,11 +2,12 @@
 
 ## Required software
 
-- Shape of Dreams (Steam)
+- Shape of Dreams on Steam. Steam is the only supported version of the game.
 - The [Archipelago Randomizer](https://steamcommunity.com/sharedfiles/filedetails/?id=3809735647) mod from the Steam Workshop
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases) 0.6.4 or newer, to generate and host games,
   with `shape_of_dreams.apworld` installed (double-click it, or copy it into Archipelago's `custom_worlds` folder).
-  Download it from the [SoDArchipelago releases](https://github.com/FruityShuffles/SoDArchipelago/releases).
+  Download it from the [SoDArchipelago releases](https://github.com/FruityShuffles/SoDArchipelago/releases), taking the
+  release that matches the version of your mod.
 
 ## Your YAML
 
@@ -58,6 +59,13 @@ Steam achievements aren't updated while you are playing on an Archipelago bound 
 | `ap_status` | Show the connection and profile status |
 | `ap_server <address>`, `ap_slot <name>`, `ap_password <password>` | Change the connection settings (best to do this in the mod config instead) |
 
+## Hints and chat
+
+The game has no chat box or hint command. To chat or use commands such as `!hint`, connect the Archipelago Text Client
+to the same room with your slot name (open it from the Archipelago Launcher). See the
+[commands guide](https://archipelago.gg/tutorial/Archipelago/commands/en). Messages from other players still show up in
+the on-screen feed.
+
 ## Playing offline
 
 A bound profile keeps working when you're not connected: you keep what you've already received, completed achievements
@@ -68,6 +76,11 @@ and world clears are saved in the profile, and everything is sent the next time 
 If you disable crossplay, you may play co-op with other players regardless of whether they are also playing Archipelago or not.
 Be aware that a player who joins someone else's lobby can't receive DeathLinks. Two archipelago players playing together won't
 be able to receive DeathLinks for the joining player.
+
+## Updating
+
+Updating the mod or the apworld in the middle of a seed is almost always fine. If a release ever can't be used with an
+existing seed, its release notes say so, and the mod tells you when you connect.
 
 ## Troubleshooting
 
