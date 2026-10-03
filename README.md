@@ -5,8 +5,8 @@ Archipelago is a multi-game randomizer: players in different games share one shu
 be someone else's item, and theirs can be yours.
 
 In this randomizer, achievements and world clears are the checks, and the Traveler, Memory, Essence and Lucid Dream
-unlocks (plus Mastery and Stardust) are the items. Each seed is played on its own game profile, so your normal save is
-never touched.
+unlocks (plus Mastery and Stardust) are the items. You start with 2 random Travelers instead of Lacerta and Mist. Each
+seed is played on its own game profile, so your normal save is never touched.
 
 Please [report bugs](https://github.com/FruityShuffles/SoDArchipelago/issues).
 

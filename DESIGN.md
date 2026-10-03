@@ -50,7 +50,8 @@ Item/location IDs are frozen once a version is released: the extractor keeps eve
 
 ## Items
 
-In vanilla each achievement unlocks exactly one thing, which gives 93 unlocks. All 93 are items, grouped as follows.
+In vanilla each achievement unlocks exactly one thing, which gives 93 unlocks. All 93 are items, and so are Lacerta and
+Mist (vanilla's starting Travelers), grouped as follows.
 
 | Class | Item | Copies | Effect |
 |---|---|---|---|
@@ -264,7 +265,7 @@ and a key that disappears and comes back keeps its ID.
   locks the target of every incomplete achievement and unlocks the target of every completed one. `UnlockHero` also
   unlocks a Traveler's alternate memories whose achievement is complete. On a marked profile the mod therefore keeps
   its own record of what AP has granted, and after `Validate`, on mod load, on connect and after items it sets every
-  managed unlock (the 93 targets, plus a locked Traveler's own memories) to match, using the game's `Unlock*`/`Lock*`
+  managed unlock (every Traveler, the 93 targets, plus a locked Traveler's own memories) to match, using the game's `Unlock*`/`Lock*`
   functions. This works offline too.
 - **Travelers come only from items.** A Traveler is unlocked if and only if the unlock record has it; the starting
   Travelers' precollected copies arrive as received items (location −2, shown as "(starting item)"). `Validate` unlocks

@@ -57,12 +57,15 @@ lobby: the events fire on a joining client, and the zone index and the local pla
    python MultiServer.py output/AP_<number>.zip
    ```
 
+   Since 0.4.0, seed 1 starts with Cetus and Nachia instead of Lacerta and Mist (the spoiler's "Starting Items"). Where a
+   step below plays Lacerta, play Cetus, or `/send SoDTest Progressive Lacerta` first.
+
    The server listens on `localhost:38281`. Keep its window open: you'll type `/send` commands there.
 
 ## 1. Mod loads
 
 1. Start the game, enable **Archipelago** in the mod manager if needed.
-   - `[AP] Loaded com.sodarchipelago.archipelago 0.3.0; data format 3, extracted from game r.1.4.0.13_s; running game ...`
+   - `[AP] Loaded com.sodarchipelago.archipelago 0.4.0; data format 4, extracted from game r.1.4.0.13_s; running game ...`
    - No `Failed to load com.sodarchipelago.archipelago` line from `[DewMod]`.
 2. Open the mod's config in the mod manager. **Report:** do Server / Slot / Password fields show up and save?
 3. Open the console and type `ap_status`.
@@ -97,7 +100,7 @@ lobby: the events fire on a joining client, and the zone index and the local pla
 4. `ap_bind`.
    - `[AP] Bound profile 'AP Test' (...) to Archipelago:<seed>:SoDTest`
    - `[AP] Connected: seed <seed>, slot SoDTest (profile 'AP Test').`
-   - `[AP] slot_data: data_format_version=3, data_hash=<hash>, ..., death_link=True`, `[AP] DeathLink enabled.`
+   - `[AP] slot_data: data_format_version=4, data_hash=<hash>, ..., death_link=True`, `[AP] DeathLink enabled.`
    - `[AP] Resending 0 checks (0 achievements, 0 world clears)`
    - `[AP] Goal: 0/1 Travelers have won at rank 1+ ()`
    - On screen: `Archipelago: SoDTest` top-left. This proves `wss://`-then-`ws://` connection works under Unity Mono. To test `wss://` too, connect once to a real archipelago.gg room (any seed with a Shape of

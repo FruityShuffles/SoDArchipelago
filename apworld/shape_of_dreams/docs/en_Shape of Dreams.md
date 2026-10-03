@@ -4,8 +4,8 @@
 
 In vanilla Shape of Dreams, the in-game achievement system is used to unlock Travelers, Memories, Essences and Lucid Dream run modifiers.
 In Archipelago those 93 unlocks are shuffled into the multiworld as items, and achievements and world clears become
-the checks that send items to you and to the other players. Lacerta and Mist are items too: you start with 2 random
-Travelers instead.
+the checks that send items to you and to the other players. Lacerta and Mist are items too: instead of them, you start
+with 2 random Travelers.
 
 Your normal save is never touched. Each seed is played on its own game profile, which the client mod binds to your
 slot the first time you connect.
@@ -42,8 +42,8 @@ Groups: `Achievements`, `World Clears`, `Build-Dependent Achievements`, one per 
 `Lacerta`, `Mist`, `Nachia`, `Shell`, `Vesper`, `Yubar`) and one per difficulty (`Deep Sleep`, `Ominous Dream`,
 `Nightmare`).
 
-You should leave at least 93 checks un-excluded. Your 93 unlocks can't go on excluded checks, so excluding more
-makes generation fail.
+You should leave at least 93 checks un-excluded. The 93 unlock items in your pool can't go on excluded checks, so
+excluding more makes generation fail.
 
 ## What items can I receive?
 
