@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+  <!-- Run production bookkeeping/delivery code against small game/network doubles, without launching Unity. -->
+  <ItemGroup>
+    <Compile Include="../SoDArchipelago/src/StardustAllocation.cs" Link="StardustAllocation.cs" />
+    <Compile Include="../SoDArchipelago/src/InRunItems.cs" Link="InRunItems.cs" />
+    <Compile Include="../SoDArchipelago/src/ItemHandler.cs" Link="ItemHandler.cs" />
+    <Compile Include="../SoDArchipelago/src/ProfileGuard.cs" Link="ProfileGuard.cs" />
+    <Compile Include="../SoDArchipelago/src/CheckHandler.cs" Link="CheckHandler.cs" />
+  </ItemGroup>
+</Project>

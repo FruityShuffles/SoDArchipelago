@@ -15,7 +15,8 @@ namespace SoDArchipelago
             public long Id;
             public string Name;
             public string Key;
-            public string Kind; // progressive, memory, essence, lucid_dream, mastery, stardust
+            public string Kind; // progressive, memory, essence, lucid_dream, mastery, stardust, blessing, treasure, curse
+            public string Target; // vanilla modifier, Treasure prefab or curse tier
             public string Traveler; // progressive and mastery items
             public List<string> Unlocks; // unlock items: the targets, in unlock order (progressive: one per copy)
             public List<string> UnlockNames; // progressive items: display names of Unlocks
@@ -102,6 +103,7 @@ namespace SoDArchipelago
                     Name = (string)e["name"],
                     Key = (string)e["key"],
                     Kind = (string)e["kind"],
+                    Target = (string)e["target"],
                     Traveler = (string)e["traveler"],
                     Unlocks = e["unlocks"]?.Select(u => (string)u).ToList() ?? new List<string>(),
                     UnlockNames = e["unlock_names"]?.Select(u => (string)u).ToList(),

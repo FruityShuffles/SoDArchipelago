@@ -55,7 +55,8 @@ excluding more makes generation fail.
 - **Memory / Essence / Lucid Dream unlocks** (useful). Unlocked Memories or Essences can drop in runs. Unlocked Lucid Dream run modifiers
    can be selected in the lobby.
 - **Mastery: \<Traveler\>** (filler): +5 mastery levels for that Traveler.
-- **Stardust** (filler): +675 Stardust.
+- **Stardust** (filler): a share of `stardust_total`. Packs divide the total evenly, with one extra Stardust in
+  the first few packs when needed. Changing the number of packs keeps total income the same.
 
 With default settings the filler alone gives every Traveler 40 mastery and enough Stardust to buy every constellation star, star slot and souvenir.
 
@@ -76,9 +77,12 @@ ending, the Pure White Dream or the Starless Path.
 |---|---|---|---|
 | `goal_difficulty` | `nightmare` | `deep_sleep`, `ominous_dream`, `nightmare` | Lowest difficulty a win counts at |
 | `goal_traveler_count` | 9 | 1–9 | Different Travelers that must win |
-| `mastery_packs_per_traveler` | 8 | 0–15 | Mastery items per Traveler. The rest of the filler is Stardust |
+| `mastery_packs_per_traveler` | 8 | 0–15 | Mastery items per Traveler. Remaining baseline filler slots stay Stardust |
 | `mastery_pack_value` | 5 | 1–40 | Mastery levels per Mastery item |
-| `stardust_pack_value` | 675 | 1–10,000 | Stardust per Stardust item |
+| `stardust_total` | 54,000 | 0–1,000,000 | Total Stardust from the seed, divided exactly across its packs |
+| `in_run_items` | off | | Fill new slots with Map Blessings and Treasures; solo/host delivery |
+| `traps` | off | | Fill 20% of new slots with Curse traps; solo/host delivery |
+| `jonas_wares` | 30 | 0–100 | Jonas's Archipelago wares; set to 0 if you mostly join other people's games |
 | `passive_mastery` | on | | Off: runs earn no mastery, so it only comes from Mastery items, and "The Road Not Taken" is excluded |
 | `death_link` | off | | When you are knocked down, everyone on DeathLink dies, and the other way round. |
 | `forced_evil_lucid_dreams` | none | see below | Evil Lucid Dreams forced on in every run until you receive their Lucid Dream item |
@@ -99,10 +103,25 @@ forced_evil_lucid_dreams: ["Grievous Wounds", "Overpopulation"]
 forced_chaotic_lucid_dreams: ["WILD"]
 ```
 
+### In-run presets
+
+The [example YAML](https://github.com/FruityShuffles/SoDArchipelago/blob/main/examples/Shape%20of%20Dreams.yaml)
+has three presets: Default (`in_run_items: false`, `traps: false`), With in-run items (`in_run_items: true`),
+and With in-run items and traps (both `true`). The default preserves the base game's run balance.
+
+In-run items wait until you are connected and playing solo or hosting, and their vanilla effect has a valid target.
+They can wait until a later world or run; reconnecting keeps pending items. Their message appears when they land.
+Quitting before the game's next continue save can lose an effect that has already landed.
+
+**Development status:** the shared options and pool rules are implemented in issue #7. The new locations and effects
+arrive in #8–#12; all six issues ship together. Until then there are still 245 locations and no new in-run effects.
+
 ## Playing offline
 
 You can play a bound profile offline using the items you have already received. Checks are recorded in the profile and sent when you reconnect.
 
 ## Co-op
 
-Non-crossplay co-op is fully supported with other players regardless of whether they are also playing Archipelago or not. The only limitation is that a player who joins someone else's lobby can't receive DeathLinks.
+Non-crossplay co-op is supported with other players regardless of whether they are also playing Archipelago.
+A player who joins someone else's lobby can't receive DeathLinks, buy Archipelago wares or receive in-run effects.
+In-run items wait until that player plays solo or hosts.

@@ -23,6 +23,7 @@ _CLASSIFICATIONS = {
     "progression": ItemClassification.progression,
     "useful": ItemClassification.useful,
     "filler": ItemClassification.filler,
+    "trap": ItemClassification.trap,
 }
 
 item_table: Dict[str, ItemData] = {
@@ -51,6 +52,11 @@ for _e in GAME_DATA["items"]:
         lucid_dreams_by_type.setdefault(_e["lucid_dream_type"], {})[_e["name"][len(LUCID_DREAM_PREFIX):]] = _e["name"]
 STARDUST = "Stardust"
 
+# JSON/ID order is the deterministic tie order for pool allocation.
+in_run_item_weights = {e["name"]: e["weight"] for e in GAME_DATA["items"]
+                       if e["kind"] in ("blessing", "treasure")}
+curse_item_weights = {e["name"]: e["weight"] for e in GAME_DATA["items"] if e["kind"] == "curse"}
+
 
 def _names(kind: str) -> set:
     return {n for n, d in item_table.items() if d.kind == kind}
@@ -62,4 +68,7 @@ item_name_groups = {
     "Essences": _names("essence"),
     "Lucid Dreams": _names("lucid_dream"),
     "Mastery": _names("mastery"),
+    "Blessings": _names("blessing"),
+    "Treasures": _names("treasure"),
+    "Curses": _names("curse"),
 }

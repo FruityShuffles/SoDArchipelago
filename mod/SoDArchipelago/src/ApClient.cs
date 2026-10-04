@@ -31,6 +31,7 @@ namespace SoDArchipelago
         public static string Seed { get; private set; }
         public static string SlotName { get; private set; }
         public static Dictionary<string, object> SlotData { get; private set; }
+        public static bool IsConnected => Status == State.Connected && _conn?.Session.Socket.Connected == true;
 
         // All raised on the main thread.
         public static event Action LoggedIn;
@@ -315,6 +316,15 @@ namespace SoDArchipelago
                            $"{Short(hash)}) than this mod has (version {GameData.DataFormatVersion}, hash " +
                            $"{Short(GameData.DataHash)}). Use matching versions of the apworld and the mod." +
                            NothingBound());
+                return;
+            }
+
+            // The exact Stardust split is needed before applying even the starting items. Refuse malformed data before
+            // a provisional login can bind and save a profile without those items.
+            if (GetInt(slotData, "stardust_total", -1) < 0 || GetInt(slotData, "stardust_item_count", 0) <= 0)
+            {
+                Disconnect("This seed is missing a valid Stardust total or item count. Regenerate it with a matching " +
+                           "apworld." + NothingBound());
                 return;
             }
 

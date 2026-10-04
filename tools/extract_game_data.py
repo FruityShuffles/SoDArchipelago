@@ -31,7 +31,7 @@ OUT_PATH = DATA_DIR / "game_data.json"
 # Bump when the JSON layout changes in a way the mod has to know about. The mod refuses slot_data from a different
 # data version, so a seed generated with one apworld can't silently be played with an incompatible mod. Content changes
 # (new achievements after a game update, ...) are caught by "data_hash" instead.
-DATA_FORMAT_VERSION = 4
+DATA_FORMAT_VERSION = 5
 
 # The apworld's data_hash.py, loaded by path: importing it as a package module would pull in Archipelago.
 _spec = importlib.util.spec_from_file_location("sod_data_hash", DATA_DIR / "data_hash.py")
@@ -166,6 +166,31 @@ CLEAR_COPIES_REQUIRED = {"DEEP_SLEEP": 1, "OMINOUS_DREAM": 2, "NIGHTMARE": 3}
 
 STARDUST_KEY = "STARDUST"
 
+# Issue #7: table order breaks largest-remainder ties. Delivery is implemented by #10–#12.
+# Synthetic blessing keys distinguish map placement from the room modifiers themselves.
+BLESSINGS = [
+    ("Pure Dream", "RoomMod_PureDream", 2),
+    ("Gold Everywhere", "RoomMod_GoldEverywhere", 2),
+    ("Harder Fight, Better Reward", "RoomMod_HarderFightBetterReward", 2),
+    *[(name, "RoomMod_Spawn" + suffix, 3) for name, suffix in [
+        ("Blessed Guidance", "BlessedGuidance"), ("Pot of Greed", "PotOfGreed"),
+        ("Maw of Doom", "MawOfDoom"), ("Hatred", "Hatred"), ("Paradox", "Paradox"),
+        ("Mirror of Remorse", "MirrorOfRemorse"), ("Destiny", "Destiny"),
+        ("Entanglement", "Entanglement"), ("Disintegration", "Disintegration"),
+        ("Altar of Cleansing", "AltarOfCleansing"),
+    ]],
+    ("Lizard Shop", "RoomMod_GiftMerchant", 1),
+    ("Artifact", "RoomMod_Artifact", 1),
+]
+TREASURES = [
+    ("Totally Genuine Treasure Map", "Treasure_TotallyGenuineTreasureMap", 4),
+    ("Treasure Map", "Treasure_TreasureMap", 3),
+    ("Determination Shard", "Treasure_FragmentOfDetermination", 3),
+    ("Cloak of Guidance", "Treasure_CloakOfGuidance", 2),
+    ("Clairvoyance", "Treasure_Clairvoyance", 2),
+]
+CURSES = [("Mild", 3), ("Potent", 2), ("Intense", 1)]
+
 STAR_CATEGORIES = ("Destruction", "Flexible", "Imagination", "Life")
 
 
@@ -262,6 +287,15 @@ def main() -> int:
         items.append({"name": f"Mastery: {trav_name[hero]}", "key": f"MASTERY_{hero}", "kind": "mastery",
                       "classification": "filler", "traveler": hero})
     items.append({"name": "Stardust", "key": STARDUST_KEY, "kind": "stardust", "classification": "filler"})
+    for name, modifier, weight in BLESSINGS:
+        items.append({"name": f"Blessing: {name}", "key": "BLESSING_" + modifier, "kind": "blessing",
+                      "classification": "filler", "target": modifier, "weight": weight})
+    for name, prefab, weight in TREASURES:
+        items.append({"name": name, "key": prefab, "kind": "treasure", "classification": "filler",
+                      "target": prefab, "weight": weight})
+    for strength, weight in CURSES:
+        items.append({"name": f"Curse: {strength}", "key": "CURSE_" + strength.upper(), "kind": "curse",
+                      "classification": "trap", "target": strength, "weight": weight})
 
     covered = Counter(u for i in items for u in i.get("unlocks", []))
     if covered != Counter(set(targets) | set(trav_order)):

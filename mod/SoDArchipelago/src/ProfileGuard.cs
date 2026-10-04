@@ -139,6 +139,7 @@ namespace SoDArchipelago
     public static class ApRecords
     {
         private const string ClearPrefix = "AP:clear:";
+        private const string CheckPrefix = "AP:check:";
         private const string WinPrefix = "AP:win:";
         private const string UnlockPrefix = "AP:unlock:";
         private const string AppliedPrefix = "AP:applied:";
@@ -243,6 +244,23 @@ namespace SoDArchipelago
         {
             if (!ProfileGuard.Marked || MainFlags.Contains(ClearPrefix + locationKey)) return false;
             MainFlags.Add(ClearPrefix + locationKey);
+            return true;
+        }
+
+        // First-time ware, shrine and quest checks (#7). Like clears, these are recorded even offline.
+        public static IEnumerable<string> Checks() =>
+            ProfileGuard.Marked
+                ? MainFlags.Where(f => f.StartsWith(CheckPrefix, StringComparison.Ordinal))
+                    .Select(f => f.Substring(CheckPrefix.Length)).ToList()
+                : Enumerable.Empty<string>();
+
+        public static bool HasCheck(string locationKey) =>
+            ProfileGuard.Marked && MainFlags.Contains(CheckPrefix + locationKey);
+
+        public static bool AddCheck(string locationKey)
+        {
+            if (!ProfileGuard.Marked || HasCheck(locationKey)) return false;
+            MainFlags.Add(CheckPrefix + locationKey);
             return true;
         }
 

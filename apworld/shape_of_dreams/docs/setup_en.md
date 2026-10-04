@@ -21,6 +21,10 @@ one of these ways:
 
 Generate the game on your own computer. You can then upload it to archipelago.gg to host it.
 
+The example YAML includes Default, With in-run items, and With in-run items and traps presets. `stardust_total`
+replaces `stardust_pack_value`: it is the seed's whole Stardust income, divided exactly across its packs.
+The in-run options are shared groundwork for #8–#12 and ship together with those features.
+
 ## Installing the mod
 
 1. Subscribe to [Archipelago Randomizer](https://steamcommunity.com/sharedfiles/filedetails/?id=3809735647) on the
@@ -83,10 +87,18 @@ If you disable crossplay, you may play co-op with other players regardless of wh
 Be aware that a player who joins someone else's lobby can't receive DeathLinks. Two archipelago players playing together won't
 be able to receive DeathLinks for the joining player.
 
+Archipelago wares and in-run effects require solo play or hosting. Set `jonas_wares: 0` if you mostly join other
+people's games. In-run items stay pending until you connect and play solo or host, with a valid target for their effect.
+They survive run endings and restarts; their notice appears when they land. Offline play delivers no new in-run items.
+Quitting before the game's next continue save can lose an effect that has already landed.
+
 ## Updating
 
 Updating the mod or the apworld in the middle of a seed is almost always fine. If a release ever can't be used with an
 existing seed, its release notes say so, and the mod tells you when you connect.
+
+The combined #7–#12 release adds new content and changes compatibility. Use the previous matching mod for old seeds;
+use matching apworld and mod versions for new seeds. This foundation is not released separately.
 
 ## Troubleshooting
 

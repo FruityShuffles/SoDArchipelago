@@ -15,9 +15,9 @@ def _pick(entry: dict, fields) -> dict:
 
 def compute(game_data: dict) -> str:
     payload = {
-        "items": sorted((_pick(e, ("id", "key", "kind", "classification", "traveler", "unlocks"))
+        "items": sorted((_pick(e, ("id", "key", "kind", "classification", "traveler", "unlocks", "target", "weight"))
                          for e in game_data["items"]), key=lambda e: e["id"]),
-        "locations": sorted((_pick(e, ("id", "key", "kind", "traveler", "world", "difficulty", "copies_required"))
+        "locations": sorted((_pick(e, ("id", "key", "kind", "traveler", "world", "difficulty", "copies_required", "number"))
                              for e in game_data["locations"]), key=lambda e: e["id"]),
         "travelers": sorted((_pick(t, ("key", "skills", "progressive_item", "mastery_item"))
                              for t in game_data["travelers"]), key=lambda t: t["key"]),

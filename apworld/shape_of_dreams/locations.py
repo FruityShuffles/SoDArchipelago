@@ -19,11 +19,13 @@ class LocationData(NamedTuple):
     difficulty: Optional[str]
     # World clears only: copies of the Traveler's progressive item needed (DESIGN.md "Logic").
     copies_required: int
+    # Jonas's Wares (#8) only: sequential ware number, filtered by jonas_wares.
+    number: int = 0
 
 
 location_table: Dict[str, LocationData] = {
     e["name"]: LocationData(e["id"], e["key"], e["kind"], e["traveler"], e.get("difficulty"),
-                            e.get("copies_required", 0))
+                            e.get("copies_required", 0), e.get("number", 0))
     for e in GAME_DATA["locations"]
 }
 

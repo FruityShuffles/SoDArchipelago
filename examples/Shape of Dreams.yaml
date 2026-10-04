@@ -13,14 +13,26 @@ Shape of Dreams:
   # How many different Travelers must win a run (1-9).
   goal_traveler_count: 9
 
-  # "Mastery: <Traveler>" items per Traveler (0-15). The rest of the filler is Stardust.
+  # "Mastery: <Traveler>" items per Traveler (0-15). Remaining baseline filler slots stay Stardust.
   mastery_packs_per_traveler: 8
 
   # Mastery levels per Mastery item (1-40).
   mastery_pack_value: 5
 
-  # Stardust per Stardust item (1-10000).
-  stardust_pack_value: 675
+  # Total Stardust from the seed (0-1000000), split exactly across its Stardust items.
+  # More Stardust packs means smaller packs, with the same total income.
+  stardust_total: 54000
+
+  # Map Blessings and Treasures in new item slots: true or false. Off keeps vanilla run balance.
+  # Delivery requires solo play or hosting; joining players keep these items waiting.
+  in_run_items: false
+
+  # Curse traps in 20% of new item slots: true or false. Delivery also requires solo play or hosting.
+  traps: false
+
+  # Jonas's Archipelago wares (0-100). Wares require solo play or hosting.
+  # Set to 0 if you mostly join other people's games.
+  jonas_wares: 30
 
   # Runs earn Traveler mastery as in vanilla: true or false. false: mastery only comes from "Mastery: <Traveler>" items.
   passive_mastery: true
@@ -59,3 +71,14 @@ Shape of Dreams:
 
   # When you are knocked down, everyone on DeathLink dies, and the other way round: true or false.
   death_link: false
+
+# Named presets: copy these lines over the corresponding defaults above.
+# Default — runs keep the base game's balance:
+#   in_run_items: false
+#   traps: false
+# With in-run items — other players can send Map Blessings and Treasures:
+#   in_run_items: true
+#   traps: false
+# With in-run items and traps — also receive Curse traps:
+#   in_run_items: true
+#   traps: true

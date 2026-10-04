@@ -9,6 +9,7 @@ from .items import (GAME_NAME, STARDUST, SoDItem, item_name_groups, item_name_to
 from .locations import (SoDLocation, location_id_to_alias, location_name_groups, location_name_to_id,
                         location_table)
 from .options import SoDOptions, option_groups
+from .pool import new_slot_counts
 from .stars import shuffle_star_requirements
 
 # Completes on a Starless Path win, which needs a Traveler at mastery 40 (DESIGN.md "Logic", "Passive mastery").
@@ -21,6 +22,7 @@ BROKEN_ACHIEVEMENTS = {"ACH_WHOS_THE_PREY_NOW"}
 # Only these clears are priority: every priority location takes some player's progression, so more would pull a
 # multiworld's progression into SoD runs (DESIGN.md "Locations").
 PRIORITY_DIFFICULTY = "DEEP_SLEEP"
+BASE_LOCATION_KINDS = {"achievement", "world_clear", "souvenir"}
 
 
 class SoDWeb(WebWorld):
@@ -76,6 +78,9 @@ class ShapeOfDreamsWorld(World):
                 self.star_requirements = shuffle_star_requirements(self.random)
         # Universal Tracker drops precollected items and uses the starting items the server sends instead.
         self.starting_travelers = self.random.sample(sorted(travelers), 2)
+        # Build once and use the same enabled checks for regions, rules and pool sizing. New kinds arrive in #8/#9.
+        self.enabled_locations = {name: data for name, data in location_table.items()
+                                  if data.kind != "ware" or data.number <= self.options.jonas_wares.value}
 
     def _apply_slot_data(self, slot_data: Dict[str, Any]) -> None:
         options = self.options
@@ -83,7 +88,10 @@ class ShapeOfDreamsWorld(World):
         options.goal_traveler_count.value = slot_data["goal_traveler_count"]
         options.mastery_packs_per_traveler.value = slot_data["mastery_packs_per_traveler"]
         options.mastery_pack_value.value = slot_data["mastery_pack_value"]
-        options.stardust_pack_value.value = slot_data["stardust_pack_value"]
+        options.stardust_total.value = slot_data["stardust_total"]
+        options.in_run_items.value = int(slot_data["in_run_items"])
+        options.traps.value = int(slot_data["traps"])
+        options.jonas_wares.value = slot_data["jonas_wares"]
         # Keys added after the first release: a missing one means the seed predates its option (its vanilla default).
         options.passive_mastery.value = int(slot_data.get("passive_mastery", True))
         options.death_link.value = int(slot_data["death_link"])
@@ -110,13 +118,12 @@ class ShapeOfDreamsWorld(World):
     def create_regions(self) -> None:
         menu = Region("Menu", self.player, self.multiworld)
         self.multiworld.regions.append(menu)
-        for name, data in location_table.items():
+        for name, data in self.enabled_locations.items():
             location = SoDLocation(self.player, name, data.id, menu)
             if data.kind == "world_clear" and data.difficulty == PRIORITY_DIFFICULTY:
                 location.progress_type = LocationProgressType.PRIORITY
-            elif data.kind == "souvenir":
-                # The shop offers 3 random unowned souvenirs per visit, so collecting them all is luck (DESIGN.md
-                # "Souvenirs"): they only ever hold filler.
+            elif data.kind in ("souvenir", "artifact"):
+                # Souvenirs and artifacts come from random offers/finds, so they only ever hold filler.
                 location.progress_type = LocationProgressType.EXCLUDED
             elif data.key in BROKEN_ACHIEVEMENTS:
                 location.progress_type = LocationProgressType.EXCLUDED
@@ -140,10 +147,15 @@ class ShapeOfDreamsWorld(World):
             self.multiworld.push_precollected(item)
         for name in mastery_item_names:
             pool += [self.create_item(name) for _ in range(self.options.mastery_packs_per_traveler.value)]
-        remaining = len(location_table) - len(pool)
+        base_locations = sum(data.kind in BASE_LOCATION_KINDS for data in self.enabled_locations.values())
+        remaining = base_locations - len(pool)
         if remaining < 0:
-            raise RuntimeError(f"{self.player_name}: {len(pool)} items don't fit in {len(location_table)} locations")
+            raise RuntimeError(f"{self.player_name}: {len(pool)} items don't fit in {base_locations} baseline locations")
         pool += [self.create_item(STARDUST) for _ in range(remaining)]
+        new_slots = len(self.enabled_locations) - base_locations
+        for name, count in new_slot_counts(new_slots, bool(self.options.in_run_items), bool(self.options.traps)).items():
+            pool += [self.create_item(name) for _ in range(count)]
+        self.stardust_item_count = sum(item.name == STARDUST for item in pool)
         self.multiworld.itempool += pool
 
     def _unlocked_travelers(self, state: CollectionState) -> int:
@@ -152,7 +164,7 @@ class ShapeOfDreamsWorld(World):
     def set_rules(self) -> None:
         progressive_items = [t["progressive_item"] for t in travelers.values()]
         every_copy = {item: unlock_item_counts[item] for item in progressive_items}
-        for name, data in location_table.items():
+        for name, data in self.enabled_locations.items():
             if data.key == NIGHTMARE_DREAM_ACHIEVEMENT:
                 self.get_location(name).access_rule = lambda state: any(
                     state.has(item, self.player, NIGHTMARE_COPIES) for item in progressive_items)
@@ -182,7 +194,11 @@ class ShapeOfDreamsWorld(World):
             "goal_traveler_count": self.options.goal_traveler_count.value,
             "mastery_packs_per_traveler": self.options.mastery_packs_per_traveler.value,
             "mastery_pack_value": self.options.mastery_pack_value.value,
-            "stardust_pack_value": self.options.stardust_pack_value.value,
+            "stardust_total": self.options.stardust_total.value,
+            "stardust_item_count": self.stardust_item_count,
+            "in_run_items": bool(self.options.in_run_items.value),
+            "traps": bool(self.options.traps.value),
+            "jonas_wares": self.options.jonas_wares.value,
             "passive_mastery": bool(self.options.passive_mastery.value),
             "death_link": bool(self.options.death_link.value),
             "forced_lucid_dreams": sorted(item_table[name].key for name in self.forced_lucid_dreams),

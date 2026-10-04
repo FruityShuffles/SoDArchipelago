@@ -96,6 +96,7 @@ namespace SoDArchipelago
                 _itemsDirty = false;
                 ItemHandler.ProcessAll("items received");
             }
+            InRunItems.Update();
         }
 
         private void OnDestroy()
@@ -105,6 +106,7 @@ namespace SoDArchipelago
             ApClient.ItemsChanged -= OnItemsChanged;
             ApClient.DeathLinkReceived -= DeathLinkHandler.OnDeathLinkReceived;
             ApClient.Disconnect(null);
+            InRunItems.Cleanup();
             ForcedDreams.Cleanup();
             harmony.UnpatchAll(harmony.Id);
             StarRequirements.Cleanup();

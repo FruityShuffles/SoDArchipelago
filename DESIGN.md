@@ -81,15 +81,15 @@ Mist (vanilla's starting Travelers), grouped as follows.
 | useful | `Essence: <name>` | 29 | Makes the Essence able to drop in runs |
 | useful | `Lucid Dream: <name>` | 15 | Unlocks the Lucid Dream modifier. A **forced** dream's item is progression and releases it (see "Forced Lucid Dreams") |
 | filler | `Mastery: <Traveler>` (one item per Traveler) | 8 per Traveler (72) | +5 mastery levels to that Traveler |
-| filler | `Stardust` | the rest (80) | +675 Stardust |
+| filler | `Stardust` | remaining baseline slots (80) + unallocated new slots | Exact share of `stardust_total` (+675 with 80 packs and default total) |
 
 - **Starting Travelers** (replaces vanilla's Lacerta and Mist): each seed picks 2 random Travelers in `generate_early`
   (`self.random.sample` of the sorted Traveler keys). One copy of each one's progressive item is precollected
   (`push_precollected`): it appears in the spoiler's "Starting Items", and the server sends it to the mod as a received
   item from location −2. There's no option and no slot_data field.
-- **No traps.**
+- Curse traps are opt-in; see "In-run content foundation" below.
 - **Déjà vu is untouched.** It's the Pure White Dream carry-over system that costs Stardust.
-- **Counts:** 34 progression + 59 useful + 72 mastery + 80 Stardust = 245, equal to the location count.
+- **Baseline counts:** 34 progression + 59 useful + 72 mastery + 80 Stardust = 245, equal to the baseline location count.
 - **Filler targets:** filler alone gives exactly **40 mastery on every Traveler** (decided 2026-10-03, issue #5) and
   **54,000 Stardust** (decided 2026-10-03, issue #4). 40 is the level of each Traveler's last story episode (`TravelerStory_<T>_Main8`,
   read from the asset bundles), which unlocks the Starless Path ending (`unlocksPolarisEnding`); stars and star slots
@@ -161,7 +161,10 @@ Win a run at `goal_difficulty` **or harder** with `goal_traveler_count` **differ
 | `goal_traveler_count` | range 1–9 | 9 | |
 | `mastery_packs_per_traveler` | range 0–15 | 8 | 0 removes mastery from the pool. 15 × 9 = 135 leaves 17 Stardust items. |
 | `mastery_pack_value` | range 1–40 | 5 | levels per pack |
-| `stardust_pack_value` | range 1–10,000 | 675 | Stardust fills every remaining filler slot, so it can't be 0 |
+| `stardust_total` | range 0–1,000,000 | 54,000 | Total Stardust divided exactly over the seed's Stardust slots |
+| `in_run_items` | toggle | off | New slots may hold Map Blessings and Treasures |
+| `traps` | toggle | off | 20% of new slots become Curse traps |
+| `jonas_wares` | range 0–100 | 30 | Number of Jonas's Wares (#8), host/solo only |
 | `passive_mastery` | toggle | on | See "Passive mastery" |
 | `death_link` | toggle | off | |
 | `forced_evil_lucid_dreams` | set of Evil Lucid Dream names | empty | See "Forced Lucid Dreams" |
@@ -169,7 +172,8 @@ Win a run at `goal_difficulty` **or harder** with `goal_traveler_count` **differ
 | `shuffle_star_requirements` | toggle | on | See "Shuffled star requirements" |
 
 Remove `boss_locations` and `travelers_required_for_goal`. `slot_data` must carry everything the mod needs: goal
-settings, pack values, `passive_mastery`, death_link, the forced Lucid Dreams (`forced_lucid_dreams`: both sets' keys), the shuffled star
+settings, mastery pack values, `stardust_total`, `stardust_item_count`, `in_run_items`, `traps`, `jonas_wares`,
+`passive_mastery`, death_link, the forced Lucid Dreams (`forced_lucid_dreams`: both sets' keys), the shuffled star
 requirements (`star_requirements`), the data version and the data hash.
 
 [Universal Tracker](https://github.com/FarisTheAncient/Archipelago/releases) (decided 2026-10-03) rebuilds the world from
@@ -283,6 +287,39 @@ mastery only comes from `Mastery: <Traveler>` items and the player's strength de
 - **Co-op:** each player's client rewards their own profile, so it only affects that player.
 
 ## Client mod behavior
+
+### In-run content foundation
+
+Issue #7 supplies the shared infrastructure for #8–#12. These issues ship together in one matching apworld/mod
+release; this foundation alone is not published. The existing 245 checks remain the baseline until #8 and #9 add
+their locations. #8 adds `jonas_wares` checks; #9 adds 9 shrines, 6 quests and 12 excluded artifacts. This gives
+57 new slots and 302 total checks with defaults. The enabled location list is built before regions and items.
+
+- Progression, useful items and Mastery packs keep their existing counts. The baseline's remaining slots (80 by
+  default) stay Stardust. Only the new slots participate in the in-run mix.
+- With `traps` on, split new slots 20% curses / 80% remaining by largest-remainder rounding. Split curses by weights
+  Mild 3, Potent 2, Intense 1. With `in_run_items` on, split the remaining new slots by the following weights:
+  each of 10 uncommon blessings 3; Totally Genuine Treasure Map 4; Treasure Map and Determination Shard 3 each;
+  Cloak of Guidance and Clairvoyance 2 each; each of 3 common blessings 2; each of 2 rare blessings 1.
+  Otherwise the remaining slots become Stardust. All in-run items are filler; curses are traps.
+- All splits use integer largest-remainder allocation, with ties broken by table order, so identical settings give
+  identical counts. New keys append IDs; old keys and IDs remain intact.
+- `stardust_total` replaces `stardust_pack_value`. Divide it by the number of Stardust items; the first remainder
+  copies received give one extra Stardust each. Thus all seeded Stardust items sum exactly to the configured total,
+  including when there are more packs than Stardust or the total is zero. Additional server-granted copies give
+  the quotient. slot_data carries the total, Stardust item count and all new options; UT restores the same settings.
+- Pending in-run items are received copies minus `AP:applied:<KEY>=n` in the main profile. The main-thread landing
+  loop requires Bound, a connected socket, a ready unconcluded run, and a local solo/host player. Item-kind handlers
+  (#10–#12) return false if no valid target exists, leaving the counter unchanged. On success, increment and save
+  the counter, then show the item and sender. Unregistered kinds wait. Delivery never happens offline, in the lobby,
+  during transitions or for joining players. Counters survive restarts; reconnect restores the full received list.
+- Reuse the game's vanilla content, targeting, effects and networking. No custom prefabs or network messages.
+  A delivered item lost by quitting before the next continue save remains spent (the counter does not rewind).
+- Ware, shrine and quest first-time checks use `AP:check:<location key>` in `experienceFlags`. Record and save at once,
+  send when Bound, and resend all records on reconnect. Artifact checks use the game's discovered flag (#9).
+  Buying a ware and quitting before the continue save may refund its gold while keeping the check, as in vanilla.
+- New item content changes `data_hash`; the Stardust protocol also increments the data format version. Old seeds
+  require the previous matching mod. No release is made until #8–#12 are implemented together.
 
 ### Checks
 - **Achievements:** when an achievement completes, send its check. **Suppress the vanilla unlock reward**, since the

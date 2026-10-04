@@ -1,7 +1,7 @@
 {
   "game": "Shape of Dreams",
-  "data_format_version": 4,
-  "data_hash": "8d43e08ab5ae21df07fc9b7185b00e3a20c792235346d0fa8f28bbee83ae8915",
+  "data_format_version": 5,
+  "data_hash": "bd3f3df86c561a0a762a9f5a3df636762a4b2c324afecaa141e130adc22895fd",
   "extracted_from_game_version": "r.1.4.0.13_s",
   "difficulties": [
     {
@@ -1024,6 +1024,213 @@
       "kind": "stardust",
       "classification": "filler",
       "id": 7710078
+    },
+    {
+      "name": "Blessing: Pure Dream",
+      "key": "BLESSING_RoomMod_PureDream",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_PureDream",
+      "weight": 2,
+      "id": 7710079
+    },
+    {
+      "name": "Blessing: Gold Everywhere",
+      "key": "BLESSING_RoomMod_GoldEverywhere",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_GoldEverywhere",
+      "weight": 2,
+      "id": 7710080
+    },
+    {
+      "name": "Blessing: Harder Fight, Better Reward",
+      "key": "BLESSING_RoomMod_HarderFightBetterReward",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_HarderFightBetterReward",
+      "weight": 2,
+      "id": 7710081
+    },
+    {
+      "name": "Blessing: Blessed Guidance",
+      "key": "BLESSING_RoomMod_SpawnBlessedGuidance",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_SpawnBlessedGuidance",
+      "weight": 3,
+      "id": 7710082
+    },
+    {
+      "name": "Blessing: Pot of Greed",
+      "key": "BLESSING_RoomMod_SpawnPotOfGreed",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_SpawnPotOfGreed",
+      "weight": 3,
+      "id": 7710083
+    },
+    {
+      "name": "Blessing: Maw of Doom",
+      "key": "BLESSING_RoomMod_SpawnMawOfDoom",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_SpawnMawOfDoom",
+      "weight": 3,
+      "id": 7710084
+    },
+    {
+      "name": "Blessing: Hatred",
+      "key": "BLESSING_RoomMod_SpawnHatred",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_SpawnHatred",
+      "weight": 3,
+      "id": 7710085
+    },
+    {
+      "name": "Blessing: Paradox",
+      "key": "BLESSING_RoomMod_SpawnParadox",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_SpawnParadox",
+      "weight": 3,
+      "id": 7710086
+    },
+    {
+      "name": "Blessing: Mirror of Remorse",
+      "key": "BLESSING_RoomMod_SpawnMirrorOfRemorse",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_SpawnMirrorOfRemorse",
+      "weight": 3,
+      "id": 7710087
+    },
+    {
+      "name": "Blessing: Destiny",
+      "key": "BLESSING_RoomMod_SpawnDestiny",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_SpawnDestiny",
+      "weight": 3,
+      "id": 7710088
+    },
+    {
+      "name": "Blessing: Entanglement",
+      "key": "BLESSING_RoomMod_SpawnEntanglement",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_SpawnEntanglement",
+      "weight": 3,
+      "id": 7710089
+    },
+    {
+      "name": "Blessing: Disintegration",
+      "key": "BLESSING_RoomMod_SpawnDisintegration",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_SpawnDisintegration",
+      "weight": 3,
+      "id": 7710090
+    },
+    {
+      "name": "Blessing: Altar of Cleansing",
+      "key": "BLESSING_RoomMod_SpawnAltarOfCleansing",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_SpawnAltarOfCleansing",
+      "weight": 3,
+      "id": 7710091
+    },
+    {
+      "name": "Blessing: Lizard Shop",
+      "key": "BLESSING_RoomMod_GiftMerchant",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_GiftMerchant",
+      "weight": 1,
+      "id": 7710092
+    },
+    {
+      "name": "Blessing: Artifact",
+      "key": "BLESSING_RoomMod_Artifact",
+      "kind": "blessing",
+      "classification": "filler",
+      "target": "RoomMod_Artifact",
+      "weight": 1,
+      "id": 7710093
+    },
+    {
+      "name": "Totally Genuine Treasure Map",
+      "key": "Treasure_TotallyGenuineTreasureMap",
+      "kind": "treasure",
+      "classification": "filler",
+      "target": "Treasure_TotallyGenuineTreasureMap",
+      "weight": 4,
+      "id": 7710094
+    },
+    {
+      "name": "Treasure Map",
+      "key": "Treasure_TreasureMap",
+      "kind": "treasure",
+      "classification": "filler",
+      "target": "Treasure_TreasureMap",
+      "weight": 3,
+      "id": 7710095
+    },
+    {
+      "name": "Determination Shard",
+      "key": "Treasure_FragmentOfDetermination",
+      "kind": "treasure",
+      "classification": "filler",
+      "target": "Treasure_FragmentOfDetermination",
+      "weight": 3,
+      "id": 7710096
+    },
+    {
+      "name": "Cloak of Guidance",
+      "key": "Treasure_CloakOfGuidance",
+      "kind": "treasure",
+      "classification": "filler",
+      "target": "Treasure_CloakOfGuidance",
+      "weight": 2,
+      "id": 7710097
+    },
+    {
+      "name": "Clairvoyance",
+      "key": "Treasure_Clairvoyance",
+      "kind": "treasure",
+      "classification": "filler",
+      "target": "Treasure_Clairvoyance",
+      "weight": 2,
+      "id": 7710098
+    },
+    {
+      "name": "Curse: Mild",
+      "key": "CURSE_MILD",
+      "kind": "curse",
+      "classification": "trap",
+      "target": "Mild",
+      "weight": 3,
+      "id": 7710099
+    },
+    {
+      "name": "Curse: Potent",
+      "key": "CURSE_POTENT",
+      "kind": "curse",
+      "classification": "trap",
+      "target": "Potent",
+      "weight": 2,
+      "id": 7710100
+    },
+    {
+      "name": "Curse: Intense",
+      "key": "CURSE_INTENSE",
+      "kind": "curse",
+      "classification": "trap",
+      "target": "Intense",
+      "weight": 1,
+      "id": 7710101
     }
   ],
   "locations": [
@@ -5830,7 +6037,30 @@
       "MASTERY_Hero_Husk": 7710075,
       "MASTERY_Hero_Vesper": 7710076,
       "MASTERY_Hero_Yubar": 7710077,
-      "STARDUST": 7710078
+      "STARDUST": 7710078,
+      "BLESSING_RoomMod_PureDream": 7710079,
+      "BLESSING_RoomMod_GoldEverywhere": 7710080,
+      "BLESSING_RoomMod_HarderFightBetterReward": 7710081,
+      "BLESSING_RoomMod_SpawnBlessedGuidance": 7710082,
+      "BLESSING_RoomMod_SpawnPotOfGreed": 7710083,
+      "BLESSING_RoomMod_SpawnMawOfDoom": 7710084,
+      "BLESSING_RoomMod_SpawnHatred": 7710085,
+      "BLESSING_RoomMod_SpawnParadox": 7710086,
+      "BLESSING_RoomMod_SpawnMirrorOfRemorse": 7710087,
+      "BLESSING_RoomMod_SpawnDestiny": 7710088,
+      "BLESSING_RoomMod_SpawnEntanglement": 7710089,
+      "BLESSING_RoomMod_SpawnDisintegration": 7710090,
+      "BLESSING_RoomMod_SpawnAltarOfCleansing": 7710091,
+      "BLESSING_RoomMod_GiftMerchant": 7710092,
+      "BLESSING_RoomMod_Artifact": 7710093,
+      "Treasure_TotallyGenuineTreasureMap": 7710094,
+      "Treasure_TreasureMap": 7710095,
+      "Treasure_FragmentOfDetermination": 7710096,
+      "Treasure_CloakOfGuidance": 7710097,
+      "Treasure_Clairvoyance": 7710098,
+      "CURSE_MILD": 7710099,
+      "CURSE_POTENT": 7710100,
+      "CURSE_INTENSE": 7710101
     },
     "locations": {
       "ACH_BALANCE_FOREVER_LOST": 7720001,

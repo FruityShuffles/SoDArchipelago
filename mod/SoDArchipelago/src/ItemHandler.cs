@@ -21,7 +21,9 @@ namespace SoDArchipelago
 
             var copies = new Dictionary<string, int>();
             var applied = new Dictionary<string, int>();
-            int stardustValue = Math.Max(1, ApClient.GetInt("stardust_pack_value", 650));
+            int stardustTotal = Math.Max(0, ApClient.GetInt("stardust_total", 54000));
+            int stardustSlots = ApClient.GetInt("stardust_item_count", 0);
+            if (stardustSlots <= 0) throw new InvalidOperationException("Missing Stardust item count in slot_data.");
             int masteryValue = Math.Max(1, ApClient.GetInt("mastery_pack_value", 5));
             bool mainDirty = false, statsDirty = false;
 
@@ -54,7 +56,7 @@ namespace SoDArchipelago
                     applied[item.Key] = done = ApRecords.GetApplied(inStats, item.Key);
                 if (n <= done) continue;
                 if (item.Kind == "stardust")
-                    ApClient.Say($"Received Stardust (+{stardustValue:#,##0}){from}");
+                    ApClient.Say($"Received Stardust (+{StardustAllocation.Value(n, stardustTotal, stardustSlots):#,##0}){from}");
                 else if (item.Kind == "mastery")
                     ApClient.Say($"Received {item.Name} (+{masteryValue} levels){from}{nextRun}");
             }
@@ -66,14 +68,15 @@ namespace SoDArchipelago
             int stardustDone = ApRecords.GetApplied(false, GameData.StardustKey);
             if (stardustCopies > stardustDone)
             {
-                int add = (stardustCopies - stardustDone) * stardustValue;
+                int add = StardustAllocation.Cumulative(stardustCopies, stardustTotal, stardustSlots) -
+                          StardustAllocation.Cumulative(stardustDone, stardustTotal, stardustSlots);
                 profile.stardust += add;
                 ApRecords.SetApplied(false, GameData.StardustKey, stardustCopies);
                 mainDirty = true;
                 // The constellation screen works on a copy of the Stardust total and writes it back on commit.
                 var constellations = SingletonBehaviour<UI_Constellations>.instance;
                 if (constellations != null && constellations.state != null) constellations.state.stardust += add;
-                Log.Info($"Stardust +{add} ({stardustCopies - stardustDone} x {stardustValue}); now {profile.stardust}; " +
+                Log.Info($"Stardust +{add} ({stardustCopies - stardustDone} packs); now {profile.stardust}; " +
                          $"applied {stardustCopies}");
             }
 
@@ -116,7 +119,7 @@ namespace SoDArchipelago
             if (mainDirty || statsDirty) Log.Info($"Items processed ({why}): {ApClient.ReceivedItems.Count} received");
         }
 
-        private static string Sender(Archipelago.MultiClient.Net.Models.ItemInfo info)
+        internal static string Sender(Archipelago.MultiClient.Net.Models.ItemInfo info)
         {
             var name = ApClient.PlayerName(info);
             if (info.LocationId == -2) return " (starting item)";

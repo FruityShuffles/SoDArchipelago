@@ -9,6 +9,18 @@ namespace SoDArchipelago
     // and resent; the server ignores duplicates.
     public static class CheckHandler
     {
+        // Shared entry point for #8/#9. Unknown keys and vanilla profiles never receive an AP record.
+        public static bool RecordCheck(string locationKey)
+        {
+            if (!ProfileGuard.Marked || !GameData.LocationsByKey.TryGetValue(locationKey, out var loc) ||
+                (loc.Kind != "ware" && loc.Kind != "shrine" && loc.Kind != "quest")) return false;
+            if (!ApRecords.AddCheck(locationKey)) return false;
+            DewSave.SaveProfileMain();
+            Log.Info($"Check: {loc.Name} ({locationKey}){(ProfileGuard.Bound ? "" : " - offline, sent on reconnect")}");
+            ApClient.SendLocations(new[] { loc.Id });
+            return true;
+        }
+
         // AchievementManager.CompleteAchievement patch, after the game has recorded the completion.
         public static void OnAchievementCompleted(string achievementKey)
         {
@@ -91,7 +103,7 @@ namespace SoDArchipelago
             ApClient.SendLocations(ids.Select(l => l.Id).ToList());
         }
 
-        // Every check recorded in the bound profile: completed achievements, recorded world clears and owned souvenirs.
+        // Every check recorded in the bound profile: achievements, world clears, souvenirs and AP:check records.
         public static void ResendAll()
         {
             if (!ProfileGuard.Bound) return;
@@ -107,8 +119,12 @@ namespace SoDArchipelago
             foreach (var loc in GameData.Souvenirs)
                 if (DewSave.profileMain.accessories.TryGetValue(loc.Key, out var data) && data != null && data.isUnlocked)
                     ids.Add(loc.Id);
+            int souvenirs = ids.Count - achievements - clears;
+            foreach (var key in ApRecords.Checks())
+                if (GameData.LocationsByKey.TryGetValue(key, out var loc))
+                    ids.Add(loc.Id);
             Log.Info($"Resending {ids.Count} checks ({achievements} achievements, {clears} world clears, " +
-                     $"{ids.Count - achievements - clears} souvenirs)");
+                     $"{souvenirs} souvenirs, {ids.Count - achievements - clears - souvenirs} recorded checks)");
             ApClient.SendLocations(ids);
         }
     }

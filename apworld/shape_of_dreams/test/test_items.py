@@ -36,7 +36,10 @@ class TestDefaultPool(_PoolTest):
     def test_stardust_default(self) -> None:
         # 80 x 675 = 54,000 covers every star level, souvenir and star slot (53,415; DESIGN.md "Items").
         self.assertEqual(self._pool()[STARDUST], 80)
-        self.assertEqual(self.world.fill_slot_data()["stardust_pack_value"], 675)
+        slot_data = self.world.fill_slot_data()
+        self.assertEqual(slot_data["stardust_total"], 54000)
+        self.assertEqual(slot_data["stardust_item_count"], 80)
+        self.assertNotIn("stardust_pack_value", slot_data)
 
 
 class TestNoMastery(_PoolTest):

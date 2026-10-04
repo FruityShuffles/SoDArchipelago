@@ -30,7 +30,8 @@ def _tracker_world(slot_data: Dict[str, Any]):
 class TestTrackerRegen(SoDTestBase):
     options = {"goal_difficulty": "ominous_dream", "goal_traveler_count": 3, "mastery_packs_per_traveler": 2,
                "passive_mastery": False, "death_link": True, "forced_evil_lucid_dreams": ["Mad Life"],
-               "forced_chaotic_lucid_dreams": ["WILD"]}
+               "forced_chaotic_lucid_dreams": ["WILD"], "stardust_total": 12345, "in_run_items": True,
+               "traps": True, "jonas_wares": 7}
 
     def test_regen_matches_the_seed(self) -> None:
         slot_data = self.world.fill_slot_data()

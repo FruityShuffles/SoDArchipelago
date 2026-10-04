@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Choice, DeathLink, DefaultOnToggle, OptionGroup, OptionSet, PerGameCommonOptions, Range
+from Options import Choice, DeathLink, DefaultOnToggle, OptionGroup, OptionSet, PerGameCommonOptions, Range, Toggle
 
 from .items import lucid_dreams_by_type
 
@@ -26,7 +26,7 @@ class GoalTravelerCount(Range):
 
 class MasteryPacksPerTraveler(Range):
     """How many "Mastery: <Traveler>" items each Traveler has in the pool. 0 removes mastery from the pool.
-    Every filler slot that isn't mastery is Stardust; 15 still leaves 17 Stardust items."""
+    The baseline filler slots that aren't mastery stay Stardust; 15 still leaves 17 Stardust items."""
     display_name = "Mastery Packs per Traveler"
     range_start = 0
     range_end = 15
@@ -41,12 +41,33 @@ class MasteryPackValue(Range):
     default = 5
 
 
-class StardustPackValue(Range):
-    """Stardust one "Stardust" item gives."""
-    display_name = "Stardust Pack Value"
-    range_start = 1
-    range_end = 10000
-    default = 675
+class StardustTotal(Range):
+    """Total Stardust from the seed's Stardust items, divided evenly with the remainder spread exactly.
+    Changing the number of Stardust items does not change the total income."""
+    display_name = "Stardust Total"
+    range_start = 0
+    range_end = 1000000
+    default = 54000
+
+
+class InRunItems(Toggle):
+    """Fill new location slots with Map Blessings and Treasures. They land during solo or hosted runs;
+    if you join another player's game, they wait until you play solo or host."""
+    display_name = "In-run Items"
+
+
+class Traps(Toggle):
+    """Fill 20% of new location slots with Curse traps. They land during solo or hosted runs."""
+    display_name = "Traps"
+
+
+class JonasWares(Range):
+    """Number of Archipelago wares sold by Jonas. Wares require solo play or hosting.
+    Set to 0 if you mostly join other people's games."""
+    display_name = "Jonas's Wares"
+    range_start = 0
+    range_end = 100
+    default = 30
 
 
 class PassiveMastery(DefaultOnToggle):
@@ -105,7 +126,10 @@ class SoDOptions(PerGameCommonOptions):
     goal_traveler_count: GoalTravelerCount
     mastery_packs_per_traveler: MasteryPacksPerTraveler
     mastery_pack_value: MasteryPackValue
-    stardust_pack_value: StardustPackValue
+    stardust_total: StardustTotal
+    in_run_items: InRunItems
+    traps: Traps
+    jonas_wares: JonasWares
     passive_mastery: PassiveMastery
     forced_evil_lucid_dreams: ForcedEvilLucidDreams
     forced_chaotic_lucid_dreams: ForcedChaoticLucidDreams
@@ -115,7 +139,8 @@ class SoDOptions(PerGameCommonOptions):
 
 option_groups = [
     OptionGroup("Goal", [GoalDifficulty, GoalTravelerCount]),
-    OptionGroup("Filler", [MasteryPacksPerTraveler, MasteryPackValue, StardustPackValue, PassiveMastery]),
+    OptionGroup("Filler", [MasteryPacksPerTraveler, MasteryPackValue, StardustTotal, PassiveMastery]),
+    OptionGroup("In-run Content", [InRunItems, Traps, JonasWares]),
     OptionGroup("Forced Lucid Dreams", [ForcedEvilLucidDreams, ForcedChaoticLucidDreams]),
     OptionGroup("Constellation", [ShuffleStarRequirements]),
 ]
