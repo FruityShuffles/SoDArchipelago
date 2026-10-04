@@ -20,7 +20,7 @@ Shape of Dreams:
   mastery_pack_value: 5
 
   # Stardust per Stardust item (1-10000).
-  stardust_pack_value: 750
+  stardust_pack_value: 675
 
   # Runs earn Traveler mastery as in vanilla: true or false. false: mastery only comes from "Mastery: <Traveler>" items.
   passive_mastery: true

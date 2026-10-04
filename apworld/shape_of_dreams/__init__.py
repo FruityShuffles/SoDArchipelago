@@ -76,6 +76,10 @@ class ShapeOfDreamsWorld(World):
             location = SoDLocation(self.player, name, data.id, menu)
             if data.kind == "world_clear":
                 location.progress_type = LocationProgressType.PRIORITY
+            elif data.kind == "souvenir":
+                # The shop offers 3 random unowned souvenirs per visit, so collecting them all is luck (DESIGN.md
+                # "Souvenirs"): they only ever hold filler.
+                location.progress_type = LocationProgressType.EXCLUDED
             elif data.key in BROKEN_ACHIEVEMENTS:
                 location.progress_type = LocationProgressType.EXCLUDED
             elif data.key == STARLESS_PATH_ACHIEVEMENT and not self.options.passive_mastery:

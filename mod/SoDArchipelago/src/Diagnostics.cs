@@ -42,6 +42,24 @@ namespace SoDArchipelago
             });
             Try("star slots", LogStarSlots);
             Try("mastery", LogMastery);
+            Try("souvenirs", LogSouvenirs);
+        }
+
+        // DESIGN.md "Souvenirs": the shop's pool filter (PropEnt_Merchant_Smoothie.UserCode_TpcPopulateSouvenirs, minus
+        // its owned-souvenir check) against game_data.json. A souvenir added by a game update sends nothing until the
+        // data is regenerated.
+        private static void LogSouvenirs()
+        {
+            var shop = DewResources.FindAllByNameSubstring<Accessory>("Acc_", ResourceLoadSettings.Light)
+                .Where(a => !a.generatedFromServer && !a.excludeFromPool && Dew.IsAccessoryIncludedInGame(a.name))
+                .Select(a => a.name).Distinct().OrderBy(n => n).ToList();
+            var data = GameData.Souvenirs.Select(l => l.Key).ToList();
+            Log.Info($"Shop souvenirs ({shop.Count}): {string.Join(", ", shop)}");
+            var missing = shop.Except(data).ToList();
+            var extra = data.Except(shop).ToList();
+            if (missing.Count > 0 || extra.Count > 0)
+                Log.Warn("Shop souvenirs differ from the AP data: not locations " +
+                         $"[{string.Join(", ", missing)}], not sold [{string.Join(", ", extra)}]");
         }
 
         // DESIGN.md "Filler targets": star slot counts live in the hero prefabs (HeroConstellationSettings).
@@ -69,7 +87,7 @@ namespace SoDArchipelago
             }
             Log.Info(sb.ToString());
             Log.Info($"Star slots: {extraSlots} buyable slots cost {stardust} Stardust in total " +
-                     "(AP Stardust buffer by default: 47,250 - 45,275 = 1,975)");
+                     "(AP Stardust buffer by default: 54,000 - 45,275 star levels - 3,400 souvenirs = 5,325)");
         }
 
         // Only for a marked profile: AP code never reads an unbound profile.

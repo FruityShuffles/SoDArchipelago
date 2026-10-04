@@ -26,7 +26,7 @@ namespace SoDArchipelago
             public long Id;
             public string Name;
             public string Key;
-            public string Kind; // achievement, world_clear
+            public string Kind; // achievement, world_clear, souvenir
             public string Traveler;
             public int World;
             public string Difficulty;
@@ -66,6 +66,8 @@ namespace SoDArchipelago
         public static readonly Dictionary<string, Location> LocationsByKey = new Dictionary<string, Location>();
         public static readonly Dictionary<string, Traveler> Travelers = new Dictionary<string, Traveler>();
         public static readonly List<Difficulty> Difficulties = new List<Difficulty>();
+        // The lizard shop souvenir locations; their keys are the Accessory names (DESIGN.md "Souvenirs").
+        public static readonly List<Location> Souvenirs = new List<Location>();
 
         // Every vanilla achievement unlock target (Hero_*, St_*, Gem_*, LucidDream_*). On a marked profile these are
         // unlocked only by AP items.
@@ -80,6 +82,7 @@ namespace SoDArchipelago
             LocationsByKey.Clear();
             Travelers.Clear();
             Difficulties.Clear();
+            Souvenirs.Clear();
             UnlockTargets.Clear();
 
             var asm = typeof(GameData).Assembly;
@@ -121,6 +124,7 @@ namespace SoDArchipelago
                     Difficulty = (string)e["difficulty"],
                 };
                 LocationsByKey[loc.Key] = loc;
+                if (loc.Kind == "souvenir") Souvenirs.Add(loc);
             }
 
             foreach (var e in root["travelers"])

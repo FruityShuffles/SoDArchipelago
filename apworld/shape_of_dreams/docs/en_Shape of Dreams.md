@@ -3,8 +3,8 @@
 ## What does randomization do to this game?
 
 In vanilla Shape of Dreams, the in-game achievement system is used to unlock Travelers, Memories, Essences and Lucid Dream run modifiers.
-In Archipelago those 93 unlocks are shuffled into the multiworld as items, and achievements and world clears become
-the checks that send items to you and to the other players. Lacerta and Mist are items too: instead of them, you start
+In Archipelago those 93 unlocks are shuffled into the multiworld as items, and achievements, world clears and lizard
+shop souvenirs become the checks that send items to you and to the other players. Lacerta and Mist are items too: instead of them, you start
 with 2 random Travelers.
 
 Your normal save is never touched. Each seed is played on its own game profile, which the client mod binds to your
@@ -12,15 +12,18 @@ slot the first time you connect.
 
 ## Where are the checks (locations)?
 
-There are 228 locations.
+There are 245 locations.
 
 - **Achievements (93):** completing any achievement sends its check. You do not get the usual unlock for the achievement.
   That unlock is an item somewhere in the multiworld.
 - **World clears (135):** clearing worlds 1 to 5 as each of the 9 Travelers, on Deep Sleep, Ominous Dream and
   Nightmare. Winning through any ending clears all worlds. Clearing a world on a harder difficulty also sends
   that world's checks for the easier difficulties. Nap has no checks, and the worlds of later loops send nothing.
+- **Souvenirs (17):** owning each souvenir the lizard shop sells (bought, or unlocked with a code) sends its check. You
+  keep the souvenir.
 
 World clears are **priority locations**, so they tend to hold progression items. Achievements can hold anything.
+Souvenirs are always excluded (the shop offers them at random), so they only hold filler.
 
 ### Customizing your checks
 
@@ -38,11 +41,11 @@ You can customize which checks may hold important items using these location gro
 | Skip a Traveler you don't enjoy | `exclude_locations: [Aurena]` (that Traveler's achievements and world clears), with `goal_traveler_count` below 9 |
 | Get your progression from a Traveler you like | `priority_locations: [Aurena]` |
 
-Groups: `Achievements`, `World Clears`, `Build-Dependent Achievements`, one per Traveler (`Aurena`, `Bismuth`, `Cetus`,
+Groups: `Achievements`, `World Clears`, `Build-Dependent Achievements`, `Souvenirs`, one per Traveler (`Aurena`, `Bismuth`, `Cetus`,
 `Lacerta`, `Mist`, `Nachia`, `Shell`, `Vesper`, `Yubar`) and one per difficulty (`Deep Sleep`, `Ominous Dream`,
 `Nightmare`).
 
-You should leave at least 93 checks un-excluded. The 93 unlock items in your pool can't go on excluded checks, so
+You should leave at least 93 checks un-excluded (the souvenirs don't count). The 93 unlock items in your pool can't go on excluded checks, so
 excluding more makes generation fail.
 
 ## What items can I receive?
@@ -52,9 +55,9 @@ excluding more makes generation fail.
 - **Memory / Essence / Lucid Dream unlocks** (useful). Unlocked Memories or Essences can drop in runs. Unlocked Lucid Dream run modifiers
    can be selected in the lobby.
 - **Mastery: \<Traveler\>** (filler): +5 mastery levels for that Traveler.
-- **Stardust** (filler): +750 Stardust.
+- **Stardust** (filler): +675 Stardust.
 
-With default settings the filler alone gives every Traveler 40 mastery and enough Stardust to buy every constellation star.
+With default settings the filler alone gives every Traveler 40 mastery and enough Stardust to buy every constellation star, star slot and souvenir.
 
 ## What do I see when I send or receive an item?
 
@@ -75,7 +78,7 @@ ending, the Pure White Dream or the Starless Path.
 | `goal_traveler_count` | 9 | 1–9 | Different Travelers that must win |
 | `mastery_packs_per_traveler` | 8 | 0–15 | Mastery items per Traveler. The rest of the filler is Stardust |
 | `mastery_pack_value` | 5 | 1–40 | Mastery levels per Mastery item |
-| `stardust_pack_value` | 750 | 1–10,000 | Stardust per Stardust item |
+| `stardust_pack_value` | 675 | 1–10,000 | Stardust per Stardust item |
 | `passive_mastery` | on | | Off: runs earn no mastery, so it only comes from Mastery items, and "The Road Not Taken" is excluded |
 | `death_link` | off | | When you are knocked down, everyone on DeathLink dies, and the other way round. |
 | `forced_evil_lucid_dreams` | none | see below | Evil Lucid Dreams forced on in every run until you receive their Lucid Dream item |

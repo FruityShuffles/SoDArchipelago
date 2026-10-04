@@ -30,6 +30,8 @@ whole log, or at least every `[AP]` line, plus anything in the "Report" lines be
 
 **Passive mastery (issue #5):** 15 not tested yet.
 
+**Souvenirs (issue #4):** 16 not tested yet.
+
 Every connect logs `connection rejected (400 Bad Request)` on the local server, then connects: MultiClient.Net tries
 `wss://` first and falls back to `ws://`.
 
@@ -80,7 +82,8 @@ lobby: the events fire on a joining client, and the zone index and the local pla
   The apworld assumes diffEasy = Nap, diffNormal = Deep Sleep, diffHard = Ominous Dream, diffNightmare = Nightmare.
 - `[AP] Build content: zoneCountByTier=[...] (worlds per loop = N)` (expected 4)
 - `[AP] Star slots (default/max) per Traveler: ...` and `[AP] Star slots: N buyable slots cost X Stardust in total`
-  (the Stardust buffer is 1,525 by default)
+  (expected 4,740; filler covers it by default)
+- `[AP] Shop souvenirs (17): Acc_General_HatBDayCake, ...` with no `Shop souvenirs differ from the AP data` warning
 - `[AP] Mastery levels: ...` (only logged when the game starts with a bound profile loaded; the mod never reads an
   unbound profile)
 
@@ -135,8 +138,8 @@ In the **server window**:
    - `[AP] Unlock state enforced (received items) on 'AP Test': +Hero_Aurena`
    - Aurena is selectable in the lobby, with her base memories. Her alternate memories stay locked.
 2. `/send SoDTest Progressive Aurena` again → `(Reduction)`, `+St_Q_Reduction`; Reduction is available in her Q slot.
-3. `/send SoDTest Stardust` → `[AP] Received Stardust (+650) (server)` and
-   `[AP] Stardust +650 (1 x 650); now N; applied 1`. The Stardust counter in the lobby goes up by 650.
+3. `/send SoDTest Stardust` → `[AP] Received Stardust (+675) (server)` and
+   `[AP] Stardust +675 (1 x 675); now N; applied 1`. The Stardust counter in the lobby goes up by 675.
 4. `/send SoDTest Mastery: Lacerta` →
    `[AP] Mastery Hero_Lacerta: +5 levels (... points), level a -> a+5 (points into level p); applied 1`.
    **Report** the mastery level shown in the lobby.
@@ -377,3 +380,22 @@ A seed with `passive_mastery: false`. Claude hosts it and sends items with `/sen
    the log shows `[AP] Run mastery reward suppressed (N points): passive mastery is off`.
 3. `ap_disconnect`, then repeat step 2 offline: the same result.
 4. `/send SoDTest Mastery: <starter>`: `level 0 -> 5 (points into level 0)`.
+
+## 16. Souvenirs (issue #4)
+
+A default seed. Lizard shops show up at random, so give yourself Stardust first (`/send SoDTest Stardust` a few times)
+and play until one appears.
+
+1. **Startup.** `[AP] Shop souvenirs (17): ...` lists the 17 `Acc_General_*` keys, with no `Shop souvenirs differ`
+   warning.
+2. **Buy one.** At a lizard shop, buy a souvenir (200 Stardust).
+   - `[AP] Check: Souvenir: <name> (Acc_General_...)`, and the server shows the check.
+   - The Stardust counter drops by 200, and the souvenir is owned and can be worn (vanilla).
+   - The next shop never offers it again.
+3. **Offline.** `ap_disconnect`, then buy another one: `[AP] Check: Souvenir: ... - offline, sent on reconnect`.
+   `ap_connect`: `[AP] Resending N checks (a achievements, c world clears, 2 souvenirs)`, and the server shows it.
+4. **Co-op join** (optional, needs a second game copy): as the joining player, buy a souvenir. The check is logged and
+   sent on the joining client.
+5. **Old seed.** Connect a profile bound to a seed generated before this change (e.g. the step 14 seed): refused with
+   `This seed was generated with different game data ...`, and nothing is bound or sent.
+6. **Unbound profile.** Load an unbound throwaway profile and buy a souvenir: no `Check:` line (vanilla).

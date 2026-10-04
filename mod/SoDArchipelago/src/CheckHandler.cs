@@ -22,6 +22,14 @@ namespace SoDArchipelago
             ApClient.SendLocations(new[] { loc.Id });
         }
 
+        // UnlockAccessoryPatch, when a marked profile newly owns a shop souvenir (DESIGN.md "Souvenirs").
+        public static void OnSouvenirOwned(string accessoryKey)
+        {
+            var loc = GameData.LocationsByKey[accessoryKey];
+            Log.Info($"Check: {loc.Name} ({accessoryKey}){(ProfileGuard.Bound ? "" : " - offline, sent on reconnect")}");
+            ApClient.SendLocations(new[] { loc.Id });
+        }
+
         // World clear, worlds 1-4 = the Traveler moves on from world N: to world N+1, or after world 4 into Zone_Primus
         // (world 5) or the next loop. ZoneManager.currentZoneIndex starts at -1, is 0 in world 1 and keeps counting
         // through loops, so on arrival it equals the number of the world just left. It is a SyncVar set long before this
@@ -83,7 +91,7 @@ namespace SoDArchipelago
             ApClient.SendLocations(ids.Select(l => l.Id).ToList());
         }
 
-        // Every check recorded in the bound profile: completed achievements plus recorded world clears.
+        // Every check recorded in the bound profile: completed achievements, recorded world clears and owned souvenirs.
         public static void ResendAll()
         {
             if (!ProfileGuard.Bound) return;
@@ -95,7 +103,12 @@ namespace SoDArchipelago
             foreach (var key in ApRecords.Clears())
                 if (GameData.LocationsByKey.TryGetValue(key, out var loc))
                     ids.Add(loc.Id);
-            Log.Info($"Resending {ids.Count} checks ({achievements} achievements, {ids.Count - achievements} world clears)");
+            int clears = ids.Count - achievements;
+            foreach (var loc in GameData.Souvenirs)
+                if (DewSave.profileMain.accessories.TryGetValue(loc.Key, out var data) && data != null && data.isUnlocked)
+                    ids.Add(loc.Id);
+            Log.Info($"Resending {ids.Count} checks ({achievements} achievements, {clears} world clears, " +
+                     $"{ids.Count - achievements - clears} souvenirs)");
             ApClient.SendLocations(ids);
         }
     }

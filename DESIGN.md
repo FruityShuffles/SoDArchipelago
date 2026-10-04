@@ -4,12 +4,13 @@ The agreed randomizer design for Shape of Dreams. It was settled in a design rev
 original "achievement reward = item" scaffold. Where the code and this document disagree, this document wins.
 Item/location IDs are frozen once a version is released: the extractor keeps every key's ID through `id_history`.
 
-## Locations (228)
+## Locations (245)
 
 | Kind | Count | Progress type | Notes |
 |---|---|---|---|
 | Achievements (`ACH_*`) | 93 | default | Every achievement in `RawData/en-US/achievements.json`. None are excluded. |
 | World clears | 135 | **priority** | 5 worlds × 3 difficulties × 9 Travelers. These are the only priority locations. |
+| Souvenirs | 17 | **excluded** | Every souvenir the lizard shop sells (see "Souvenirs"). Always on, no option. |
 
 - **World structure** (corrected 2026-09-27). A loop has **4 normal worlds**. Beating the world 4 boss opens two rifts:
   the normal exit (next loop) and the Dream rift (`Rift_Sidetrack_TheDream`, only in the last world's boss room). The Dream
@@ -40,13 +41,29 @@ Item/location IDs are frozen once a version is released: the extractor keeps eve
 - **Loops:** worlds 1–4 of later loops send nothing. Limbo (`diffLimbo`) is its own difficulty id, which isn't one of the four
   mapped difficulties, so it sends no world clears and its wins don't count for the goal *(resolved from code)*.
 - **Boss-kill locations are removed.** They duplicated world clears and achievements.
-- **Naming:** `Achievement: <display name>` (unchanged) and `World <n> Clear (<Difficulty>): <Traveler>`, for example
-  `World 3 Clear (Nightmare): Mist`.
+- **Naming:** `Achievement: <display name>` (unchanged), `World <n> Clear (<Difficulty>): <Traveler>`, for example
+  `World 3 Clear (Nightmare): Mist`, and `Souvenir: <display name>`, for example `Souvenir: Mini Aurena`.
 - **Location groups** (for players' own `exclude_locations` / `priority_locations`): `Achievements`,
   `World Clears`, one group per Traveler (their achievements and world clears), one per difficulty, and
   `Build-Dependent Achievements` (the ones that need specific Memories: Four of a Kind, Fight Fire with Fire,
   Hotter Fire Wins, Omega Point, Wrist-Friendly Build, Twinkle Twinkle, Support Specialist, Now Now Stay Still,
-  Master of Mystic Arts).
+  Master of Mystic Arts), and `Souvenirs` (only there: not in the Traveler groups, not even the plushies).
+
+### Souvenirs
+
+Decided 2026-10-03, issue #4. The lizard shop (`PropEnt_Merchant_Smoothie`, spawned by `RoomMod_GiftMerchant`) sells
+cosmetic souvenirs (`Accessory` prefabs) for 200 Stardust each. Each one it can sell is an **excluded** location, and
+you keep the souvenir exactly as in vanilla.
+
+- **The 17:** the shop's pool (`UserCode_TpcPopulateSouvenirs`, run on each player's own client) is every `Acc_*` that
+  isn't `generatedFromServer` or `excludeFromPool`, passes `Dew.IsAccessoryIncludedInGame` and isn't owned yet. The
+  extractor's `SOUVENIRS` table holds them (read from the asset bundles: 8 hats and 9 "Mini <Traveler>" plushies). Out
+  of scope: the 23 server-generated ones (codes, events; the Modding ToS keeps them out) and the 18 `Acc_HeroAcc_*`
+  Traveler story rewards.
+- **Excluded** because each visit offers 3 random unowned souvenirs: collecting all 17 is luck, Stardust and time. AP
+  keeps a world-set exclusion over the player's `priority_locations`. No logic: any run can reach a shop.
+- **Owning one is its check**, however it was unlocked: a purchase, or a redeem code (which also takes it out of the
+  shop for good). See "Checks".
 
 ## Items
 
@@ -60,7 +77,7 @@ Mist (vanilla's starting Travelers), grouped as follows.
 | useful | `Essence: <name>` | 29 | Makes the Essence able to drop in runs |
 | useful | `Lucid Dream: <name>` | 15 | Unlocks the Lucid Dream modifier. A **forced** dream's item is progression and releases it (see "Forced Lucid Dreams") |
 | filler | `Mastery: <Traveler>` (one item per Traveler) | 8 per Traveler (72) | +5 mastery levels to that Traveler |
-| filler | `Stardust` | the rest (63) | +750 Stardust |
+| filler | `Stardust` | the rest (80) | +675 Stardust |
 
 - **Starting Travelers** (replaces vanilla's Lacerta and Mist): each seed picks 2 random Travelers in `generate_early`
   (`self.random.sample` of the sorted Traveler keys). One copy of each one's progressive item is precollected
@@ -68,14 +85,14 @@ Mist (vanilla's starting Travelers), grouped as follows.
   item from location −2. There's no option and no slot_data field.
 - **No traps.**
 - **Déjà vu is untouched.** It's the Pure White Dream carry-over system that costs Stardust.
-- **Counts:** 34 progression + 59 useful + 72 mastery + 63 Stardust = 228, equal to the location count.
-- **Filler targets:** filler alone gives exactly **40 mastery on every Traveler** and **47,250 Stardust**
-  (decided 2026-10-03, issue #5). 40 is the level of each Traveler's last story episode (`TravelerStory_<T>_Main8`,
+- **Counts:** 34 progression + 59 useful + 72 mastery + 80 Stardust = 245, equal to the location count.
+- **Filler targets:** filler alone gives exactly **40 mastery on every Traveler** (decided 2026-10-03, issue #5) and
+  **54,000 Stardust** (decided 2026-10-03, issue #4). 40 is the level of each Traveler's last story episode (`TravelerStory_<T>_Main8`,
   read from the asset bundles), which unlocks the Starless Path ending (`unlocksPolarisEnding`); stars and star slots
-  need at most 35. Levels come in chunks of 5, the granularity of every mastery reward. The Stardust covers the 45,275
-  needed for every star level, plus a buffer for star slot unlocks (40 + 20 × n Stardust per extra slot, where n counts
-  from 0 past the Traveler's default slot count for that star type). Checked in-game: the slots cost 4,740, so filler
-  falls 2,765 short of buying every slot too; accepted (see "Settled questions").
+  need at most 35. Levels come in chunks of 5, the granularity of every mastery reward. The Stardust covers everything
+  it can buy: 45,275 for every star level, 3,400 for the 17 souvenirs and 4,740 for every star slot (40 + 20 × n
+  Stardust per extra slot, where n counts from 0 past the Traveler's default slot count for that star type), 53,415 in
+  total.
 - Vanilla run rewards (Stardust, mastery points) are not counted toward these targets and stay as they are, except
   mastery when `passive_mastery` is off (see "Passive mastery").
 
@@ -137,9 +154,9 @@ Win a run at `goal_difficulty` **or harder** with `goal_traveler_count` **differ
 |---|---|---|---|
 | `goal_difficulty` | choice: `deep_sleep`, `ominous_dream`, `nightmare` | `nightmare` | |
 | `goal_traveler_count` | range 1–9 | 9 | |
-| `mastery_packs_per_traveler` | range 0–15 | 8 | 0 removes mastery from the pool. 15 × 9 = 135 fills every filler slot. |
+| `mastery_packs_per_traveler` | range 0–15 | 8 | 0 removes mastery from the pool. 15 × 9 = 135 leaves 17 Stardust items. |
 | `mastery_pack_value` | range 1–40 | 5 | levels per pack |
-| `stardust_pack_value` | range 1–10,000 | 750 | Stardust fills every remaining filler slot, so it can't be 0 |
+| `stardust_pack_value` | range 1–10,000 | 675 | Stardust fills every remaining filler slot, so it can't be 0 |
 | `passive_mastery` | toggle | on | See "Passive mastery" |
 | `death_link` | toggle | off | |
 | `forced_evil_lucid_dreams` | set of Evil Lucid Dream names | empty | See "Forced Lucid Dreams" |
@@ -262,8 +279,14 @@ mastery only comes from `Mastery: <Traveler>` items and the player's strength de
   AP item replaces it. **Keep** the vanilla Stardust bonus (`DewAchievementItem.grantedStardust`, usually 50).
 - **World clears:** detect the clear, then record it in the bound profile. Send that world's check for the current
   difficulty and every lower one, for the Traveler being played.
-- **On every connect,** rebuild the full check list from the profile (completed achievements plus recorded world
-  clears) and resend all of it. The server ignores duplicates.
+- **Souvenirs:** a postfix on `DewProfile.UnlockAccessory` sends the check when the loaded marked profile newly owns
+  one of the 17 (a shop purchase, `UI_InGame_FloatingWindow_Shop.ClickMerchandise`, or a redeem code). The game's own
+  unlock flag (`accessories[key].isUnlocked`) is the record: no AP record, no reward suppression. It always counts, like
+  achievements (Nap, Limbo, co-op as host or joining player, runs that Forced Lucid Dreams blocked): the shop's pool and
+  the purchase are both on the buyer's own client. The mod logs the shop's filter at startup and warns when it differs
+  from the data, so a souvenir added by a game update shows up (it sends nothing until the data is regenerated).
+- **On every connect,** rebuild the full check list from the profile (completed achievements, recorded world
+  clears and owned souvenirs) and resend all of it. The server ignores duplicates.
 
 ### Received items
 - Unlocks go through the game's own functions: `DewProfile.UnlockHero`, `UnlockSkill`, `UnlockGem`,
@@ -370,9 +393,9 @@ guide explains that offline play delays other players' items.
 
 ### Co-op
 No special handling, except for Forced Lucid Dreams (see there). Each player's own profile, mod and slot are independent. The shared loot pool is the union of
-the players' unlocks, which is vanilla co-op behavior. Achievement and world-clear checks work on a joining client
-(code review): achievements are tracked per client, the zone-loaded event is an RPC to every client, and the room load
-before it syncs the zone index.
+the players' unlocks, which is vanilla co-op behavior. Achievement, world-clear and souvenir checks work on a joining
+client (code review): achievements are tracked per client, the zone-loaded event is an RPC to every client, the room
+load before it syncs the zone index, and a souvenir is bought and unlocked on the buyer's own client.
 
 ### DeathLink (off by default)
 - **Send** when your Traveler is knocked down (`ClientEventManager.OnHeroKnockedOut` /
@@ -397,8 +420,7 @@ before it syncs the zone index.
   (`zoneCountByTier=[1,1,1,1]`).
 - ~~World-clear detection~~ Zone transition, world = `currentZoneIndex` on arrival (see "Locations").
 - ~~Star slot counts per Traveler (the Stardust buffer)~~ Logged in-game 2026-09-27: 80 buyable slots cost 4,740
-  Stardust, more than the buffer (1,975 since Stardust items give +750), so filler alone falls 2,765 short of buying
-  everything. **Accepted as is**: vanilla run and achievement Stardust covers the rest. ~~Mastery cap~~,
+  Stardust. Since issue #4 filler covers them (see "Filler targets"). ~~Mastery cap~~,
   ~~fresh-profile test~~ and ~~UnknownFate~~: see above.
 - ~~`isAlteringGameplay`~~ Kept on.
 - ~~DeathLink for a joining co-op player~~ Accepted as a known limitation (see "DeathLink").

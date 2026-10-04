@@ -26,7 +26,7 @@ class GoalTravelerCount(Range):
 
 class MasteryPacksPerTraveler(Range):
     """How many "Mastery: <Traveler>" items each Traveler has in the pool. 0 removes mastery from the pool.
-    Every filler slot that isn't mastery is Stardust; 15 fills every filler slot with mastery."""
+    Every filler slot that isn't mastery is Stardust; 15 still leaves 17 Stardust items."""
     display_name = "Mastery Packs per Traveler"
     range_start = 0
     range_end = 15
@@ -46,7 +46,7 @@ class StardustPackValue(Range):
     display_name = "Stardust Pack Value"
     range_start = 1
     range_end = 10000
-    default = 750
+    default = 675
 
 
 class PassiveMastery(DefaultOnToggle):

@@ -123,6 +123,32 @@ LUCID_DREAM_TYPE = {
     "LucidDream_WILD": "chaotic",
 }
 
+# DESIGN.md "Souvenirs": the cosmetic accessories the lizard shop sells (each one is an excluded location). RawData has
+# no accessories, so they were read from the game's asset bundles on 2026-10-03 (game r.1.4.0.13_s): every Accessory
+# MonoBehaviour in the defaultlocalgroup bundle (load the monoscripts bundle with it so m_Script resolves), filtered
+# like the shop pool (PropEnt_Merchant_Smoothie.UserCode_TpcPopulateSouvenirs: not generatedFromServer, not
+# excludeFromPool). English names are MainLocalization's "<key>_Name" in resources.assets. The mod logs the shop filter
+# at startup and warns when it differs from this table.
+SOUVENIRS = {
+    "Acc_General_HatBDayCake": "Birthday Cake",
+    "Acc_General_HatBirdNest": "Small Bird Nest",
+    "Acc_General_HatDopeGlasses": "Perfectly Cool Glasses",
+    "Acc_General_HatFoxtail": "Foxtail",
+    "Acc_General_HatLittleBaam": "Adventuring Baam",
+    "Acc_General_HatMushroom": "Mushroom Cluster",
+    "Acc_General_HatPerfectTurkey": "Perfect Turkey",
+    "Acc_General_HatSproutOfConcept": "Growing Sprout",
+    "Acc_General_PlushAurena": "Mini Aurena",
+    "Acc_General_PlushBismuth": "Mini Bismuth",
+    "Acc_General_PlushCetus": "Mini Cetus",
+    "Acc_General_PlushHusk": "Mini Shell",
+    "Acc_General_PlushLacerta": "Mini Lacerta",
+    "Acc_General_PlushMist": "Mini Mist",
+    "Acc_General_PlushNachia": "Mini Nachia",
+    "Acc_General_PlushVesper": "Mini Vesper",
+    "Acc_General_PlushYubar": "Mini Yubar",
+}
+
 # Difficulties, easiest first. "rank" orders them for "this difficulty or harder". "game_id" is the
 # GameSettingsManager.difficulty / DewGameResult.difficulty string. The ids come from the asset catalog; the mapping to
 # display names is ordered by the in-game list and is logged by the mod at startup ("[AP] Difficulty ...") so it can be
@@ -256,6 +282,8 @@ def main() -> int:
                                   "key": f"CLEAR_W{world}_{diff['key']}_{hero}", "kind": "world_clear",
                                   "traveler": hero, "world": world, "difficulty": diff["key"],
                                   "copies_required": req})
+    for key in sorted(SOUVENIRS, key=SOUVENIRS.get):
+        locations.append({"name": f"Souvenir: {SOUVENIRS[key]}", "key": key, "kind": "souvenir", "traveler": None})
 
     for kind, entries in (("item", items), ("location", locations)):
         for field in ("name", "key"):
@@ -269,6 +297,7 @@ def main() -> int:
         "Achievements": [l["name"] for l in locations if l["kind"] == "achievement"],
         "World Clears": [l["name"] for l in locations if l["kind"] == "world_clear"],
         "Build-Dependent Achievements": [l["name"] for l in locations if l.get("build_dependent")],
+        "Souvenirs": [l["name"] for l in locations if l["kind"] == "souvenir"],
     }
     for hero in trav_order:
         groups[trav_name[hero]] = [l["name"] for l in locations if l["traveler"] == hero]

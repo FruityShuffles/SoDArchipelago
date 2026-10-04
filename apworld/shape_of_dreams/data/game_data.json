@@ -1,7 +1,7 @@
 {
   "game": "Shape of Dreams",
   "data_format_version": 4,
-  "data_hash": "cd25df83742e349c4e6c101c09e1496bb38b59e1c0e2c22a3ad2765aa34e6248",
+  "data_hash": "8d43e08ab5ae21df07fc9b7185b00e3a20c792235346d0fa8f28bbee83ae8915",
   "extracted_from_game_version": "r.1.4.0.13_s",
   "difficulties": [
     {
@@ -3120,6 +3120,125 @@
       "difficulty": "NIGHTMARE",
       "copies_required": 3,
       "id": 7720228
+    },
+    {
+      "name": "Souvenir: Adventuring Baam",
+      "key": "Acc_General_HatLittleBaam",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720229
+    },
+    {
+      "name": "Souvenir: Birthday Cake",
+      "key": "Acc_General_HatBDayCake",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720230
+    },
+    {
+      "name": "Souvenir: Foxtail",
+      "key": "Acc_General_HatFoxtail",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720231
+    },
+    {
+      "name": "Souvenir: Growing Sprout",
+      "key": "Acc_General_HatSproutOfConcept",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720232
+    },
+    {
+      "name": "Souvenir: Mini Aurena",
+      "key": "Acc_General_PlushAurena",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720233
+    },
+    {
+      "name": "Souvenir: Mini Bismuth",
+      "key": "Acc_General_PlushBismuth",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720234
+    },
+    {
+      "name": "Souvenir: Mini Cetus",
+      "key": "Acc_General_PlushCetus",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720235
+    },
+    {
+      "name": "Souvenir: Mini Lacerta",
+      "key": "Acc_General_PlushLacerta",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720236
+    },
+    {
+      "name": "Souvenir: Mini Mist",
+      "key": "Acc_General_PlushMist",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720237
+    },
+    {
+      "name": "Souvenir: Mini Nachia",
+      "key": "Acc_General_PlushNachia",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720238
+    },
+    {
+      "name": "Souvenir: Mini Shell",
+      "key": "Acc_General_PlushHusk",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720239
+    },
+    {
+      "name": "Souvenir: Mini Vesper",
+      "key": "Acc_General_PlushVesper",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720240
+    },
+    {
+      "name": "Souvenir: Mini Yubar",
+      "key": "Acc_General_PlushYubar",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720241
+    },
+    {
+      "name": "Souvenir: Mushroom Cluster",
+      "key": "Acc_General_HatMushroom",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720242
+    },
+    {
+      "name": "Souvenir: Perfect Turkey",
+      "key": "Acc_General_HatPerfectTurkey",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720243
+    },
+    {
+      "name": "Souvenir: Perfectly Cool Glasses",
+      "key": "Acc_General_HatDopeGlasses",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720244
+    },
+    {
+      "name": "Souvenir: Small Bird Nest",
+      "key": "Acc_General_HatBirdNest",
+      "kind": "souvenir",
+      "traveler": null,
+      "id": 7720245
     }
   ],
   "location_groups": {
@@ -3365,6 +3484,25 @@
       "Achievement: Omega Point",
       "Achievement: Support Specialist",
       "Achievement: Wrist-Friendly Build"
+    ],
+    "Souvenirs": [
+      "Souvenir: Adventuring Baam",
+      "Souvenir: Birthday Cake",
+      "Souvenir: Foxtail",
+      "Souvenir: Growing Sprout",
+      "Souvenir: Mini Aurena",
+      "Souvenir: Mini Bismuth",
+      "Souvenir: Mini Cetus",
+      "Souvenir: Mini Lacerta",
+      "Souvenir: Mini Mist",
+      "Souvenir: Mini Nachia",
+      "Souvenir: Mini Shell",
+      "Souvenir: Mini Vesper",
+      "Souvenir: Mini Yubar",
+      "Souvenir: Mushroom Cluster",
+      "Souvenir: Perfect Turkey",
+      "Souvenir: Perfectly Cool Glasses",
+      "Souvenir: Small Bird Nest"
     ],
     "Aurena": [
       "Achievement: Deceiving Looks",
@@ -5829,7 +5967,24 @@
       "CLEAR_W4_NIGHTMARE_Hero_Yubar": 7720225,
       "CLEAR_W5_DEEP_SLEEP_Hero_Yubar": 7720226,
       "CLEAR_W5_OMINOUS_DREAM_Hero_Yubar": 7720227,
-      "CLEAR_W5_NIGHTMARE_Hero_Yubar": 7720228
+      "CLEAR_W5_NIGHTMARE_Hero_Yubar": 7720228,
+      "Acc_General_HatLittleBaam": 7720229,
+      "Acc_General_HatBDayCake": 7720230,
+      "Acc_General_HatFoxtail": 7720231,
+      "Acc_General_HatSproutOfConcept": 7720232,
+      "Acc_General_PlushAurena": 7720233,
+      "Acc_General_PlushBismuth": 7720234,
+      "Acc_General_PlushCetus": 7720235,
+      "Acc_General_PlushLacerta": 7720236,
+      "Acc_General_PlushMist": 7720237,
+      "Acc_General_PlushNachia": 7720238,
+      "Acc_General_PlushHusk": 7720239,
+      "Acc_General_PlushVesper": 7720240,
+      "Acc_General_PlushYubar": 7720241,
+      "Acc_General_HatMushroom": 7720242,
+      "Acc_General_HatPerfectTurkey": 7720243,
+      "Acc_General_HatDopeGlasses": 7720244,
+      "Acc_General_HatBirdNest": 7720245
     }
   }
 }
