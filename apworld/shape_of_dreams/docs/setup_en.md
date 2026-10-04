@@ -69,8 +69,8 @@ the on-screen feed.
 
 ## Playing offline
 
-A bound profile keeps working when you're not connected: you keep what you've already received, completed achievements
-and world clears are saved in the profile, and everything is sent the next time you connect. An
+A bound profile keeps working when you're not connected: you keep what you've already received, completed achievements,
+world clears and souvenirs are saved in the profile, and everything is sent the next time you connect. An
 "OFFLINE — checks will send on reconnect" notice stays on screen while you're disconnected.
 
 ## Co-op

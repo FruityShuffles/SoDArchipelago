@@ -45,7 +45,7 @@ Groups: `Achievements`, `World Clears`, `Build-Dependent Achievements`, `Souveni
 `Lacerta`, `Mist`, `Nachia`, `Shell`, `Vesper`, `Yubar`) and one per difficulty (`Deep Sleep`, `Ominous Dream`,
 `Nightmare`).
 
-You should leave at least 93 checks un-excluded (the souvenirs don't count). The 93 unlock items in your pool can't go on excluded checks, so
+You should leave at least 93 checks un-excluded (checks that are already excluded, like the souvenirs, don't count). The 93 unlock items in your pool can't go on excluded checks, so
 excluding more makes generation fail.
 
 ## What items can I receive?
@@ -89,6 +89,7 @@ ending, the Pure White Dream or the Starless Path.
 
 The listed dreams stay on in every run until you receive their `Lucid Dream: <name>` item. After that you can turn
 them on or off as usual. A forced dream's item is progression. Only the lobby host's forced dreams are turned on automatically.
+World clears and wins only count in a run where every still-forced dream is on.
 
 - Evil: `Fish Scales`, `Grievous Wounds`, `Mad Life`, `Marsh of Destiny`, `Overpopulation`, `Prudent Jellyfish`
 - Chaotic: `Embrace Mortality`, `Harmless Whispers`, `Sparkling Dream Flask`, `The Darkest Urge`, `WILD`

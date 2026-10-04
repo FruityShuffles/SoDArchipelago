@@ -8,7 +8,7 @@ Item/location IDs are frozen once a version is released: the extractor keeps eve
 
 | Kind | Count | Progress type | Notes |
 |---|---|---|---|
-| Achievements (`ACH_*`) | 93 | default | Every achievement in `RawData/en-US/achievements.json`. None are excluded. |
+| Achievements (`ACH_*`) | 93 | default | Every achievement in `RawData/en-US/achievements.json`. "Who's the Prey Now" is **excluded** (`BROKEN_ACHIEVEMENTS`, issue #6). |
 | World clears | 135 | **priority** (Deep Sleep), default | 5 worlds × 3 difficulties × 9 Travelers. The 45 Deep Sleep clears are the only priority locations. |
 | Souvenirs | 17 | **excluded** | Every souvenir the lizard shop sells (see "Souvenirs"). Always on, no option. |
 
@@ -398,9 +398,10 @@ guide explains that offline play delays other players' items.
 
 ### Co-op
 No special handling, except for Forced Lucid Dreams (see there). Each player's own profile, mod and slot are independent. The shared loot pool is the union of
-the players' unlocks, which is vanilla co-op behavior. Achievement, world-clear and souvenir checks work on a joining
-client (code review): achievements are tracked per client, the zone-loaded event is an RPC to every client, the room
-load before it syncs the zone index, and a souvenir is bought and unlocked on the buyer's own client.
+the players' unlocks, which is vanilla co-op behavior. Achievement, world-clear, win and souvenir checks work on a joining
+client (verified in-game 2026-10-03, joining a non-AP host): achievements are tracked per client, the zone-loaded event
+is an RPC to every client, the room load before it syncs the zone index, and a souvenir is bought and unlocked on the
+buyer's own client.
 
 ### DeathLink (off by default)
 - **Send** when your Traveler is knocked down (`ClientEventManager.OnHeroKnockedOut` /

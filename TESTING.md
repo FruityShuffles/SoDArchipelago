@@ -28,15 +28,15 @@ whole log, or at least every `[AP]` line, plus anything in the "Report" lines be
 **0.4.0, random starting Travelers** (2026-10-03, same setup, starters Aurena and Yubar): 14.1–14.4 passed. 14.5
 (tutorial), 14.6 (profiles bound before 0.4.0) and 14.7 (co-op) were not tested.
 
-**Passive mastery (issue #5):** 15 not tested yet.
-
-**Souvenirs (issue #4):** 16 not tested yet.
+**Passive mastery and souvenirs** (2026-10-03, one seed with passive mastery off, played as a player who joined a non-AP
+friend's lobby): 15 and 16 passed. On the joining client, achievements, World 1–5 (Deep Sleep), the win, the goal and
+two souvenirs all sent, items received mid-run applied, and the win's mastery reward was suppressed with no mastery
+panel.
 
 Every connect logs `connection rejected (400 Bad Request)` on the local server, then connects: MultiClient.Net tries
 `wss://` first and falls back to `ws://`.
 
-The steps not listed were judged low risk from the code (2026-10-03), including an AP player joining someone else's
-lobby: the events fire on a joining client, and the zone index and the local player's result are synced before them.
+The steps not listed were judged low risk from the code (2026-10-03).
 
 ## 0. Setup
 
@@ -69,7 +69,7 @@ lobby: the events fire on a joining client, and the zone index and the local pla
 ## 1. Mod loads
 
 1. Start the game, enable **Archipelago** in the mod manager if needed.
-   - `[AP] Loaded com.sodarchipelago.archipelago 0.4.0; data format 4, extracted from game r.1.4.0.13_s; running game ...`
+   - `[AP] Loaded com.sodarchipelago.archipelago <version>; data format 4, extracted from game r.1.4.0.13_s; running game ...`
    - No `Failed to load com.sodarchipelago.archipelago` line from `[DewMod]`.
 2. Open the mod's config in the mod manager. **Report:** do Server / Slot / Password fields show up and save?
 3. Open the console and type `ap_status`.
@@ -106,7 +106,7 @@ lobby: the events fire on a joining client, and the zone index and the local pla
    - `[AP] Bound profile 'AP Test' (...) to Archipelago:<seed>:SoDTest`
    - `[AP] Connected: seed <seed>, slot SoDTest (profile 'AP Test').`
    - `[AP] slot_data: data_format_version=4, data_hash=<hash>, ..., death_link=True`, `[AP] DeathLink enabled.`
-   - `[AP] Resending 0 checks (0 achievements, 0 world clears)`
+   - `[AP] Resending 0 checks (0 achievements, 0 world clears, 0 souvenirs)`
    - `[AP] Goal: 0/1 Travelers have won at rank 1+ ()`
    - On screen: `Archipelago: SoDTest` top-left. This proves `wss://`-then-`ws://` connection works under Unity Mono. To test `wss://` too, connect once to a real archipelago.gg room (any seed with a Shape of
      Dreams slot) on a second throwaway profile.
@@ -376,14 +376,13 @@ The seed starts with 2 random Travelers instead of Lacerta and Mist. Use a seed 
 A seed with `passive_mastery: false`. Claude hosts it and sends items with `/send`.
 
 1. Fresh bind: `[AP] Passive mastery: off`.
-2. Play a few minutes, then concede. Back in the lobby there's no mastery panel, the Traveler's mastery is unchanged, and
+2. Finish a run (win or concede). Back in the lobby there's no mastery panel, the Traveler's mastery is unchanged, and
    the log shows `[AP] Run mastery reward suppressed (N points): passive mastery is off`.
-3. `ap_disconnect`, then repeat step 2 offline: the same result.
-4. `/send SoDTest Mastery: <starter>`: `level 0 -> 5 (points into level 0)`.
+3. `/send SoDTest Mastery: <starter>`: `level 0 -> 5 (points into level 0)`.
 
 ## 16. Souvenirs (issue #4)
 
-A default seed. Lizard shops show up at random, so give yourself Stardust first (`/send SoDTest Stardust` a few times)
+Any seed. Lizard shops show up at random, so give yourself Stardust first (`/send SoDTest Stardust` a few times)
 and play until one appears.
 
 1. **Startup.** `[AP] Shop souvenirs (17): ...` lists the 17 `Acc_General_*` keys, with no `Shop souvenirs differ`
@@ -391,11 +390,5 @@ and play until one appears.
 2. **Buy one.** At a lizard shop, buy a souvenir (200 Stardust).
    - `[AP] Check: Souvenir: <name> (Acc_General_...)`, and the server shows the check.
    - The Stardust counter drops by 200, and the souvenir is owned and can be worn (vanilla).
-   - The next shop never offers it again.
-3. **Offline.** `ap_disconnect`, then buy another one: `[AP] Check: Souvenir: ... - offline, sent on reconnect`.
-   `ap_connect`: `[AP] Resending N checks (a achievements, c world clears, 2 souvenirs)`, and the server shows it.
-4. **Co-op join** (optional, needs a second game copy): as the joining player, buy a souvenir. The check is logged and
-   sent on the joining client.
-5. **Old seed.** Connect a profile bound to a seed generated before this change (e.g. the step 14 seed): refused with
-   `This seed was generated with different game data ...`, and nothing is bound or sent.
-6. **Unbound profile.** Load an unbound throwaway profile and buy a souvenir: no `Check:` line (vanilla).
+3. **Co-op join:** as a player who joined someone else's lobby, buy a souvenir. The check is logged and sent on the
+   joining client.
