@@ -53,6 +53,12 @@ namespace SoDArchipelago
                 grm.ClientEvent_OnGameConcluded += onConcluded;
                 return () => grm.ClientEvent_OnGameConcluded -= onConcluded;
             });
+            CallOnNetworkedManager<QuestManager>(qm =>
+            {
+                Action<DewQuest> onRemoved = CheckHandler.OnQuestRemoved;
+                qm.ClientEvent_OnQuestRemoved += onRemoved;
+                return () => qm.ClientEvent_OnQuestRemoved -= onRemoved;
+            });
             CallOnNetworkedManager<ClientEventManager>(cem =>
             {
                 Action<Hero> onKnockedOut = DeathLinkHandler.OnHeroKnockedOut;

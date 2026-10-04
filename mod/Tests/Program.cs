@@ -33,6 +33,8 @@ internal static class Program
         NetworkedManagerBase<ZoneManager>.instance = new ZoneManager();
         GameData.ItemsById.Clear();
         GameData.LocationsByKey.Clear();
+        GameData.Souvenirs.Clear();
+        GameData.Artifacts.Clear();
         InRunItems.Cleanup();
     }
 
@@ -165,8 +167,8 @@ internal static class Program
 
     private static void Main()
     {
-        Stardust(); StardustItems(); Delivery(); Records(); Wares();
-        Console.WriteLine($"Passed {_assertions} assertions (Stardust, delivery, check records and Jonas's wares).");
+        Stardust(); StardustItems(); Delivery(); Records(); Wares(); Pilgrimage();
+        Console.WriteLine($"Passed {_assertions} assertions (Stardust, delivery, checks, wares and pilgrimage).");
     }
 
     private static void Wares()
@@ -264,5 +266,101 @@ internal static class Program
         Check(!ApRecords.SetWareCount(30) && !ApRecords.SetScout(location.Key, "item", "owner") &&
             !ApRecords.TryScout(location.Key, out _, out _) && ApRecords.WareCount() == 0 &&
             DewSave.profileMain.experienceFlags.Count == 0, "Vanilla profiles cannot read or write ware data");
+    }
+
+    private static void Pilgrimage()
+    {
+        Reset();
+        var player = DewPlayer.local = new DewPlayer();
+        var guest = new DewPlayer();
+        var user = new Entity { owner = player };
+        var shrine = new Shrine_PotOfGreed();
+        var quest = new Quest_StrayMemory();
+        var shrineLoc = new GameData.Location { Id = 101, Key = "Shrine_PotOfGreed", Name = "Pot of Greed", Kind = "shrine" };
+        var questLoc = new GameData.Location { Id = 102, Key = "Quest_StrayMemory", Name = "Stray Memory", Kind = "quest" };
+        GameData.LocationsByKey[shrineLoc.Key] = shrineLoc;
+        GameData.LocationsByKey[questLoc.Key] = questLoc;
+        CheckHandler.OnShrineUsed(shrine, new Entity { owner = guest });
+        CheckHandler.OnShrineUsed(shrine, new Entity());
+        CheckHandler.OnShrineUsed(shrine, null);
+        CheckHandler.OnShrineUsed(null, user);
+        CheckHandler.OnShrineUsed(new Shrine_Disintegration(), user);
+        Check(ApRecords.Checks().Count() == 0, "Other users, missing users and unlisted shrines do not check");
+        // Joining clients must record offline too; no server, difficulty or ForcedDreams condition is required.
+        Mirror.NetworkServer.active = false;
+        NetworkedManagerBase<GameSettingsManager>.instance = new GameSettingsManager { difficulty = "diffLimbo" };
+        ProfileGuard.SetSessionMarker(null); ApClient.IsConnected = false;
+        CheckHandler.OnShrineUsed(shrine, user);
+        CheckHandler.OnShrineUsed(shrine, user);
+        Check(ApRecords.HasCheck(shrineLoc.Key) && DewSave.saves == 1 && ApClient.Sent.Count == 0,
+            "First local shrine use records once for an offline joining player");
+        CheckHandler.OnQuestRemoved(quest); // removal may arrive before the Completed SyncVar
+        quest.state = QuestState.Failed; CheckHandler.OnQuestRemoved(quest);
+        CheckHandler.OnQuestRemoved(new Quest_GuidingCompass { state = QuestState.Completed });
+        Check(!ApRecords.HasCheck(questLoc.Key), "Ongoing, failed and unlisted quests never check");
+        quest.state = QuestState.Completed;
+        CheckHandler.OnQuestRemoved(quest); // the post-deserialization hook reads the final state
+        CheckHandler.OnQuestRemoved(quest);
+        Check(ApRecords.HasCheck(questLoc.Key) && DewSave.saves == 2,
+            "Late Completed state records once, including for joining clients");
+
+        var keys = new[] { "Artifact_BouquetOfEyes", "Artifact_EmblemOfSubjugation", "Artifact_FirstMerchantsToken",
+            "Artifact_FoolsGold", "Artifact_ForestHoundSeed", "Artifact_NightmareCatalyst", "Artifact_StarBlossom",
+            "Artifact_TheStarlitStone", "Artifact_TomeOfTheSeeker", "Artifact_VoidWhisperer", "Artifact_WatchersNote",
+            "Artifact_WeddingRing" };
+        foreach (var key in keys)
+        {
+            var location = new GameData.Location { Id = 200 + GameData.Artifacts.Count, Key = key, Name = key, Kind = "artifact" };
+            GameData.LocationsByKey[key] = location; GameData.Artifacts.Add(location);
+            DewSave.profileMain.artifacts[key] = new DewProfile.Artifact { status = UnlockStatus.NotDiscovered };
+            CheckHandler.OnArtifactDiscovered(DewSave.profileMain, key, false);
+            Check(!CheckHandler.IsArtifactDiscovered(DewSave.profileMain, key) && DewSave.saves == 2 + GameData.Artifacts.Count - 1,
+                "Picking up an artifact without handing it in is not a check");
+            bool before = CheckHandler.IsArtifactDiscovered(DewSave.profileMain, key);
+            DewSave.profileMain.artifacts[key].status = UnlockStatus.Complete;
+            CheckHandler.OnArtifactDiscovered(DewSave.profileMain, key, before);
+            int saved = DewSave.saves;
+            CheckHandler.OnArtifactDiscovered(DewSave.profileMain, key,
+                CheckHandler.IsArtifactDiscovered(DewSave.profileMain, key));
+            Check(CheckHandler.IsArtifactDiscovered(DewSave.profileMain, key) && saved == 2 + GameData.Artifacts.Count &&
+                DewSave.saves == saved && !ApRecords.HasCheck(key), "Hand-in saves its native flag once, with no AP record");
+        }
+        var differentProfile = new DewProfile();
+        differentProfile.artifacts[keys[0]] = new DewProfile.Artifact { status = UnlockStatus.Complete };
+        int writes = DewSave.saves;
+        CheckHandler.OnArtifactDiscovered(differentProfile, keys[0], false);
+        Check(!CheckHandler.IsArtifactDiscovered(differentProfile, keys[0]) && DewSave.saves == writes,
+            "An artifact on a different profile cannot be read or recorded");
+        const string excluded = "Artifact_AnOldGratitude";
+        DewSave.profileMain.artifacts[excluded] = new DewProfile.Artifact { status = UnlockStatus.Complete };
+        CheckHandler.OnArtifactDiscovered(DewSave.profileMain, excluded, false);
+        Check(DewSave.saves == writes && ApClient.Sent.Count == 0, "Non-pool artifacts send no checks; offline hand-ins send nothing");
+        var flags = new List<string>(DewSave.profileMain.experienceFlags);
+        var artifacts = DewSave.profileMain.artifacts.ToDictionary(kv => kv.Key,
+            kv => new DewProfile.Artifact { status = kv.Value.status });
+        DewSave.profileMain = new DewProfile { experienceFlags = flags, artifacts = artifacts };
+        ProfileGuard.SetSessionMarker("Archipelago:test:slot"); ApClient.IsConnected = true;
+        CheckHandler.ResendAll();
+        Check(ApClient.Sent.OrderBy(id => id).SequenceEqual(new long[] { 101, 102 }.Concat(Enumerable.Range(200, 12).Select(n => (long)n))),
+            "Reconnect resends persisted shrine, quest and all twelve native artifact flags");
+
+        // Vanilla, failed and transient profiles must not get AP records or native flag reads.
+        ApClient.Sent.Clear();
+        DewSave.profileMain.experienceFlags.Clear();
+        CheckHandler.OnShrineUsed(shrine, user); CheckHandler.OnQuestRemoved(quest);
+        CheckHandler.OnArtifactDiscovered(DewSave.profileMain, keys[0], false); CheckHandler.ResendAll();
+        Check(!CheckHandler.IsArtifactDiscovered(DewSave.profileMain, keys[0]) && DewSave.saves == writes &&
+            ApClient.Sent.Count == 0 && DewSave.profileMain.experienceFlags.Count == 0, "Vanilla profiles remain untouched");
+        DewSave.profileMain.experienceFlags.Add("Archipelago:test:slot");
+        ProfileGuard.OnProfileLoaded("failed", false);
+        CheckHandler.OnShrineUsed(shrine, user); CheckHandler.OnQuestRemoved(quest);
+        CheckHandler.OnArtifactDiscovered(DewSave.profileMain, keys[0], false); CheckHandler.ResendAll();
+        Check(ApRecords.Checks().Count() == 0 && !CheckHandler.IsArtifactDiscovered(DewSave.profileMain, keys[0]) &&
+            DewSave.saves == writes && ApClient.Sent.Count == 0, "Failed loads block all pilgrimage access");
+        ProfileGuard.OnProfileLoaded("loaded", true); DewSave.profileMainPath = null;
+        CheckHandler.OnShrineUsed(shrine, user); CheckHandler.OnQuestRemoved(quest);
+        CheckHandler.OnArtifactDiscovered(DewSave.profileMain, keys[0], false);
+        Check(!CheckHandler.IsArtifactDiscovered(DewSave.profileMain, keys[0]) && DewSave.saves == writes,
+            "Transient profiles cannot receive pilgrimage checks");
     }
 }

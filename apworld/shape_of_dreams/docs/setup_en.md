@@ -25,7 +25,8 @@ The example YAML includes Default, With in-run items, and With in-run items and 
 replaces `stardust_pack_value`: it is the seed's whole Stardust income, divided exactly across its packs.
 `jonas_wares` adds gold purchases at Jonas's shop when playing solo or hosting. Hover the AP icon to see the item
 and recipient; buying sends its check. A player who only joins other people's games should set `jonas_wares: 0`.
-The in-run options and wares ship together with the remaining #9–#12 features.
+Shrine uses, quest completions and artifact hand-ins always send checks, including when joining a co-op game.
+They do not require `in_run_items`. The in-run options, wares and pilgrimage checks ship together with #10–#12.
 
 ## Installing the mod
 

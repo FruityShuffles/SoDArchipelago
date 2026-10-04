@@ -149,6 +149,43 @@ SOUVENIRS = {
     "Acc_General_PlushYubar": "Mini Yubar",
 }
 
+# DESIGN.md "Pilgrimage checks" (issue #9). Leave out side content whose purpose an achievement already covers.
+SHRINES = {
+    "Shrine_PotOfGreed": "Pot of Greed",
+    "Shrine_MawOfDoom": "Maw of Doom",
+    "Shrine_Hatred": "Hatred",
+    "Shrine_Paradox": "Paradox",
+    "Shrine_MirrorOfRemorse": "Mirror of Remorse",
+    "Shrine_Destiny": "Destiny",
+    "Shrine_Entanglement": "Entanglement",
+    "Shrine_AltarOfCleansing": "Altar of Cleansing",
+    "Shrine_Ascension": "Ascension",
+}
+QUESTS = {
+    "Quest_StrayMemory": "Stray Memory",
+    "Quest_StarSeekersJournal": "Star Seeker's Journal",
+    "Quest_FragmentOfRadiance": "Fragment of Radiance",
+    "Quest_CallOfTheRavenous": "Call of the Ravenous",
+    "Quest_TheConsortOfNight": "Consort of Night",
+    "Quest_HuntedByObliviax": "Hunted by Obliviax",
+}
+# The twelve non-excluded artifact prefabs listed in issue #9; English names from MainLocalization.
+# The journal's Complete flag means handed in to the Dream Teller, not merely picked up.
+ARTIFACTS = {
+    "Artifact_BouquetOfEyes": "Bouquet of Eyes",
+    "Artifact_EmblemOfSubjugation": "Emblem of Subjugation",
+    "Artifact_FirstMerchantsToken": "First Merchant's Token",
+    "Artifact_FoolsGold": "Fool's Gold",
+    "Artifact_ForestHoundSeed": "Forest Hound Seed",
+    "Artifact_NightmareCatalyst": "Nightmare Catalyst",
+    "Artifact_StarBlossom": "Star Blossom",
+    "Artifact_TheStarlitStone": "The Starlit Stone",
+    "Artifact_TomeOfTheSeeker": "Tome of the Seeker",
+    "Artifact_VoidWhisperer": "Void Whisperer",
+    "Artifact_WatchersNote": "Watcher's Note",
+    "Artifact_WeddingRing": "Wedding Ring",
+}
+
 # Difficulties, easiest first. "rank" orders them for "this difficulty or harder". "game_id" is the
 # GameSettingsManager.difficulty / DewGameResult.difficulty string. The ids come from the asset catalog; the mapping to
 # display names is ordered by the in-game list and is logged by the mod at startup ("[AP] Difficulty ...") so it can be
@@ -326,6 +363,10 @@ def main() -> int:
         locations.append({"name": f"Jonas's Ware {number}", "key": f"WARE_JONAS_{number}",
                           "kind": "ware", "traveler": None, "number": number})
 
+    for kind, table in (("shrine", SHRINES), ("quest", QUESTS), ("artifact", ARTIFACTS)):
+        for key, name in table.items():
+            locations.append({"name": f"{kind.title()}: {name}", "key": key, "kind": kind, "traveler": None})
+
     for kind, entries in (("item", items), ("location", locations)):
         for field in ("name", "key"):
             values = [e[field] for e in entries]
@@ -340,6 +381,9 @@ def main() -> int:
         "Build-Dependent Achievements": [l["name"] for l in locations if l.get("build_dependent")],
         "Souvenirs": [l["name"] for l in locations if l["kind"] == "souvenir"],
         "Jonas's Wares": [l["name"] for l in locations if l["kind"] == "ware"],
+        "Shrines": [l["name"] for l in locations if l["kind"] == "shrine"],
+        "Quests": [l["name"] for l in locations if l["kind"] == "quest"],
+        "Artifacts": [l["name"] for l in locations if l["kind"] == "artifact"],
     }
     for hero in trav_order:
         groups[trav_name[hero]] = [l["name"] for l in locations if l["traveler"] == hero]

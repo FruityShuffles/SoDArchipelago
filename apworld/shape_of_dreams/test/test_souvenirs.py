@@ -38,5 +38,5 @@ class TestSouvenirFill(SoDTestBase):
 
 
 class TestSouvenirFillFewestStardust(TestSouvenirFill):
-    """The most excluded locations (19) and the fewest Stardust items (17)."""
+    """Extra exclusions with passive mastery off and the maximum mastery pool."""
     options = {"mastery_packs_per_traveler": 15, "passive_mastery": False}

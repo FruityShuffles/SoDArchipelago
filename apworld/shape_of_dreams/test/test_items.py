@@ -12,14 +12,14 @@ class _PoolTest(SoDTestBase):
         return Counter(item.name for item in self.multiworld.itempool if item.player == self.player)
 
     def test_item_count_equals_location_count(self) -> None:
-        self.assertEqual(len(location_table), 345)  # baseline + all 100 possible wares
+        self.assertEqual(len(location_table), 372)  # baseline + 100 possible wares + 27 pilgrimage checks
         self.assertEqual(sum(self._pool().values()), len(self.world.enabled_locations))
 
     def test_filler_mix(self) -> None:
         pool = self._pool()
         for name in mastery_item_names:
             self.assertEqual(pool[name], self.packs)
-        self.assertEqual(pool[STARDUST], 152 - 9 * self.packs + self.world.options.jonas_wares.value)
+        self.assertEqual(pool[STARDUST], 152 - 9 * self.packs + self.world.options.jonas_wares.value + 27)
 
     def test_progressive_copies(self) -> None:
         # Each starting Traveler's first copy is a starting item, not in the pool.
@@ -34,11 +34,11 @@ class TestDefaultPool(_PoolTest):
     packs = 8
 
     def test_stardust_default(self) -> None:
-        # Default wares add 30 packs, keeping the same exact 54,000 Stardust total.
-        self.assertEqual(self._pool()[STARDUST], 110)
+        # Wares and pilgrimage add 57 packs, keeping the same exact 54,000 Stardust total.
+        self.assertEqual(self._pool()[STARDUST], 137)
         slot_data = self.world.fill_slot_data()
         self.assertEqual(slot_data["stardust_total"], 54000)
-        self.assertEqual(slot_data["stardust_item_count"], 110)
+        self.assertEqual(slot_data["stardust_item_count"], 137)
         self.assertNotIn("stardust_pack_value", slot_data)
 
 

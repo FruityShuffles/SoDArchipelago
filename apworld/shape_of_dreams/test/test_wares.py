@@ -30,8 +30,8 @@ class TestJonasWares(unittest.TestCase):
                     expected = {f"Jonas's Ware {n}" for n in range(1, count + 1)}
                     self.assertEqual(actual, expected)
                     pool = Counter(i.name for i in world.multiworld.itempool)
-                    self.assertEqual(sum(pool.values()), 245 + count)
-                    mix = new_slot_counts(count, in_run, traps)
+                    self.assertEqual(sum(pool.values()), 272 + count)
+                    mix = new_slot_counts(count + 27, in_run, traps)
                     self.assertEqual(pool[STARDUST], 80 + mix.get(STARDUST, 0))
                     for name, number in mix.items():
                         if name != STARDUST:

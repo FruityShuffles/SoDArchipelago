@@ -1,7 +1,7 @@
 {
   "game": "Shape of Dreams",
   "data_format_version": 5,
-  "data_hash": "120e990765d07659289b867372c8a61b471d118e2d795c24121b49ec9a540ba7",
+  "data_hash": "af3ec74a679fd4710e8687b6424555c59166473a5753c7e4b95e8c730187dbb6",
   "extracted_from_game_version": "r.1.4.0.13_s",
   "difficulties": [
     {
@@ -4339,6 +4339,195 @@
       "traveler": null,
       "number": 100,
       "id": 7720345
+    },
+    {
+      "name": "Shrine: Pot of Greed",
+      "key": "Shrine_PotOfGreed",
+      "kind": "shrine",
+      "traveler": null,
+      "id": 7720346
+    },
+    {
+      "name": "Shrine: Maw of Doom",
+      "key": "Shrine_MawOfDoom",
+      "kind": "shrine",
+      "traveler": null,
+      "id": 7720347
+    },
+    {
+      "name": "Shrine: Hatred",
+      "key": "Shrine_Hatred",
+      "kind": "shrine",
+      "traveler": null,
+      "id": 7720348
+    },
+    {
+      "name": "Shrine: Paradox",
+      "key": "Shrine_Paradox",
+      "kind": "shrine",
+      "traveler": null,
+      "id": 7720349
+    },
+    {
+      "name": "Shrine: Mirror of Remorse",
+      "key": "Shrine_MirrorOfRemorse",
+      "kind": "shrine",
+      "traveler": null,
+      "id": 7720350
+    },
+    {
+      "name": "Shrine: Destiny",
+      "key": "Shrine_Destiny",
+      "kind": "shrine",
+      "traveler": null,
+      "id": 7720351
+    },
+    {
+      "name": "Shrine: Entanglement",
+      "key": "Shrine_Entanglement",
+      "kind": "shrine",
+      "traveler": null,
+      "id": 7720352
+    },
+    {
+      "name": "Shrine: Altar of Cleansing",
+      "key": "Shrine_AltarOfCleansing",
+      "kind": "shrine",
+      "traveler": null,
+      "id": 7720353
+    },
+    {
+      "name": "Shrine: Ascension",
+      "key": "Shrine_Ascension",
+      "kind": "shrine",
+      "traveler": null,
+      "id": 7720354
+    },
+    {
+      "name": "Quest: Stray Memory",
+      "key": "Quest_StrayMemory",
+      "kind": "quest",
+      "traveler": null,
+      "id": 7720355
+    },
+    {
+      "name": "Quest: Star Seeker's Journal",
+      "key": "Quest_StarSeekersJournal",
+      "kind": "quest",
+      "traveler": null,
+      "id": 7720356
+    },
+    {
+      "name": "Quest: Fragment of Radiance",
+      "key": "Quest_FragmentOfRadiance",
+      "kind": "quest",
+      "traveler": null,
+      "id": 7720357
+    },
+    {
+      "name": "Quest: Call of the Ravenous",
+      "key": "Quest_CallOfTheRavenous",
+      "kind": "quest",
+      "traveler": null,
+      "id": 7720358
+    },
+    {
+      "name": "Quest: Consort of Night",
+      "key": "Quest_TheConsortOfNight",
+      "kind": "quest",
+      "traveler": null,
+      "id": 7720359
+    },
+    {
+      "name": "Quest: Hunted by Obliviax",
+      "key": "Quest_HuntedByObliviax",
+      "kind": "quest",
+      "traveler": null,
+      "id": 7720360
+    },
+    {
+      "name": "Artifact: Bouquet of Eyes",
+      "key": "Artifact_BouquetOfEyes",
+      "kind": "artifact",
+      "traveler": null,
+      "id": 7720361
+    },
+    {
+      "name": "Artifact: Emblem of Subjugation",
+      "key": "Artifact_EmblemOfSubjugation",
+      "kind": "artifact",
+      "traveler": null,
+      "id": 7720362
+    },
+    {
+      "name": "Artifact: First Merchant's Token",
+      "key": "Artifact_FirstMerchantsToken",
+      "kind": "artifact",
+      "traveler": null,
+      "id": 7720363
+    },
+    {
+      "name": "Artifact: Fool's Gold",
+      "key": "Artifact_FoolsGold",
+      "kind": "artifact",
+      "traveler": null,
+      "id": 7720364
+    },
+    {
+      "name": "Artifact: Forest Hound Seed",
+      "key": "Artifact_ForestHoundSeed",
+      "kind": "artifact",
+      "traveler": null,
+      "id": 7720365
+    },
+    {
+      "name": "Artifact: Nightmare Catalyst",
+      "key": "Artifact_NightmareCatalyst",
+      "kind": "artifact",
+      "traveler": null,
+      "id": 7720366
+    },
+    {
+      "name": "Artifact: Star Blossom",
+      "key": "Artifact_StarBlossom",
+      "kind": "artifact",
+      "traveler": null,
+      "id": 7720367
+    },
+    {
+      "name": "Artifact: The Starlit Stone",
+      "key": "Artifact_TheStarlitStone",
+      "kind": "artifact",
+      "traveler": null,
+      "id": 7720368
+    },
+    {
+      "name": "Artifact: Tome of the Seeker",
+      "key": "Artifact_TomeOfTheSeeker",
+      "kind": "artifact",
+      "traveler": null,
+      "id": 7720369
+    },
+    {
+      "name": "Artifact: Void Whisperer",
+      "key": "Artifact_VoidWhisperer",
+      "kind": "artifact",
+      "traveler": null,
+      "id": 7720370
+    },
+    {
+      "name": "Artifact: Watcher's Note",
+      "key": "Artifact_WatchersNote",
+      "kind": "artifact",
+      "traveler": null,
+      "id": 7720371
+    },
+    {
+      "name": "Artifact: Wedding Ring",
+      "key": "Artifact_WeddingRing",
+      "kind": "artifact",
+      "traveler": null,
+      "id": 7720372
     }
   ],
   "location_groups": {
@@ -4705,6 +4894,39 @@
       "Jonas's Ware 98",
       "Jonas's Ware 99",
       "Jonas's Ware 100"
+    ],
+    "Shrines": [
+      "Shrine: Pot of Greed",
+      "Shrine: Maw of Doom",
+      "Shrine: Hatred",
+      "Shrine: Paradox",
+      "Shrine: Mirror of Remorse",
+      "Shrine: Destiny",
+      "Shrine: Entanglement",
+      "Shrine: Altar of Cleansing",
+      "Shrine: Ascension"
+    ],
+    "Quests": [
+      "Quest: Stray Memory",
+      "Quest: Star Seeker's Journal",
+      "Quest: Fragment of Radiance",
+      "Quest: Call of the Ravenous",
+      "Quest: Consort of Night",
+      "Quest: Hunted by Obliviax"
+    ],
+    "Artifacts": [
+      "Artifact: Bouquet of Eyes",
+      "Artifact: Emblem of Subjugation",
+      "Artifact: First Merchant's Token",
+      "Artifact: Fool's Gold",
+      "Artifact: Forest Hound Seed",
+      "Artifact: Nightmare Catalyst",
+      "Artifact: Star Blossom",
+      "Artifact: The Starlit Stone",
+      "Artifact: Tome of the Seeker",
+      "Artifact: Void Whisperer",
+      "Artifact: Watcher's Note",
+      "Artifact: Wedding Ring"
     ],
     "Aurena": [
       "Achievement: Deceiving Looks",
@@ -7309,7 +7531,34 @@
       "WARE_JONAS_97": 7720342,
       "WARE_JONAS_98": 7720343,
       "WARE_JONAS_99": 7720344,
-      "WARE_JONAS_100": 7720345
+      "WARE_JONAS_100": 7720345,
+      "Shrine_PotOfGreed": 7720346,
+      "Shrine_MawOfDoom": 7720347,
+      "Shrine_Hatred": 7720348,
+      "Shrine_Paradox": 7720349,
+      "Shrine_MirrorOfRemorse": 7720350,
+      "Shrine_Destiny": 7720351,
+      "Shrine_Entanglement": 7720352,
+      "Shrine_AltarOfCleansing": 7720353,
+      "Shrine_Ascension": 7720354,
+      "Quest_StrayMemory": 7720355,
+      "Quest_StarSeekersJournal": 7720356,
+      "Quest_FragmentOfRadiance": 7720357,
+      "Quest_CallOfTheRavenous": 7720358,
+      "Quest_TheConsortOfNight": 7720359,
+      "Quest_HuntedByObliviax": 7720360,
+      "Artifact_BouquetOfEyes": 7720361,
+      "Artifact_EmblemOfSubjugation": 7720362,
+      "Artifact_FirstMerchantsToken": 7720363,
+      "Artifact_FoolsGold": 7720364,
+      "Artifact_ForestHoundSeed": 7720365,
+      "Artifact_NightmareCatalyst": 7720366,
+      "Artifact_StarBlossom": 7720367,
+      "Artifact_TheStarlitStone": 7720368,
+      "Artifact_TomeOfTheSeeker": 7720369,
+      "Artifact_VoidWhisperer": 7720370,
+      "Artifact_WatchersNote": 7720371,
+      "Artifact_WeddingRing": 7720372
     }
   }
 }

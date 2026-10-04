@@ -27,7 +27,7 @@ namespace SoDArchipelago
             public long Id;
             public string Name;
             public string Key;
-            public string Kind; // achievement, world_clear, souvenir, ware
+            public string Kind; // achievement, world_clear, souvenir, ware, shrine, quest, artifact
             public int Number; // sequential Jonas ware number
             public string Traveler;
             public int World;
@@ -70,6 +70,7 @@ namespace SoDArchipelago
         public static readonly List<Difficulty> Difficulties = new List<Difficulty>();
         // The lizard shop souvenir locations; their keys are the Accessory names (DESIGN.md "Souvenirs").
         public static readonly List<Location> Souvenirs = new List<Location>();
+        public static readonly List<Location> Artifacts = new List<Location>();
 
         // Every vanilla achievement unlock target (Hero_*, St_*, Gem_*, LucidDream_*). On a marked profile these are
         // unlocked only by AP items.
@@ -85,6 +86,7 @@ namespace SoDArchipelago
             Travelers.Clear();
             Difficulties.Clear();
             Souvenirs.Clear();
+            Artifacts.Clear();
             UnlockTargets.Clear();
 
             var asm = typeof(GameData).Assembly;
@@ -129,6 +131,7 @@ namespace SoDArchipelago
                 };
                 LocationsByKey[loc.Key] = loc;
                 if (loc.Kind == "souvenir") Souvenirs.Add(loc);
+                if (loc.Kind == "artifact") Artifacts.Add(loc);
             }
 
             foreach (var e in root["travelers"])

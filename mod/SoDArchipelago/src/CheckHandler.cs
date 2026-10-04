@@ -21,6 +21,41 @@ namespace SoDArchipelago
             return true;
         }
 
+        // The successful-use RPC runs on every client; only the shrine's actual local user gets the check.
+        public static void OnShrineUsed(Shrine shrine, Entity user)
+        {
+            if (!ProfileGuard.Marked || shrine == null || user == null || DewPlayer.local == null ||
+                user.owner != DewPlayer.local) return;
+            string key = shrine.GetType().Name;
+            if (GameData.LocationsByKey.TryGetValue(key, out var location) && location.Kind == "shrine")
+                RecordCheck(key);
+        }
+
+        // Shared quests count for all roles. Also called after client SyncVar deserialization: Actor's inactive hook
+        // can fire OnQuestRemoved before DewQuest's Completed state in the same packet has been read.
+        public static void OnQuestRemoved(DewQuest quest)
+        {
+            if (!ProfileGuard.Marked || quest == null || quest.state != QuestState.Completed) return;
+            string key = quest.GetType().Name;
+            if (GameData.LocationsByKey.TryGetValue(key, out var location) && location.Kind == "quest")
+                RecordCheck(key);
+        }
+
+        public static bool IsArtifactDiscovered(DewProfile profile, string artifactKey) =>
+            ProfileGuard.Marked && profile == DewSave.profileMain && artifactKey != null &&
+            profile.artifacts.TryGetValue(artifactKey, out var data) && data != null && data.status == UnlockStatus.Complete;
+
+        // DiscoverArtifact's before/after flag is the duplicate guard. No AP:check record: the native journal entry
+        // is saved and travels with the profile, and is read again on reconnect.
+        public static void OnArtifactDiscovered(DewProfile profile, string artifactKey, bool wasDiscovered)
+        {
+            if (wasDiscovered || !IsArtifactDiscovered(profile, artifactKey) ||
+                !GameData.LocationsByKey.TryGetValue(artifactKey, out var location) || location.Kind != "artifact") return;
+            DewSave.SaveProfileMain();
+            Log.Info($"Check: {location.Name} ({artifactKey}){(ProfileGuard.Bound ? "" : " - offline, sent on reconnect")}");
+            ApClient.SendLocations(new[] { location.Id });
+        }
+
         // AchievementManager.CompleteAchievement patch, after the game has recorded the completion.
         public static void OnAchievementCompleted(string achievementKey)
         {
@@ -103,7 +138,7 @@ namespace SoDArchipelago
             ApClient.SendLocations(ids.Select(l => l.Id).ToList());
         }
 
-        // Every check recorded in the bound profile: achievements, world clears, souvenirs and AP:check records.
+        // Every check recorded in the bound profile: achievements, world clears, souvenirs, artifacts and AP records.
         public static void ResendAll()
         {
             if (!ProfileGuard.Bound) return;
@@ -120,11 +155,15 @@ namespace SoDArchipelago
                 if (DewSave.profileMain.accessories.TryGetValue(loc.Key, out var data) && data != null && data.isUnlocked)
                     ids.Add(loc.Id);
             int souvenirs = ids.Count - achievements - clears;
+            foreach (var loc in GameData.Artifacts)
+                if (IsArtifactDiscovered(DewSave.profileMain, loc.Key)) ids.Add(loc.Id);
+            int artifacts = ids.Count - achievements - clears - souvenirs;
             foreach (var key in ApRecords.Checks())
                 if (GameData.LocationsByKey.TryGetValue(key, out var loc))
                     ids.Add(loc.Id);
             Log.Info($"Resending {ids.Count} checks ({achievements} achievements, {clears} world clears, " +
-                     $"{souvenirs} souvenirs, {ids.Count - achievements - clears - souvenirs} recorded checks)");
+                     $"{souvenirs} souvenirs, {artifacts} artifacts, " +
+                     $"{ids.Count - achievements - clears - souvenirs - artifacts} recorded checks)");
             ApClient.SendLocations(ids);
         }
     }

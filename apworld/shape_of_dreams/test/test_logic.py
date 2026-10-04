@@ -73,7 +73,7 @@ class TestWorldClearLogic(_LogicTest):
         for location in self.multiworld.get_locations(self.player):
             if location.name.startswith("World ") and "(Deep Sleep)" in location.name:
                 self.assertEqual(location.progress_type, LocationProgressType.PRIORITY, location.name)
-            elif location.name in broken or location.name.startswith("Souvenir: "):
+            elif location.name in broken or location.name.startswith(("Souvenir: ", "Artifact: ")):
                 self.assertEqual(location.progress_type, LocationProgressType.EXCLUDED, location.name)
             elif location.address is not None:
                 self.assertEqual(location.progress_type, LocationProgressType.DEFAULT, location.name)

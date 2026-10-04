@@ -26,7 +26,16 @@ public class GameManager
 }
 public class ZoneManager { public object currentZone = new object(); public int currentZoneIndex, loopIndex; }
 public class GameSettingsManager { public string difficulty; }
-public class Hero { }
+public class Entity { public DewPlayer owner; }
+public class Hero : Entity { }
+public class Shrine { }
+public class Shrine_PotOfGreed : Shrine { }
+public class Shrine_Disintegration : Shrine { }
+public enum QuestState { Ongoing, Completed, Failed }
+public class DewQuest { public QuestState state; }
+public class Quest_StrayMemory : DewQuest { }
+public class Quest_GuidingCompass : DewQuest { }
+public enum UnlockStatus { Locked, NotDiscovered, Complete }
 public class DewPlayer { public static DewPlayer local; public Hero hero; public string guid; }
 public enum MerchandiseType { Empty, Skill, Gem, Souvenir, Treasure }
 public struct Cost { public int gold; }
@@ -57,8 +66,10 @@ public class DewProfile
     public int stardust;
     public Dictionary<string, Achievement> achievements = new Dictionary<string, Achievement>();
     public Dictionary<string, Accessory> accessories = new Dictionary<string, Accessory>();
+    public Dictionary<string, Artifact> artifacts = new Dictionary<string, Artifact>();
     public class Achievement { public bool isCompleted; }
     public class Accessory { public bool isUnlocked; }
+    public class Artifact { public UnlockStatus status; }
 }
 public class DewProfileStats
 {
@@ -117,6 +128,7 @@ namespace SoDArchipelago
         public static readonly Dictionary<string, Location> LocationsByKey = new Dictionary<string, Location>();
         public static readonly Dictionary<string, Traveler> Travelers = new Dictionary<string, Traveler>();
         public static readonly List<Location> Souvenirs = new List<Location>();
+        public static readonly List<Location> Artifacts = new List<Location>();
         public static readonly List<Difficulty> Difficulties = new List<Difficulty>();
         public static int RankOfGameDifficulty(string id) => -1;
         public static string WorldClearKey(int world, string difficulty, string hero) => "unused";

@@ -4,7 +4,7 @@ The agreed randomizer design for Shape of Dreams. It was settled in a design rev
 original "achievement reward = item" scaffold. Where the code and this document disagree, this document wins.
 Item/location IDs are frozen once a version is released: the extractor keeps every key's ID through `id_history`.
 
-## Locations (275 by default)
+## Locations (302 by default)
 
 | Kind | Count | Progress type | Notes |
 |---|---|---|---|
@@ -12,6 +12,9 @@ Item/location IDs are frozen once a version is released: the extractor keeps eve
 | World clears | 135 | **priority** (Deep Sleep), default | 5 worlds × 3 difficulties × 9 Travelers. The 45 Deep Sleep clears are the only priority locations. |
 | Souvenirs | 17 | **excluded** | Every souvenir the lizard shop sells (see "Souvenirs"). Always on, no option. |
 | Jonas's Wares | 0–100 (30 by default) | default | One random unbought ware per Jonas visit, bought with gold; host/solo only |
+| Shrines | 9 | default | First successful use by the local player; always on |
+| Quests | 6 | default | First completion; always on |
+| Artifacts | 12 | **excluded** | First hand-in to the Dream Teller, recorded by the journal; always on |
 
 - **World structure** (corrected 2026-09-27). A loop has **4 normal worlds**. Beating the world 4 boss opens two rifts:
   the normal exit (next loop) and the Dream rift (`Rift_Sidetrack_TheDream`, only in the last world's boss room). The Dream
@@ -93,6 +96,32 @@ The `Jonas's Wares` location group contains all possible wares. There is no acce
   Missing scout data or an offline shop displays "an unknown ware". Offline purchases still record their checks.
 - Buying and quitting before the next continue save may restore the gold while keeping the check, as in vanilla.
 
+### Pilgrimage checks
+
+Issue #9. These 27 checks are always on, independently of `in_run_items`, with no access rules. They count in every
+run, including Nap, Limbo, runs blocked by Forced Lucid Dreams, and co-op as host or joining player. Vanilla effects
+and rewards are kept. Their groups are `Shrines`, `Quests` and `Artifacts`.
+
+- **Shrines (9):** `Shrine: <name>` for Pot of Greed, Maw of Doom, Hatred, Paradox, Mirror of Remorse, Destiny,
+  Entanglement, Altar of Cleansing and Ascension. Patch the client receiver of `RpcInvokeOnSuccessfulUse` and record
+  `AP:check:<Shrine type>` only when the supplied entity's owner is `DewPlayer.local`. Failed interactions do not
+  reach that RPC. Other players' uses do not count for the local player.
+- **Quests (6):** `Quest: <name>` for Stray Memory, Star Seeker's Journal, Fragment of Radiance, Call of the Ravenous,
+  Consort of Night and Hunted by Obliviax (escaping her). When a quest is removed with `state == Completed`, record
+  `AP:check:<Quest type>`. Also check after `DewQuest.DeserializeSyncVars`: the base Actor's inactive hook can invoke
+  removal before the derived quest state is read from the same network packet. Both paths share the idempotent record;
+  failed and ongoing quests send nothing. QuestManager subscriptions are removed on manager cleanup/mod unload.
+- **Artifacts (12):** `Artifact: <name>` for Bouquet of Eyes, Emblem of Subjugation, First Merchant's Token,
+  Fool's Gold, Forest Hound Seed, Nightmare Catalyst, Star Blossom, The Starlit Stone, Tome of the Seeker,
+  Void Whisperer, Watcher's Note and Wedding Ring (the artifact prefabs not `excludeFromPool`). A before/after patch
+  on the loaded marked profile's `DiscoverArtifact` saves/sends its check when the native journal status becomes
+  `Complete`. Merely picking one up does not count. Hand-in reaches every player's client. No `AP:check:` record:
+  the native flag persists and the resend reads it. Artifacts stay excluded even over `priority_locations` because
+  the player cannot choose which one appears.
+- Leave out checks already covered by achievements: Disintegration, Guidance/Blessed Guidance and the treasure-map
+  quests. Also omit common/reward or world-specific shrines, Secret Meeting/Guiding Compass (mastery 40), Lost Soul
+  (co-op knockdowns), curse, Limbo and tutorial quests, and excluded artifact prefabs.
+
 ## Items
 
 In vanilla each achievement unlocks exactly one thing, which gives 93 unlocks. All 93 are items, and so are Lacerta and
@@ -155,6 +184,7 @@ The rules are the same for every Traveler. A starting Traveler's precollected co
 | "Achievement: Vivid Dream" (enter the Pure White Dream on Nightmare: a World 4 Nightmare clear) | 3 copies of any Traveler |
 | Any other achievement | nothing |
 | Jonas's Ware | nothing; purchased from Jonas while solo/host |
+| Shrine, Quest, Artifact | nothing; artifacts are always excluded |
 | "Achievement: The Road Not Taken" (a Starless Path win: a Traveler at mastery 40) | all 36 copies (every Traveler fully unlocked); **excluded** with `passive_mastery` off (see "Passive mastery") |
 | World clear, Deep Sleep | 1 copy |
 | World clear, Ominous Dream | 2 copies (Traveler + 1 memory) |
@@ -317,7 +347,7 @@ mastery only comes from `Mastery: <Traveler>` items and the player's strength de
 
 Issue #7 supplies the shared infrastructure for #8–#12. These issues ship together in one matching apworld/mod
 release; this foundation alone is not published. The original 245 checks remain the baseline. #8 adds
-`jonas_wares` checks (implemented); #9 adds 9 shrines, 6 quests and 12 excluded artifacts. This gives
+`jonas_wares` checks; #9 adds 9 shrines, 6 quests and 12 excluded artifacts (both implemented). This gives
 57 new slots and 302 total checks with defaults. The enabled location list is built before regions and items.
 
 - Progression, useful items and Mastery packs keep their existing counts. The baseline's remaining slots (80 by
@@ -358,7 +388,7 @@ release; this foundation alone is not published. The original 245 checks remain 
   the purchase are both on the buyer's own client. The mod logs the shop's filter at startup and warns when it differs
   from the data, so a souvenir added by a game update shows up (it sends nothing until the data is regenerated).
 - **On every connect,** rebuild the full check list from the profile (completed achievements, recorded world
-  clears, owned souvenirs and `AP:check:` records) and resend all of it. The server ignores duplicates.
+  clears, owned souvenirs, discovered artifacts and `AP:check:` records) and resend all of it. The server ignores duplicates.
 
 ### Received items
 - Unlocks go through the game's own functions: `DewProfile.UnlockHero`, `UnlockSkill`, `UnlockGem`,
@@ -466,7 +496,8 @@ guide explains that offline play delays other players' items.
 ### Co-op
 Each player's own profile, mod and slot are independent. Jonas's Wares and in-run item delivery require solo/host
 play; joining players can set `jonas_wares` to 0 and pending in-run items wait for solo/host play. The shared loot pool is the union of
-the players' unlocks, which is vanilla co-op behavior. Achievement, world-clear, win and souvenir checks work on a joining
+the players' unlocks, which is vanilla co-op behavior. Pilgrimage checks also work for joining players (see above).
+Achievement, world-clear, win and souvenir checks work on a joining
 client (verified in-game 2026-10-03, joining a non-AP host): achievements are tracked per client, the zone-loaded event
 is an RPC to every client, the room load before it syncs the zone index, and a souvenir is bought and unlocked on the
 buyer's own client.
