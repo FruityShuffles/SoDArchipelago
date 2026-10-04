@@ -51,7 +51,7 @@ class TestForcedDreams(SoDTestBase):
 
 
 class TestAllDreamsForced(SoDTestBase):
-    # Every Evil and Chaotic dream forced: 34 + 11 progression items still fit the 135 priority world clears.
+    # Every Evil and Chaotic dream forced: 34 + 11 progression items exactly fill the 45 priority Deep Sleep clears.
     options = {"forced_evil_lucid_dreams": sorted(lucid_dreams_by_type["evil"]),
                "forced_chaotic_lucid_dreams": sorted(lucid_dreams_by_type["chaotic"])}
 

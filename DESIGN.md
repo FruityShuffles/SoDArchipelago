@@ -9,7 +9,7 @@ Item/location IDs are frozen once a version is released: the extractor keeps eve
 | Kind | Count | Progress type | Notes |
 |---|---|---|---|
 | Achievements (`ACH_*`) | 93 | default | Every achievement in `RawData/en-US/achievements.json`. None are excluded. |
-| World clears | 135 | **priority** | 5 worlds × 3 difficulties × 9 Travelers. These are the only priority locations. |
+| World clears | 135 | **priority** (Deep Sleep), default | 5 worlds × 3 difficulties × 9 Travelers. The 45 Deep Sleep clears are the only priority locations. |
 | Souvenirs | 17 | **excluded** | Every souvenir the lizard shop sells (see "Souvenirs"). Always on, no option. |
 
 - **World structure** (corrected 2026-09-27). A loop has **4 normal worlds**. Beating the world 4 boss opens two rifts:
@@ -36,6 +36,10 @@ Item/location IDs are frozen once a version is released: the extractor keeps eve
   *Built:* on `GameResultManager.ClientEvent_OnGameConcluded` with `StarlessPath`, record and send the clears for
   worlds 1–5. Logic is unchanged: a Starless Path win needs the same Traveler copies as the clears it sends.
 - **Difficulties:** Deep Sleep, Ominous Dream, Nightmare. Nap has no locations.
+- **Priority: Deep Sleep clears only** (decided 2026-10-03). Priority fill puts any player's progression on a priority
+  location, so all 135 clears pulled about half of a multiworld's progression into SoD runs. With 45, SoD's own
+  progression still fits (34, or 45 with every dream forced), so a solo seed puts all of it on Deep Sleep clears. Any
+  winning run collects them (cumulative), so a Traveler's copies come from its first win.
 - **Cumulative:** a clear on a higher difficulty also sends the same world's checks for every lower difficulty
   (Nightmare sends Nightmare, Ominous Dream and Deep Sleep).
 - **Loops:** worlds 1–4 of later loops send nothing. Limbo (`diffLimbo`) is its own difficulty id, which isn't one of the four
@@ -182,7 +186,7 @@ item is received, which **releases** it: from then on it's a normal unlocked dre
   - Chaotic (5): Embrace Mortality, Harmless Whispers, Sparkling Dream Flask, The Darkest Urge, WILD.
   - Good (4): Bland Star Soup, Bon Voyage, False Lifeline, Kind Armadillo.
 - **No new items.** A forced dream's existing item is its release. Pool, IDs and `data_hash` are unchanged.
-- **Forced dreams' items are progression** (Evil and Chaotic alike), so fill puts them in the priority world clears:
+- **Forced dreams' items are progression** (Evil and Chaotic alike), so fill puts them in the priority Deep Sleep clears:
   removing these modifiers is key to winning. No access rule needs them; a seed may ask for a win with every forced dream
   still on. That's the challenge the player opted into.
 - **No "minimal" variant** (dreams forced permanently, with no release item). It has no multiworld part: players can

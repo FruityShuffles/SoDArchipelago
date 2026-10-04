@@ -17,6 +17,9 @@ NIGHTMARE_DREAM_ACHIEVEMENT = "ACH_VIVID_DREAM"
 NIGHTMARE_COPIES = max(d.copies_required for d in location_table.values())
 # Achievements a game bug makes impossible: always excluded until the game fixes them (issue #6).
 BROKEN_ACHIEVEMENTS = {"ACH_WHOS_THE_PREY_NOW"}
+# Only these clears are priority: every priority location takes some player's progression, so more would pull a
+# multiworld's progression into SoD runs (DESIGN.md "Locations").
+PRIORITY_DIFFICULTY = "DEEP_SLEEP"
 
 
 class SoDWeb(WebWorld):
@@ -65,7 +68,7 @@ class ShapeOfDreamsWorld(World):
 
     def create_item(self, name: str) -> SoDItem:
         data = item_table[name]
-        # A forced dream's release is key to winning, so it's progression: fill puts it in the priority world clears.
+        # A forced dream's release is key to winning, so it's progression: fill puts it on the priority clears.
         classification = ItemClassification.progression if name in self.forced_lucid_dreams else data.classification
         return SoDItem(name, classification, data.id, self.player)
 
@@ -77,7 +80,7 @@ class ShapeOfDreamsWorld(World):
         self.multiworld.regions.append(menu)
         for name, data in location_table.items():
             location = SoDLocation(self.player, name, data.id, menu)
-            if data.kind == "world_clear":
+            if data.kind == "world_clear" and data.difficulty == PRIORITY_DIFFICULTY:
                 location.progress_type = LocationProgressType.PRIORITY
             elif data.kind == "souvenir":
                 # The shop offers 3 random unowned souvenirs per visit, so collecting them all is luck (DESIGN.md

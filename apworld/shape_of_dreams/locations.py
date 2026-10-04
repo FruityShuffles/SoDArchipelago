@@ -15,12 +15,15 @@ class LocationData(NamedTuple):
     key: str
     kind: str
     traveler: Optional[str]
+    # World clears only: the difficulty key (e.g. "DEEP_SLEEP").
+    difficulty: Optional[str]
     # World clears only: copies of the Traveler's progressive item needed (DESIGN.md "Logic").
     copies_required: int
 
 
 location_table: Dict[str, LocationData] = {
-    e["name"]: LocationData(e["id"], e["key"], e["kind"], e["traveler"], e.get("copies_required", 0))
+    e["name"]: LocationData(e["id"], e["key"], e["kind"], e["traveler"], e.get("difficulty"),
+                            e.get("copies_required", 0))
     for e in GAME_DATA["locations"]
 }
 

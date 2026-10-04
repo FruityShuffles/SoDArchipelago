@@ -22,7 +22,7 @@ There are 245 locations.
 - **Souvenirs (17):** owning each souvenir the lizard shop sells (bought, or unlocked with a code) sends its check. You
   keep the souvenir.
 
-World clears are **priority locations**, so they tend to hold progression items. Achievements can hold anything.
+Deep Sleep world clears are **priority locations**, so they tend to hold progression items. Achievements can hold anything.
 Souvenirs are always excluded (the shop offers them at random), so they only hold filler.
 
 ### Customizing your checks
@@ -31,7 +31,7 @@ You can customize which checks may hold important items using these location gro
 
 - `exclude_locations`: those checks only get filler (Stardust, Mastery, or another game's filler), so you never have to
   do them to progress.
-- `priority_locations`: those checks get progression items. World clears are already priority; excluding one overrides that.
+- `priority_locations`: those checks get progression items. Deep Sleep clears are already priority; excluding one overrides that.
 
 | If you want to… | Put this in your YAML |
 |---|---|

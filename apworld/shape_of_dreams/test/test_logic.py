@@ -70,7 +70,7 @@ class TestWorldClearLogic(_LogicTest):
         broken = {n for n, d in location_table.items() if d.key in BROKEN_ACHIEVEMENTS}
         self.assertEqual(len(broken), len(BROKEN_ACHIEVEMENTS))
         for location in self.multiworld.get_locations(self.player):
-            if location.name.startswith("World "):
+            if location.name.startswith("World ") and "(Deep Sleep)" in location.name:
                 self.assertEqual(location.progress_type, LocationProgressType.PRIORITY, location.name)
             elif location.name in broken or location.name.startswith("Souvenir: "):
                 self.assertEqual(location.progress_type, LocationProgressType.EXCLUDED, location.name)
