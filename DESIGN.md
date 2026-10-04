@@ -124,6 +124,7 @@ The rules are the same for every Traveler. A starting Traveler's precollected co
 | Location | Needs |
 |---|---|
 | Achievement that requires a Traveler (e.g. "as Aurena") | 1 copy |
+| "Achievement: Vivid Dream" (enter the Pure White Dream on Nightmare: a World 4 Nightmare clear) | 3 copies of any Traveler |
 | Any other achievement | nothing |
 | "Achievement: The Road Not Taken", with `passive_mastery` off | nothing, but **excluded** (see "Passive mastery") |
 | World clear, Deep Sleep | 1 copy |

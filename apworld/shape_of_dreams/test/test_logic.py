@@ -55,6 +55,15 @@ class TestWorldClearLogic(_LogicTest):
         self.collect(self.get_item_by_name(travelers[self.other]["progressive_item"]))
         self.assertTrue(self.can_reach_location(_achievement(self.other)))
 
+    def test_nightmare_dream_achievement(self) -> None:
+        # Entering the Pure White Dream on Nightmare is a World 4 Nightmare clear with any Traveler.
+        for copies in (1, 2, 3):
+            self.assertEqual(self.can_reach_location("Achievement: Vivid Dream"), copies >= 3, f"{copies} copies")
+            if copies < 3:
+                self.collect(self.get_item_by_name(travelers[self.other]["progressive_item"]))
+                self.assertFalse(self.can_reach_location("Achievement: Vivid Dream"))
+                self.collect(self.get_item_by_name(travelers[self.starter]["progressive_item"]))
+
     def test_progress_types(self) -> None:
         from BaseClasses import LocationProgressType
         from .. import BROKEN_ACHIEVEMENTS

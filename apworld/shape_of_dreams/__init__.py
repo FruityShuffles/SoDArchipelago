@@ -12,6 +12,9 @@ from .stars import shuffle_star_requirements
 
 # Completes on a Starless Path win, which needs a Traveler at mastery 40 (DESIGN.md "Passive mastery").
 STARLESS_PATH_ACHIEVEMENT = "ACH_THE_ROAD_NOT_TAKEN"
+# "Enter the Pure White Dream on Nightmare difficulty": a World 4 Nightmare clear with any Traveler (DESIGN.md "Logic").
+NIGHTMARE_DREAM_ACHIEVEMENT = "ACH_VIVID_DREAM"
+NIGHTMARE_COPIES = max(d.copies_required for d in location_table.values())
 # Achievements a game bug makes impossible: always excluded until the game fixes them (issue #6).
 BROKEN_ACHIEVEMENTS = {"ACH_WHOS_THE_PREY_NOW"}
 
@@ -112,7 +115,11 @@ class ShapeOfDreamsWorld(World):
         return sum(1 for t in travelers.values() if state.has(t["progressive_item"], self.player))
 
     def set_rules(self) -> None:
+        progressive_items = [t["progressive_item"] for t in travelers.values()]
         for name, data in location_table.items():
+            if data.key == NIGHTMARE_DREAM_ACHIEVEMENT:
+                self.get_location(name).access_rule = lambda state: any(
+                    state.has(item, self.player, NIGHTMARE_COPIES) for item in progressive_items)
             if data.traveler is None:
                 continue
             # An achievement that must be done as a Traveler needs that Traveler (DESIGN.md "Logic").
