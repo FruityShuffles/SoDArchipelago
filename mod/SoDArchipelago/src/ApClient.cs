@@ -435,6 +435,9 @@ namespace SoDArchipelago
             conn?.Close();
         }
 
+        public static bool HasCheckedLocation(long id) => ProfileGuard.Bound && IsConnected &&
+            _conn.Session.Locations.AllLocationsChecked.Contains(id);
+
         public static void SendLocations(ICollection<long> ids)
         {
             var session = _conn?.Session;
@@ -483,7 +486,7 @@ namespace SoDArchipelago
                     var contents = new Dictionary<string, (string item, string owner)>();
                     foreach (var pair in scouts)
                         if (keys.TryGetValue(pair.Key, out var key))
-                            contents[key] = (pair.Value.ItemName, pair.Value.Player?.Name ?? "?");
+                            contents[key] = (pair.Value.ItemDisplayName, pair.Value.Player?.Name ?? "?");
                     _queue.Enqueue(new Work { Attempt = attempt, Generation = generation,
                         Action = () => JonasWares.CacheScouts(contents) });
                 }

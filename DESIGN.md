@@ -79,7 +79,8 @@ Issue #8. `Jonas's Ware 1` through `Jonas's Ware <jonas_wares>` are normal locat
 progression. The catalog reserves 100 stable keys (`WARE_JONAS_<n>`); disabled numbers are absent from the seed.
 The `Jonas's Wares` location group contains all possible wares. There is no access requirement: any run can reach Jonas.
 
-- Each visit offers one random enabled ware not yet recorded in `AP:check:`. Skipping it costs nothing; a later visit
+- Each visit offers one random enabled ware not yet recorded in `AP:check:` or checked on the connected server
+  (including released checks). Offline availability uses the local record. Skipping it costs nothing; a later visit
   or paid shop refresh can offer a different one. Once all are bought, Jonas has only his vanilla stock.
 - Only Jonas (`PropEnt_Merchant_Jonas`) adds wares, and only to the solo/host player's own guid-keyed stock. Guests'
   stock stays vanilla. His `OnRefresh` calls `PopulatePlayerMerchandises`, so the population hook handles both.
@@ -362,7 +363,9 @@ release; this foundation alone is not published. The original 245 checks remain 
 - `stardust_total` replaces `stardust_pack_value`. Divide it by the number of Stardust items; the first remainder
   copies received give one extra Stardust each. Thus all seeded Stardust items sum exactly to the configured total,
   including when there are more packs than Stardust or the total is zero. Additional server-granted copies give
-  the quotient. slot_data carries the total, Stardust item count and all new options; UT restores the same settings.
+  the quotient. Count seeded copies after fill, including starting Stardust and ItemLink deliveries, so common
+  options and replacement filler keep the exact total. slot_data carries this resolved count, the total and all
+  new options; UT preserves the server's count when rebuilding the world.
 - Pending in-run items are received copies minus `AP:applied:<KEY>=n` in the main profile. The main-thread landing
   loop requires Bound, a connected socket, a ready unconcluded run, and a local solo/host player. Item-kind handlers
   (#10–#12) return false if no valid target exists, leaving the counter unchanged. On success, increment and save
@@ -516,6 +519,20 @@ buyer's own client.
   messages and only works when the host also runs the mod. The setup guide and game info page state the limitation.
 - A knockdown caused by a received DeathLink does not send a new one.
 - Each player turns it on independently. There's no co-op-specific handling.
+
+## Deferred review follow-up
+
+The adversarial Claude Opus review of issues #7–#9 (`d265e47..ae009a8`) completed on 2026-10-04. Its three
+confirmed findings are fixed: unresolved scout names, Stardust totals after common-option replacements/ItemLinks,
+and sales of server-released wares. Return to the review after the remaining issues are implemented; the follow-up
+stopped at Claude's session limit, so Claude has not reviewed these fixes.
+
+- Reconcile the potential P3 icon reuse bug in `WareShopUi.UpdateContent`: a normal Cloak at Smoothie's shop may
+  retain the AP icon when a cell survives a shop change with the same cached `itemName`. It remains unmodified.
+- Resolve the review's verification gaps: the live Hatred prefab's class, Contents subscribers to
+  `onMerchandisePopulated`, and TextMeshPro rendering of escaped tooltip names. These are not confirmed bugs.
+- Local reports and the resumable Claude session reference are in `.claude/reviews/` (git-ignored). The fixes passed
+  202 world tests, 250 AP general tests, 235 C# assertions and a build with deployment disabled.
 
 ## Settled questions
 - ~~Map the game's difficulty IDs~~ The asset catalog has `diffTutorial`, `diffEasy`, `diffNormal`, `diffHard`,

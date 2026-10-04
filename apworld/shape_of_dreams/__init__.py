@@ -68,6 +68,7 @@ class ShapeOfDreamsWorld(World):
     def generate_early(self) -> None:
         # Universal Tracker passes back what interpret_slot_data returned: the seed's real settings.
         slot_data = getattr(self.multiworld, "re_gen_passthrough", {}).get(GAME_NAME)
+        self._stardust_count_from_slot_data = slot_data is not None
         if slot_data is not None:
             self._apply_slot_data(slot_data)
         else:
@@ -89,6 +90,7 @@ class ShapeOfDreamsWorld(World):
         options.mastery_packs_per_traveler.value = slot_data["mastery_packs_per_traveler"]
         options.mastery_pack_value.value = slot_data["mastery_pack_value"]
         options.stardust_total.value = slot_data["stardust_total"]
+        self.stardust_item_count = slot_data["stardust_item_count"]
         options.in_run_items.value = int(slot_data["in_run_items"])
         options.traps.value = int(slot_data["traps"])
         options.jonas_wares.value = slot_data["jonas_wares"]
@@ -155,8 +157,23 @@ class ShapeOfDreamsWorld(World):
         new_slots = len(self.enabled_locations) - base_locations
         for name, count in new_slot_counts(new_slots, bool(self.options.in_run_items), bool(self.options.traps)).items():
             pool += [self.create_item(name) for _ in range(count)]
-        self.stardust_item_count = sum(item.name == STARDUST for item in pool)
+        if not self._stardust_count_from_slot_data:
+            self.stardust_item_count = sum(item.name == STARDUST for item in pool)
         self.multiworld.itempool += pool
+
+    def pre_output(self) -> None:
+        if self._stardust_count_from_slot_data:
+            return
+        # Common options, ItemLinks and plando can change the count after create_items. Count exactly the
+        # deliveries represented in multidata, excluding ItemLink's virtual event copies (address=None).
+        recipients = {self.player} | {group_id for group_id, group in self.multiworld.groups.items()
+                                     if self.player in group["players"]}
+        self.stardust_item_count = sum(
+            location.address is not None and location.item is not None and
+            location.item.player in recipients and location.item.name == STARDUST
+            for location in self.multiworld.get_locations())
+        self.stardust_item_count += sum(item.name == STARDUST
+                                       for item in self.multiworld.precollected_items[self.player])
 
     def _unlocked_travelers(self, state: CollectionState) -> int:
         return sum(1 for t in travelers.values() if state.has(t["progressive_item"], self.player))

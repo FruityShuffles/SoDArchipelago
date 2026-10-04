@@ -101,6 +101,8 @@ namespace SoDArchipelago
         public static readonly List<ItemInfo> ReceivedItems = new List<ItemInfo>();
         public static readonly List<string> Notices = new List<string>();
         public static readonly List<long> Sent = new List<long>();
+        public static readonly HashSet<long> CheckedLocations = new HashSet<long>();
+        public static bool HasCheckedLocation(long id) => ProfileGuard.Bound && IsConnected && CheckedLocations.Contains(id);
         public static void Say(string text) => Notices.Add(text);
         public static void ScoutWares(IReadOnlyCollection<GameData.Location> locations) { }
         public static int GetInt(string key, int fallback) => SlotData.TryGetValue(key, out var value) ? value : fallback;

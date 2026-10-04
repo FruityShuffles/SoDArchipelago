@@ -291,7 +291,7 @@ namespace SoDArchipelago
         // Base64 keeps names with punctuation, Unicode or newlines unambiguous in the string-list record.
         public static bool SetScout(string key, string item, string owner)
         {
-            if (!ProfileGuard.Bound) return false;
+            if (!ProfileGuard.Bound || item == null || owner == null) return false;
             var prefix = ScoutPrefix + key + ":";
             var record = prefix + Convert.ToBase64String(Encoding.UTF8.GetBytes(item)) + ":" +
                          Convert.ToBase64String(Encoding.UTF8.GetBytes(owner));

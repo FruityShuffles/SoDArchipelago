@@ -30,7 +30,7 @@ namespace SoDArchipelago
 
         public static bool IsAvailable(GameData.Location location) =>
             ProfileGuard.Marked && location.Number > 0 && location.Number <= ApRecords.WareCount() &&
-            !ApRecords.HasCheck(location.Key);
+            !ApRecords.HasCheck(location.Key) && !ApClient.HasCheckedLocation(location.Id);
 
         public static void OnLoggedIn()
         {

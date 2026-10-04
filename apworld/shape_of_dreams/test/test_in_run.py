@@ -2,7 +2,9 @@ from collections import Counter
 import unittest
 
 from BaseClasses import ItemClassification, LocationProgressType
+from Fill import distribute_items_restrictive
 from test.general import setup_multiworld
+from worlds.AutoWorld import call_all
 
 from .. import ShapeOfDreamsWorld
 from ..items import STARDUST, curse_item_weights, in_run_item_weights, item_table
@@ -44,6 +46,53 @@ class TestNewSlotAllocation(unittest.TestCase):
 
 
 class TestExpandedPool(unittest.TestCase):
+    @staticmethod
+    def finish_generation(multiworld):
+        distribute_items_restrictive(multiworld)
+        call_all(multiworld, "pre_output")
+
+    def test_starting_inventory_replacement_uses_final_stardust_count(self):
+        for starting in ("Mastery: Mist", STARDUST):
+            with self.subTest(starting=starting):
+                world = setup_multiworld(ShapeOfDreamsWorld, seed=9).worlds[1]
+                multiworld = world.multiworld
+                # Main.py precollects start_inventory_from_pool, then removes its pool copies after
+                # generate_basic and creates replacement filler. Starting Stardust also gets paid.
+                multiworld.push_precollected(world.create_item(starting))
+                multiworld.itempool.remove(next(item for item in multiworld.itempool if item.name == starting))
+                multiworld.itempool.append(world.create_filler())
+                self.finish_generation(multiworld)
+                self.assertEqual(world.fill_slot_data()["stardust_item_count"], 138)
+                tracker = _tracker_world(world.fill_slot_data())
+                tracker.pre_output()
+                self.assertEqual(tracker.fill_slot_data(), world.fill_slot_data())
+
+    def test_additive_starting_stardust_is_in_seed_total(self):
+        world = setup_multiworld(ShapeOfDreamsWorld, seed=9).worlds[1]
+        for _ in range(2):
+            world.multiworld.push_precollected(world.create_item(STARDUST))
+        self.finish_generation(world.multiworld)
+        self.assertEqual(world.fill_slot_data()["stardust_item_count"], 139)
+
+    def test_itemlinks_count_shared_deliveries_without_virtual_copies(self):
+        for link_replacement in (False, True):
+            with self.subTest(link_replacement=link_replacement):
+                options = {"item_links": [{"name": "Shared Stardust", "item_pool": [STARDUST],
+                                          "replacement_item": STARDUST, "link_replacement": link_replacement}]}
+                multiworld = setup_multiworld([ShapeOfDreamsWorld] * 2, seed=9, options=options)
+                multiworld.set_item_links()
+                multiworld.link_items()
+                group_id = next(iter(multiworld.groups))
+                # The server delivers group-owned copies to both players, and personal replacements to
+                # their owner. Virtual ItemLink locations hold the original 274 copies for logic only.
+                expected = {player: sum(item.name == STARDUST and item.player in (player, group_id)
+                                        for item in multiworld.itempool) for player in multiworld.player_ids}
+                self.assertEqual(sum(location.address is None and location.item.name == STARDUST
+                                     for location in multiworld.get_filled_locations()), 274)
+                self.finish_generation(multiworld)
+                for player in multiworld.player_ids:
+                    self.assertEqual(multiworld.worlds[player].fill_slot_data()["stardust_item_count"], expected[player])
+
     def test_pool_sizes_and_stardust_for_all_options(self):
         for wares in (0, 30, 100):
             for packs in (0, 8, 15):

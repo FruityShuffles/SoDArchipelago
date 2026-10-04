@@ -26,6 +26,7 @@ internal static class Program
         ApClient.ReceivedItems.Clear();
         ApClient.Notices.Clear();
         ApClient.Sent.Clear();
+        ApClient.CheckedLocations.Clear();
         ApClient.SlotData.Clear();
         SingletonBehaviour<UI_Constellations>.instance = null;
         Mirror.NetworkServer.active = true;
@@ -215,6 +216,13 @@ internal static class Program
         int saved = DewSave.saves;
         JonasWares.CacheScouts(contents);
         Check(DewSave.saves == saved, "Identical scouts cause no redundant save");
+        JonasWares.CacheScouts(new Dictionary<string, (string item, string owner)> {
+            ["WARE_JONAS_1"] = (null, "Alice"), ["WARE_JONAS_2"] = ("Item", null),
+            ["WARE_JONAS_3"] = ("Resolved item", "Bob") });
+        Check(!ApRecords.TryScout("WARE_JONAS_1", out _, out _) &&
+            !ApRecords.TryScout("WARE_JONAS_2", out _, out _) &&
+            ApRecords.TryScout("WARE_JONAS_3", out var resolved, out _) && resolved == "Resolved item" &&
+            DewSave.saves == saved + 1, "Unresolved scouts do not interrupt caching or saving later entries");
         Check(JonasWares.CanPurchase(shop, player, 1), "An unbought enabled ware may be charged");
         Check(!JonasWares.Consume(shop, guest, ware) && !JonasWares.Consume(other, player, ware),
             "Guests and other merchants cannot record the host's checks");
@@ -239,6 +247,18 @@ internal static class Program
             "Refresh selects from the remaining unbought locations");
         JonasWares.Append(shop, player);
         Check(shop.merchandises[player.guid].Length == 2, "Repeated population never duplicates the extra ware");
+        ApClient.CheckedLocations.Add(next.Id);
+        Check(!ApRecords.HasCheck(next.Key) && !JonasWares.CanPurchase(shop, player, 1) &&
+            shop.merchandises[player.guid][1].count == 0, "A released ware is refused before charging gold");
+        JonasWares.Append(shop, player);
+        Check(JonasWares.TryGetWare(shop.merchandises[player.guid][1], out var unreleased) &&
+            unreleased.Number == 28, "Refresh skips server-checked wares");
+        ProfileGuard.SetSessionMarker("Archipelago:other:slot");
+        Check(JonasWares.IsAvailable(next), "Another slot's checked list cannot affect the marked profile");
+        ProfileGuard.SetSessionMarker("Archipelago:test:slot");
+        ApClient.IsConnected = false;
+        Check(JonasWares.IsAvailable(next), "Offline stock still uses its local purchase record");
+        ApClient.IsConnected = true;
         // A seed with fewer wares must also refuse a saved entry outside its enabled range.
         ApRecords.SetWareCount(1);
         Check(!JonasWares.CanPurchase(shop, player, 1), "A disabled saved ware is refused before charging");
