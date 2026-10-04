@@ -408,6 +408,46 @@ catalog and placement rules. Decompiled `AddModifier` → `RoomModifiers.OnRoomS
 confirms spawning on arrival. The host uses the public server-side `BroadcastPing` RPC. C# delivery/guard tests
 cover all 15 blessings, pending duplicates, later-world delivery, restart counters and ping failure. No in-game test.
 
+### Treasures
+
+Issue #11. The five catalog `treasure` items deliver their vanilla effect for free through the shared connected,
+Bound, ready solo/host landing loop. The keys, IDs, weights and `in_run_items` option already come from #7; no data
+or slot protocol change is needed. Call `Dew.InstantiateAndSpawn` as Jonas's `SpawnMerchandise` does, at the local
+hero's `agentPosition`, setting `player`, `hero`, `price = 0`, `merchant = null` and `customData = null` before spawn.
+None of the five reads `merchant`. Their `OnCreate` runs the vanilla effect and networking, then the shared loop
+saves the counter and announces the item and sender. Missing prefabs or an inactive/missing hero leave it pending.
+
+| Treasure | Lands when | Vanilla effect |
+|---|---|---|
+| Cloak of Guidance | `!ZoneManager.isHuntAdvanceDisabled` (not Primus) | Adds the prefab's skipped Hunter turns (2 in the installed game), clears about-to-be-taken nodes, chat notice, destroys itself |
+| Clairvoyance | Its prefab's `ShouldBeIncludedInPool` passes | Reveals every unvisited node fully and posts a chat notice |
+| Determination Shard | Any ready run | Adds its own saved death interrupt to the host's hero; restores 25% health when it saves them |
+| Treasure Map | The quest's node helper finds a destination | Starts `Quest_TreasureMap`, a Hidden Stash, distance preference 3–4, allows a main modifier |
+| Totally Genuine Treasure Map | The quest's node helper finds a destination | Starts `Quest_SuspiciousTreasureMap`, 60% Hidden Stash / 20% Gold Everywhere / 20% Ambush, distance preference 2–4, avoids main modifiers |
+
+- Clairvoyance's `ShouldBeIncludedInPool` calls the same `HasNonRevealedArea` predicate as `CanBePurchased`, without
+  the failure message that requires a buyer on the instance. Never mutate the shared prefab. After its effect applies,
+  explicitly destroy the otherwise lingering Clairvoyance actor. Cleanup failure is logged without replaying the grant.
+  A second copy waits once the world is fully revealed.
+- Map preflight uses `TryGetNodeIndexForNextGoal`, default Combat types and `preferCloserToExit = true`, with the
+  matching distance and main-modifier settings. Missing quest manager, empty map or no eligible node means pending.
+  The Treasure starts the actual vanilla quest; its helper chooses the destination again. Vanilla may defer the
+  quest's goal until the next world when Hunter progress exceeds 55%; preserve that behavior.
+- `QuestManager.StartQuest` does not deduplicate: multiple active maps are allowed, including maps of the same kind.
+  Each quest stores its own goal and modifier IDs. Normal maps can share a node; Genuine maps avoid occupied main
+  bonuses. Each copy must pass preflight and land separately. Shard effects also stack and use vanilla `[SaveActor]`.
+- A Shard preventing a knockdown sends no DeathLink. A received DeathLink uses `Entity.Kill`, so a Shard can absorb
+  it. After that call, clear DeathLink suppression if the hero has neither a knockout nor a knockout/bleed-out status
+  effect. Retain it during bleed-out for the later knockdown event. The next normal knockdown after an absorbed kill
+  sends normally.
+
+Implementation verification (2026-10-04): all five installed Treasure prefabs match their catalog classes. Cloak's
+serialized `skippedTurns` is 2, overriding the decompiled class default of 3 quoted in the issue; keep the prefab value.
+Decompiled all five Treasures, their map quests and Shard interrupt; checked
+the merchant spawn path, duplicate quest lifecycle, saved Shard attribute and synchronous death interrupts. C# tests
+cover all five delivery rules, pending copies, restart counters, Clairvoyance cleanup failure and absorbed, immediate
+and delayed DeathLink knockdowns. No in-game test.
+
 ### Checks
 - **Achievements:** when an achievement completes, send its check. **Suppress the vanilla unlock reward**, since the
   AP item replaces it. **Keep** the vanilla Stardust bonus (`DewAchievementItem.grantedStardust`, usually 50).

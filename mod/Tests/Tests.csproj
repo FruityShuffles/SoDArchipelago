@@ -9,6 +9,8 @@
     <Compile Include="../SoDArchipelago/src/StardustAllocation.cs" Link="StardustAllocation.cs" />
     <Compile Include="../SoDArchipelago/src/InRunItems.cs" Link="InRunItems.cs" />
     <Compile Include="../SoDArchipelago/src/MapBlessings.cs" Link="MapBlessings.cs" />
+    <Compile Include="../SoDArchipelago/src/Treasures.cs" Link="Treasures.cs" />
+    <Compile Include="../SoDArchipelago/src/DeathLinkHandler.cs" Link="DeathLinkHandler.cs" />
     <Compile Include="../SoDArchipelago/src/ItemHandler.cs" Link="ItemHandler.cs" />
     <Compile Include="../SoDArchipelago/src/ProfileGuard.cs" Link="ProfileGuard.cs" />
     <Compile Include="../SoDArchipelago/src/CheckHandler.cs" Link="CheckHandler.cs" />

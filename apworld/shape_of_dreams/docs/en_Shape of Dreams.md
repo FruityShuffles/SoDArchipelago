@@ -134,8 +134,13 @@ Room bonuses and the Lizard Shop avoid replacing another bonus; shrines and Arti
 When no eligible node remains, the blessing waits for a later world or run. Hunters can remove a room bonus as usual;
 shrines stay. In co-op, everyone shares the room.
 
-**Development status:** the shared options and pool rules (#7), Jonas's Wares (#8), pilgrimage checks (#9) and Map
-Blessings (#10) are implemented. Treasures and Curse traps arrive in #11–#12; all six issues ship together in one
+**Treasures** give Cloak of Guidance, Clairvoyance, Determination Shard, Treasure Map or Totally Genuine Treasure Map
+for free, with their vanilla effects. Cloak waits where Hunters cannot advance; Clairvoyance waits if the world is
+fully revealed; maps wait if no eligible destination remains. Multiple maps and Shards can be active at once. A Shard
+can absorb a received DeathLink; your next normal knockdown still sends one.
+
+**Development status:** the shared options and pool rules (#7), Jonas's Wares (#8), pilgrimage checks (#9), Map
+Blessings (#10) and Treasures (#11) are implemented. Curse traps arrive in #12; all six issues ship together in one
 matching apworld/mod release.
 
 ## Playing offline

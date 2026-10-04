@@ -35,6 +35,13 @@ internal static class Program
         NetworkedManagerBase<ZoneManager>.instance = new ZoneManager();
         NetworkedManagerBase<PingManager>.instance = new PingManager();
         DewResources.modifiers.Clear();
+        DewResources.treasures.Clear();
+        DewResources.treasures["Treasure_CloakOfGuidance"] = DewResources.treasure;
+        Dew.spawned.Clear();
+        NetworkedManagerBase<QuestManager>.instance = new QuestManager();
+        DeathLinkHandler.Reset();
+        ApClient.deathLinkEnabled = false;
+        ApClient.DeathLinks.Clear();
         DewPlayer.local = new DewPlayer { hero = new Hero() };
         GameData.ItemsById.Clear();
         GameData.LocationsByKey.Clear();
@@ -227,6 +234,141 @@ internal static class Program
             "Starting blessings have a readable source");
     }
 
+    private static void TreasuresAndDeathLink()
+    {
+        using var stream = typeof(Program).Assembly.GetManifestResourceStream("game_data.json");
+        using var data = JsonDocument.Parse(stream);
+        var items = data.RootElement.GetProperty("items").EnumerateArray()
+            .Where(i => i.GetProperty("kind").GetString() == "treasure")
+            .Select(i => new GameData.Item { Id = i.GetProperty("id").GetInt64(),
+                Key = i.GetProperty("key").GetString(), Name = i.GetProperty("name").GetString(),
+                Target = i.GetProperty("target").GetString(), Kind = "treasure" }).ToArray();
+        Check(items.Length == 5, "Test all five actual catalog Treasures");
+        foreach (var item in items)
+        {
+            Reset(); Treasures.Initialize();
+            GameData.ItemsById[item.Id] = item;
+            var prefab = new Treasure();
+            DewResources.treasures[item.Target] = prefab;
+            var zone = NetworkedManagerBase<ZoneManager>.instance;
+            var player = DewPlayer.local;
+            bool map = item.Target.EndsWith("TreasureMap", StringComparison.Ordinal);
+            bool clairvoyance = item.Target == "Treasure_Clairvoyance";
+            bool cloak = item.Target == "Treasure_CloakOfGuidance";
+            ApClient.ReceivedItems.AddRange(new[] { new ItemInfo { ItemId = item.Id, LocationId = 10 },
+                new ItemInfo { ItemId = item.Id, LocationId = 11 } });
+            Action<Action, Action, string> blocked = (disable, restore, why) =>
+            {
+                disable(); InRunItems.Update(); restore();
+                Check(Dew.spawned.Count == 0 && DewSave.saves == 0 && ApClient.Notices.Count == 0 &&
+                    ApRecords.GetApplied(false, item.Key) == 0, why);
+            };
+            blocked(() => ApClient.IsConnected = false, () => ApClient.IsConnected = true, "Offline Treasures wait");
+            blocked(() => Mirror.NetworkServer.active = false, () => Mirror.NetworkServer.active = true, "Guest Treasures wait");
+            var gm = NetworkedManagerBase<GameManager>.instance;
+            blocked(() => NetworkedManagerBase<GameManager>.instance = null,
+                () => NetworkedManagerBase<GameManager>.instance = gm, "Lobby Treasures wait");
+            blocked(() => gm.ready = false, () => gm.ready = true, "Transition Treasures wait");
+            blocked(() => gm.isGameConcluded = true, () => gm.isGameConcluded = false, "Concluded runs wait");
+            blocked(() => ProfileGuard.SetSessionMarker("Archipelago:other:slot"),
+                () => ProfileGuard.SetSessionMarker("Archipelago:test:slot"), "Wrong seed cannot deliver Treasures");
+            blocked(() => ProfileGuard.OnProfileLoaded("failed", false),
+                () => ProfileGuard.OnProfileLoaded("loaded", true), "Failed loads cannot deliver Treasures");
+            blocked(() => DewSave.profileMainPath = null, () => DewSave.profileMainPath = "test.json", "Transient profiles wait");
+            blocked(() => DewSave.profileMain.experienceFlags.Clear(),
+                () => DewSave.profileMain.experienceFlags.Add("Archipelago:test:slot"), "Vanilla profiles remain untouched");
+            blocked(() => DewPlayer.local = null, () => DewPlayer.local = player, "Missing player waits");
+            var hero = player.hero;
+            blocked(() => player.hero = null, () => player.hero = hero, "Missing hero waits");
+            blocked(() => hero.isActive = false, () => hero.isActive = true, "Inactive hero waits");
+            blocked(() => DewResources.treasures.Remove(item.Target),
+                () => DewResources.treasures[item.Target] = prefab, "Missing prefab waits");
+            if (cloak)
+                blocked(() => zone.isHuntAdvanceDisabled = true, () => zone.isHuntAdvanceDisabled = false,
+                    "Cloak waits when Hunters cannot advance, including Primus");
+            if (clairvoyance)
+                blocked(() => prefab.eligible = false, () => prefab.eligible = true,
+                    "Clairvoyance waits when vanilla's unrevealed-area predicate fails");
+            if (map)
+            {
+                var quests = NetworkedManagerBase<QuestManager>.instance;
+                blocked(() => NetworkedManagerBase<QuestManager>.instance = null,
+                    () => NetworkedManagerBase<QuestManager>.instance = quests, "Maps wait for the quest manager");
+                var nodes = zone.nodes.ToArray();
+                blocked(() => zone.nodes.Clear(), () => zone.nodes.AddRange(nodes), "Maps wait on empty worlds");
+                int searches = zone.searches.Count;
+                blocked(() => zone.canSelect = s => false, () => zone.canSelect = s => true,
+                    "Maps wait without starting a doomed quest when no node is eligible");
+                Check(zone.searches.Count == searches + 1, "Pending map duplicates are tried once per update");
+                bool genuine = item.Target == "Treasure_TotallyGenuineTreasureMap";
+                var settings = zone.searches.Last();
+                Check(settings.desiredDistance.x == (genuine ? 2 : 3) && settings.desiredDistance.y == 4 &&
+                    settings.preferCloserToExit && settings.avoidMainModifier == genuine &&
+                    settings.allowedTypes.SequenceEqual(new[] { WorldNodeType.Combat }), "Preflight uses the quest's own settings");
+            }
+            // Simulate the vanilla reveal changing eligibility during this batch; the next copy must wait.
+            if (clairvoyance) prefab.onSpawn = t => prefab.eligible = false;
+            InRunItems.Update();
+            int landed = clairvoyance ? 1 : 2;
+            Check(Dew.spawned.Count == landed && ApRecords.GetApplied(false, item.Key) == landed &&
+                DewSave.saves == landed && ApClient.Notices.Count == landed, "Each successful Treasure saves and announces its own copy");
+            foreach (var spawned in Dew.spawned)
+                Check(spawned.player == player && spawned.hero == hero && spawned.price == 0 &&
+                    spawned.merchant == null && spawned.customData == null && spawned.position.x == hero.agentPosition.x &&
+                    spawned.position.y == hero.agentPosition.y && spawned.position.z == hero.agentPosition.z &&
+                    spawned.destroyed == clairvoyance, "Assign free Treasure fields before OnCreate at the local hero; clean up Clairvoyance");
+            Check(prefab.player == null && prefab.hero == null, "Do not mutate the shared Treasure prefab");
+            Check(ApClient.Notices.All(n => n.Contains(item.Name + " from Alice")), "Landing notices name each Treasure and sender");
+            var flags = new List<string>(DewSave.profileMain.experienceFlags);
+            DewSave.profileMain = new DewProfile { experienceFlags = flags };
+            InRunItems.Cleanup(); Treasures.Initialize();
+            InRunItems.Update();
+            Check(Dew.spawned.Count == landed, "Persisted Treasure counters prevent replay after restart");
+            if (clairvoyance)
+            {
+                prefab.eligible = true; prefab.throwOnDestroy = true;
+                InRunItems.Update(); InRunItems.Update();
+                Check(Dew.spawned.Count == 2 && ApRecords.GetApplied(false, item.Key) == 2,
+                    "Next world's reveal lands the pending copy once, even if cleanup fails");
+            }
+        }
+
+        Reset(); ApClient.deathLinkEnabled = true;
+        var local = DewPlayer.local.hero;
+        local.onKill = () => { }; // A Shard absorbs the kill: neither knockdown nor bleed-out.
+        DeathLinkHandler.OnDeathLinkReceived("Alice", "fell");
+        Check(local.kills == 1 && ApClient.DeathLinks.Count == 0, "A received kill absorbed by a Shard sends no DeathLink");
+        DeathLinkHandler.OnHeroKnockedOut(local);
+        Check(ApClient.DeathLinks.Count == 1, "The next real knockdown still sends after an absorbed DeathLink");
+        ApClient.DeathLinks.Clear();
+        local.onKill = () => { local.isKnockedOut = true; }; // RPC may be delivered after Kill returns.
+        DeathLinkHandler.OnDeathLinkReceived("Alice", "fell");
+        DeathLinkHandler.OnHeroKnockedOut(local);
+        Check(ApClient.DeathLinks.Count == 0, "Received DeathLink knockdown is suppressed even with a later RPC");
+        DeathLinkHandler.OnHeroRevive(local); local.isKnockedOut = false;
+        local.onKill = () => { local.Status.effects.Add(typeof(Se_HeroBleedingOut)); };
+        DeathLinkHandler.OnDeathLinkReceived("Alice", "fell");
+        local.Status.effects.Clear(); local.isKnockedOut = true;
+        DeathLinkHandler.OnHeroKnockedOut(local);
+        Check(ApClient.DeathLinks.Count == 0, "Bleed-out's later knockdown retains DeathLink suppression");
+        local.isKnockedOut = false;
+        local.onKill = () => { local.isKnockedOut = true; DeathLinkHandler.OnHeroKnockedOut(local); };
+        DeathLinkHandler.OnDeathLinkReceived("Alice", "fell");
+        Check(ApClient.DeathLinks.Count == 0, "A synchronous host knockdown also suppresses the received DeathLink");
+        local.isKnockedOut = false;
+        DeathLinkHandler.OnHeroKnockedOut(new Hero());
+        Check(ApClient.DeathLinks.Count == 0, "Another player's knockdown is ignored");
+        DeathLinkHandler.OnHeroKnockedOut(local);
+        Check(ApClient.DeathLinks.Count == 1, "Consuming suppression does not suppress a subsequent normal death");
+        int kills = local.kills;
+        Mirror.NetworkServer.active = false;
+        DeathLinkHandler.OnDeathLinkReceived("Alice", "fell");
+        Check(local.kills == kills, "Guests cannot apply received DeathLinks");
+        Mirror.NetworkServer.active = true; ProfileGuard.SetSessionMarker("Archipelago:other:slot");
+        DeathLinkHandler.OnDeathLinkReceived("Alice", "fell"); DeathLinkHandler.OnHeroKnockedOut(local);
+        Check(local.kills == kills && ApClient.DeathLinks.Count == 1, "A different profile cannot receive or send DeathLinks");
+    }
+
     private static void Records()
     {
         Reset();
@@ -287,8 +429,8 @@ internal static class Program
 
     private static void Main()
     {
-        Stardust(); StardustItems(); Delivery(); Blessings(); Records(); Wares(); Pilgrimage();
-        Console.WriteLine($"Passed {_assertions} assertions (Stardust, delivery, blessings, checks, wares and pilgrimage).");
+        Stardust(); StardustItems(); Delivery(); Blessings(); TreasuresAndDeathLink(); Records(); Wares(); Pilgrimage();
+        Console.WriteLine($"Passed {_assertions} assertions (Stardust, delivery, blessings, treasures, DeathLink, checks, wares and pilgrimage).");
     }
 
     private static void Wares()

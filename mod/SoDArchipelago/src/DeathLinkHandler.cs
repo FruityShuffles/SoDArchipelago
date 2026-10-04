@@ -62,6 +62,11 @@ namespace SoDArchipelago
             ApClient.Say(text);
             _causedByDeathLink = true;
             hero.Kill();
+            // A Determination Shard (or another saving interrupt) absorbs the kill without a knockout.
+            // Bleed-out still leads to a later knockout, so keep its suppression until that event/revive.
+            if (!hero.isKnockedOut && !hero.Status.HasStatusEffect<Se_HeroKnockedOut>() &&
+                !hero.Status.HasStatusEffect<Se_HeroBleedingOut>())
+                _causedByDeathLink = false;
         }
     }
 }

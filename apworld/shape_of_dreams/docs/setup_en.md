@@ -28,7 +28,9 @@ and recipient; buying sends its check. A player who only joins other people's ga
 Shrine uses, quest completions and artifact hand-ins always send checks, including when joining a co-op game.
 They do not require `in_run_items`. With in-run items enabled, Map Blessings mark and ping a shrine, room bonus,
 Lizard Shop or Artifact on your world map. Follow the marker to use it; if no eligible node remains, it waits for a
-later world or run. The in-run options, wares and pilgrimage checks ship together with Treasures and Curse traps.
+later world or run. Treasures grant Cloak of Guidance, Clairvoyance, Determination Shard or either treasure map
+for free, with their vanilla effects. They wait until their effect has a valid target. A Shard can absorb a received
+DeathLink without suppressing your next normal knockdown. All these additions ship together with Curse traps.
 
 ## Installing the mod
 

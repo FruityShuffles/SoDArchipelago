@@ -15,6 +15,8 @@ namespace UnityEngine
         public int x, y;
         public Vector2Int(int x, int y) { this.x = x; this.y = y; }
     }
+    public struct Vector3 { public float x, y, z; }
+    public struct Quaternion { }
     public static class Random { public static int Range(int min, int max) => max - 1; }
 }
 namespace Mirror { public static class NetworkServer { public static bool active; } }
@@ -23,7 +25,21 @@ namespace Archipelago.MultiClient.Net.Models { public class ItemInfo { public lo
 public class NetworkedManagerBase<T> { public static T instance; }
 public class SingletonBehaviour<T> { public static T instance; }
 public class UI_Constellations { public State state = new State(); public class State { public int stardust; } }
-public static class Dew { public static int GetRequiredMasteryPointsToLevelUp(int level) => 100; }
+public static class Dew
+{
+    public static int GetRequiredMasteryPointsToLevelUp(int level) => 100;
+    public static readonly List<Treasure> spawned = new List<Treasure>();
+    public static T InstantiateAndSpawn<T>(T prefab, UnityEngine.Vector3 position, UnityEngine.Quaternion? rotation,
+        Action<T> beforeSpawn = null) where T : Treasure
+    {
+        var instance = (T)new Treasure { position = position, price = 999, merchant = new PropEnt_Merchant_Base(),
+            customData = "prefab data", throwOnDestroy = prefab.throwOnDestroy };
+        beforeSpawn?.Invoke(instance);
+        spawned.Add(instance);
+        prefab.onSpawn?.Invoke(instance);
+        return instance;
+    }
+}
 public class GameManager
 {
     public bool isGameConcluded;
@@ -34,6 +50,7 @@ public class ZoneManager
 {
     public object currentZone = new object();
     public int currentZoneIndex, loopIndex;
+    public bool isHuntAdvanceDisabled;
     public readonly List<object> nodes = new List<object> { new object(), new object(), new object() };
     public readonly List<GetNodeIndexSettings> searches = new List<GetNodeIndexSettings>();
     public readonly List<(int node, ModifierData mod)> additions = new List<(int, ModifierData)>();
@@ -67,7 +84,23 @@ public class PingManager
 }
 public class GameSettingsManager { public string difficulty; }
 public class Entity { public DewPlayer owner; }
-public class Hero : Entity { }
+public class Hero : Entity
+{
+    public bool isActive = true, isKnockedOut;
+    public UnityEngine.Vector3 agentPosition = new UnityEngine.Vector3 { x = 1, y = 2, z = 3 };
+    public EntityStatus Status = new EntityStatus();
+    public int kills;
+    public Action onKill;
+    public void Kill() { kills++; onKill?.Invoke(); }
+}
+public class EntityStatus
+{
+    public readonly HashSet<Type> effects = new HashSet<Type>();
+    public bool HasStatusEffect<T>() => effects.Contains(typeof(T));
+}
+public class Se_HeroKnockedOut { }
+public class Se_HeroBleedingOut { }
+public class QuestManager { }
 public class Shrine { }
 public class Shrine_PotOfGreed : Shrine { }
 public class Shrine_Disintegration : Shrine { }
@@ -88,15 +121,30 @@ public class PropEnt_Merchant_Jonas : PropEnt_Merchant_Base { }
 public class Treasure
 {
     public int priceCalls;
+    public int price;
+    public string customData;
+    public PropEnt_Merchant_Base merchant;
+    public DewPlayer player;
+    public Hero hero;
+    public UnityEngine.Vector3 position;
+    public bool eligible = true, destroyed, throwOnDestroy;
+    public Action<Treasure> onSpawn;
+    public bool ShouldBeIncludedInPool() => eligible;
+    public void Destroy()
+    {
+        if (throwOnDestroy) throw new Exception("Cleanup failure");
+        destroyed = true;
+    }
     public void OnAddMerchandise(out Cost price, out string customData) { priceCalls++; price = new Cost { gold = 237 }; customData = null; }
 }
 public static class DewResources
 {
     public static readonly Treasure treasure = new Treasure();
     public static readonly Dictionary<string, RoomModifierBase> modifiers = new Dictionary<string, RoomModifierBase>();
+    public static readonly Dictionary<string, Treasure> treasures = new Dictionary<string, Treasure>();
     public static T GetByShortTypeName<T>(string name)
     {
-        if (typeof(T) != typeof(RoomModifierBase)) return (T)(object)treasure;
+        if (typeof(T) == typeof(Treasure)) return treasures.TryGetValue(name, out var t) ? (T)(object)t : default;
         return modifiers.TryGetValue(name, out var mod) ? (T)(object)mod : default;
     }
 }
@@ -141,6 +189,10 @@ namespace SoDArchipelago
     public static class ApClient
     {
         public static bool IsConnected;
+        public static bool deathLinkEnabled;
+        public static bool DeathLinkEnabled => deathLinkEnabled && ProfileGuard.Bound;
+        public static readonly List<string> DeathLinks = new List<string>();
+        public static void SendDeathLink(string cause) { if (DeathLinkEnabled) DeathLinks.Add(cause); }
         public static string SlotName = "Test";
         public static readonly Dictionary<string, int> SlotData = new Dictionary<string, int>();
         public static readonly List<ItemInfo> ReceivedItems = new List<ItemInfo>();
@@ -166,7 +218,7 @@ namespace SoDArchipelago
             public List<string> Unlocks = new List<string>();
             public List<string> UnlockNames;
         }
-        public class Traveler { public string Key; }
+        public class Traveler { public string Key, Name; }
         public class Location { public long Id; public string Name, Key, Kind; public int Number; }
         public class Difficulty { public string Key; public bool HasLocations; public int Rank; }
         public const int NormalWorlds = 4;
