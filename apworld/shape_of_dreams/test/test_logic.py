@@ -44,9 +44,10 @@ class TestWorldClearLogic(_LogicTest):
 
     def test_other_traveler_locations_need_traveler(self) -> None:
         # Every location of a non-starting Traveler (achievements done as them and world clears) needs their progressive
-        # item. The default goal needs all 9 Travelers, so it depends on them too.
+        # item. The default goal needs all 9 Travelers and "The Road Not Taken" every copy, so they depend on them too.
         t = travelers[self.other]
-        self.assertAccessDependency(sorted(location_name_groups[t["name"]]) + ["Goal"], [[t["progressive_item"]]])
+        locations = sorted(location_name_groups[t["name"]]) + ["Goal", "Achievement: The Road Not Taken"]
+        self.assertAccessDependency(locations, [[t["progressive_item"]]])
 
     def test_traveler_achievements(self) -> None:
         self.assertTrue(self.can_reach_location(_achievement(self.starter)))

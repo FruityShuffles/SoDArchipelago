@@ -10,7 +10,7 @@ from .locations import SoDLocation, location_name_groups, location_name_to_id, l
 from .options import SoDOptions, option_groups
 from .stars import shuffle_star_requirements
 
-# Completes on a Starless Path win, which needs a Traveler at mastery 40 (DESIGN.md "Passive mastery").
+# Completes on a Starless Path win, which needs a Traveler at mastery 40 (DESIGN.md "Logic", "Passive mastery").
 STARLESS_PATH_ACHIEVEMENT = "ACH_THE_ROAD_NOT_TAKEN"
 # "Enter the Pure White Dream on Nightmare difficulty": a World 4 Nightmare clear with any Traveler (DESIGN.md "Logic").
 NIGHTMARE_DREAM_ACHIEVEMENT = "ACH_VIVID_DREAM"
@@ -119,16 +119,21 @@ class ShapeOfDreamsWorld(World):
 
     def set_rules(self) -> None:
         progressive_items = [t["progressive_item"] for t in travelers.values()]
+        every_copy = {item: unlock_item_counts[item] for item in progressive_items}
         for name, data in location_table.items():
             if data.key == NIGHTMARE_DREAM_ACHIEVEMENT:
                 self.get_location(name).access_rule = lambda state: any(
                     state.has(item, self.player, NIGHTMARE_COPIES) for item in progressive_items)
+            elif data.key == STARLESS_PATH_ACHIEVEMENT:
+                # Mastery 40 really comes at the end of a seed: every copy is the latest stand-in logic has.
+                self.get_location(name).access_rule = lambda state: state.has_all_counts(every_copy, self.player)
             if data.traveler is None:
                 continue
             # An achievement that must be done as a Traveler needs that Traveler (DESIGN.md "Logic").
             copies = data.copies_required if data.kind == "world_clear" else 1
             item = travelers[data.traveler]["progressive_item"]
-            self.get_location(name).access_rule =                 lambda state, item=item, copies=copies: state.has(item, self.player, copies)
+            self.get_location(name).access_rule = \
+                lambda state, item=item, copies=copies: state.has(item, self.player, copies)
 
         required = self.options.goal_traveler_count.value
         self.get_location("Goal").access_rule = lambda state: self._unlocked_travelers(state) >= required

@@ -130,7 +130,7 @@ The rules are the same for every Traveler. A starting Traveler's precollected co
 | Achievement that requires a Traveler (e.g. "as Aurena") | 1 copy |
 | "Achievement: Vivid Dream" (enter the Pure White Dream on Nightmare: a World 4 Nightmare clear) | 3 copies of any Traveler |
 | Any other achievement | nothing |
-| "Achievement: The Road Not Taken", with `passive_mastery` off | nothing, but **excluded** (see "Passive mastery") |
+| "Achievement: The Road Not Taken" (a Starless Path win: a Traveler at mastery 40) | all 36 copies (every Traveler fully unlocked); **excluded** with `passive_mastery` off (see "Passive mastery") |
 | World clear, Deep Sleep | 1 copy |
 | World clear, Ominous Dream | 2 copies (Traveler + 1 memory) |
 | World clear, Nightmare | 3 copies (Traveler + 2 memories) |
@@ -256,8 +256,8 @@ mastery only comes from `Mastery: <Traveler>` items and the player's strength de
 - **Option:** `passive_mastery`, a toggle, on (vanilla) by default. slot_data `passive_mastery`; a missing key (older
   seeds) means on.
 - **Generation:** when it's off, "Achievement: The Road Not Taken" (`ACH_THE_ROAD_NOT_TAKEN`, a Starless Path win) is
-  `EXCLUDED`: the Starless Path needs a Traveler at mastery 40, which then only Mastery items give. It gets no access
-  rule, and Mastery items stay filler. With too few Mastery items to reach 40 the check can never be done; that's fine,
+  `EXCLUDED`: the Starless Path needs a Traveler at mastery 40, which then only Mastery items give. Its access rule
+  (all 36 copies, see "Logic") stays, and Mastery items stay filler. With too few Mastery items to reach 40 the check can never be done; that's fine,
   it only holds filler. AP keeps a world-set exclusion over the player's `priority_locations`. Pool, IDs and
   `data_hash` are unchanged.
 - **Why the reward itself is 0** *(resolved from code)*: `DewSave.ConsumeGameResult` turns a run into points with
