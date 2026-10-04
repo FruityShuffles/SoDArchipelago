@@ -12,6 +12,8 @@ from .stars import shuffle_star_requirements
 
 # Completes on a Starless Path win, which needs a Traveler at mastery 40 (DESIGN.md "Passive mastery").
 STARLESS_PATH_ACHIEVEMENT = "ACH_THE_ROAD_NOT_TAKEN"
+# Achievements a game bug makes impossible: always excluded until the game fixes them (issue #6).
+BROKEN_ACHIEVEMENTS = {"ACH_WHOS_THE_PREY_NOW"}
 
 
 class SoDWeb(WebWorld):
@@ -74,6 +76,8 @@ class ShapeOfDreamsWorld(World):
             location = SoDLocation(self.player, name, data.id, menu)
             if data.kind == "world_clear":
                 location.progress_type = LocationProgressType.PRIORITY
+            elif data.key in BROKEN_ACHIEVEMENTS:
+                location.progress_type = LocationProgressType.EXCLUDED
             elif data.key == STARLESS_PATH_ACHIEVEMENT and not self.options.passive_mastery:
                 # Without passive mastery only Mastery items reach 40, so this check only ever holds filler.
                 location.progress_type = LocationProgressType.EXCLUDED

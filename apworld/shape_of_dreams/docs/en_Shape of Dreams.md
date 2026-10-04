@@ -45,6 +45,8 @@ Groups: `Achievements`, `World Clears`, `Build-Dependent Achievements`, one per 
 You should leave at least 93 checks un-excluded. The 93 unlock items in your pool can't go on excluded checks, so
 excluding more makes generation fail.
 
+"Achievement: Who's the Prey Now" is always excluded: a game bug stops it from counting Hunter kills.
+
 ## What items can I receive?
 
 - **Progressive Traveler** (progression). The first copy unlocks the Traveler and the next three unlock their three alternate Memories (Q, then R, then Identity).

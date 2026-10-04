@@ -55,11 +55,16 @@ class TestWorldClearLogic(_LogicTest):
         self.collect(self.get_item_by_name(travelers[self.other]["progressive_item"]))
         self.assertTrue(self.can_reach_location(_achievement(self.other)))
 
-    def test_world_clears_are_priority(self) -> None:
+    def test_progress_types(self) -> None:
         from BaseClasses import LocationProgressType
+        from .. import BROKEN_ACHIEVEMENTS
+        broken = {n for n, d in location_table.items() if d.key in BROKEN_ACHIEVEMENTS}
+        self.assertEqual(len(broken), len(BROKEN_ACHIEVEMENTS))
         for location in self.multiworld.get_locations(self.player):
             if location.name.startswith("World "):
                 self.assertEqual(location.progress_type, LocationProgressType.PRIORITY, location.name)
+            elif location.name in broken:
+                self.assertEqual(location.progress_type, LocationProgressType.EXCLUDED, location.name)
             elif location.address is not None:
                 self.assertEqual(location.progress_type, LocationProgressType.DEFAULT, location.name)
 
