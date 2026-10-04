@@ -14,13 +14,16 @@ Shape of Dreams:
   goal_traveler_count: 9
 
   # "Mastery: <Traveler>" items per Traveler (0-15). The rest of the filler is Stardust.
-  mastery_packs_per_traveler: 7
+  mastery_packs_per_traveler: 8
 
-  # Mastery levels per Mastery item (1-35).
+  # Mastery levels per Mastery item (1-40).
   mastery_pack_value: 5
 
   # Stardust per Stardust item (1-10000).
-  stardust_pack_value: 650
+  stardust_pack_value: 750
+
+  # Runs earn Traveler mastery as in vanilla: true or false. false: mastery only comes from "Mastery: <Traveler>" items.
+  passive_mastery: true
 
   # Forced Lucid Dreams: the listed dreams are on in every run until you receive their "Lucid Dream: <name>" item.
   # Those items become progression. A run only counts for world clears and the goal if every still-forced dream is on.

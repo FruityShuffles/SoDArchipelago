@@ -6,7 +6,7 @@ from ..locations import location_table
 
 
 class _PoolTest(SoDTestBase):
-    packs = 7
+    packs = 8
 
     def _pool(self) -> Counter:
         return Counter(item.name for item in self.multiworld.itempool if item.player == self.player)
@@ -31,7 +31,7 @@ class _PoolTest(SoDTestBase):
 
 
 class TestDefaultPool(_PoolTest):
-    packs = 7
+    packs = 8
 
 
 class TestNoMastery(_PoolTest):

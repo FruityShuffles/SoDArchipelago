@@ -10,6 +10,9 @@ from .locations import SoDLocation, location_name_groups, location_name_to_id, l
 from .options import SoDOptions, option_groups
 from .stars import shuffle_star_requirements
 
+# Completes on a Starless Path win, which needs a Traveler at mastery 40 (DESIGN.md "Passive mastery").
+STARLESS_PATH_ACHIEVEMENT = "ACH_THE_ROAD_NOT_TAKEN"
+
 
 class SoDWeb(WebWorld):
     theme = "dirt"
@@ -71,6 +74,9 @@ class ShapeOfDreamsWorld(World):
             location = SoDLocation(self.player, name, data.id, menu)
             if data.kind == "world_clear":
                 location.progress_type = LocationProgressType.PRIORITY
+            elif data.key == STARLESS_PATH_ACHIEVEMENT and not self.options.passive_mastery:
+                # Without passive mastery only Mastery items reach 40, so this check only ever holds filler.
+                location.progress_type = LocationProgressType.EXCLUDED
             menu.locations.append(location)
 
         goal = SoDLocation(self.player, "Goal", None, menu)
@@ -122,6 +128,7 @@ class ShapeOfDreamsWorld(World):
             "mastery_packs_per_traveler": self.options.mastery_packs_per_traveler.value,
             "mastery_pack_value": self.options.mastery_pack_value.value,
             "stardust_pack_value": self.options.stardust_pack_value.value,
+            "passive_mastery": bool(self.options.passive_mastery.value),
             "death_link": bool(self.options.death_link.value),
             "forced_lucid_dreams": sorted(item_table[name].key for name in self.forced_lucid_dreams),
             "star_requirements": dict(sorted(self.star_requirements.items())),

@@ -10,6 +10,7 @@ Set these in your YAML. The [url=https://github.com/FruityShuffles/SoDArchipelag
 [list]
 [*][b]Goal:[/b] the lowest difficulty a win counts at, and how many different Travelers must win (1-9).
 [*][b]Forced Lucid Dreams:[/b] pick Evil or Chaotic Lucid Dreams to be forced on in every run until you receive their item.
+[*][b]No passive mastery:[/b] runs earn no mastery, so it only comes from Mastery items (off by default).
 [*][b]Shuffled constellation stars:[/b] the mastery level each star needs is shuffled (on by default).
 [*][b]DeathLink:[/b] when one player is knocked down, everyone on DeathLink goes down.
 [*][b]Pool and checks:[/b] how much Mastery and Stardust the filler gives, and which checks (by Traveler, difficulty or achievement type) are important or excluded.

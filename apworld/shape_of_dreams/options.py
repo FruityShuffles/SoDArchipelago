@@ -30,14 +30,14 @@ class MasteryPacksPerTraveler(Range):
     display_name = "Mastery Packs per Traveler"
     range_start = 0
     range_end = 15
-    default = 7
+    default = 8
 
 
 class MasteryPackValue(Range):
     """Mastery levels one "Mastery: <Traveler>" item gives that Traveler."""
     display_name = "Mastery Pack Value"
     range_start = 1
-    range_end = 35
+    range_end = 40
     default = 5
 
 
@@ -46,7 +46,14 @@ class StardustPackValue(Range):
     display_name = "Stardust Pack Value"
     range_start = 1
     range_end = 10000
-    default = 650
+    default = 750
+
+
+class PassiveMastery(DefaultOnToggle):
+    """Runs earn Traveler mastery as in vanilla. When off, runs earn no mastery, so mastery only comes from
+    "Mastery: <Traveler>" items, and "Achievement: The Road Not Taken" (which needs a Traveler at mastery 40) is
+    excluded."""
+    display_name = "Passive Mastery"
 
 
 # The dream descriptions below are also in examples/Shape of Dreams.yaml; keep both in step.
@@ -99,6 +106,7 @@ class SoDOptions(PerGameCommonOptions):
     mastery_packs_per_traveler: MasteryPacksPerTraveler
     mastery_pack_value: MasteryPackValue
     stardust_pack_value: StardustPackValue
+    passive_mastery: PassiveMastery
     forced_evil_lucid_dreams: ForcedEvilLucidDreams
     forced_chaotic_lucid_dreams: ForcedChaoticLucidDreams
     shuffle_star_requirements: ShuffleStarRequirements
@@ -107,7 +115,7 @@ class SoDOptions(PerGameCommonOptions):
 
 option_groups = [
     OptionGroup("Goal", [GoalDifficulty, GoalTravelerCount]),
-    OptionGroup("Filler", [MasteryPacksPerTraveler, MasteryPackValue, StardustPackValue]),
+    OptionGroup("Filler", [MasteryPacksPerTraveler, MasteryPackValue, StardustPackValue, PassiveMastery]),
     OptionGroup("Forced Lucid Dreams", [ForcedEvilLucidDreams, ForcedChaoticLucidDreams]),
     OptionGroup("Constellation", [ShuffleStarRequirements]),
 ]

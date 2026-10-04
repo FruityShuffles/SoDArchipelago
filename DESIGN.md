@@ -59,8 +59,8 @@ Mist (vanilla's starting Travelers), grouped as follows.
 | useful | `Memory: <name>` (general, non-Traveler Memories locked behind achievements) | 15 | Makes the Memory able to drop in runs |
 | useful | `Essence: <name>` | 29 | Makes the Essence able to drop in runs |
 | useful | `Lucid Dream: <name>` | 15 | Unlocks the Lucid Dream modifier. A **forced** dream's item is progression and releases it (see "Forced Lucid Dreams") |
-| filler | `Mastery: <Traveler>` (one item per Traveler) | 7 per Traveler (63) | +5 mastery levels to that Traveler |
-| filler | `Stardust` | the rest (72) | +650 Stardust |
+| filler | `Mastery: <Traveler>` (one item per Traveler) | 8 per Traveler (72) | +5 mastery levels to that Traveler |
+| filler | `Stardust` | the rest (63) | +750 Stardust |
 
 - **Starting Travelers** (replaces vanilla's Lacerta and Mist): each seed picks 2 random Travelers in `generate_early`
   (`self.random.sample` of the sorted Traveler keys). One copy of each one's progressive item is precollected
@@ -68,13 +68,16 @@ Mist (vanilla's starting Travelers), grouped as follows.
   item from location −2. There's no option and no slot_data field.
 - **No traps.**
 - **Déjà vu is untouched.** It's the Pure White Dream carry-over system that costs Stardust.
-- **Counts:** 34 progression + 59 useful + 63 mastery + 72 Stardust = 228, equal to the location count.
-- **Filler targets:** filler alone gives exactly **35 mastery on every Traveler** (the highest mastery any star or
-  star slot requires) and **46,800 Stardust**. That covers the 45,275 needed for every star level, plus a buffer for
-  star slot unlocks (40 + 20 × n Stardust per extra slot, where n counts from 0 past the Traveler's default slot count
-  for that star type). Checked in-game: the slots cost 4,740, so filler falls 3,215 short of buying every slot too;
-  accepted (see "Settled questions").
-- Vanilla run rewards (Stardust, mastery points) are not counted toward these targets and stay as they are.
+- **Counts:** 34 progression + 59 useful + 72 mastery + 63 Stardust = 228, equal to the location count.
+- **Filler targets:** filler alone gives exactly **40 mastery on every Traveler** and **47,250 Stardust**
+  (decided 2026-10-03, issue #5). 40 is the level of each Traveler's last story episode (`TravelerStory_<T>_Main8`,
+  read from the asset bundles), which unlocks the Starless Path ending (`unlocksPolarisEnding`); stars and star slots
+  need at most 35. Levels come in chunks of 5, the granularity of every mastery reward. The Stardust covers the 45,275
+  needed for every star level, plus a buffer for star slot unlocks (40 + 20 × n Stardust per extra slot, where n counts
+  from 0 past the Traveler's default slot count for that star type). Checked in-game: the slots cost 4,740, so filler
+  falls 2,765 short of buying every slot too; accepted (see "Settled questions").
+- Vanilla run rewards (Stardust, mastery points) are not counted toward these targets and stay as they are, except
+  mastery when `passive_mastery` is off (see "Passive mastery").
 
 ### Alternate memory order
 
@@ -105,6 +108,7 @@ The rules are the same for every Traveler. A starting Traveler's precollected co
 |---|---|
 | Achievement that requires a Traveler (e.g. "as Aurena") | 1 copy |
 | Any other achievement | nothing |
+| "Achievement: The Road Not Taken", with `passive_mastery` off | nothing, but **excluded** (see "Passive mastery") |
 | World clear, Deep Sleep | 1 copy |
 | World clear, Ominous Dream | 2 copies (Traveler + 1 memory) |
 | World clear, Nightmare | 3 copies (Traveler + 2 memories) |
@@ -133,16 +137,17 @@ Win a run at `goal_difficulty` **or harder** with `goal_traveler_count` **differ
 |---|---|---|---|
 | `goal_difficulty` | choice: `deep_sleep`, `ominous_dream`, `nightmare` | `nightmare` | |
 | `goal_traveler_count` | range 1–9 | 9 | |
-| `mastery_packs_per_traveler` | range 0–15 | 7 | 0 removes mastery from the pool. 15 × 9 = 135 fills every filler slot. |
-| `mastery_pack_value` | range 1–35 | 5 | levels per pack |
-| `stardust_pack_value` | range 1–10,000 | 650 | Stardust fills every remaining filler slot, so it can't be 0 |
+| `mastery_packs_per_traveler` | range 0–15 | 8 | 0 removes mastery from the pool. 15 × 9 = 135 fills every filler slot. |
+| `mastery_pack_value` | range 1–40 | 5 | levels per pack |
+| `stardust_pack_value` | range 1–10,000 | 750 | Stardust fills every remaining filler slot, so it can't be 0 |
+| `passive_mastery` | toggle | on | See "Passive mastery" |
 | `death_link` | toggle | off | |
 | `forced_evil_lucid_dreams` | set of Evil Lucid Dream names | empty | See "Forced Lucid Dreams" |
 | `forced_chaotic_lucid_dreams` | set of Chaotic Lucid Dream names | empty | See "Forced Lucid Dreams" |
 | `shuffle_star_requirements` | toggle | on | See "Shuffled star requirements" |
 
 Remove `boss_locations` and `travelers_required_for_goal`. `slot_data` must carry everything the mod needs: goal
-settings, pack values, death_link, the forced Lucid Dreams (`forced_lucid_dreams`: both sets' keys), the shuffled star
+settings, pack values, `passive_mastery`, death_link, the forced Lucid Dreams (`forced_lucid_dreams`: both sets' keys), the shuffled star
 requirements (`star_requirements`), the data version and the data hash.
 
 ## Forced Lucid Dreams
@@ -190,7 +195,7 @@ No new numbers: stars trade their vanilla requirements with each other.
 - **Groups: mastery type × category.** A star only trades levels with stars of the same Traveler (or the common stars,
   which need total mastery) and the same category (Destruction, Life, Imagination, Flexible). That's 3 common groups and
   4 per Traveler (39 groups, 305 stars). Each group keeps its vanilla set of levels, so Flexible stars stay on their
-  5/15/25/35 steps, and the highest requirement stays 35 per Traveler and 75 total: the filler targets (35 mastery per
+  5/15/25/35 steps, and the highest requirement stays 35 per Traveler and 75 total: the filler targets (40 mastery per
   Traveler) still cover every star.
 - **No logic.** Stars and mastery aren't in logic. Pool, IDs and `data_hash` are unchanged.
 - **Generation:** the apworld shuffles each group with the seed's random in `generate_early` and sends every star's level
@@ -220,6 +225,35 @@ leaving out display names (`apworld/shape_of_dreams/data/data_hash.py`). The mod
 copy, so an old mod can't silently play a seed generated after a game update added items or locations. IDs are also
 kept in `id_history` (every key→ID ever assigned, including retired keys), so an ID is never reused for other content
 and a key that disappears and comes back keeps its ID.
+
+## Passive mastery
+
+An optional challenge (decided 2026-10-03, issue #5): with `passive_mastery` off, runs earn no Traveler mastery, so
+mastery only comes from `Mastery: <Traveler>` items and the player's strength depends on the multiworld.
+
+- **Option:** `passive_mastery`, a toggle, on (vanilla) by default. slot_data `passive_mastery`; a missing key (older
+  seeds) means on.
+- **Generation:** when it's off, "Achievement: The Road Not Taken" (`ACH_THE_ROAD_NOT_TAKEN`, a Starless Path win) is
+  `EXCLUDED`: the Starless Path needs a Traveler at mastery 40, which then only Mastery items give. It gets no access
+  rule, and Mastery items stay filler. With too few Mastery items to reach 40 the check can never be done; that's fine,
+  it only holds filler. AP keeps a world-set exclusion over the player's `priority_locations`. Pool, IDs and
+  `data_hash` are unchanged.
+- **Why the reward itself is 0** *(resolved from code)*: `DewSave.ConsumeGameResult` turns a run into points with
+  `Dew.GetRewardedMasteryPoints`, adds them, and reports them as `LastGamePlayReward.heroMasteryPoints`. The results
+  screen (`UI_PlayRewardAnnouncer`) animates from "current points − heroMasteryPoints", so taking points back afterwards
+  would show fake level-ups. With a 0 reward it skips the mastery panel, as vanilla does for a run that earned nothing,
+  and a conceded run records 0 points to take back if it's finished later.
+- **Mod:** on login the mod writes `AP:nopassivemastery` to `experienceFlags` when the option is off (and removes it
+  when on), so offline runs follow it too. A prefix/finalizer on `ConsumeGameResult` sets a flag while it runs on a
+  profile with that record, and a postfix on `GetRewardedMasteryPoints` returns 0 while the flag is set. That covers
+  every way a run is rewarded: the end of a game (`GameResultManager`) and a run left unrewarded
+  (`lastUnrewardedGameResult`), caught up on the title screen (`TitleManager.CheckForOtherRoutine`) or in the lobby.
+  Redeem codes and the free-version mastery reward also call `GetRewardedMasteryPoints`, outside `ConsumeGameResult`,
+  and are untouched.
+- **Known limitation:** mods load about 2 seconds after the title scene (`DewMod.OnInit`'s cancel countdown), and the
+  title screen can catch up a run left unrewarded from the previous session before that, so such a run still earns
+  mastery once. Accepted.
+- **Co-op:** each player's client rewards their own profile, so it only affects that player.
 
 ## Client mod behavior
 
@@ -363,8 +397,8 @@ before it syncs the zone index.
   (`zoneCountByTier=[1,1,1,1]`).
 - ~~World-clear detection~~ Zone transition, world = `currentZoneIndex` on arrival (see "Locations").
 - ~~Star slot counts per Traveler (the Stardust buffer)~~ Logged in-game 2026-09-27: 80 buyable slots cost 4,740
-  Stardust, more than the 1,525 buffer, so filler alone falls 3,215 short of buying everything. **Accepted as is**
-  (Stardust stays +650): vanilla run and achievement Stardust covers the rest. ~~Mastery cap~~,
+  Stardust, more than the buffer (1,975 since Stardust items give +750), so filler alone falls 2,765 short of buying
+  everything. **Accepted as is**: vanilla run and achievement Stardust covers the rest. ~~Mastery cap~~,
   ~~fresh-profile test~~ and ~~UnknownFate~~: see above.
 - ~~`isAlteringGameplay`~~ Kept on.
 - ~~DeathLink for a joining co-op player~~ Accepted as a known limitation (see "DeathLink").

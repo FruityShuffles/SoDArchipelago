@@ -16,6 +16,7 @@ Set these in your YAML. The [example YAML](examples/Shape%20of%20Dreams.yaml) ex
 
 - **Goal:** the lowest difficulty a win counts at, and how many different Travelers must win (1–9).
 - **Forced Lucid Dreams:** pick Evil or Chaotic Lucid Dreams to be forced on in every run until you receive their item.
+- **No passive mastery:** runs earn no mastery, so it only comes from Mastery items (off by default).
 - **Shuffled constellation stars:** the mastery level each star needs is shuffled (on by default).
 - **DeathLink:** when one player is knocked down, everyone on DeathLink goes down.
 - **Pool and checks:** how much Mastery and Stardust the filler gives, and which checks (by Traveler, difficulty or

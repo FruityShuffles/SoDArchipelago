@@ -69,7 +69,7 @@ namespace SoDArchipelago
             }
             Log.Info(sb.ToString());
             Log.Info($"Star slots: {extraSlots} buyable slots cost {stardust} Stardust in total " +
-                     "(AP Stardust buffer by default: 46,800 - 45,275 = 1,525)");
+                     "(AP Stardust buffer by default: 47,250 - 45,275 = 1,975)");
         }
 
         // Only for a marked profile: AP code never reads an unbound profile.

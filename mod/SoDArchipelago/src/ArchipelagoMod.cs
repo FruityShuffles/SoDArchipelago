@@ -135,6 +135,7 @@ namespace SoDArchipelago
             if (UnlockState.Enforce(DewSave.profileMain, "connect") > 0) DewSave.SaveProfileMain();
             ForcedDreams.OnLoggedIn();
             StarRequirements.OnLoggedIn();
+            PassiveMastery.OnLoggedIn();
             CheckHandler.ResendAll();
             ItemHandler.ProcessAll("connect");
             Log.Info("Unlocked Travelers: " + string.Join(", ",

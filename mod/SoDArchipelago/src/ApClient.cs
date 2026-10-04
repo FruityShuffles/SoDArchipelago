@@ -469,8 +469,12 @@ namespace SoDArchipelago
 
         public static int GetInt(string key, int fallback) => GetInt(SlotData, key, fallback);
 
-        public static bool GetBool(string key) => SlotData != null && SlotData.TryGetValue(key, out var v) && v != null &&
-                                                  Convert.ToBoolean(v);
+        public static bool GetBool(string key, bool fallback = false)
+        {
+            if (SlotData == null || !SlotData.TryGetValue(key, out var v) || v == null) return fallback;
+            try { return Convert.ToBoolean(v); }
+            catch (Exception) { return fallback; }
+        }
 
         // A slot_data list (a JArray from MultiClient.Net) as strings; empty when it's missing (older seeds).
         public static List<string> GetStringList(string key)

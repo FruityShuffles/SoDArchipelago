@@ -218,6 +218,21 @@ namespace SoDArchipelago
             return true;
         }
 
+        // Passive mastery off (DESIGN.md "Passive mastery"): copied from slot_data on every login so it also applies
+        // offline. Only "off" is recorded, so an older seed or an unrecorded profile keeps vanilla mastery.
+        private const string NoPassiveMasteryFlag = "AP:nopassivemastery";
+
+        public static bool NoPassiveMastery() => ProfileGuard.Marked && MainFlags.Contains(NoPassiveMasteryFlag);
+
+        // True if it changed.
+        public static bool SetNoPassiveMastery(bool off)
+        {
+            if (!ProfileGuard.Marked || NoPassiveMastery() == off) return false;
+            if (off) MainFlags.Add(NoPassiveMasteryFlag);
+            else MainFlags.RemoveAll(f => f == NoPassiveMasteryFlag);
+            return true;
+        }
+
         public static IEnumerable<string> Clears() =>
             ProfileGuard.Marked
                 ? MainFlags.Where(f => f.StartsWith(ClearPrefix, StringComparison.Ordinal))

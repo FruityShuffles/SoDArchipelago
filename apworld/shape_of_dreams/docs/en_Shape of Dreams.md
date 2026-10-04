@@ -52,9 +52,9 @@ excluding more makes generation fail.
 - **Memory / Essence / Lucid Dream unlocks** (useful). Unlocked Memories or Essences can drop in runs. Unlocked Lucid Dream run modifiers
    can be selected in the lobby.
 - **Mastery: \<Traveler\>** (filler): +5 mastery levels for that Traveler.
-- **Stardust** (filler): +650 Stardust.
+- **Stardust** (filler): +750 Stardust.
 
-With default settings the filler alone gives every Traveler 35 mastery and enough Stardust to buy every constellation star.
+With default settings the filler alone gives every Traveler 40 mastery and enough Stardust to buy every constellation star.
 
 ## What do I see when I send or receive an item?
 
@@ -73,9 +73,10 @@ ending, the Pure White Dream or the Starless Path.
 |---|---|---|---|
 | `goal_difficulty` | `nightmare` | `deep_sleep`, `ominous_dream`, `nightmare` | Lowest difficulty a win counts at |
 | `goal_traveler_count` | 9 | 1–9 | Different Travelers that must win |
-| `mastery_packs_per_traveler` | 7 | 0–15 | Mastery items per Traveler. The rest of the filler is Stardust |
-| `mastery_pack_value` | 5 | 1–35 | Mastery levels per Mastery item |
-| `stardust_pack_value` | 650 | 1–10,000 | Stardust per Stardust item |
+| `mastery_packs_per_traveler` | 8 | 0–15 | Mastery items per Traveler. The rest of the filler is Stardust |
+| `mastery_pack_value` | 5 | 1–40 | Mastery levels per Mastery item |
+| `stardust_pack_value` | 750 | 1–10,000 | Stardust per Stardust item |
+| `passive_mastery` | on | | Off: runs earn no mastery, so it only comes from Mastery items, and "The Road Not Taken" is excluded |
 | `death_link` | off | | When you are knocked down, everyone on DeathLink dies, and the other way round. |
 | `forced_evil_lucid_dreams` | none | see below | Evil Lucid Dreams forced on in every run until you receive their Lucid Dream item |
 | `forced_chaotic_lucid_dreams` | none | see below | The same for Chaotic Lucid Dreams |
