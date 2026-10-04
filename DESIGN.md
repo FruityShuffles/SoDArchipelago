@@ -8,14 +8,8 @@ Item/location IDs are frozen once a version is released: the extractor keeps eve
 
 | Kind | Count | Progress type | Notes |
 |---|---|---|---|
-| Achievements (`ACH_*`) | 93 | default | Every achievement in `RawData/en-US/achievements.json`. Broken ones are **excluded** (below). |
+| Achievements (`ACH_*`) | 93 | default | Every achievement in `RawData/en-US/achievements.json`. None are excluded. |
 | World clears | 135 | **priority** | 5 worlds × 3 difficulties × 9 Travelers. These are the only priority locations. |
-
-- **Broken achievements** (decided 2026-10-03, issue #6): "Who's the Prey Now" (`ACH_WHOS_THE_PREY_NOW`, kill 70 Hunters) never
-  counts a kill, probably because it checks `Monster.isHunter` on the kill and `Se_HunterBuff` sets it back to false
-  when the buff ends, which a death does. The world always marks it `EXCLUDED` (`BROKEN_ACHIEVEMENTS`), so it only holds
-  filler. Remove it from the set once the game fixes it. ("Hunters? What Hunters?" reads the same flag, but only to
-  fail, so it gets easier, not impossible.)
 
 - **World structure** (corrected 2026-09-27). A loop has **4 normal worlds**. Beating the world 4 boss opens two rifts:
   the normal exit (next loop) and the Dream rift (`Rift_Sidetrack_TheDream`, only in the last world's boss room). The Dream
@@ -115,7 +109,6 @@ The rules are the same for every Traveler. A starting Traveler's precollected co
 | Achievement that requires a Traveler (e.g. "as Aurena") | 1 copy |
 | Any other achievement | nothing |
 | "Achievement: The Road Not Taken", with `passive_mastery` off | nothing, but **excluded** (see "Passive mastery") |
-| "Achievement: Who's the Prey Now" | nothing, but always **excluded** (broken in the game, see "Locations") |
 | World clear, Deep Sleep | 1 copy |
 | World clear, Ominous Dream | 2 copies (Traveler + 1 memory) |
 | World clear, Nightmare | 3 copies (Traveler + 2 memories) |
