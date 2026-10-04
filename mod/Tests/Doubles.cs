@@ -17,7 +17,11 @@ namespace UnityEngine
     }
     public struct Vector3 { public float x, y, z; }
     public struct Quaternion { }
-    public static class Random { public static int Range(int min, int max) => max - 1; }
+    public static class Random
+    {
+        public static float value = 0f;
+        public static int Range(int min, int max) => max - 1;
+    }
 }
 namespace Mirror { public static class NetworkServer { public static bool active; } }
 namespace Archipelago.MultiClient.Net.Models { public class ItemInfo { public long ItemId, LocationId; } }
@@ -27,6 +31,15 @@ public class SingletonBehaviour<T> { public static T instance; }
 public class UI_Constellations { public State state = new State(); public class State { public int stardust; } }
 public static class Dew
 {
+    public static Func<string, bool> curseIncluded = name => true;
+    public static bool IsCurseIncludedInGame(string name) => curseIncluded(name);
+    public static readonly List<(CurseStatusEffect curse, float weight)> weightedCurses = new List<(CurseStatusEffect, float)>();
+    public static T SelectRandomWeightedInList<T>(IList<T> list, Func<T, float> weightGetter)
+    {
+        weightedCurses.Clear();
+        foreach (var value in list) weightedCurses.Add(((CurseStatusEffect)(object)value, weightGetter(value)));
+        return list[list.Count - 1];
+    }
     public static int GetRequiredMasteryPointsToLevelUp(int level) => 100;
     public static readonly List<Treasure> spawned = new List<Treasure>();
     public static T InstantiateAndSpawn<T>(T prefab, UnityEngine.Vector3 position, UnityEngine.Quaternion? rotation,
@@ -49,9 +62,13 @@ public class GameManager
 public class ZoneManager
 {
     public object currentZone = new object();
+    public Room currentRoom = new Room();
+    public int currentNodeIndex;
+    public bool isInRoomTransition;
+    public WorldNodeData currentNode => nodes[currentNodeIndex];
     public int currentZoneIndex, loopIndex;
     public bool isHuntAdvanceDisabled;
-    public readonly List<object> nodes = new List<object> { new object(), new object(), new object() };
+    public readonly List<WorldNodeData> nodes = new List<WorldNodeData> { new WorldNodeData(), new WorldNodeData(), new WorldNodeData() };
     public readonly List<GetNodeIndexSettings> searches = new List<GetNodeIndexSettings>();
     public readonly List<(int node, ModifierData mod)> additions = new List<(int, ModifierData)>();
     public Func<GetNodeIndexSettings, bool> canSelect = settings => true;
@@ -67,7 +84,9 @@ public class GetNodeIndexSettings
     public UnityEngine.Vector2Int desiredDistance;
     public bool preferCloserToExit, avoidMainModifier;
 }
-public enum WorldNodeType { Combat }
+public class Room { public string name = "Room_Combat"; }
+public class WorldNodeData { public WorldNodeType type; }
+public enum WorldNodeType { Combat, ExitBoss, Special, Merchant }
 public struct ModifierData { public string type; public bool isForceRevealed; }
 public class RoomModifierBase { public bool isMain; }
 public class PingManager
@@ -92,14 +111,58 @@ public class Hero : Entity
     public int kills;
     public Action onKill;
     public void Kill() { kills++; onKill?.Invoke(); }
+    public readonly List<CurseStatusEffect> curses = new List<CurseStatusEffect>();
+    public bool rejectCurse;
+    public T CreateStatusEffect<T>(T prefab, Entity victim, CastInfo info, Action<T> beforePrepare) where T : CurseStatusEffect
+    {
+        if (rejectCurse) return null;
+        var curse = (T)new CurseStatusEffect { parent = this, victim = victim, info = info, source = prefab };
+        beforePrepare(curse);
+        curses.Add(curse);
+        return curse;
+    }
+}
+public static class EntityCheck
+{
+    public static bool IsNullInactiveDeadOrKnockedOut(this Hero hero) =>
+        hero == null || !hero.isActive || hero.Status.isDead || hero.isKnockedOut;
 }
 public class EntityStatus
 {
+    public bool isDead;
     public readonly HashSet<Type> effects = new HashSet<Type>();
     public bool HasStatusEffect<T>() => effects.Contains(typeof(T));
 }
 public class Se_HeroKnockedOut { }
 public class Se_HeroBleedingOut { }
+[Flags] public enum HatredStrengthType { None = 0, Mild = 1, Potent = 2, Powerful = 4 }
+public enum QuestProgressType { Kills, Travel }
+public struct CastInfo
+{
+    public Entity caster, target;
+    public CastInfo(Entity caster, Entity target) { this.caster = caster; this.target = target; }
+}
+public class CurseStatusEffect
+{
+    public HatredStrengthType availableStrengths = HatredStrengthType.Mild | HatredStrengthType.Potent | HatredStrengthType.Powerful;
+    public HatredStrengthType currentStrength;
+    public float chanceWeight = 1f;
+    public int skillLevel, requiredAmount;
+    public QuestProgressType progressType;
+    public Entity parent, victim;
+    public CastInfo info;
+    public CurseStatusEffect source;
+    public Func<Entity, bool> viable = hero => true;
+    public virtual bool IsViable(Entity hero) => viable(hero);
+}
+public struct ResourceLoadSettings { public static readonly ResourceLoadSettings Light = new ResourceLoadSettings(); }
+public struct AssetRef<T>
+{
+    private readonly T _asset;
+    public AssetRef(T asset) { _asset = asset; }
+    public T asset => DewResources.fullCurses.TryGetValue((CurseStatusEffect)(object)_asset, out var full)
+        ? (T)(object)full : _asset;
+}
 public class QuestManager { }
 public class Shrine { }
 public class Shrine_PotOfGreed : Shrine { }
@@ -139,6 +202,10 @@ public class Treasure
 }
 public static class DewResources
 {
+    public static readonly List<CurseStatusEffect> curses = new List<CurseStatusEffect>();
+    public static readonly Dictionary<CurseStatusEffect, CurseStatusEffect> fullCurses = new Dictionary<CurseStatusEffect, CurseStatusEffect>();
+    public static IEnumerable<T> FindAllByType<T>(ResourceLoadSettings settings) =>
+        System.Linq.Enumerable.Cast<T>(curses);
     public static readonly Treasure treasure = new Treasure();
     public static readonly Dictionary<string, RoomModifierBase> modifiers = new Dictionary<string, RoomModifierBase>();
     public static readonly Dictionary<string, Treasure> treasures = new Dictionary<string, Treasure>();

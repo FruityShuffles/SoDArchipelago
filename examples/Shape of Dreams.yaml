@@ -28,6 +28,8 @@ Shape of Dreams:
   in_run_items: false
 
   # Curse traps in 20% of new item slots: true or false. Delivery also requires solo play or hosting.
+  # Mild, Potent and Intense vanilla curses affect your own Traveler; traps wait until you leave a boss room.
+  # The game's quest tracker shows the kill or travel condition for lifting each curse.
   traps: false
 
   # Jonas's Archipelago wares (0-100). Wares require solo play or hosting.

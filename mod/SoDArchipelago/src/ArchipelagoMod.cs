@@ -35,6 +35,7 @@ namespace SoDArchipelago
             GameData.Load();
             MapBlessings.Initialize();
             Treasures.Initialize();
+            CurseTraps.Initialize();
             Log.Info($"Loaded {mod.metadata.id} {mod.metadata.modVer}; data format {GameData.DataFormatVersion}, " +
                      $"extracted from game {GameData.ExtractedFromGameVersion}; running game {Application.version}");
 

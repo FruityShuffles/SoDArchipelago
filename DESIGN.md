@@ -448,6 +448,42 @@ the merchant spawn path, duplicate quest lifecycle, saved Shard attribute and sy
 cover all five delivery rules, pending copies, restart counters, Clairvoyance cleanup failure and absorbed, immediate
 and delayed DeathLink knockdowns. No in-game test.
 
+### Curse traps
+
+Issue #12. The three catalog `curse` items are opt-in traps: `Curse: Mild`, `Curse: Potent` and `Curse: Intense`.
+The `traps` option and 20% new-slot allocation (3 Mild : 2 Potent : 1 Intense) already come from #7, independently
+of `in_run_items`. No item IDs, hash or slot protocol change is needed. Only the local solo/host hero is cursed;
+co-op guests are unaffected. Delivery uses the shared Bound, connected, ready unconcluded run guard.
+
+- Wait in every `ExitBoss` node, including Primus, and in `Room_Special_StarlessPath_BossPolaris` (a Special sidetrack
+  node). A cleared boss room still waits until the player leaves it. Also wait during room transitions, without a
+  current room/valid node or quest manager, or while the local hero is missing, inactive, dead, knocked out or bleeding out.
+- `Shrine_Hatred.DoCurse` is private and its `_curses` pool is initialized by shrine `OnCreate`. Reproduce only its
+  selection and initial fields through public vanilla APIs; create no shrine, reward or custom network message.
+  Discover `CurseStatusEffect` prefabs with `FindAllByType(ResourceLoadSettings.Light)`, filter by
+  `Dew.IsCurseIncludedInGame`, then resolve each through `AssetRef.asset` to load its full gameplay prefab, as the
+  shrine does. Do not cache Unity assets across unloads or mutate shared prefabs.
+- Filter by `availableStrengths`, `IsViable(localHero)` and positive `chanceWeight`, then call vanilla
+  `Dew.SelectRandomWeightedInList`. An empty eligible pool leaves the trap pending. This avoids the helper's
+  entry-zero fallback when every weight is zero. Each received copy rechecks viability; vanilla curse effects
+  decide whether another copy is viable.
+- Map Intense to `HatredStrengthType.Powerful` (enum value 4). Use `hero.CreateStatusEffect(prefab, hero,
+  new CastInfo(hero, hero), beforePrepare)` to set `currentStrength` and vanilla `skillLevel = (int)(strength - 1)`.
+  Half the time (`Random.value < 0.5`) the lift condition is Kills: Mild `28 + 2 × currentZoneIndex`, Potent
+  `34 + 3 × currentZoneIndex`, Intense `50 + 3 × currentZoneIndex`. Otherwise it is Travel: 3 / 4 / 4 rooms.
+  Preserve scaling through later loops and the vanilla skill-level expression.
+- The actual vanilla status effect supplies networking, its curse notification, `Quest_KillToLiftCurse`, kill/travel
+  progress, removal on lift or knockdown, and saved state (`[SaveActor(true)]`). A null creation result stays pending.
+  A successful creation saves the shared applied counter and announces the tier and sender. Reconnect/restart never
+  replays spent copies; traps may wait for a later room, world or run.
+
+Implementation verification (2026-10-04): the installed Hatred prefab uses `Shrine_Hatred`, with strength-choice
+weights 1,000,000 / 0.2 / 0.2 / 0.1. Its curse prefabs include tier restrictions, differing weights and a zero-weight
+quest-only curse; all three tiers have positive candidates. Decompiled shrine selection, AssetRef light/full
+resolution, status-effect spawn, quest tracking and saved/lift/knockdown lifecycle match the handler. Automated C#
+checks cover all three tiers, eligibility, full-asset resolution, both lift conditions, later-loop scaling, boss-room
+deferral, duplicate copies, restart counters and independent blessing delivery. No in-game test.
+
 ### Checks
 - **Achievements:** when an achievement completes, send its check. **Suppress the vanilla unlock reward**, since the
   AP item replaces it. **Keep** the vanilla Stardust bonus (`DewAchievementItem.grantedStardust`, usually 50).
@@ -598,8 +634,9 @@ stopped at Claude's session limit, so Claude has not reviewed these fixes.
 
 - Reconcile the potential P3 icon reuse bug in `WareShopUi.UpdateContent`: a normal Cloak at Smoothie's shop may
   retain the AP icon when a cell survives a shop change with the same cached `itemName`. It remains unmodified.
-- Resolve the review's verification gaps: the live Hatred prefab's class, Contents subscribers to
-  `onMerchandisePopulated`, and TextMeshPro rendering of escaped tooltip names. These are not confirmed bugs.
+- Resolve the remaining verification gaps: Contents subscribers to `onMerchandisePopulated` and TextMeshPro
+  rendering of escaped tooltip names. These are not confirmed bugs. The live Hatred prefab's class was verified
+  as `Shrine_Hatred` during #12 implementation on 2026-10-04.
 - Local reports and the resumable Claude session reference are in `.claude/reviews/` (git-ignored). The fixes passed
   202 world tests, 250 AP general tests, 235 C# assertions and a build with deployment disabled.
 

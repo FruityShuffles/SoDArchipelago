@@ -139,9 +139,12 @@ for free, with their vanilla effects. Cloak waits where Hunters cannot advance; 
 fully revealed; maps wait if no eligible destination remains. Multiple maps and Shards can be active at once. A Shard
 can absorb a received DeathLink; your next normal knockdown still sends one.
 
-**Development status:** the shared options and pool rules (#7), Jonas's Wares (#8), pilgrimage checks (#9), Map
-Blessings (#10) and Treasures (#11) are implemented. Curse traps arrive in #12; all six issues ship together in one
-matching apworld/mod release.
+**Curse traps**, enabled by `traps`, give a random vanilla Mild, Potent or Intense curse to your own Traveler when
+playing solo or hosting. They wait in boss rooms, including Primus and Polaris, until you leave. The game's curse
+notification and quest tracker show the effect and its kill or travel condition for lifting it. If no curse is viable
+for your Traveler, the trap keeps waiting. Guests are not cursed by the host's trap items.
+
+**Development status:** issues #7–#12 are implemented and ship together in one matching apworld/mod release.
 
 ## Playing offline
 

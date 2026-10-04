@@ -36,6 +36,11 @@ internal static class Program
         NetworkedManagerBase<PingManager>.instance = new PingManager();
         DewResources.modifiers.Clear();
         DewResources.treasures.Clear();
+        DewResources.curses.Clear();
+        DewResources.fullCurses.Clear();
+        Dew.weightedCurses.Clear();
+        Dew.curseIncluded = name => true;
+        UnityEngine.Random.value = 0f;
         DewResources.treasures["Treasure_CloakOfGuidance"] = DewResources.treasure;
         Dew.spawned.Clear();
         NetworkedManagerBase<QuestManager>.instance = new QuestManager();
@@ -429,8 +434,174 @@ internal static class Program
 
     private static void Main()
     {
-        Stardust(); StardustItems(); Delivery(); Blessings(); TreasuresAndDeathLink(); Records(); Wares(); Pilgrimage();
-        Console.WriteLine($"Passed {_assertions} assertions (Stardust, delivery, blessings, treasures, DeathLink, checks, wares and pilgrimage).");
+        Stardust(); StardustItems(); Delivery(); Blessings(); TreasuresAndDeathLink(); Curses(); Records(); Wares(); Pilgrimage();
+        Console.WriteLine($"Passed {_assertions} assertions (Stardust, delivery, blessings, treasures, curses, DeathLink, checks, wares and pilgrimage).");
+    }
+
+    private sealed class ExcludedCurse : CurseStatusEffect { }
+
+    private static void Curses()
+    {
+        using var stream = typeof(Program).Assembly.GetManifestResourceStream("game_data.json");
+        using var data = JsonDocument.Parse(stream);
+        var items = data.RootElement.GetProperty("items").EnumerateArray()
+            .Where(i => i.GetProperty("kind").GetString() == "curse")
+            .Select(i => new GameData.Item { Id = i.GetProperty("id").GetInt64(),
+                Key = i.GetProperty("key").GetString(), Name = i.GetProperty("name").GetString(),
+                Target = i.GetProperty("target").GetString(), Kind = "curse" }).ToArray();
+        Check(items.Length == 3, "Test every catalog curse tier");
+        foreach (var item in items)
+        {
+            Reset(); CurseTraps.Initialize();
+            GameData.ItemsById[item.Id] = item;
+            ApClient.ReceivedItems.AddRange(new[] { new ItemInfo { ItemId = item.Id, LocationId = 10 },
+                new ItemInfo { ItemId = item.Id, LocationId = 11 } });
+            var prefab = new CurseStatusEffect();
+            DewResources.curses.Add(prefab);
+            var zone = NetworkedManagerBase<ZoneManager>.instance;
+            var player = DewPlayer.local;
+            var hero = player.hero;
+            var gm = NetworkedManagerBase<GameManager>.instance;
+            Action<Action, Action, string> blocked = (disable, restore, why) =>
+            {
+                disable(); InRunItems.Update(); restore();
+                Check(hero.curses.Count == 0 && DewSave.saves == 0 && ApClient.Notices.Count == 0 &&
+                    ApRecords.GetApplied(false, item.Key) == 0, why);
+            };
+            blocked(() => ApClient.IsConnected = false, () => ApClient.IsConnected = true, "Offline curses wait");
+            blocked(() => Mirror.NetworkServer.active = false, () => Mirror.NetworkServer.active = true, "Joining players wait");
+            blocked(() => NetworkedManagerBase<GameManager>.instance = null,
+                () => NetworkedManagerBase<GameManager>.instance = gm, "Lobby curses wait");
+            blocked(() => gm.ready = false, () => gm.ready = true, "Run startup curses wait");
+            blocked(() => gm.isGameConcluded = true, () => gm.isGameConcluded = false, "Ended runs wait");
+            blocked(() => ProfileGuard.SetSessionMarker("Archipelago:other:slot"),
+                () => ProfileGuard.SetSessionMarker("Archipelago:test:slot"), "Wrong seed cannot curse");
+            blocked(() => ProfileGuard.OnProfileLoaded("failed", false),
+                () => ProfileGuard.OnProfileLoaded("loaded", true), "Failed profile loads cannot curse");
+            blocked(() => DewSave.profileMainPath = null, () => DewSave.profileMainPath = "test.json", "Transient profiles wait");
+            blocked(() => DewSave.profileMain.experienceFlags.Clear(),
+                () => DewSave.profileMain.experienceFlags.Add("Archipelago:test:slot"), "Vanilla profiles remain untouched");
+            blocked(() => DewPlayer.local = null, () => DewPlayer.local = player, "Missing local player waits");
+            blocked(() => player.hero = null, () => player.hero = hero, "Missing hero waits");
+            blocked(() => hero.isActive = false, () => hero.isActive = true, "Inactive hero waits");
+            blocked(() => hero.isKnockedOut = true, () => hero.isKnockedOut = false, "Knocked out hero waits");
+            blocked(() => hero.Status.isDead = true, () => hero.Status.isDead = false, "Dead hero waits");
+            blocked(() => hero.Status.effects.Add(typeof(Se_HeroBleedingOut)),
+                () => hero.Status.effects.Clear(), "Bleeding out hero waits");
+            blocked(() => zone.isInRoomTransition = true, () => zone.isInRoomTransition = false, "Room transitions wait");
+            var room = zone.currentRoom;
+            blocked(() => zone.currentRoom = null, () => zone.currentRoom = room, "Missing room waits");
+            blocked(() => zone.currentNodeIndex = -1, () => zone.currentNodeIndex = 0, "Uninitialized node waits");
+            blocked(() => zone.currentNodeIndex = zone.nodes.Count, () => zone.currentNodeIndex = 0, "Invalid node waits");
+            blocked(() => zone.currentNode.type = WorldNodeType.ExitBoss,
+                () => zone.currentNode.type = WorldNodeType.Combat, "World and Primus boss rooms wait, even after their boss dies");
+            zone.currentNode.type = WorldNodeType.Special;
+            blocked(() => room.name = "Room_Special_StarlessPath_BossPolaris",
+                () => room.name = "Room_Combat", "Polaris's special sidetrack boss room also waits");
+            zone.currentNode.type = WorldNodeType.Combat;
+            var quests = NetworkedManagerBase<QuestManager>.instance;
+            blocked(() => NetworkedManagerBase<QuestManager>.instance = null,
+                () => NetworkedManagerBase<QuestManager>.instance = quests, "Missing quest tracker waits");
+            blocked(() => DewResources.curses.Clear(), () => DewResources.curses.Add(prefab), "Empty curse pool waits");
+            blocked(() => prefab.availableStrengths = HatredStrengthType.None,
+                () => prefab.availableStrengths = HatredStrengthType.Mild | HatredStrengthType.Potent | HatredStrengthType.Powerful,
+                "Unsupported tier leaves each received copy pending");
+            blocked(() => prefab.viable = h => false, () => prefab.viable = h => true, "Nonviable curses wait");
+            blocked(() => prefab.chanceWeight = 0, () => prefab.chanceWeight = 1, "All zero weights cannot select entry zero");
+            blocked(() => Dew.curseIncluded = name => false, () => Dew.curseIncluded = name => true, "Excluded game content waits");
+            blocked(() => hero.rejectCurse = true, () => hero.rejectCurse = false, "A null creation result leaves copies pending");
+            blocked(() => item.Target = "Powerful", () => item.Target = item.Name.Substring(7), "Unknown catalog targets wait");
+
+            var excluded = new ExcludedCurse { chanceWeight = 1000 };
+            var nonviable = new CurseStatusEffect { chanceWeight = 1000, viable = h => false };
+            var wrongTier = new CurseStatusEffect { chanceWeight = 1000, availableStrengths = HatredStrengthType.None };
+            var zero = new CurseStatusEffect { chanceWeight = 0 };
+            var negative = new CurseStatusEffect { chanceWeight = -1 };
+            var second = new CurseStatusEffect { chanceWeight = 7 };
+            var light = new CurseStatusEffect { chanceWeight = 1000, availableStrengths = HatredStrengthType.None };
+            DewResources.fullCurses[light] = second;
+            DewResources.curses.AddRange(new CurseStatusEffect[] { excluded, nonviable, wrongTier, zero, negative, light });
+            Dew.curseIncluded = name => name != nameof(ExcludedCurse);
+            nonviable.viable = h => { Check(h == hero, "Viability is tested against the local host"); return false; };
+            zone.currentZoneIndex = 4;
+            InRunItems.Update();
+            var strength = item.Target == "Mild" ? HatredStrengthType.Mild :
+                item.Target == "Potent" ? HatredStrengthType.Potent : HatredStrengthType.Powerful;
+            int kills = item.Target == "Mild" ? 36 : item.Target == "Potent" ? 46 : 62;
+            Check(hero.curses.Count == 2 && hero.curses.All(c => c.currentStrength == strength &&
+                c.skillLevel == (int)(strength - 1) && c.progressType == QuestProgressType.Kills && c.requiredAmount == kills),
+                "Every duplicate receives the exact shrine tier, skill level and world-scaled kill condition");
+            Check(Dew.weightedCurses.Select(c => c.curse).SequenceEqual(new[] { prefab, second }) &&
+                Dew.weightedCurses.Select(c => c.weight).SequenceEqual(new[] { 1f, 7f }), "Only eligible positive weights reach vanilla selection");
+            Check(hero.curses.All(c => c.source == second && c.victim == hero && c.parent == hero &&
+                c.info.caster == hero && c.info.target == hero), "The chosen vanilla effect targets only the host, with the shrine's CastInfo");
+            Check(ApRecords.GetApplied(false, item.Key) == 2 && DewSave.saves == 2 &&
+                ApClient.Notices.All(n => n == $"Received {item.Name} from Alice"), "Each successful curse saves and identifies its sender");
+            Check(prefab.currentStrength == HatredStrengthType.None && second.requiredAmount == 0,
+                "Shared curse prefabs are never mutated");
+            var flags = new List<string>(DewSave.profileMain.experienceFlags);
+            DewSave.profileMain = new DewProfile { experienceFlags = flags };
+            InRunItems.Cleanup(); CurseTraps.Initialize();
+            InRunItems.Update();
+            Check(hero.curses.Count == 2, "Restarted counters prevent replay of spent curses");
+
+            foreach (int world in new[] { 0, 8 })
+            {
+                zone.currentZoneIndex = world;
+                ApClient.ReceivedItems.Add(new ItemInfo { ItemId = item.Id, LocationId = -1 });
+                UnityEngine.Random.value = 0.499f;
+                InRunItems.Update();
+                Check(hero.curses.Last().requiredAmount == (item.Target == "Mild" ? 28 + world * 2 :
+                    (item.Target == "Potent" ? 34 : 50) + world * 3), "Kill counts follow the shrine through later loops");
+                ApClient.ReceivedItems.Add(new ItemInfo { ItemId = item.Id, LocationId = -2 });
+                UnityEngine.Random.value = 0.5f;
+                InRunItems.Update();
+                Check(hero.curses.Last().progressType == QuestProgressType.Travel &&
+                    hero.curses.Last().requiredAmount == (item.Target == "Mild" ? 3 : 4), "Travel is the other half of vanilla's lift-condition split");
+            }
+            Check(ApClient.Notices.Contains($"Received {item.Name} (server)") &&
+                ApClient.Notices.Contains($"Received {item.Name} (starting item)"), "Server and starting curse grants identify their source");
+        }
+
+        Reset(); CurseTraps.Initialize(); MapBlessings.Initialize();
+        var curse = items[0];
+        var blessing = new GameData.Item { Id = 1, Key = "BLESSING_TEST", Kind = "blessing", Target = "RoomMod_PureDream", Name = "Blessing: Pure Dream" };
+        GameData.ItemsById[curse.Id] = curse; GameData.ItemsById[1] = blessing;
+        DewResources.curses.Add(new CurseStatusEffect());
+        DewResources.modifiers[blessing.Target] = new RoomModifierBase();
+        ApClient.ReceivedItems.AddRange(new[] { new ItemInfo { ItemId = curse.Id }, new ItemInfo { ItemId = 1 } });
+        var next = NetworkedManagerBase<ZoneManager>.instance;
+        next.currentNode.type = WorldNodeType.ExitBoss;
+        InRunItems.Update();
+        Check(ApRecords.GetApplied(false, curse.Key) == 0 && ApRecords.GetApplied(false, blessing.Key) == 1,
+            "A curse waiting in a boss room cannot block a later blessing");
+        next.currentNode.type = WorldNodeType.Merchant;
+        InRunItems.Update();
+        Check(ApRecords.GetApplied(false, curse.Key) == 1 && DewPlayer.local.hero.curses.Count == 1,
+            "The pending curse lands after leaving the boss room, including in a shop");
+        InRunItems.Cleanup();
+        ApClient.ReceivedItems.Add(new ItemInfo { ItemId = curse.Id });
+        InRunItems.Update();
+        Check(DewPlayer.local.hero.curses.Count == 1, "Mod cleanup unregisters curse delivery");
+
+        Reset(); CurseTraps.Initialize();
+        GameData.ItemsById[curse.Id] = curse;
+        ApClient.ReceivedItems.AddRange(new[] { new ItemInfo { ItemId = curse.Id }, new ItemInfo { ItemId = curse.Id } });
+        var limited = new CurseStatusEffect { viable = h => ((Hero)h).curses.Count == 0 };
+        DewResources.curses.Add(limited);
+        InRunItems.Update(); InRunItems.Update();
+        Check(DewPlayer.local.hero.curses.Count == 1 && ApRecords.GetApplied(false, curse.Key) == 1,
+            "Viability is rechecked after each creation; a duplicate waits while its curse is already active");
+        DewPlayer.local.hero = new Hero(); // A new run has no active curse, but retains AP counters.
+        InRunItems.Update();
+        Check(DewPlayer.local.hero.curses.Count == 1 && ApRecords.GetApplied(false, curse.Key) == 2,
+            "A pending duplicate can land in the next run without replaying the first copy");
+        ApClient.ReceivedItems.Add(new ItemInfo { ItemId = curse.Id });
+        DewResources.fullCurses[limited] = null;
+        DewPlayer.local.hero = new Hero();
+        InRunItems.Update();
+        Check(DewPlayer.local.hero.curses.Count == 0 && ApRecords.GetApplied(false, curse.Key) == 2,
+            "A missing full gameplay asset stays pending instead of spawning the light discovery prefab");
     }
 
     private static void Wares()

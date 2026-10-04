@@ -12,4 +12,9 @@ replay, the constellation currency copy, delivery eligibility, pending counters,
 Jonas stock, vanilla pricing delegation, scouted item/recipient records, refresh and continued-save duplicate purchases.
 Pilgrimage coverage includes the local shrine user, quest failure/late completion state, joining-client offline checks,
 native artifact hand-in flags, duplicate discovery, resend, and vanilla/other/failed/transient profile guards.
-No game is launched or deployed. This does not verify the vanilla effects implemented by issues #10–#12.
+The production MapBlessings, Treasures, CurseTraps and DeathLinkHandler sources are also linked. Coverage includes
+map targeting and pings, Treasure eligibility and free spawn fields, Clairvoyance cleanup, Shard/DeathLink suppression,
+all three curse tiers, curse pool filtering and full-asset resolution, kill/travel conditions and world scaling,
+boss-room deferral, per-copy counters and restart replay prevention.
+No game is launched or deployed. The doubles verify AP delivery and delegation; decompiled code and installed
+prefabs are inspected separately to verify the vanilla effects.

@@ -30,7 +30,10 @@ They do not require `in_run_items`. With in-run items enabled, Map Blessings mar
 Lizard Shop or Artifact on your world map. Follow the marker to use it; if no eligible node remains, it waits for a
 later world or run. Treasures grant Cloak of Guidance, Clairvoyance, Determination Shard or either treasure map
 for free, with their vanilla effects. They wait until their effect has a valid target. A Shard can absorb a received
-DeathLink without suppressing your next normal knockdown. All these additions ship together with Curse traps.
+DeathLink without suppressing your next normal knockdown. With `traps` enabled, Mild, Potent and Intense Curse traps
+curse your own Traveler with a vanilla curse and kill or travel condition to lift it. They wait until you leave a
+boss room (including Primus and Polaris) and a viable curse is available. Delivery requires solo play or hosting;
+the host's traps do not curse guests. All these additions ship together in one matching apworld/mod release.
 
 ## Installing the mod
 
