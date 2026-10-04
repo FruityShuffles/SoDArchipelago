@@ -9,6 +9,7 @@ namespace UnityEngine
         public static void Log(string text) { }
         public static void LogWarning(string text) { }
     }
+    public static class Random { public static int Range(int min, int max) => max - 1; }
 }
 namespace Mirror { public static class NetworkServer { public static bool active; } }
 namespace Archipelago.MultiClient.Net.Models { public class ItemInfo { public long ItemId, LocationId; } }
@@ -26,7 +27,25 @@ public class GameManager
 public class ZoneManager { public object currentZone = new object(); public int currentZoneIndex, loopIndex; }
 public class GameSettingsManager { public string difficulty; }
 public class Hero { }
-public class DewPlayer { public static DewPlayer local; public Hero hero; }
+public class DewPlayer { public static DewPlayer local; public Hero hero; public string guid; }
+public enum MerchandiseType { Empty, Skill, Gem, Souvenir, Treasure }
+public struct Cost { public int gold; }
+public struct MerchandiseData { public MerchandiseType type; public string itemName, customData; public Cost price; public int count; }
+public class PropEnt_Merchant_Base
+{
+    public readonly Dictionary<string, MerchandiseData[]> merchandises = new Dictionary<string, MerchandiseData[]>();
+}
+public class PropEnt_Merchant_Jonas : PropEnt_Merchant_Base { }
+public class Treasure
+{
+    public int priceCalls;
+    public void OnAddMerchandise(out Cost price, out string customData) { priceCalls++; price = new Cost { gold = 237 }; customData = null; }
+}
+public static class DewResources
+{
+    public static readonly Treasure treasure = new Treasure();
+    public static T GetByShortTypeName<T>(string name) => (T)(object)treasure;
+}
 public class EventInfoLoadZone { public string from, to; public bool isTraveling, isLoadingFromSave; }
 public class DewProfile
 {
@@ -72,6 +91,7 @@ namespace SoDArchipelago
         public static readonly List<string> Notices = new List<string>();
         public static readonly List<long> Sent = new List<long>();
         public static void Say(string text) => Notices.Add(text);
+        public static void ScoutWares(IReadOnlyCollection<GameData.Location> locations) { }
         public static int GetInt(string key, int fallback) => SlotData.TryGetValue(key, out var value) ? value : fallback;
         public static string PlayerName(ItemInfo info) => "Alice";
         public static void SendLocations(ICollection<long> ids)
@@ -89,7 +109,7 @@ namespace SoDArchipelago
             public List<string> UnlockNames;
         }
         public class Traveler { public string Key; }
-        public class Location { public long Id; public string Name, Key, Kind; }
+        public class Location { public long Id; public string Name, Key, Kind; public int Number; }
         public class Difficulty { public string Key; public bool HasLocations; public int Rank; }
         public const int NormalWorlds = 4;
         public const string StardustKey = "STARDUST";

@@ -321,6 +321,11 @@ def main() -> int:
     for key in sorted(SOUVENIRS, key=SOUVENIRS.get):
         locations.append({"name": f"Souvenir: {SOUVENIRS[key]}", "key": key, "kind": "souvenir", "traveler": None})
 
+    # All possible wares have stable IDs; each seed enables only numbers <= jonas_wares.
+    for number in range(1, 101):
+        locations.append({"name": f"Jonas's Ware {number}", "key": f"WARE_JONAS_{number}",
+                          "kind": "ware", "traveler": None, "number": number})
+
     for kind, entries in (("item", items), ("location", locations)):
         for field in ("name", "key"):
             values = [e[field] for e in entries]
@@ -334,6 +339,7 @@ def main() -> int:
         "World Clears": [l["name"] for l in locations if l["kind"] == "world_clear"],
         "Build-Dependent Achievements": [l["name"] for l in locations if l.get("build_dependent")],
         "Souvenirs": [l["name"] for l in locations if l["kind"] == "souvenir"],
+        "Jonas's Wares": [l["name"] for l in locations if l["kind"] == "ware"],
     }
     for hero in trav_order:
         groups[trav_name[hero]] = [l["name"] for l in locations if l["traveler"] == hero]

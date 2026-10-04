@@ -1,7 +1,7 @@
 {
   "game": "Shape of Dreams",
   "data_format_version": 5,
-  "data_hash": "bd3f3df86c561a0a762a9f5a3df636762a4b2c324afecaa141e130adc22895fd",
+  "data_hash": "120e990765d07659289b867372c8a61b471d118e2d795c24121b49ec9a540ba7",
   "extracted_from_game_version": "r.1.4.0.13_s",
   "difficulties": [
     {
@@ -3539,6 +3539,806 @@
       "kind": "souvenir",
       "traveler": null,
       "id": 7720245
+    },
+    {
+      "name": "Jonas's Ware 1",
+      "key": "WARE_JONAS_1",
+      "kind": "ware",
+      "traveler": null,
+      "number": 1,
+      "id": 7720246
+    },
+    {
+      "name": "Jonas's Ware 2",
+      "key": "WARE_JONAS_2",
+      "kind": "ware",
+      "traveler": null,
+      "number": 2,
+      "id": 7720247
+    },
+    {
+      "name": "Jonas's Ware 3",
+      "key": "WARE_JONAS_3",
+      "kind": "ware",
+      "traveler": null,
+      "number": 3,
+      "id": 7720248
+    },
+    {
+      "name": "Jonas's Ware 4",
+      "key": "WARE_JONAS_4",
+      "kind": "ware",
+      "traveler": null,
+      "number": 4,
+      "id": 7720249
+    },
+    {
+      "name": "Jonas's Ware 5",
+      "key": "WARE_JONAS_5",
+      "kind": "ware",
+      "traveler": null,
+      "number": 5,
+      "id": 7720250
+    },
+    {
+      "name": "Jonas's Ware 6",
+      "key": "WARE_JONAS_6",
+      "kind": "ware",
+      "traveler": null,
+      "number": 6,
+      "id": 7720251
+    },
+    {
+      "name": "Jonas's Ware 7",
+      "key": "WARE_JONAS_7",
+      "kind": "ware",
+      "traveler": null,
+      "number": 7,
+      "id": 7720252
+    },
+    {
+      "name": "Jonas's Ware 8",
+      "key": "WARE_JONAS_8",
+      "kind": "ware",
+      "traveler": null,
+      "number": 8,
+      "id": 7720253
+    },
+    {
+      "name": "Jonas's Ware 9",
+      "key": "WARE_JONAS_9",
+      "kind": "ware",
+      "traveler": null,
+      "number": 9,
+      "id": 7720254
+    },
+    {
+      "name": "Jonas's Ware 10",
+      "key": "WARE_JONAS_10",
+      "kind": "ware",
+      "traveler": null,
+      "number": 10,
+      "id": 7720255
+    },
+    {
+      "name": "Jonas's Ware 11",
+      "key": "WARE_JONAS_11",
+      "kind": "ware",
+      "traveler": null,
+      "number": 11,
+      "id": 7720256
+    },
+    {
+      "name": "Jonas's Ware 12",
+      "key": "WARE_JONAS_12",
+      "kind": "ware",
+      "traveler": null,
+      "number": 12,
+      "id": 7720257
+    },
+    {
+      "name": "Jonas's Ware 13",
+      "key": "WARE_JONAS_13",
+      "kind": "ware",
+      "traveler": null,
+      "number": 13,
+      "id": 7720258
+    },
+    {
+      "name": "Jonas's Ware 14",
+      "key": "WARE_JONAS_14",
+      "kind": "ware",
+      "traveler": null,
+      "number": 14,
+      "id": 7720259
+    },
+    {
+      "name": "Jonas's Ware 15",
+      "key": "WARE_JONAS_15",
+      "kind": "ware",
+      "traveler": null,
+      "number": 15,
+      "id": 7720260
+    },
+    {
+      "name": "Jonas's Ware 16",
+      "key": "WARE_JONAS_16",
+      "kind": "ware",
+      "traveler": null,
+      "number": 16,
+      "id": 7720261
+    },
+    {
+      "name": "Jonas's Ware 17",
+      "key": "WARE_JONAS_17",
+      "kind": "ware",
+      "traveler": null,
+      "number": 17,
+      "id": 7720262
+    },
+    {
+      "name": "Jonas's Ware 18",
+      "key": "WARE_JONAS_18",
+      "kind": "ware",
+      "traveler": null,
+      "number": 18,
+      "id": 7720263
+    },
+    {
+      "name": "Jonas's Ware 19",
+      "key": "WARE_JONAS_19",
+      "kind": "ware",
+      "traveler": null,
+      "number": 19,
+      "id": 7720264
+    },
+    {
+      "name": "Jonas's Ware 20",
+      "key": "WARE_JONAS_20",
+      "kind": "ware",
+      "traveler": null,
+      "number": 20,
+      "id": 7720265
+    },
+    {
+      "name": "Jonas's Ware 21",
+      "key": "WARE_JONAS_21",
+      "kind": "ware",
+      "traveler": null,
+      "number": 21,
+      "id": 7720266
+    },
+    {
+      "name": "Jonas's Ware 22",
+      "key": "WARE_JONAS_22",
+      "kind": "ware",
+      "traveler": null,
+      "number": 22,
+      "id": 7720267
+    },
+    {
+      "name": "Jonas's Ware 23",
+      "key": "WARE_JONAS_23",
+      "kind": "ware",
+      "traveler": null,
+      "number": 23,
+      "id": 7720268
+    },
+    {
+      "name": "Jonas's Ware 24",
+      "key": "WARE_JONAS_24",
+      "kind": "ware",
+      "traveler": null,
+      "number": 24,
+      "id": 7720269
+    },
+    {
+      "name": "Jonas's Ware 25",
+      "key": "WARE_JONAS_25",
+      "kind": "ware",
+      "traveler": null,
+      "number": 25,
+      "id": 7720270
+    },
+    {
+      "name": "Jonas's Ware 26",
+      "key": "WARE_JONAS_26",
+      "kind": "ware",
+      "traveler": null,
+      "number": 26,
+      "id": 7720271
+    },
+    {
+      "name": "Jonas's Ware 27",
+      "key": "WARE_JONAS_27",
+      "kind": "ware",
+      "traveler": null,
+      "number": 27,
+      "id": 7720272
+    },
+    {
+      "name": "Jonas's Ware 28",
+      "key": "WARE_JONAS_28",
+      "kind": "ware",
+      "traveler": null,
+      "number": 28,
+      "id": 7720273
+    },
+    {
+      "name": "Jonas's Ware 29",
+      "key": "WARE_JONAS_29",
+      "kind": "ware",
+      "traveler": null,
+      "number": 29,
+      "id": 7720274
+    },
+    {
+      "name": "Jonas's Ware 30",
+      "key": "WARE_JONAS_30",
+      "kind": "ware",
+      "traveler": null,
+      "number": 30,
+      "id": 7720275
+    },
+    {
+      "name": "Jonas's Ware 31",
+      "key": "WARE_JONAS_31",
+      "kind": "ware",
+      "traveler": null,
+      "number": 31,
+      "id": 7720276
+    },
+    {
+      "name": "Jonas's Ware 32",
+      "key": "WARE_JONAS_32",
+      "kind": "ware",
+      "traveler": null,
+      "number": 32,
+      "id": 7720277
+    },
+    {
+      "name": "Jonas's Ware 33",
+      "key": "WARE_JONAS_33",
+      "kind": "ware",
+      "traveler": null,
+      "number": 33,
+      "id": 7720278
+    },
+    {
+      "name": "Jonas's Ware 34",
+      "key": "WARE_JONAS_34",
+      "kind": "ware",
+      "traveler": null,
+      "number": 34,
+      "id": 7720279
+    },
+    {
+      "name": "Jonas's Ware 35",
+      "key": "WARE_JONAS_35",
+      "kind": "ware",
+      "traveler": null,
+      "number": 35,
+      "id": 7720280
+    },
+    {
+      "name": "Jonas's Ware 36",
+      "key": "WARE_JONAS_36",
+      "kind": "ware",
+      "traveler": null,
+      "number": 36,
+      "id": 7720281
+    },
+    {
+      "name": "Jonas's Ware 37",
+      "key": "WARE_JONAS_37",
+      "kind": "ware",
+      "traveler": null,
+      "number": 37,
+      "id": 7720282
+    },
+    {
+      "name": "Jonas's Ware 38",
+      "key": "WARE_JONAS_38",
+      "kind": "ware",
+      "traveler": null,
+      "number": 38,
+      "id": 7720283
+    },
+    {
+      "name": "Jonas's Ware 39",
+      "key": "WARE_JONAS_39",
+      "kind": "ware",
+      "traveler": null,
+      "number": 39,
+      "id": 7720284
+    },
+    {
+      "name": "Jonas's Ware 40",
+      "key": "WARE_JONAS_40",
+      "kind": "ware",
+      "traveler": null,
+      "number": 40,
+      "id": 7720285
+    },
+    {
+      "name": "Jonas's Ware 41",
+      "key": "WARE_JONAS_41",
+      "kind": "ware",
+      "traveler": null,
+      "number": 41,
+      "id": 7720286
+    },
+    {
+      "name": "Jonas's Ware 42",
+      "key": "WARE_JONAS_42",
+      "kind": "ware",
+      "traveler": null,
+      "number": 42,
+      "id": 7720287
+    },
+    {
+      "name": "Jonas's Ware 43",
+      "key": "WARE_JONAS_43",
+      "kind": "ware",
+      "traveler": null,
+      "number": 43,
+      "id": 7720288
+    },
+    {
+      "name": "Jonas's Ware 44",
+      "key": "WARE_JONAS_44",
+      "kind": "ware",
+      "traveler": null,
+      "number": 44,
+      "id": 7720289
+    },
+    {
+      "name": "Jonas's Ware 45",
+      "key": "WARE_JONAS_45",
+      "kind": "ware",
+      "traveler": null,
+      "number": 45,
+      "id": 7720290
+    },
+    {
+      "name": "Jonas's Ware 46",
+      "key": "WARE_JONAS_46",
+      "kind": "ware",
+      "traveler": null,
+      "number": 46,
+      "id": 7720291
+    },
+    {
+      "name": "Jonas's Ware 47",
+      "key": "WARE_JONAS_47",
+      "kind": "ware",
+      "traveler": null,
+      "number": 47,
+      "id": 7720292
+    },
+    {
+      "name": "Jonas's Ware 48",
+      "key": "WARE_JONAS_48",
+      "kind": "ware",
+      "traveler": null,
+      "number": 48,
+      "id": 7720293
+    },
+    {
+      "name": "Jonas's Ware 49",
+      "key": "WARE_JONAS_49",
+      "kind": "ware",
+      "traveler": null,
+      "number": 49,
+      "id": 7720294
+    },
+    {
+      "name": "Jonas's Ware 50",
+      "key": "WARE_JONAS_50",
+      "kind": "ware",
+      "traveler": null,
+      "number": 50,
+      "id": 7720295
+    },
+    {
+      "name": "Jonas's Ware 51",
+      "key": "WARE_JONAS_51",
+      "kind": "ware",
+      "traveler": null,
+      "number": 51,
+      "id": 7720296
+    },
+    {
+      "name": "Jonas's Ware 52",
+      "key": "WARE_JONAS_52",
+      "kind": "ware",
+      "traveler": null,
+      "number": 52,
+      "id": 7720297
+    },
+    {
+      "name": "Jonas's Ware 53",
+      "key": "WARE_JONAS_53",
+      "kind": "ware",
+      "traveler": null,
+      "number": 53,
+      "id": 7720298
+    },
+    {
+      "name": "Jonas's Ware 54",
+      "key": "WARE_JONAS_54",
+      "kind": "ware",
+      "traveler": null,
+      "number": 54,
+      "id": 7720299
+    },
+    {
+      "name": "Jonas's Ware 55",
+      "key": "WARE_JONAS_55",
+      "kind": "ware",
+      "traveler": null,
+      "number": 55,
+      "id": 7720300
+    },
+    {
+      "name": "Jonas's Ware 56",
+      "key": "WARE_JONAS_56",
+      "kind": "ware",
+      "traveler": null,
+      "number": 56,
+      "id": 7720301
+    },
+    {
+      "name": "Jonas's Ware 57",
+      "key": "WARE_JONAS_57",
+      "kind": "ware",
+      "traveler": null,
+      "number": 57,
+      "id": 7720302
+    },
+    {
+      "name": "Jonas's Ware 58",
+      "key": "WARE_JONAS_58",
+      "kind": "ware",
+      "traveler": null,
+      "number": 58,
+      "id": 7720303
+    },
+    {
+      "name": "Jonas's Ware 59",
+      "key": "WARE_JONAS_59",
+      "kind": "ware",
+      "traveler": null,
+      "number": 59,
+      "id": 7720304
+    },
+    {
+      "name": "Jonas's Ware 60",
+      "key": "WARE_JONAS_60",
+      "kind": "ware",
+      "traveler": null,
+      "number": 60,
+      "id": 7720305
+    },
+    {
+      "name": "Jonas's Ware 61",
+      "key": "WARE_JONAS_61",
+      "kind": "ware",
+      "traveler": null,
+      "number": 61,
+      "id": 7720306
+    },
+    {
+      "name": "Jonas's Ware 62",
+      "key": "WARE_JONAS_62",
+      "kind": "ware",
+      "traveler": null,
+      "number": 62,
+      "id": 7720307
+    },
+    {
+      "name": "Jonas's Ware 63",
+      "key": "WARE_JONAS_63",
+      "kind": "ware",
+      "traveler": null,
+      "number": 63,
+      "id": 7720308
+    },
+    {
+      "name": "Jonas's Ware 64",
+      "key": "WARE_JONAS_64",
+      "kind": "ware",
+      "traveler": null,
+      "number": 64,
+      "id": 7720309
+    },
+    {
+      "name": "Jonas's Ware 65",
+      "key": "WARE_JONAS_65",
+      "kind": "ware",
+      "traveler": null,
+      "number": 65,
+      "id": 7720310
+    },
+    {
+      "name": "Jonas's Ware 66",
+      "key": "WARE_JONAS_66",
+      "kind": "ware",
+      "traveler": null,
+      "number": 66,
+      "id": 7720311
+    },
+    {
+      "name": "Jonas's Ware 67",
+      "key": "WARE_JONAS_67",
+      "kind": "ware",
+      "traveler": null,
+      "number": 67,
+      "id": 7720312
+    },
+    {
+      "name": "Jonas's Ware 68",
+      "key": "WARE_JONAS_68",
+      "kind": "ware",
+      "traveler": null,
+      "number": 68,
+      "id": 7720313
+    },
+    {
+      "name": "Jonas's Ware 69",
+      "key": "WARE_JONAS_69",
+      "kind": "ware",
+      "traveler": null,
+      "number": 69,
+      "id": 7720314
+    },
+    {
+      "name": "Jonas's Ware 70",
+      "key": "WARE_JONAS_70",
+      "kind": "ware",
+      "traveler": null,
+      "number": 70,
+      "id": 7720315
+    },
+    {
+      "name": "Jonas's Ware 71",
+      "key": "WARE_JONAS_71",
+      "kind": "ware",
+      "traveler": null,
+      "number": 71,
+      "id": 7720316
+    },
+    {
+      "name": "Jonas's Ware 72",
+      "key": "WARE_JONAS_72",
+      "kind": "ware",
+      "traveler": null,
+      "number": 72,
+      "id": 7720317
+    },
+    {
+      "name": "Jonas's Ware 73",
+      "key": "WARE_JONAS_73",
+      "kind": "ware",
+      "traveler": null,
+      "number": 73,
+      "id": 7720318
+    },
+    {
+      "name": "Jonas's Ware 74",
+      "key": "WARE_JONAS_74",
+      "kind": "ware",
+      "traveler": null,
+      "number": 74,
+      "id": 7720319
+    },
+    {
+      "name": "Jonas's Ware 75",
+      "key": "WARE_JONAS_75",
+      "kind": "ware",
+      "traveler": null,
+      "number": 75,
+      "id": 7720320
+    },
+    {
+      "name": "Jonas's Ware 76",
+      "key": "WARE_JONAS_76",
+      "kind": "ware",
+      "traveler": null,
+      "number": 76,
+      "id": 7720321
+    },
+    {
+      "name": "Jonas's Ware 77",
+      "key": "WARE_JONAS_77",
+      "kind": "ware",
+      "traveler": null,
+      "number": 77,
+      "id": 7720322
+    },
+    {
+      "name": "Jonas's Ware 78",
+      "key": "WARE_JONAS_78",
+      "kind": "ware",
+      "traveler": null,
+      "number": 78,
+      "id": 7720323
+    },
+    {
+      "name": "Jonas's Ware 79",
+      "key": "WARE_JONAS_79",
+      "kind": "ware",
+      "traveler": null,
+      "number": 79,
+      "id": 7720324
+    },
+    {
+      "name": "Jonas's Ware 80",
+      "key": "WARE_JONAS_80",
+      "kind": "ware",
+      "traveler": null,
+      "number": 80,
+      "id": 7720325
+    },
+    {
+      "name": "Jonas's Ware 81",
+      "key": "WARE_JONAS_81",
+      "kind": "ware",
+      "traveler": null,
+      "number": 81,
+      "id": 7720326
+    },
+    {
+      "name": "Jonas's Ware 82",
+      "key": "WARE_JONAS_82",
+      "kind": "ware",
+      "traveler": null,
+      "number": 82,
+      "id": 7720327
+    },
+    {
+      "name": "Jonas's Ware 83",
+      "key": "WARE_JONAS_83",
+      "kind": "ware",
+      "traveler": null,
+      "number": 83,
+      "id": 7720328
+    },
+    {
+      "name": "Jonas's Ware 84",
+      "key": "WARE_JONAS_84",
+      "kind": "ware",
+      "traveler": null,
+      "number": 84,
+      "id": 7720329
+    },
+    {
+      "name": "Jonas's Ware 85",
+      "key": "WARE_JONAS_85",
+      "kind": "ware",
+      "traveler": null,
+      "number": 85,
+      "id": 7720330
+    },
+    {
+      "name": "Jonas's Ware 86",
+      "key": "WARE_JONAS_86",
+      "kind": "ware",
+      "traveler": null,
+      "number": 86,
+      "id": 7720331
+    },
+    {
+      "name": "Jonas's Ware 87",
+      "key": "WARE_JONAS_87",
+      "kind": "ware",
+      "traveler": null,
+      "number": 87,
+      "id": 7720332
+    },
+    {
+      "name": "Jonas's Ware 88",
+      "key": "WARE_JONAS_88",
+      "kind": "ware",
+      "traveler": null,
+      "number": 88,
+      "id": 7720333
+    },
+    {
+      "name": "Jonas's Ware 89",
+      "key": "WARE_JONAS_89",
+      "kind": "ware",
+      "traveler": null,
+      "number": 89,
+      "id": 7720334
+    },
+    {
+      "name": "Jonas's Ware 90",
+      "key": "WARE_JONAS_90",
+      "kind": "ware",
+      "traveler": null,
+      "number": 90,
+      "id": 7720335
+    },
+    {
+      "name": "Jonas's Ware 91",
+      "key": "WARE_JONAS_91",
+      "kind": "ware",
+      "traveler": null,
+      "number": 91,
+      "id": 7720336
+    },
+    {
+      "name": "Jonas's Ware 92",
+      "key": "WARE_JONAS_92",
+      "kind": "ware",
+      "traveler": null,
+      "number": 92,
+      "id": 7720337
+    },
+    {
+      "name": "Jonas's Ware 93",
+      "key": "WARE_JONAS_93",
+      "kind": "ware",
+      "traveler": null,
+      "number": 93,
+      "id": 7720338
+    },
+    {
+      "name": "Jonas's Ware 94",
+      "key": "WARE_JONAS_94",
+      "kind": "ware",
+      "traveler": null,
+      "number": 94,
+      "id": 7720339
+    },
+    {
+      "name": "Jonas's Ware 95",
+      "key": "WARE_JONAS_95",
+      "kind": "ware",
+      "traveler": null,
+      "number": 95,
+      "id": 7720340
+    },
+    {
+      "name": "Jonas's Ware 96",
+      "key": "WARE_JONAS_96",
+      "kind": "ware",
+      "traveler": null,
+      "number": 96,
+      "id": 7720341
+    },
+    {
+      "name": "Jonas's Ware 97",
+      "key": "WARE_JONAS_97",
+      "kind": "ware",
+      "traveler": null,
+      "number": 97,
+      "id": 7720342
+    },
+    {
+      "name": "Jonas's Ware 98",
+      "key": "WARE_JONAS_98",
+      "kind": "ware",
+      "traveler": null,
+      "number": 98,
+      "id": 7720343
+    },
+    {
+      "name": "Jonas's Ware 99",
+      "key": "WARE_JONAS_99",
+      "kind": "ware",
+      "traveler": null,
+      "number": 99,
+      "id": 7720344
+    },
+    {
+      "name": "Jonas's Ware 100",
+      "key": "WARE_JONAS_100",
+      "kind": "ware",
+      "traveler": null,
+      "number": 100,
+      "id": 7720345
     }
   ],
   "location_groups": {
@@ -3803,6 +4603,108 @@
       "Souvenir: Perfect Turkey",
       "Souvenir: Perfectly Cool Glasses",
       "Souvenir: Small Bird Nest"
+    ],
+    "Jonas's Wares": [
+      "Jonas's Ware 1",
+      "Jonas's Ware 2",
+      "Jonas's Ware 3",
+      "Jonas's Ware 4",
+      "Jonas's Ware 5",
+      "Jonas's Ware 6",
+      "Jonas's Ware 7",
+      "Jonas's Ware 8",
+      "Jonas's Ware 9",
+      "Jonas's Ware 10",
+      "Jonas's Ware 11",
+      "Jonas's Ware 12",
+      "Jonas's Ware 13",
+      "Jonas's Ware 14",
+      "Jonas's Ware 15",
+      "Jonas's Ware 16",
+      "Jonas's Ware 17",
+      "Jonas's Ware 18",
+      "Jonas's Ware 19",
+      "Jonas's Ware 20",
+      "Jonas's Ware 21",
+      "Jonas's Ware 22",
+      "Jonas's Ware 23",
+      "Jonas's Ware 24",
+      "Jonas's Ware 25",
+      "Jonas's Ware 26",
+      "Jonas's Ware 27",
+      "Jonas's Ware 28",
+      "Jonas's Ware 29",
+      "Jonas's Ware 30",
+      "Jonas's Ware 31",
+      "Jonas's Ware 32",
+      "Jonas's Ware 33",
+      "Jonas's Ware 34",
+      "Jonas's Ware 35",
+      "Jonas's Ware 36",
+      "Jonas's Ware 37",
+      "Jonas's Ware 38",
+      "Jonas's Ware 39",
+      "Jonas's Ware 40",
+      "Jonas's Ware 41",
+      "Jonas's Ware 42",
+      "Jonas's Ware 43",
+      "Jonas's Ware 44",
+      "Jonas's Ware 45",
+      "Jonas's Ware 46",
+      "Jonas's Ware 47",
+      "Jonas's Ware 48",
+      "Jonas's Ware 49",
+      "Jonas's Ware 50",
+      "Jonas's Ware 51",
+      "Jonas's Ware 52",
+      "Jonas's Ware 53",
+      "Jonas's Ware 54",
+      "Jonas's Ware 55",
+      "Jonas's Ware 56",
+      "Jonas's Ware 57",
+      "Jonas's Ware 58",
+      "Jonas's Ware 59",
+      "Jonas's Ware 60",
+      "Jonas's Ware 61",
+      "Jonas's Ware 62",
+      "Jonas's Ware 63",
+      "Jonas's Ware 64",
+      "Jonas's Ware 65",
+      "Jonas's Ware 66",
+      "Jonas's Ware 67",
+      "Jonas's Ware 68",
+      "Jonas's Ware 69",
+      "Jonas's Ware 70",
+      "Jonas's Ware 71",
+      "Jonas's Ware 72",
+      "Jonas's Ware 73",
+      "Jonas's Ware 74",
+      "Jonas's Ware 75",
+      "Jonas's Ware 76",
+      "Jonas's Ware 77",
+      "Jonas's Ware 78",
+      "Jonas's Ware 79",
+      "Jonas's Ware 80",
+      "Jonas's Ware 81",
+      "Jonas's Ware 82",
+      "Jonas's Ware 83",
+      "Jonas's Ware 84",
+      "Jonas's Ware 85",
+      "Jonas's Ware 86",
+      "Jonas's Ware 87",
+      "Jonas's Ware 88",
+      "Jonas's Ware 89",
+      "Jonas's Ware 90",
+      "Jonas's Ware 91",
+      "Jonas's Ware 92",
+      "Jonas's Ware 93",
+      "Jonas's Ware 94",
+      "Jonas's Ware 95",
+      "Jonas's Ware 96",
+      "Jonas's Ware 97",
+      "Jonas's Ware 98",
+      "Jonas's Ware 99",
+      "Jonas's Ware 100"
     ],
     "Aurena": [
       "Achievement: Deceiving Looks",
@@ -6307,7 +7209,107 @@
       "Acc_General_HatMushroom": 7720242,
       "Acc_General_HatPerfectTurkey": 7720243,
       "Acc_General_HatDopeGlasses": 7720244,
-      "Acc_General_HatBirdNest": 7720245
+      "Acc_General_HatBirdNest": 7720245,
+      "WARE_JONAS_1": 7720246,
+      "WARE_JONAS_2": 7720247,
+      "WARE_JONAS_3": 7720248,
+      "WARE_JONAS_4": 7720249,
+      "WARE_JONAS_5": 7720250,
+      "WARE_JONAS_6": 7720251,
+      "WARE_JONAS_7": 7720252,
+      "WARE_JONAS_8": 7720253,
+      "WARE_JONAS_9": 7720254,
+      "WARE_JONAS_10": 7720255,
+      "WARE_JONAS_11": 7720256,
+      "WARE_JONAS_12": 7720257,
+      "WARE_JONAS_13": 7720258,
+      "WARE_JONAS_14": 7720259,
+      "WARE_JONAS_15": 7720260,
+      "WARE_JONAS_16": 7720261,
+      "WARE_JONAS_17": 7720262,
+      "WARE_JONAS_18": 7720263,
+      "WARE_JONAS_19": 7720264,
+      "WARE_JONAS_20": 7720265,
+      "WARE_JONAS_21": 7720266,
+      "WARE_JONAS_22": 7720267,
+      "WARE_JONAS_23": 7720268,
+      "WARE_JONAS_24": 7720269,
+      "WARE_JONAS_25": 7720270,
+      "WARE_JONAS_26": 7720271,
+      "WARE_JONAS_27": 7720272,
+      "WARE_JONAS_28": 7720273,
+      "WARE_JONAS_29": 7720274,
+      "WARE_JONAS_30": 7720275,
+      "WARE_JONAS_31": 7720276,
+      "WARE_JONAS_32": 7720277,
+      "WARE_JONAS_33": 7720278,
+      "WARE_JONAS_34": 7720279,
+      "WARE_JONAS_35": 7720280,
+      "WARE_JONAS_36": 7720281,
+      "WARE_JONAS_37": 7720282,
+      "WARE_JONAS_38": 7720283,
+      "WARE_JONAS_39": 7720284,
+      "WARE_JONAS_40": 7720285,
+      "WARE_JONAS_41": 7720286,
+      "WARE_JONAS_42": 7720287,
+      "WARE_JONAS_43": 7720288,
+      "WARE_JONAS_44": 7720289,
+      "WARE_JONAS_45": 7720290,
+      "WARE_JONAS_46": 7720291,
+      "WARE_JONAS_47": 7720292,
+      "WARE_JONAS_48": 7720293,
+      "WARE_JONAS_49": 7720294,
+      "WARE_JONAS_50": 7720295,
+      "WARE_JONAS_51": 7720296,
+      "WARE_JONAS_52": 7720297,
+      "WARE_JONAS_53": 7720298,
+      "WARE_JONAS_54": 7720299,
+      "WARE_JONAS_55": 7720300,
+      "WARE_JONAS_56": 7720301,
+      "WARE_JONAS_57": 7720302,
+      "WARE_JONAS_58": 7720303,
+      "WARE_JONAS_59": 7720304,
+      "WARE_JONAS_60": 7720305,
+      "WARE_JONAS_61": 7720306,
+      "WARE_JONAS_62": 7720307,
+      "WARE_JONAS_63": 7720308,
+      "WARE_JONAS_64": 7720309,
+      "WARE_JONAS_65": 7720310,
+      "WARE_JONAS_66": 7720311,
+      "WARE_JONAS_67": 7720312,
+      "WARE_JONAS_68": 7720313,
+      "WARE_JONAS_69": 7720314,
+      "WARE_JONAS_70": 7720315,
+      "WARE_JONAS_71": 7720316,
+      "WARE_JONAS_72": 7720317,
+      "WARE_JONAS_73": 7720318,
+      "WARE_JONAS_74": 7720319,
+      "WARE_JONAS_75": 7720320,
+      "WARE_JONAS_76": 7720321,
+      "WARE_JONAS_77": 7720322,
+      "WARE_JONAS_78": 7720323,
+      "WARE_JONAS_79": 7720324,
+      "WARE_JONAS_80": 7720325,
+      "WARE_JONAS_81": 7720326,
+      "WARE_JONAS_82": 7720327,
+      "WARE_JONAS_83": 7720328,
+      "WARE_JONAS_84": 7720329,
+      "WARE_JONAS_85": 7720330,
+      "WARE_JONAS_86": 7720331,
+      "WARE_JONAS_87": 7720332,
+      "WARE_JONAS_88": 7720333,
+      "WARE_JONAS_89": 7720334,
+      "WARE_JONAS_90": 7720335,
+      "WARE_JONAS_91": 7720336,
+      "WARE_JONAS_92": 7720337,
+      "WARE_JONAS_93": 7720338,
+      "WARE_JONAS_94": 7720339,
+      "WARE_JONAS_95": 7720340,
+      "WARE_JONAS_96": 7720341,
+      "WARE_JONAS_97": 7720342,
+      "WARE_JONAS_98": 7720343,
+      "WARE_JONAS_99": 7720344,
+      "WARE_JONAS_100": 7720345
     }
   }
 }

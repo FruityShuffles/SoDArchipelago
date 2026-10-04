@@ -78,7 +78,7 @@ class ShapeOfDreamsWorld(World):
                 self.star_requirements = shuffle_star_requirements(self.random)
         # Universal Tracker drops precollected items and uses the starting items the server sends instead.
         self.starting_travelers = self.random.sample(sorted(travelers), 2)
-        # Build once and use the same enabled checks for regions, rules and pool sizing. New kinds arrive in #8/#9.
+        # Build once and use the same enabled checks for regions, rules and pool sizing.
         self.enabled_locations = {name: data for name, data in location_table.items()
                                   if data.kind != "ware" or data.number <= self.options.jonas_wares.value}
 

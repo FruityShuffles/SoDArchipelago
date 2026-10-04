@@ -41,7 +41,7 @@ class TestForcedDreams(SoDTestBase):
 
     def test_pool_size_unchanged(self) -> None:
         pool = Counter(item.name for item in self.multiworld.itempool if item.player == self.player)
-        self.assertEqual(sum(pool.values()), len(location_table))
+        self.assertEqual(sum(pool.values()), len(self.world.enabled_locations))
         for name in self.forced:
             self.assertEqual(pool[name], 1)
 

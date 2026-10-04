@@ -53,6 +53,7 @@ namespace SoDArchipelago
         private sealed class Connection
         {
             public readonly ArchipelagoSession Session;
+            public Task<Dictionary<long, ScoutedItemInfo>> WareScouts;
             private volatile bool _closeRequested;
 
             public Connection(ArchipelagoSession session)
@@ -454,6 +455,43 @@ namespace SoDArchipelago
             {
                 try { session.SetGoalAchieved(); }
                 catch (Exception e) { Debug.LogWarning("[AP] Sending goal failed (resent on reconnect): " + e.Message); }
+            });
+        }
+
+        public static void ScoutWares(IReadOnlyCollection<GameData.Location> locations)
+        {
+            if (!ProfileGuard.Bound || !IsConnected || locations.Count == 0) return;
+            var conn = _conn;
+            int attempt = _attempt, generation = ProfileGuard.Generation;
+            var keys = locations.ToDictionary(l => l.Id, l => l.Key);
+            // One request per connection: this version of MultiClient.Net overwrites an outstanding scout callback
+            // if another request is sent. Reuse the task when the same bound profile is reloaded.
+            try
+            {
+                conn.WareScouts ??= conn.Session.Locations.ScoutLocationsAsync(HintCreationPolicy.None, keys.Keys.ToArray());
+            }
+            catch (Exception e)
+            {
+                Log.Warn("Scouting Jonas's wares failed: " + e.Message);
+                return;
+            }
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var scouts = await conn.WareScouts;
+                    var contents = new Dictionary<string, (string item, string owner)>();
+                    foreach (var pair in scouts)
+                        if (keys.TryGetValue(pair.Key, out var key))
+                            contents[key] = (pair.Value.ItemName, pair.Value.Player?.Name ?? "?");
+                    _queue.Enqueue(new Work { Attempt = attempt, Generation = generation,
+                        Action = () => JonasWares.CacheScouts(contents) });
+                }
+                catch (Exception e)
+                {
+                    _queue.Enqueue(new Work { Attempt = attempt, Generation = generation,
+                        Action = () => Log.Warn("Scouting Jonas's wares failed: " + e.Message) });
+                }
             });
         }
 

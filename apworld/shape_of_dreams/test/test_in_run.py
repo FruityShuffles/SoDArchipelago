@@ -45,11 +45,10 @@ class TestNewSlotAllocation(unittest.TestCase):
 
 
 class TestExpandedPool(unittest.TestCase):
-    # Future checks are fixtures here, not published IDs or an implementation of #8/#9.
+    # Only #9's future checks are fixtures; wares exercise the real generated table.
     @staticmethod
     def _locations():
-        extra = {f"Test Ware {n}": LocationData(9000000 + n, f"TEST_WARE_{n}", "ware", None, None, 0, n)
-                 for n in range(1, 101)}
+        extra = {}
         for kind, count in (("shrine", 9), ("quest", 6), ("artifact", 12)):
             for n in range(count):
                 name = f"Test {kind} {n}"

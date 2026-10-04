@@ -4,7 +4,7 @@
 
 In vanilla Shape of Dreams, the in-game achievement system is used to unlock Travelers, Memories, Essences and Lucid Dream run modifiers.
 In Archipelago those 93 unlocks are shuffled into the multiworld as items, and achievements, world clears and lizard
-shop souvenirs become the checks that send items to you and to the other players. Lacerta and Mist are items too: instead of them, you start
+shop souvenirs and Jonas's Wares become the checks that send items to you and to the other players. Lacerta and Mist are items too: instead of them, you start
 with 2 random Travelers.
 
 Your normal save is never touched. Each seed is played on its own game profile, which the client mod binds to your
@@ -12,7 +12,7 @@ slot the first time you connect.
 
 ## Where are the checks (locations)?
 
-There are 245 locations.
+There are 275 locations by default: 245 baseline checks plus 30 Jonas's Wares. `jonas_wares` can change this to 245–345.
 
 - **Achievements (93):** completing any achievement sends its check. You do not get the usual unlock for the achievement.
   That unlock is an item somewhere in the multiworld.
@@ -21,6 +21,9 @@ There are 245 locations.
   that world's checks for the easier difficulties. Nap has no checks, and the worlds of later loops send nothing.
 - **Souvenirs (17):** owning each souvenir the lizard shop sells (bought, or unlocked with a code) sends its check. You
   keep the souvenir.
+- **Jonas's Wares (30 by default):** when playing solo or hosting, each Jonas visit offers one random unbought
+  Archipelago ware for gold. Hover its AP icon to see the item and recipient. Buying sends the check; skipping
+  costs nothing, and a later visit or shop refresh may offer another ware. Wares can hold anyone's progression.
 
 Deep Sleep world clears are **priority locations**, so they tend to hold progression items. Achievements can hold anything.
 Souvenirs are always excluded (the shop offers them at random), so they only hold filler.
@@ -41,7 +44,7 @@ You can customize which checks may hold important items using these location gro
 | Skip a Traveler you don't enjoy | `exclude_locations: [Aurena]` (that Traveler's achievements and world clears), with `goal_traveler_count` below 9 |
 | Get your progression from a Traveler you like | `priority_locations: [Aurena]` |
 
-Groups: `Achievements`, `World Clears`, `Build-Dependent Achievements`, `Souvenirs`, one per Traveler (`Aurena`, `Bismuth`, `Cetus`,
+Groups: `Achievements`, `World Clears`, `Build-Dependent Achievements`, `Souvenirs`, `Jonas's Wares`, one per Traveler (`Aurena`, `Bismuth`, `Cetus`,
 `Lacerta`, `Mist`, `Nachia`, `Shell`, `Vesper`, `Yubar`) and one per difficulty (`Deep Sleep`, `Ominous Dream`,
 `Nightmare`).
 
@@ -107,18 +110,19 @@ forced_chaotic_lucid_dreams: ["WILD"]
 
 The [example YAML](https://github.com/FruityShuffles/SoDArchipelago/blob/main/examples/Shape%20of%20Dreams.yaml)
 has three presets: Default (`in_run_items: false`, `traps: false`), With in-run items (`in_run_items: true`),
-and With in-run items and traps (both `true`). The default preserves the base game's run balance.
+and With in-run items and traps (both `true`). Default fills the new slots with Stardust; the other presets add in-run effects.
 
 In-run items wait until you are connected and playing solo or hosting, and their vanilla effect has a valid target.
 They can wait until a later world or run; reconnecting keeps pending items. Their message appears when they land.
 Quitting before the game's next continue save can lose an effect that has already landed.
 
-**Development status:** the shared options and pool rules are implemented in issue #7. The new locations and effects
-arrive in #8–#12; all six issues ship together. Until then there are still 245 locations and no new in-run effects.
+**Development status:** the shared options and pool rules (#7) and Jonas's Wares (#8) are implemented. The remaining
+locations and in-run effects arrive in #9–#12; all six issues ship together in one matching apworld/mod release.
 
 ## Playing offline
 
 You can play a bound profile offline using the items you have already received. Checks are recorded in the profile and sent when you reconnect.
+Jonas's wares remain buyable offline, displayed as "an unknown ware" until you reconnect.
 
 ## Co-op
 

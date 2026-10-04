@@ -165,7 +165,104 @@ internal static class Program
 
     private static void Main()
     {
-        Stardust(); StardustItems(); Delivery(); Records();
-        Console.WriteLine($"Passed {_assertions} assertions (Stardust, delivery and check records).");
+        Stardust(); StardustItems(); Delivery(); Records(); Wares();
+        Console.WriteLine($"Passed {_assertions} assertions (Stardust, delivery, check records and Jonas's wares).");
+    }
+
+    private static void Wares()
+    {
+        Reset();
+        for (int n = 1; n <= 100; n++)
+            GameData.LocationsByKey["WARE_JONAS_" + n] = new GameData.Location { Id = n,
+                Key = "WARE_JONAS_" + n, Name = "Jonas's Ware " + n, Kind = "ware", Number = n };
+        ApClient.SlotData["jonas_wares"] = 30;
+        JonasWares.OnLoggedIn();
+        Check(ApRecords.WareCount() == 30 && JonasWares.Enabled().Count == 30, "Seed count persists for offline shops");
+        var player = DewPlayer.local = new DewPlayer { guid = "host", hero = new Hero() };
+        var guest = new DewPlayer { guid = "guest", hero = new Hero() };
+        var shop = new PropEnt_Merchant_Jonas();
+        var normal = new MerchandiseData { type = MerchandiseType.Skill, itemName = "Skill", count = 2 };
+        shop.merchandises[player.guid] = new[] { normal };
+        shop.merchandises[guest.guid] = new[] { normal };
+        var guestStock = shop.merchandises[guest.guid];
+        JonasWares.Append(shop, guest);
+        Check(ReferenceEquals(guestStock, shop.merchandises[guest.guid]), "Guests' stock is untouched");
+        var other = new PropEnt_Merchant_Base(); other.merchandises[player.guid] = new[] { normal };
+        JonasWares.Append(other, player);
+        Check(other.merchandises[player.guid].Length == 1, "Other merchants never sell wares");
+        Mirror.NetworkServer.active = false;
+        JonasWares.Append(shop, player);
+        Check(shop.merchandises[player.guid].Length == 1, "Joining players never add wares");
+        Mirror.NetworkServer.active = true;
+        JonasWares.Append(shop, player);
+        var stock = shop.merchandises[player.guid];
+        var ware = stock[1];
+        Check(stock.Length == 2 && stock[0].count == 2, "One ware appends without changing vanilla items");
+        Check(JonasWares.TryGetWare(ware, out var location) && location.Number == 30, "Random choice stays within enabled wares");
+        Check(ware.price.gold == 237 && ware.count == 1 && DewResources.treasure.priceCalls == 1,
+            "Ware takes its placeholder's vanilla price, with one purchase");
+        Check(JonasWares.Description(location) == "an unknown ware", "Unscouted stock shows unknown contents");
+        var contents = new Dictionary<string, (string item, string owner)> {
+            [location.Key] = ("Progressive Mist: = <test>\n\u00e9", "Alice: = \u661f"),
+            ["WARE_JONAS_100"] = ("disabled", "Bob") };
+        JonasWares.CacheScouts(contents);
+        Check(ApRecords.TryScout(location.Key, out var item, out var owner) &&
+            item == contents[location.Key].item && owner == contents[location.Key].owner, "Scout strings round-trip intact");
+        Check(!ApRecords.TryScout("WARE_JONAS_100", out _, out _), "Disabled scouts are not cached");
+        Check(JonasWares.Description(location) == item + ", for " + owner, "Shop names the item and its recipient");
+        int saved = DewSave.saves;
+        JonasWares.CacheScouts(contents);
+        Check(DewSave.saves == saved, "Identical scouts cause no redundant save");
+        Check(JonasWares.CanPurchase(shop, player, 1), "An unbought enabled ware may be charged");
+        Check(!JonasWares.Consume(shop, guest, ware) && !JonasWares.Consume(other, player, ware),
+            "Guests and other merchants cannot record the host's checks");
+        ProfileGuard.SetSessionMarker(null); ApClient.IsConnected = false;
+        Check(JonasWares.Description(location) == "an unknown ware", "Offline contents stay unknown");
+        Check(JonasWares.Consume(shop, player, ware) && ApRecords.HasCheck(location.Key) && ApClient.Sent.Count == 0,
+            "Offline purchase suppresses the placeholder and persists its check");
+        Check(!JonasWares.CanPurchase(shop, player, 1) && shop.merchandises[player.guid][1].count == 0,
+            "A stale continue-save ware is refused before gold is charged");
+        saved = DewSave.saves;
+        Check(JonasWares.Consume(shop, player, ware) && DewSave.saves == saved, "Duplicate spawn cannot record twice");
+        var persisted = new List<string>(DewSave.profileMain.experienceFlags);
+        DewSave.profileMain = new DewProfile { experienceFlags = persisted };
+        Check(ApRecords.WareCount() == 30 && ApRecords.TryScout(location.Key, out _, out _) && ApRecords.HasCheck(location.Key),
+            "Count, contents and purchases survive profile reload");
+        ProfileGuard.SetSessionMarker("Archipelago:test:slot"); ApClient.IsConnected = true;
+        CheckHandler.ResendAll();
+        Check(ApClient.Sent.SequenceEqual(new[] { location.Id }), "Reconnect resends the offline purchase");
+        shop.merchandises[player.guid] = new[] { normal }; // vanilla refresh replaces stock
+        JonasWares.Append(shop, player);
+        Check(JonasWares.TryGetWare(shop.merchandises[player.guid][1], out var next) && next.Number == 29,
+            "Refresh selects from the remaining unbought locations");
+        JonasWares.Append(shop, player);
+        Check(shop.merchandises[player.guid].Length == 2, "Repeated population never duplicates the extra ware");
+        // A seed with fewer wares must also refuse a saved entry outside its enabled range.
+        ApRecords.SetWareCount(1);
+        Check(!JonasWares.CanPurchase(shop, player, 1), "A disabled saved ware is refused before charging");
+        ApRecords.SetWareCount(30);
+        ProfileGuard.SetSessionMarker("Archipelago:other:slot");
+        Check(!ApRecords.SetScout(location.Key, "wrong seed", "wrong owner") && !ApRecords.SetWareCount(100),
+            "A different session cannot alter the profile's ware settings or contents");
+        ProfileGuard.SetSessionMarker("Archipelago:test:slot");
+        ProfileGuard.OnProfileLoaded("failed", false);
+        Check(!JonasWares.IsLocalHost(player) && JonasWares.Enabled().Count == 0 &&
+            !ApRecords.TryScout(location.Key, out _, out _), "Failed profile loads cannot access ware records");
+        ProfileGuard.OnProfileLoaded("loaded", true);
+        DewSave.profileMainPath = null;
+        Check(!JonasWares.IsLocalHost(player), "Transient profiles never modify stock");
+        DewSave.profileMainPath = "test.json";
+        foreach (var enabled in JonasWares.Enabled()) ApRecords.AddCheck(enabled.Key);
+        shop.merchandises[player.guid] = new[] { normal };
+        JonasWares.Append(shop, player);
+        Check(shop.merchandises[player.guid].Length == 1, "Exhausted seeds have no extra ware");
+        ApRecords.SetWareCount(0);
+        Check(JonasWares.Enabled().Count == 0, "The zero option disables all wares");
+        DewSave.profileMain = new DewProfile();
+        JonasWares.Append(shop, player);
+        JonasWares.CacheScouts(contents);
+        Check(!ApRecords.SetWareCount(30) && !ApRecords.SetScout(location.Key, "item", "owner") &&
+            !ApRecords.TryScout(location.Key, out _, out _) && ApRecords.WareCount() == 0 &&
+            DewSave.profileMain.experienceFlags.Count == 0, "Vanilla profiles cannot read or write ware data");
     }
 }

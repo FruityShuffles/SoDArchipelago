@@ -4,13 +4,14 @@ The agreed randomizer design for Shape of Dreams. It was settled in a design rev
 original "achievement reward = item" scaffold. Where the code and this document disagree, this document wins.
 Item/location IDs are frozen once a version is released: the extractor keeps every key's ID through `id_history`.
 
-## Locations (245)
+## Locations (275 by default)
 
 | Kind | Count | Progress type | Notes |
 |---|---|---|---|
 | Achievements (`ACH_*`) | 93 | default | Every achievement in `RawData/en-US/achievements.json`. "Who's the Prey Now" is **excluded** (`BROKEN_ACHIEVEMENTS`, issue #6). |
 | World clears | 135 | **priority** (Deep Sleep), default | 5 worlds × 3 difficulties × 9 Travelers. The 45 Deep Sleep clears are the only priority locations. |
 | Souvenirs | 17 | **excluded** | Every souvenir the lizard shop sells (see "Souvenirs"). Always on, no option. |
+| Jonas's Wares | 0–100 (30 by default) | default | One random unbought ware per Jonas visit, bought with gold; host/solo only |
 
 - **World structure** (corrected 2026-09-27). A loop has **4 normal worlds**. Beating the world 4 boss opens two rifts:
   the normal exit (next loop) and the Dream rift (`Rift_Sidetrack_TheDream`, only in the last world's boss room). The Dream
@@ -68,6 +69,29 @@ you keep the souvenir exactly as in vanilla.
   keeps a world-set exclusion over the player's `priority_locations`. No logic: any run can reach a shop.
 - **Owning one is its check**, however it was unlocked: a purchase, or a redeem code (which also takes it out of the
   shop for good). See "Checks".
+
+### Jonas's Wares
+
+Issue #8. `Jonas's Ware 1` through `Jonas's Ware <jonas_wares>` are normal locations that can hold any player's
+progression. The catalog reserves 100 stable keys (`WARE_JONAS_<n>`); disabled numbers are absent from the seed.
+The `Jonas's Wares` location group contains all possible wares. There is no access requirement: any run can reach Jonas.
+
+- Each visit offers one random enabled ware not yet recorded in `AP:check:`. Skipping it costs nothing; a later visit
+  or paid shop refresh can offer a different one. Once all are bought, Jonas has only his vanilla stock.
+- Only Jonas (`PropEnt_Merchant_Jonas`) adds wares, and only to the solo/host player's own guid-keyed stock. Guests'
+  stock stays vanilla. His `OnRefresh` calls `PopulatePlayerMerchandises`, so the population hook handles both.
+- The ware is a vanilla Treasure entry with `itemName = Treasure_CloakOfGuidance`, `count = 1` and
+  `customData = AP:<location key>`. Cloak inherits the always-true `Treasure.CanBePurchased` and vanilla
+  `OnAddMerchandise` price calculation (`GetAdjustedGoldAmount_Cost_Service(basePrice)`). Jonas's normal buyer
+  discount still applies. No Treasure is spawned: intercept `SpawnMerchandise` after the server has spent gold,
+  record/save/send the check, and suppress the placeholder's effect.
+- The local host's shop shows the AP icon; hovering shows the scouted item and recipient, location and final gold
+  price. Purchased stock is disabled. A stale ware restored by a continue save is refused before spending gold.
+- Scout every enabled ware once per connection with `LocationScouts`, `HintCreationPolicy.None` (no hints).
+  Cache item/recipient strings in the marked profile (`AP:scout:<key>:<base64 item>:<base64 owner>`); the
+  connection/profile-tagged main-thread queue writes them. Persist `AP:wares=<count>` on login for offline stock.
+  Missing scout data or an offline shop displays "an unknown ware". Offline purchases still record their checks.
+- Buying and quitting before the next continue save may restore the gold while keeping the check, as in vanilla.
 
 ## Items
 
@@ -130,6 +154,7 @@ The rules are the same for every Traveler. A starting Traveler's precollected co
 | Achievement that requires a Traveler (e.g. "as Aurena") | 1 copy |
 | "Achievement: Vivid Dream" (enter the Pure White Dream on Nightmare: a World 4 Nightmare clear) | 3 copies of any Traveler |
 | Any other achievement | nothing |
+| Jonas's Ware | nothing; purchased from Jonas while solo/host |
 | "Achievement: The Road Not Taken" (a Starless Path win: a Traveler at mastery 40) | all 36 copies (every Traveler fully unlocked); **excluded** with `passive_mastery` off (see "Passive mastery") |
 | World clear, Deep Sleep | 1 copy |
 | World clear, Ominous Dream | 2 copies (Traveler + 1 memory) |
@@ -291,8 +316,8 @@ mastery only comes from `Mastery: <Traveler>` items and the player's strength de
 ### In-run content foundation
 
 Issue #7 supplies the shared infrastructure for #8–#12. These issues ship together in one matching apworld/mod
-release; this foundation alone is not published. The existing 245 checks remain the baseline until #8 and #9 add
-their locations. #8 adds `jonas_wares` checks; #9 adds 9 shrines, 6 quests and 12 excluded artifacts. This gives
+release; this foundation alone is not published. The original 245 checks remain the baseline. #8 adds
+`jonas_wares` checks (implemented); #9 adds 9 shrines, 6 quests and 12 excluded artifacts. This gives
 57 new slots and 302 total checks with defaults. The enabled location list is built before regions and items.
 
 - Progression, useful items and Mastery packs keep their existing counts. The baseline's remaining slots (80 by
@@ -333,7 +358,7 @@ their locations. #8 adds `jonas_wares` checks; #9 adds 9 shrines, 6 quests and 1
   the purchase are both on the buyer's own client. The mod logs the shop's filter at startup and warns when it differs
   from the data, so a souvenir added by a game update shows up (it sends nothing until the data is regenerated).
 - **On every connect,** rebuild the full check list from the profile (completed achievements, recorded world
-  clears and owned souvenirs) and resend all of it. The server ignores duplicates.
+  clears, owned souvenirs and `AP:check:` records) and resend all of it. The server ignores duplicates.
 
 ### Received items
 - Unlocks go through the game's own functions: `DewProfile.UnlockHero`, `UnlockSkill`, `UnlockGem`,
@@ -439,7 +464,8 @@ and sent on reconnect. An **always-visible "OFFLINE — checks will send on reco
 guide explains that offline play delays other players' items.
 
 ### Co-op
-No special handling, except for Forced Lucid Dreams (see there). Each player's own profile, mod and slot are independent. The shared loot pool is the union of
+Each player's own profile, mod and slot are independent. Jonas's Wares and in-run item delivery require solo/host
+play; joining players can set `jonas_wares` to 0 and pending in-run items wait for solo/host play. The shared loot pool is the union of
 the players' unlocks, which is vanilla co-op behavior. Achievement, world-clear, win and souvenir checks work on a joining
 client (verified in-game 2026-10-03, joining a non-AP host): achievements are tracked per client, the zone-loaded event
 is an RPC to every client, the room load before it syncs the zone index, and a souvenir is bought and unlocked on the

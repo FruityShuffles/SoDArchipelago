@@ -27,7 +27,8 @@ namespace SoDArchipelago
             public long Id;
             public string Name;
             public string Key;
-            public string Kind; // achievement, world_clear, souvenir
+            public string Kind; // achievement, world_clear, souvenir, ware
+            public int Number; // sequential Jonas ware number
             public string Traveler;
             public int World;
             public string Difficulty;
@@ -123,6 +124,7 @@ namespace SoDArchipelago
                     Kind = (string)e["kind"],
                     Traveler = (string)e["traveler"],
                     World = (int?)e["world"] ?? 0,
+                    Number = (int?)e["number"] ?? 0,
                     Difficulty = (string)e["difficulty"],
                 };
                 LocationsByKey[loc.Key] = loc;

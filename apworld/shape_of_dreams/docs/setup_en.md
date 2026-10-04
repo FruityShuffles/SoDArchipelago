@@ -23,7 +23,9 @@ Generate the game on your own computer. You can then upload it to archipelago.gg
 
 The example YAML includes Default, With in-run items, and With in-run items and traps presets. `stardust_total`
 replaces `stardust_pack_value`: it is the seed's whole Stardust income, divided exactly across its packs.
-The in-run options are shared groundwork for #8–#12 and ship together with those features.
+`jonas_wares` adds gold purchases at Jonas's shop when playing solo or hosting. Hover the AP icon to see the item
+and recipient; buying sends its check. A player who only joins other people's games should set `jonas_wares: 0`.
+The in-run options and wares ship together with the remaining #9–#12 features.
 
 ## Installing the mod
 

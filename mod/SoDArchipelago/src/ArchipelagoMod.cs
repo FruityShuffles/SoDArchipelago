@@ -107,6 +107,7 @@ namespace SoDArchipelago
             ApClient.DeathLinkReceived -= DeathLinkHandler.OnDeathLinkReceived;
             ApClient.Disconnect(null);
             InRunItems.Cleanup();
+            WareShopUi.Cleanup();
             ForcedDreams.Cleanup();
             harmony.UnpatchAll(harmony.Id);
             StarRequirements.Cleanup();
@@ -138,6 +139,7 @@ namespace SoDArchipelago
             ForcedDreams.OnLoggedIn();
             StarRequirements.OnLoggedIn();
             PassiveMastery.OnLoggedIn();
+            JonasWares.OnLoggedIn();
             CheckHandler.ResendAll();
             ItemHandler.ProcessAll("connect");
             Log.Info("Unlocked Travelers: " + string.Join(", ",

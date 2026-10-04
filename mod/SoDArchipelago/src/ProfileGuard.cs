@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 namespace SoDArchipelago
@@ -262,6 +263,63 @@ namespace SoDArchipelago
             if (!ProfileGuard.Marked || HasCheck(locationKey)) return false;
             MainFlags.Add(CheckPrefix + locationKey);
             return true;
+        }
+
+        private const string WareCountPrefix = "AP:wares=";
+        private const string ScoutPrefix = "AP:scout:";
+
+        public static int WareCount()
+        {
+            if (!ProfileGuard.Marked) return 0;
+            foreach (var flag in MainFlags)
+                if (flag.StartsWith(WareCountPrefix, StringComparison.Ordinal) &&
+                    int.TryParse(flag.Substring(WareCountPrefix.Length), out var count))
+                    return Math.Max(0, Math.Min(100, count));
+            return 0;
+        }
+
+        public static bool SetWareCount(int count)
+        {
+            if (!ProfileGuard.Bound) return false;
+            count = Math.Max(0, Math.Min(100, count));
+            if (MainFlags.Contains(WareCountPrefix + count)) return false;
+            MainFlags.RemoveAll(f => f.StartsWith(WareCountPrefix, StringComparison.Ordinal));
+            MainFlags.Add(WareCountPrefix + count);
+            return true;
+        }
+
+        // Base64 keeps names with punctuation, Unicode or newlines unambiguous in the string-list record.
+        public static bool SetScout(string key, string item, string owner)
+        {
+            if (!ProfileGuard.Bound) return false;
+            var prefix = ScoutPrefix + key + ":";
+            var record = prefix + Convert.ToBase64String(Encoding.UTF8.GetBytes(item)) + ":" +
+                         Convert.ToBase64String(Encoding.UTF8.GetBytes(owner));
+            if (MainFlags.Contains(record)) return false;
+            MainFlags.RemoveAll(f => f.StartsWith(prefix, StringComparison.Ordinal));
+            MainFlags.Add(record);
+            return true;
+        }
+
+        public static bool TryScout(string key, out string item, out string owner)
+        {
+            item = owner = null;
+            if (!ProfileGuard.Marked) return false;
+            var prefix = ScoutPrefix + key + ":";
+            foreach (var flag in MainFlags)
+            {
+                if (!flag.StartsWith(prefix, StringComparison.Ordinal)) continue;
+                var parts = flag.Substring(prefix.Length).Split(':');
+                if (parts.Length != 2) continue;
+                try
+                {
+                    item = Encoding.UTF8.GetString(Convert.FromBase64String(parts[0]));
+                    owner = Encoding.UTF8.GetString(Convert.FromBase64String(parts[1]));
+                    return true;
+                }
+                catch (FormatException) { /* A damaged cache falls back to an unknown ware. */ }
+            }
+            return false;
         }
 
         public static bool AddWin(string travelerKey, string difficultyId)

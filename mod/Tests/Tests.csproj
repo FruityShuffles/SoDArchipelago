@@ -11,5 +11,6 @@
     <Compile Include="../SoDArchipelago/src/ItemHandler.cs" Link="ItemHandler.cs" />
     <Compile Include="../SoDArchipelago/src/ProfileGuard.cs" Link="ProfileGuard.cs" />
     <Compile Include="../SoDArchipelago/src/CheckHandler.cs" Link="CheckHandler.cs" />
+    <Compile Include="../SoDArchipelago/src/JonasWares.cs" Link="JonasWares.cs" />
   </ItemGroup>
 </Project>
