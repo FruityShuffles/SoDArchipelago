@@ -6,8 +6,7 @@
 - The [Archipelago Randomizer](https://steamcommunity.com/sharedfiles/filedetails/?id=3809735647) mod from the Steam Workshop
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases) 0.6.4 or newer, to generate and host games,
   with `shape_of_dreams.apworld` installed (double-click it, or copy it into Archipelago's `custom_worlds` folder).
-  Download it from the [SoDArchipelago releases](https://github.com/FruityShuffles/SoDArchipelago/releases), taking the
-  release that matches the version of your mod.
+  Download the latest one from the [SoDArchipelago releases](https://github.com/FruityShuffles/SoDArchipelago/releases).
 
 ## Your YAML
 
