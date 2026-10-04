@@ -29,4 +29,7 @@ location_table: Dict[str, LocationData] = {
 
 location_name_to_id: Dict[str, int] = {name: data.id for name, data in location_table.items()}
 
+# Universal Tracker shows "<name> (<alias>)": each achievement's in-game description.
+location_id_to_alias: Dict[int, str] = {e["id"]: e["description"] for e in GAME_DATA["locations"] if "description" in e}
+
 location_name_groups = {name: set(members) for name, members in GAME_DATA["location_groups"].items()}

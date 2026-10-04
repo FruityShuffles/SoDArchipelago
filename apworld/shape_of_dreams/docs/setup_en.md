@@ -67,6 +67,12 @@ to the same room with your slot name (open it from the Archipelago Launcher). Se
 [commands guide](https://archipelago.gg/tutorial/Archipelago/commands/en). Messages from other players still show up in
 the on-screen feed.
 
+## Tracker
+
+Optional: [Universal Tracker](https://github.com/FarisTheAncient/Archipelago/releases) lists which checks are in logic
+with what you've received. Install `tracker.apworld` like the Shape of Dreams apworld, open **Universal Tracker** from
+the Archipelago Launcher and connect with your slot name. It doesn't need your YAML.
+
 ## Playing offline
 
 A bound profile keeps working when you're not connected: you keep what you've already received, completed achievements,

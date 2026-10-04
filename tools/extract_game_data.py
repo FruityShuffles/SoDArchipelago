@@ -272,7 +272,9 @@ def main() -> int:
     for ach_key in sorted(achievements):
         locations.append({"name": f"Achievement: {achievements[ach_key]['name']}", "key": ach_key,
                           "kind": "achievement", "traveler": ACHIEVEMENT_TRAVELER.get(ach_key),
-                          "build_dependent": ach_key in BUILD_DEPENDENT_ACHIEVEMENTS})
+                          "build_dependent": ach_key in BUILD_DEPENDENT_ACHIEVEMENTS,
+                          # Display only (Universal Tracker shows it next to the name), so not in data_hash.
+                          "description": achievements[ach_key]["description"].strip().rstrip(".")})
     clear_diffs = [d for d in DIFFICULTIES if d["has_locations"]]
     for hero in trav_order:
         for world in WORLDS:

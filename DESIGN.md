@@ -172,6 +172,11 @@ Remove `boss_locations` and `travelers_required_for_goal`. `slot_data` must carr
 settings, pack values, `passive_mastery`, death_link, the forced Lucid Dreams (`forced_lucid_dreams`: both sets' keys), the shuffled star
 requirements (`star_requirements`), the data version and the data hash.
 
+[Universal Tracker](https://github.com/FarisTheAncient/Archipelago/releases) (decided 2026-10-03) rebuilds the world from
+slot_data alone (`ut_can_gen_without_yaml`; `interpret_slot_data` → `generate_early`), so slot_data must also carry
+every setting that changes logic or location types. Starting Travelers aren't needed: UT drops precollected items and
+uses the starting items the server sends.
+
 ## Forced Lucid Dreams
 
 An optional challenge modeled on the Reverse Heat option of the Hades randomizer (Polycosmos), decided 2026-09-28.

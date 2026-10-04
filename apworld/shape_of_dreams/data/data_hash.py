@@ -1,9 +1,9 @@
 """Fingerprint of everything in game_data.json that the mod or the generator acts on (IDs, keys, unlocks, logic data).
 
 tools/extract_game_data.py stores it as "data_hash", the apworld puts it in slot_data, and the mod refuses a seed whose
-hash differs from its own embedded copy. Display names, the extracted game version, the ID history and the hash itself
-are left out, so renaming something doesn't break compatibility. Pure Python with no Archipelago imports: the extractor
-loads this file directly.
+hash differs from its own embedded copy. Display names and descriptions, the extracted game version, the ID history and
+the hash itself are left out, so renaming something doesn't break compatibility. Pure Python with no Archipelago
+imports: the extractor loads this file directly.
 """
 import hashlib
 import json

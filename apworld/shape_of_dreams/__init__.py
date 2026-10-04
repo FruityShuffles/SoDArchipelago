@@ -6,7 +6,8 @@ from worlds.AutoWorld import WebWorld, World
 from .data import GAME_DATA
 from .items import (GAME_NAME, STARDUST, SoDItem, item_name_groups, item_name_to_id, item_table,
                     lucid_dreams_by_type, mastery_item_names, travelers, unlock_item_counts)
-from .locations import SoDLocation, location_name_groups, location_name_to_id, location_table
+from .locations import (SoDLocation, location_id_to_alias, location_name_groups, location_name_to_id,
+                        location_table)
 from .options import SoDOptions, option_groups
 from .stars import shuffle_star_requirements
 
@@ -58,13 +59,44 @@ class ShapeOfDreamsWorld(World):
     item_name_groups = item_name_groups
     location_name_groups = location_name_groups
 
+    # Universal Tracker can rebuild the world from the seed's slot_data alone, without the player's YAML.
+    ut_can_gen_without_yaml = True
+    location_id_to_alias = location_id_to_alias
+
     def generate_early(self) -> None:
-        evil, chaotic = self.options.forced_evil_lucid_dreams.value, self.options.forced_chaotic_lucid_dreams.value
-        self.forced_lucid_dreams = ({lucid_dreams_by_type["evil"][d] for d in evil} |
-                                    {lucid_dreams_by_type["chaotic"][d] for d in chaotic})
-        if self.options.shuffle_star_requirements:
-            self.star_requirements = shuffle_star_requirements(self.random)
+        # Universal Tracker passes back what interpret_slot_data returned: the seed's real settings.
+        slot_data = getattr(self.multiworld, "re_gen_passthrough", {}).get(GAME_NAME)
+        if slot_data is not None:
+            self._apply_slot_data(slot_data)
+        else:
+            evil, chaotic = self.options.forced_evil_lucid_dreams.value, self.options.forced_chaotic_lucid_dreams.value
+            self.forced_lucid_dreams = ({lucid_dreams_by_type["evil"][d] for d in evil} |
+                                        {lucid_dreams_by_type["chaotic"][d] for d in chaotic})
+            if self.options.shuffle_star_requirements:
+                self.star_requirements = shuffle_star_requirements(self.random)
+        # Universal Tracker drops precollected items and uses the starting items the server sends instead.
         self.starting_travelers = self.random.sample(sorted(travelers), 2)
+
+    def _apply_slot_data(self, slot_data: Dict[str, Any]) -> None:
+        options = self.options
+        options.goal_difficulty.value = slot_data["goal_difficulty_rank"]
+        options.goal_traveler_count.value = slot_data["goal_traveler_count"]
+        options.mastery_packs_per_traveler.value = slot_data["mastery_packs_per_traveler"]
+        options.mastery_pack_value.value = slot_data["mastery_pack_value"]
+        options.stardust_pack_value.value = slot_data["stardust_pack_value"]
+        # Keys added after the first release: a missing one means the seed predates its option (its vanilla default).
+        options.passive_mastery.value = int(slot_data.get("passive_mastery", True))
+        options.death_link.value = int(slot_data["death_link"])
+        forced_keys = set(slot_data.get("forced_lucid_dreams", []))
+        self.forced_lucid_dreams = {name for name, data in item_table.items() if data.key in forced_keys}
+        self.star_requirements = dict(slot_data.get("star_requirements", {}))
+        options.shuffle_star_requirements.value = int(bool(self.star_requirements))
+
+    @staticmethod
+    def interpret_slot_data(slot_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Universal Tracker: regenerate with the seed's settings (read back in generate_early). Static, so UT skips
+        its first generation and only generates once connected."""
+        return slot_data
 
     def create_item(self, name: str) -> SoDItem:
         data = item_table[name]

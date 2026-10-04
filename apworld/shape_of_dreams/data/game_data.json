@@ -1033,6 +1033,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Fight against the Guardian Twins simultaneously and emerge victorious",
       "id": 7720001
     },
     {
@@ -1041,6 +1042,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Achieve victory 2 time(s) without receiving or granting any shields",
       "id": 7720002
     },
     {
@@ -1049,6 +1051,7 @@
       "kind": "achievement",
       "traveler": "Hero_Lacerta",
       "build_dependent": false,
+      "description": "Reach 120 Attack Damage with Lacerta",
       "id": 7720003
     },
     {
@@ -1057,6 +1060,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Pet the cat",
       "id": 7720004
     },
     {
@@ -1065,6 +1069,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Acquire Pyrana's Love",
       "id": 7720005
     },
     {
@@ -1073,6 +1078,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Use Legendary Chaos a total of 5 times",
       "id": 7720006
     },
     {
@@ -1081,6 +1087,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Defeat a total of 100 enemies with Mirage Skin",
       "id": 7720007
     },
     {
@@ -1089,6 +1096,7 @@
       "kind": "achievement",
       "traveler": "Hero_Aurena",
       "build_dependent": false,
+      "description": "Defeat 10 Heroic Bosses as Aurena",
       "id": 7720008
     },
     {
@@ -1097,6 +1105,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Defeat 30 enemies in a row while your Health is below 40%",
       "id": 7720009
     },
     {
@@ -1105,6 +1114,7 @@
       "kind": "achievement",
       "traveler": "Hero_Husk",
       "build_dependent": false,
+      "description": "Reach 100 Ability Power as Shell",
       "id": 7720010
     },
     {
@@ -1113,6 +1123,7 @@
       "kind": "achievement",
       "traveler": "Hero_Bismuth",
       "build_dependent": false,
+      "description": "Deal a total of 250,000 Dark damage to enemies as Bismuth",
       "id": 7720011
     },
     {
@@ -1121,6 +1132,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Deal 1,500 or more damage in a single hit",
       "id": 7720012
     },
     {
@@ -1129,6 +1141,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Defeat enemies affected by all 4 elements 70 times",
       "id": 7720013
     },
     {
@@ -1137,6 +1150,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Get cursed 6 times in a single adventure",
       "id": 7720014
     },
     {
@@ -1145,6 +1159,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Get cursed a total of 3 times in World 5 or beyond",
       "id": 7720015
     },
     {
@@ -1153,6 +1168,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Enter the Pure White Dream 2 times in total",
       "id": 7720016
     },
     {
@@ -1161,6 +1177,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Deliver a total of 50 finishing blows to Soul Swordsmen using basic attacks",
       "id": 7720017
     },
     {
@@ -1169,6 +1186,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Defeat Heroic Bosses 8 times while your Health is below 25%",
       "id": 7720018
     },
     {
@@ -1177,6 +1195,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Visit 12 rooms occupied by Hunters in a single adventure",
       "id": 7720019
     },
     {
@@ -1185,6 +1204,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": true,
+      "description": "Defeat the Snowy Mountain King while having 4 Cold damage Memories",
       "id": 7720020
     },
     {
@@ -1193,6 +1213,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "During a single adventure, let your Health fall below 40% and then bring it back up to at least 75% 10 times",
       "id": 7720021
     },
     {
@@ -1201,6 +1222,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": true,
+      "description": "Achieve victory while having 4 Memories of the same type",
       "id": 7720022
     },
     {
@@ -1209,6 +1231,7 @@
       "kind": "achievement",
       "traveler": "Hero_Cetus",
       "build_dependent": false,
+      "description": "Enter the Pure White Dream as Cetus",
       "id": 7720023
     },
     {
@@ -1217,6 +1240,7 @@
       "kind": "achievement",
       "traveler": "Hero_Nachia",
       "build_dependent": false,
+      "description": "Achieve victory a total of 2 times as Nachia",
       "id": 7720024
     },
     {
@@ -1225,6 +1249,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "In a single adventure, visit locations occupied by Hunters 4 times while having a Hunt Threat Level of 5",
       "id": 7720025
     },
     {
@@ -1233,6 +1258,7 @@
       "kind": "achievement",
       "traveler": "Hero_Mist",
       "build_dependent": false,
+      "description": "Defeat 60 enemies in a row without taking damage as Mist",
       "id": 7720026
     },
     {
@@ -1241,6 +1267,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Reach 3,000 Maximum Health",
       "id": 7720027
     },
     {
@@ -1249,6 +1276,7 @@
       "kind": "achievement",
       "traveler": "Hero_Husk",
       "build_dependent": false,
+      "description": "Reach the Lotus Plateau as Shell without your Health ever dropping below 50%",
       "id": 7720028
     },
     {
@@ -1257,6 +1285,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Heal yourself or allies for a total of 25,000 Health",
       "id": 7720029
     },
     {
@@ -1265,6 +1294,7 @@
       "kind": "achievement",
       "traveler": "Hero_Vesper",
       "build_dependent": true,
+      "description": "Defeat the Burning Giant as Vesper while holding 3 or more Fire Memories",
       "id": 7720030
     },
     {
@@ -1273,6 +1303,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Achieve victory a total of 3 times without slaying any Hunters",
       "id": 7720031
     },
     {
@@ -1281,6 +1312,7 @@
       "kind": "achievement",
       "traveler": "Hero_Cetus",
       "build_dependent": false,
+      "description": "Reach 200 Ability Power as Cetus",
       "id": 7720032
     },
     {
@@ -1289,6 +1321,7 @@
       "kind": "achievement",
       "traveler": "Hero_Aurena",
       "build_dependent": false,
+      "description": "Cast Golden Explosion 9 times within 5 seconds as Aurena",
       "id": 7720033
     },
     {
@@ -1297,6 +1330,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Empower Memories that deal Dark damage 20 times in a single adventure",
       "id": 7720034
     },
     {
@@ -1305,6 +1339,7 @@
       "kind": "achievement",
       "traveler": "Hero_Husk",
       "build_dependent": false,
+      "description": "Enter the Pure White Dream as Shell",
       "id": 7720035
     },
     {
@@ -1313,6 +1348,7 @@
       "kind": "achievement",
       "traveler": "Hero_Lacerta",
       "build_dependent": false,
+      "description": "Defeat the Heroic Boss 5 times as Lacerta",
       "id": 7720036
     },
     {
@@ -1321,6 +1357,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": true,
+      "description": "Have 4 Active Memories at once that can Stun, Root, or Knockback",
       "id": 7720037
     },
     {
@@ -1329,6 +1366,7 @@
       "kind": "achievement",
       "traveler": "Hero_Mist",
       "build_dependent": false,
+      "description": "Defeat any elemental 75 times as Mist",
       "id": 7720038
     },
     {
@@ -1337,6 +1375,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Survive a single hit that deals 70% or more of your Maximum Health while you have no Barrier",
       "id": 7720039
     },
     {
@@ -1345,6 +1384,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Dig through 8 snow piles in the snowy mountains",
       "id": 7720040
     },
     {
@@ -1353,6 +1393,7 @@
       "kind": "achievement",
       "traveler": "Hero_Bismuth",
       "build_dependent": false,
+      "description": "Defeat a Heroic Boss without taking any damage as Bismuth",
       "id": 7720041
     },
     {
@@ -1361,6 +1402,7 @@
       "kind": "achievement",
       "traveler": "Hero_Bismuth",
       "build_dependent": false,
+      "description": "Enter the Pure White Dream as Bismuth",
       "id": 7720042
     },
     {
@@ -1369,6 +1411,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Activate the Shrine of Guidance 15 times in a single adventure",
       "id": 7720043
     },
     {
@@ -1377,6 +1420,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Complete the Forest of Turbulence without taking any damage from enemies",
       "id": 7720044
     },
     {
@@ -1385,6 +1429,7 @@
       "kind": "achievement",
       "traveler": "Hero_Vesper",
       "build_dependent": false,
+      "description": "Perform 9 basic attacks within 5 seconds using Vesper",
       "id": 7720045
     },
     {
@@ -1393,6 +1438,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": true,
+      "description": "Have 4 Active Memories at once with a cooldown of 3 seconds or less",
       "id": 7720046
     },
     {
@@ -1401,6 +1447,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": true,
+      "description": "Achieve victory while having 4 Active Light Attribute Memories",
       "id": 7720047
     },
     {
@@ -1409,6 +1456,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Possess 6,000 Gold",
       "id": 7720048
     },
     {
@@ -1417,6 +1465,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Destroy 3 Pitch-Black Ore",
       "id": 7720049
     },
     {
@@ -1425,6 +1474,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Land a finishing blow on 16 or more enemies with a single Memory cast",
       "id": 7720050
     },
     {
@@ -1433,6 +1483,7 @@
       "kind": "achievement",
       "traveler": "Hero_Yubar",
       "build_dependent": false,
+      "description": "Reach 140 Ability Power with Yubar",
       "id": 7720051
     },
     {
@@ -1441,6 +1492,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Survive for a total of 30 seconds while afflicted with 10 or more Burn stacks, or 3 or more different elemental effects",
       "id": 7720052
     },
     {
@@ -1449,6 +1501,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Open a treasure chest for the first time",
       "id": 7720053
     },
     {
@@ -1457,6 +1510,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Achieve victory a total of 2 times without using the Shrine of Guidance",
       "id": 7720054
     },
     {
@@ -1465,6 +1519,7 @@
       "kind": "achievement",
       "traveler": "Hero_Yubar",
       "build_dependent": false,
+      "description": "Reach 55 Attack Damage with Yubar",
       "id": 7720055
     },
     {
@@ -1473,6 +1528,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": true,
+      "description": "Achieve victory while having cast only one type of Memory during a single adventure",
       "id": 7720056
     },
     {
@@ -1481,6 +1537,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Keep any Traveler's Movement Speed above 900 for 3 seconds",
       "id": 7720057
     },
     {
@@ -1489,6 +1546,7 @@
       "kind": "achievement",
       "traveler": "Hero_Aurena",
       "build_dependent": false,
+      "description": "As Aurena, fully restore your Health in one use of Dangerous Theory when your Health is below 40%",
       "id": 7720058
     },
     {
@@ -1497,6 +1555,7 @@
       "kind": "achievement",
       "traveler": "Hero_Yubar",
       "build_dependent": false,
+      "description": "Deal a total of 400,000 Light damage to enemies as Yubar",
       "id": 7720059
     },
     {
@@ -1505,6 +1564,7 @@
       "kind": "achievement",
       "traveler": "Hero_Vesper",
       "build_dependent": false,
+      "description": "Have 3 Dash or Teleport Memories at once as Vesper",
       "id": 7720060
     },
     {
@@ -1513,6 +1573,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Apply buffs to allies other than yourself a total of 200 times",
       "id": 7720061
     },
     {
@@ -1521,6 +1582,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Apply a total of 3,000 Fire stacks to enemies",
       "id": 7720062
     },
     {
@@ -1529,6 +1591,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Enter a new location 12 times while your health is at or below 40% in a single run",
       "id": 7720063
     },
     {
@@ -1537,6 +1600,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Acquire a total of 450 Dream Dust",
       "id": 7720064
     },
     {
@@ -1545,6 +1609,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Defeat 250 burning enemies",
       "id": 7720065
     },
     {
@@ -1553,6 +1618,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Reach the Fragment of the Starry Sky",
       "id": 7720066
     },
     {
@@ -1561,6 +1627,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Breathe life into the wooden doll",
       "id": 7720067
     },
     {
@@ -1569,6 +1636,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Activate the Shrine of Dismantling 12 times",
       "id": 7720068
     },
     {
@@ -1577,6 +1645,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Defeat an enemy while they have 30 or more Fire stacks",
       "id": 7720069
     },
     {
@@ -1585,6 +1654,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Mitigate a total of 20,000 damage from enemies using Barriers",
       "id": 7720070
     },
     {
@@ -1593,6 +1663,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Land 80 finishing blows on enemies from an extreme distance",
       "id": 7720071
     },
     {
@@ -1601,6 +1672,7 @@
       "kind": "achievement",
       "traveler": "Hero_Nachia",
       "build_dependent": false,
+      "description": "As Nachia, defeat the Demon of the Forest within 6 seconds after dealing the first damage",
       "id": 7720072
     },
     {
@@ -1609,6 +1681,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Take the Merchant's unattended backpack 12 times",
       "id": 7720073
     },
     {
@@ -1617,6 +1690,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": true,
+      "description": "Have 4 healing Active Memories at once",
       "id": 7720074
     },
     {
@@ -1625,6 +1699,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Spend a total of 2,000 Gold",
       "id": 7720075
     },
     {
@@ -1633,6 +1708,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Defeat the Demon of the Forest by clawing it",
       "id": 7720076
     },
     {
@@ -1641,6 +1717,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Gain a Barrier equal to or greater than 300% of your Maximum Health",
       "id": 7720077
     },
     {
@@ -1649,6 +1726,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Land a finishing blow on Thunder Tigers with lightning 25 times",
       "id": 7720078
     },
     {
@@ -1657,6 +1735,7 @@
       "kind": "achievement",
       "traveler": "Hero_Cetus",
       "build_dependent": false,
+      "description": "Defeat 120 enemies in the snowy mountains as Cetus",
       "id": 7720079
     },
     {
@@ -1665,6 +1744,7 @@
       "kind": "achievement",
       "traveler": "Hero_Nachia",
       "build_dependent": false,
+      "description": "As Nachia, defeat a Guardian of Impermanence without taking any damage",
       "id": 7720080
     },
     {
@@ -1673,6 +1753,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Acquire Unique Memories or Essences from Heroic Bosses 8 times",
       "id": 7720081
     },
     {
@@ -1681,6 +1762,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Reach the Starless Path",
       "id": 7720082
     },
     {
@@ -1689,6 +1771,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Defeat the Demon of the Forest 12 times",
       "id": 7720083
     },
     {
@@ -1697,6 +1780,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Land a total of 1,000 critical strikes",
       "id": 7720084
     },
     {
@@ -1705,6 +1789,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Reach 6 Attack Speed per second",
       "id": 7720085
     },
     {
@@ -1713,6 +1798,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Fully heal a Traveler below 30% Health within 1 seconds",
       "id": 7720086
     },
     {
@@ -1721,6 +1807,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Cast 12 Memories within 8 seconds",
       "id": 7720087
     },
     {
@@ -1729,6 +1816,7 @@
       "kind": "achievement",
       "traveler": "Hero_Lacerta",
       "build_dependent": false,
+      "description": "Defeat the Heroic Boss with 85% or more Health remaining as Lacerta",
       "id": 7720088
     },
     {
@@ -1737,6 +1825,7 @@
       "kind": "achievement",
       "traveler": "Hero_Mist",
       "build_dependent": false,
+      "description": "Defeat Belphomet within 2 minutes of starting an adventure as Mist",
       "id": 7720089
     },
     {
@@ -1745,6 +1834,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Enter the Pure White Dream on Nightmare difficulty",
       "id": 7720090
     },
     {
@@ -1753,6 +1843,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Defeat 70 Hunters",
       "id": 7720091
     },
     {
@@ -1761,6 +1852,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": false,
+      "description": "Scare or defeat the Merchant 20 times",
       "id": 7720092
     },
     {
@@ -1769,6 +1861,7 @@
       "kind": "achievement",
       "traveler": null,
       "build_dependent": true,
+      "description": "Achieve victory while having 4 Active Memories that have a cooldown of 6 seconds or longer",
       "id": 7720093
     },
     {
