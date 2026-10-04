@@ -28,6 +28,8 @@ whole log, or at least every `[AP]` line, plus anything in the "Report" lines be
 **0.4.0, random starting Travelers** (2026-10-03, same setup, starters Aurena and Yubar): 14.1–14.4 passed. 14.5
 (tutorial), 14.6 (profiles bound before 0.4.0) and 14.7 (co-op) were not tested.
 
+**Passive mastery (issue #5):** 15 not tested yet.
+
 Every connect logs `connection rejected (400 Bad Request)` on the local server, then connects: MultiClient.Net tries
 `wss://` first and falls back to `ws://`.
 
@@ -365,3 +367,13 @@ The seed starts with 2 random Travelers instead of Lacerta and Mist. Use a seed 
    unlocked, plus whatever that seed sent. Load the new profile again afterwards.
 7. **Co-op join** (optional, needs a second game copy): join a friend's lobby with the new profile. The lobby
    opens on an unlocked Traveler.
+
+## 15. Passive mastery off (issue #5)
+
+A seed with `passive_mastery: false`. Claude hosts it and sends items with `/send`.
+
+1. Fresh bind: `[AP] Passive mastery: off`.
+2. Play a few minutes, then concede. Back in the lobby there's no mastery panel, the Traveler's mastery is unchanged, and
+   the log shows `[AP] Run mastery reward suppressed (N points): passive mastery is off`.
+3. `ap_disconnect`, then repeat step 2 offline: the same result.
+4. `/send SoDTest Mastery: <starter>`: `level 0 -> 5 (points into level 0)`.
