@@ -26,7 +26,9 @@ replaces `stardust_pack_value`: it is the seed's whole Stardust income, divided 
 `jonas_wares` adds gold purchases at Jonas's shop when playing solo or hosting. Hover the AP icon to see the item
 and recipient; buying sends its check. A player who only joins other people's games should set `jonas_wares: 0`.
 Shrine uses, quest completions and artifact hand-ins always send checks, including when joining a co-op game.
-They do not require `in_run_items`. The in-run options, wares and pilgrimage checks ship together with #10–#12.
+They do not require `in_run_items`. With in-run items enabled, Map Blessings mark and ping a shrine, room bonus,
+Lizard Shop or Artifact on your world map. Follow the marker to use it; if no eligible node remains, it waits for a
+later world or run. The in-run options, wares and pilgrimage checks ship together with Treasures and Curse traps.
 
 ## Installing the mod
 

@@ -9,15 +9,17 @@ namespace SoDArchipelago
     // A missing handler or invalid target leaves the item pending. No pending cache belongs to a particular profile.
     public static class InRunItems
     {
-        private static readonly Dictionary<string, Func<GameData.Item, ItemInfo, bool>> _handlers =
-            new Dictionary<string, Func<GameData.Item, ItemInfo, bool>>();
+        private static readonly Dictionary<string, (Func<GameData.Item, ItemInfo, bool> tryLand,
+            Func<GameData.Item, ItemInfo, string> notice)> _handlers =
+            new Dictionary<string, (Func<GameData.Item, ItemInfo, bool>, Func<GameData.Item, ItemInfo, string>)>();
 
         public static bool IsInRunKind(string kind) => kind == "blessing" || kind == "treasure" || kind == "curse";
 
-        public static void Register(string kind, Func<GameData.Item, ItemInfo, bool> tryLand)
+        public static void Register(string kind, Func<GameData.Item, ItemInfo, bool> tryLand,
+            Func<GameData.Item, ItemInfo, string> landingNotice = null)
         {
             if (!IsInRunKind(kind) || tryLand == null) throw new ArgumentException("Invalid in-run handler");
-            _handlers[kind] = tryLand;
+            _handlers[kind] = (tryLand, landingNotice);
         }
 
         public static void Cleanup() => _handlers.Clear();
@@ -40,15 +42,15 @@ namespace SoDArchipelago
                 copies.TryGetValue(item.Key, out var count);
                 copies[item.Key] = ++count;
                 if (count <= ApRecords.GetApplied(false, item.Key) || waiting.Contains(item.Key)) continue;
-                if (!_handlers.TryGetValue(item.Kind, out var tryLand)) continue;
-                if (!tryLand(item, info))
+                if (!_handlers.TryGetValue(item.Kind, out var handler)) continue;
+                if (!handler.tryLand(item, info))
                 {
                     waiting.Add(item.Key);
                     continue;
                 }
                 ApRecords.SetApplied(false, item.Key, count);
                 DewSave.SaveProfileMain();
-                ApClient.Say($"Received {item.Name}{ItemHandler.Sender(info)}");
+                ApClient.Say(handler.notice?.Invoke(item, info) ?? $"Received {item.Name}{ItemHandler.Sender(info)}");
             }
         }
     }

@@ -128,8 +128,15 @@ In-run items wait until you are connected and playing solo or hosting, and their
 They can wait until a later world or run; reconnecting keeps pending items. Their message appears when they land.
 Quitting before the game's next continue save can lose an effect that has already landed.
 
-**Development status:** the shared options and pool rules (#7), Jonas's Wares (#8) and pilgrimage checks (#9) are
-implemented. In-run effects arrive in #10–#12; all six issues ship together in one matching apworld/mod release.
+**Map Blessings** add a shrine, room bonus, Lizard Shop or Artifact to an unvisited combat node ahead. A revealed
+marker and map ping show where it landed; the notice names the blessing and its sender. Route there to use it.
+Room bonuses and the Lizard Shop avoid replacing another bonus; shrines and Artifacts may share a bonus room.
+When no eligible node remains, the blessing waits for a later world or run. Hunters can remove a room bonus as usual;
+shrines stay. In co-op, everyone shares the room.
+
+**Development status:** the shared options and pool rules (#7), Jonas's Wares (#8), pilgrimage checks (#9) and Map
+Blessings (#10) are implemented. Treasures and Curse traps arrive in #11–#12; all six issues ship together in one
+matching apworld/mod release.
 
 ## Playing offline
 

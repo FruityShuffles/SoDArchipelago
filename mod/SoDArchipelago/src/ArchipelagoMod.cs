@@ -33,6 +33,7 @@ namespace SoDArchipelago
         {
             instance.isAlteringGameplay = true;
             GameData.Load();
+            MapBlessings.Initialize();
             Log.Info($"Loaded {mod.metadata.id} {mod.metadata.modVer}; data format {GameData.DataFormatVersion}, " +
                      $"extracted from game {GameData.ExtractedFromGameVersion}; running game {Application.version}");
 

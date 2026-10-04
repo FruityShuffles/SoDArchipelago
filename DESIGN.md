@@ -379,6 +379,35 @@ release; this foundation alone is not published. The original 245 checks remain 
 - New item content changes `data_hash`; the Stardust protocol also increments the data format version. Old seeds
   require the previous matching mod. No release is made until #8–#12 are implemented together.
 
+### Map Blessings
+
+Issue #10. All 15 `blessing` items use their catalog `target` to add a vanilla room modifier ahead on the world map.
+The shared in-run loop delivers them only while connected, Bound and in a ready solo/host run. They need no new
+prefabs, messages, item IDs or slot data. Vanilla co-op guests share the resulting room.
+
+- **Common:** Pure Dream, Gold Everywhere, Harder Fight, Better Reward. **Uncommon:** Blessed Guidance, Pot of Greed,
+  Maw of Doom, Hatred, Paradox, Mirror of Remorse, Destiny, Entanglement, Disintegration and Altar of Cleansing.
+  **Rare:** Lizard Shop and Artifact. Keep each modifier's vanilla color, icon and tooltip.
+- Placement calls `ZoneManager.TryGetNodeIndexForNextGoal` with the vanilla treasure-map settings. For a main modifier
+  (the three common bonuses and Lizard Shop), use distance 2–4, `preferCloserToExit = true`, `avoidMainModifier = true`,
+  as Totally Genuine Treasure Map does. For shrines and Artifact, use distance 3–4 and allow a main modifier, as Treasure
+  Map does. Read `isMain` from the vanilla prefab. The helper chooses unvisited, non-sidetrack combat nodes and treats
+  distance as a preference. No eligible node means pending, including at a world's end or in Primus.
+- Call `AddModifier` with `isForceRevealed = true`. Its vanilla path assigns an ID, stores the modifier's server data,
+  syncs the node and creates the modifier on room arrival. The shrine modifier's normal `OnStartServer` spawns its shrine.
+  The map's normal nodes-changed event draws the marker even on an unexplored node at any distance.
+- Broadcast the vanilla `WorldNode` ping with the local host as sender, avoiding the command's chat rate limit for
+  batches of blessings. This flashes the map button and posts the vanilla chat message. Then save the applied counter
+  and show `Blessing from Alice: Mirror of Remorse, marked on your map.` Starting/server grants identify their source.
+  A ping exception is logged but never retries a modifier already placed. A missing ping manager leaves the item pending.
+- Hunter behavior stays vanilla: a hunted node loses its main bonus while shrines remain. No replacement or refund.
+  Each received copy requires its own successful placement; counters prevent replay after reconnect or restart.
+
+Implementation verification (2026-10-04): all 15 installed prefabs and their four main-modifier flags match the
+catalog and placement rules. Decompiled `AddModifier` → `RoomModifiers.OnRoomStartServer` → shrine `OnStartServer`
+confirms spawning on arrival. The host uses the public server-side `BroadcastPing` RPC. C# delivery/guard tests
+cover all 15 blessings, pending duplicates, later-world delivery, restart counters and ping failure. No in-game test.
+
 ### Checks
 - **Achievements:** when an achievement completes, send its check. **Suppress the vanilla unlock reward**, since the
   AP item replaces it. **Keep** the vanilla Stardust bonus (`DewAchievementItem.grantedStardust`, usually 50).

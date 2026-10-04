@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using Archipelago.MultiClient.Net.Models;
 using SoDArchipelago;
 
@@ -32,6 +33,9 @@ internal static class Program
         Mirror.NetworkServer.active = true;
         NetworkedManagerBase<GameManager>.instance = new GameManager();
         NetworkedManagerBase<ZoneManager>.instance = new ZoneManager();
+        NetworkedManagerBase<PingManager>.instance = new PingManager();
+        DewResources.modifiers.Clear();
+        DewPlayer.local = new DewPlayer { hero = new Hero() };
         GameData.ItemsById.Clear();
         GameData.LocationsByKey.Clear();
         GameData.Souvenirs.Clear();
@@ -108,6 +112,121 @@ internal static class Program
         Check(ApClient.Notices.Count == 3, "Already applied items produce no repeated notices");
     }
 
+    private static void Blessings()
+    {
+        using var stream = typeof(Program).Assembly.GetManifestResourceStream("game_data.json");
+        using var data = JsonDocument.Parse(stream);
+        var items = data.RootElement.GetProperty("items").EnumerateArray()
+            .Where(i => i.GetProperty("kind").GetString() == "blessing")
+            .Select(i => new GameData.Item { Id = i.GetProperty("id").GetInt64(),
+                Key = i.GetProperty("key").GetString(), Name = i.GetProperty("name").GetString(),
+                Target = i.GetProperty("target").GetString(), Kind = "blessing" }).ToArray();
+        Check(items.Length == 15, "The delivery tests cover every catalog blessing");
+        var main = new HashSet<string> { "RoomMod_PureDream", "RoomMod_GoldEverywhere",
+            "RoomMod_HarderFightBetterReward", "RoomMod_GiftMerchant" };
+        foreach (var item in items)
+        {
+            Reset(); MapBlessings.Initialize();
+            GameData.ItemsById[item.Id] = item;
+            DewResources.modifiers[item.Target] = new RoomModifierBase { isMain = main.Contains(item.Target) };
+            ApClient.ReceivedItems.Add(new ItemInfo { ItemId = item.Id, LocationId = 10 });
+            var zm = NetworkedManagerBase<ZoneManager>.instance;
+            var pm = NetworkedManagerBase<PingManager>.instance;
+            zm.canSelect = settings => false;
+            InRunItems.Update();
+            Check(zm.additions.Count == 0 && pm.pings.Count == 0 && DewSave.saves == 0 && ApClient.Notices.Count == 0 &&
+                ApRecords.GetApplied(false, item.Key) == 0, "No vanilla target leaves a blessing pending without feedback");
+            var settings = zm.searches.Single();
+            Check(settings.allowedTypes.SequenceEqual(new[] { WorldNodeType.Combat }) && settings.preferCloserToExit &&
+                settings.desiredDistance.x == (main.Contains(item.Target) ? 2 : 3) && settings.desiredDistance.y == 4 &&
+                settings.avoidMainModifier == main.Contains(item.Target), "Use the matching vanilla treasure-map settings");
+            zm.canSelect = s => true;
+            InRunItems.Update();
+            var added = zm.additions.Single();
+            var ping = pm.pings.Single();
+            Check(added.node == 2 && added.mod.type == item.Target && added.mod.isForceRevealed,
+                "Every blessing adds its own force-revealed vanilla modifier at the selected node");
+            Check(ping.sender == DewPlayer.local && ping.type == PingManager.PingType.WorldNode && ping.itemIndex == added.node,
+                "Broadcast a vanilla world-node ping from the host at the exact destination");
+            Check(ApRecords.GetApplied(false, item.Key) == 1 && DewSave.saves == 1 &&
+                ApClient.Notices.Single() == $"Blessing from Alice: {item.Name.Substring(10)}, marked on your map.",
+                "A successful placement saves once and names the blessing and sender");
+            InRunItems.Update();
+            Check(zm.additions.Count == 1 && pm.pings.Count == 1 && ApClient.Notices.Count == 1,
+                "Already placed blessings are not placed or announced again");
+        }
+
+        Reset(); MapBlessings.Initialize();
+        var bonus = items.First(i => i.Target == "RoomMod_PureDream");
+        var shrine = items.First(i => i.Target == "RoomMod_SpawnMirrorOfRemorse");
+        GameData.ItemsById[bonus.Id] = bonus; GameData.ItemsById[shrine.Id] = shrine;
+        DewResources.modifiers[bonus.Target] = new RoomModifierBase { isMain = true };
+        DewResources.modifiers[shrine.Target] = new RoomModifierBase();
+        ApClient.ReceivedItems.AddRange(new[] { new ItemInfo { ItemId = bonus.Id, LocationId = 10 },
+            new ItemInfo { ItemId = bonus.Id, LocationId = 11 }, new ItemInfo { ItemId = shrine.Id, LocationId = 12 } });
+        var zone = NetworkedManagerBase<ZoneManager>.instance;
+        var pings = NetworkedManagerBase<PingManager>.instance;
+        zone.canSelect = settings => !settings.avoidMainModifier;
+        InRunItems.Update();
+        Check(zone.searches.Count == 2 && zone.additions.Single().mod.type == shrine.Target &&
+            ApRecords.GetApplied(false, bonus.Key) == 0 && ApRecords.GetApplied(false, shrine.Key) == 1,
+            "A pending main bonus cannot block a shrine that can share a node");
+        zone = NetworkedManagerBase<ZoneManager>.instance = new ZoneManager();
+        zone.canSelect = settings => zone.additions.Count == 0;
+        InRunItems.Update();
+        Check(zone.additions.Count == 1 && ApRecords.GetApplied(false, bonus.Key) == 1,
+            "Each duplicate needs its own successful placement; the rest can wait for the next world");
+
+        // Reconstruct the profile and handler as a restart would, retaining only the persisted counters.
+        var flags = new List<string>(DewSave.profileMain.experienceFlags);
+        DewSave.profileMain = new DewProfile { experienceFlags = new List<string>(flags) };
+        InRunItems.Cleanup(); MapBlessings.Initialize();
+        zone = NetworkedManagerBase<ZoneManager>.instance = new ZoneManager();
+        Action<Action, Action, string> blocked = (disable, restore, why) =>
+        {
+            int saved = DewSave.saves, notices = ApClient.Notices.Count, pingCount = pings.pings.Count;
+            disable(); InRunItems.Update(); restore();
+            Check(zone.additions.Count == 0 && DewSave.saves == saved && ApClient.Notices.Count == notices &&
+                pings.pings.Count == pingCount, why);
+        };
+        blocked(() => ApClient.IsConnected = false, () => ApClient.IsConnected = true, "Offline blessings wait");
+        blocked(() => Mirror.NetworkServer.active = false, () => Mirror.NetworkServer.active = true, "Guest blessings wait");
+        var gm = NetworkedManagerBase<GameManager>.instance;
+        blocked(() => NetworkedManagerBase<GameManager>.instance = null,
+            () => NetworkedManagerBase<GameManager>.instance = gm, "Lobby blessings wait");
+        blocked(() => gm.ready = false, () => gm.ready = true, "Transition blessings wait");
+        blocked(() => gm.isGameConcluded = true, () => gm.isGameConcluded = false, "Concluded runs do not get blessings");
+        blocked(() => ProfileGuard.SetSessionMarker("Archipelago:other:slot"),
+            () => ProfileGuard.SetSessionMarker("Archipelago:test:slot"), "A different seed cannot place blessings");
+        blocked(() => ProfileGuard.OnProfileLoaded("failed", false),
+            () => ProfileGuard.OnProfileLoaded("loaded", true), "Failed profile loads cannot place blessings");
+        blocked(() => DewSave.profileMainPath = null, () => DewSave.profileMainPath = "test.json",
+            "Transient profiles cannot place blessings");
+        blocked(() => DewSave.profileMain.experienceFlags.Clear(), () => DewSave.profileMain.experienceFlags.AddRange(flags),
+            "Vanilla profiles cannot place blessings");
+        blocked(() => NetworkedManagerBase<PingManager>.instance = null,
+            () => NetworkedManagerBase<PingManager>.instance = pings, "Wait until vanilla ping feedback is available");
+        var nodes = zone.nodes.ToArray();
+        blocked(() => zone.nodes.Clear(), () => zone.nodes.AddRange(nodes), "Empty maps cannot be searched");
+        blocked(() => DewResources.modifiers.Remove(bonus.Target),
+            () => DewResources.modifiers[bonus.Target] = new RoomModifierBase { isMain = true }, "Missing prefabs stay pending");
+        InRunItems.Update();
+        Check(zone.additions.Count == 1 && ApRecords.GetApplied(false, bonus.Key) == 2 &&
+            ApRecords.GetApplied(false, shrine.Key) == 1, "Reconnect lands only the remaining copy in the next world");
+
+        // A failed ping is feedback only: replay would grant another room modifier.
+        pings.throwOnPing = true;
+        ApClient.ReceivedItems.Add(new ItemInfo { ItemId = bonus.Id, LocationId = -1 });
+        InRunItems.Update(); InRunItems.Update();
+        Check(zone.additions.Count == 2 && ApRecords.GetApplied(false, bonus.Key) == 3 &&
+            ApClient.Notices.Last() == "Blessing from server: Pure Dream, marked on your map.",
+            "Ping failure cannot replay a successfully placed server-granted blessing");
+        ApClient.ReceivedItems.Add(new ItemInfo { ItemId = bonus.Id, LocationId = -2 });
+        InRunItems.Update();
+        Check(ApClient.Notices.Last() == "Blessing from starting items: Pure Dream, marked on your map.",
+            "Starting blessings have a readable source");
+    }
+
     private static void Records()
     {
         Reset();
@@ -168,8 +287,8 @@ internal static class Program
 
     private static void Main()
     {
-        Stardust(); StardustItems(); Delivery(); Records(); Wares(); Pilgrimage();
-        Console.WriteLine($"Passed {_assertions} assertions (Stardust, delivery, checks, wares and pilgrimage).");
+        Stardust(); StardustItems(); Delivery(); Blessings(); Records(); Wares(); Pilgrimage();
+        Console.WriteLine($"Passed {_assertions} assertions (Stardust, delivery, blessings, checks, wares and pilgrimage).");
     }
 
     private static void Wares()

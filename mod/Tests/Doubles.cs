@@ -8,6 +8,12 @@ namespace UnityEngine
     {
         public static void Log(string text) { }
         public static void LogWarning(string text) { }
+        public static void LogException(Exception exception) { }
+    }
+    public struct Vector2Int
+    {
+        public int x, y;
+        public Vector2Int(int x, int y) { this.x = x; this.y = y; }
     }
     public static class Random { public static int Range(int min, int max) => max - 1; }
 }
@@ -24,7 +30,41 @@ public class GameManager
     public bool ready = true;
     public bool IsLazyCallReady() => ready;
 }
-public class ZoneManager { public object currentZone = new object(); public int currentZoneIndex, loopIndex; }
+public class ZoneManager
+{
+    public object currentZone = new object();
+    public int currentZoneIndex, loopIndex;
+    public readonly List<object> nodes = new List<object> { new object(), new object(), new object() };
+    public readonly List<GetNodeIndexSettings> searches = new List<GetNodeIndexSettings>();
+    public readonly List<(int node, ModifierData mod)> additions = new List<(int, ModifierData)>();
+    public Func<GetNodeIndexSettings, bool> canSelect = settings => true;
+    public bool TryGetNodeIndexForNextGoal(GetNodeIndexSettings settings, out int node)
+    {
+        searches.Add(settings); node = 2; return canSelect(settings);
+    }
+    public int AddModifier(int node, ModifierData mod) { additions.Add((node, mod)); return additions.Count; }
+}
+public class GetNodeIndexSettings
+{
+    public WorldNodeType[] allowedTypes = new[] { WorldNodeType.Combat };
+    public UnityEngine.Vector2Int desiredDistance;
+    public bool preferCloserToExit, avoidMainModifier;
+}
+public enum WorldNodeType { Combat }
+public struct ModifierData { public string type; public bool isForceRevealed; }
+public class RoomModifierBase { public bool isMain; }
+public class PingManager
+{
+    public enum PingType { WorldNode }
+    public struct Ping { public DewPlayer sender; public PingType type; public int itemIndex; }
+    public readonly List<Ping> pings = new List<Ping>();
+    public bool throwOnPing;
+    public void BroadcastPing(Ping ping)
+    {
+        if (throwOnPing) throw new Exception("Feedback failure");
+        pings.Add(ping);
+    }
+}
 public class GameSettingsManager { public string difficulty; }
 public class Entity { public DewPlayer owner; }
 public class Hero : Entity { }
@@ -53,7 +93,12 @@ public class Treasure
 public static class DewResources
 {
     public static readonly Treasure treasure = new Treasure();
-    public static T GetByShortTypeName<T>(string name) => (T)(object)treasure;
+    public static readonly Dictionary<string, RoomModifierBase> modifiers = new Dictionary<string, RoomModifierBase>();
+    public static T GetByShortTypeName<T>(string name)
+    {
+        if (typeof(T) != typeof(RoomModifierBase)) return (T)(object)treasure;
+        return modifiers.TryGetValue(name, out var mod) ? (T)(object)mod : default;
+    }
 }
 public class EventInfoLoadZone { public string from, to; public bool isTraveling, isLoadingFromSave; }
 public class DewProfile
@@ -117,7 +162,7 @@ namespace SoDArchipelago
         public class Item
         {
             public long Id;
-            public string Name, Key, Kind;
+            public string Name, Key, Kind, Target;
             public List<string> Unlocks = new List<string>();
             public List<string> UnlockNames;
         }
