@@ -18,6 +18,8 @@ The production MapBlessings, Treasures, CurseTraps and DeathLinkHandler sources 
 map targeting and pings, Treasure eligibility and free spawn fields, Clairvoyance cleanup, Shard/DeathLink suppression,
 all three curse tiers, curse pool filtering and full-asset resolution, kill/travel conditions and world scaling,
 boss-room deferral, per-copy counters and restart replay prevention.
+Idle delivery coverage runs thousands of connected title/lobby updates with missing managers and asserts that
+the loop never uses a scene-searching manager getter; pending items still land when cached run managers appear.
 Blessing regressions cover exit-boss/sidetrack/special-map deferral, invalid room/node state, identical shrine
 restore collisions, distinct shrines sharing a node, and Artifact delivery after a party hand-in.
 Treasure regressions cover exit-boss deferral with Shards still enabled, sidetrack/special-map deferral, and delayed

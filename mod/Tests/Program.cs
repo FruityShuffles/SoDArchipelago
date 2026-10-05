@@ -77,6 +77,36 @@ internal static class Program
         }
     }
 
+    private static void IdleDelivery()
+    {
+        Reset();
+        var item = new GameData.Item { Id = 1, Key = "IDLE_TEST", Name = "Idle Test", Kind = "blessing" };
+        GameData.ItemsById[item.Id] = item;
+        ApClient.ReceivedItems.Add(new ItemInfo { ItemId = item.Id });
+        int calls = 0;
+        InRunItems.Register("blessing", (data, info) => { calls++; return true; });
+        NetworkedManagerBase<GameManager>.instance = null;
+        NetworkedManagerBase<ZoneManager>.instance = null;
+        NetworkedManagerBase<GameManager>.instanceLookups = 0;
+        NetworkedManagerBase<ZoneManager>.instanceLookups = 0;
+        Mirror.NetworkServer.active = false;
+        for (int frame = 0; frame < 1000; frame++) InRunItems.Update();
+        Mirror.NetworkServer.active = true;
+        for (int frame = 0; frame < 1000; frame++) InRunItems.Update();
+        Check(NetworkedManagerBase<GameManager>.instanceLookups == 0,
+            "Connected title/lobby frames must not search the scene for a missing GameManager");
+        Check(NetworkedManagerBase<ZoneManager>.instanceLookups == 0 && calls == 0,
+            "Idle delivery neither searches for a ZoneManager nor spends pending items");
+        NetworkedManagerBase<GameManager>.instance = new GameManager();
+        for (int frame = 0; frame < 1000; frame++) InRunItems.Update();
+        Check(NetworkedManagerBase<ZoneManager>.instanceLookups == 0 && calls == 0,
+            "A missing run ZoneManager stays pending without scene searches");
+        NetworkedManagerBase<ZoneManager>.instance = new ZoneManager();
+        InRunItems.Update();
+        Check(calls == 1 && ApRecords.GetApplied(false, item.Key) == 1,
+            "Cached managers still allow pending items to land once a run is ready");
+    }
+
     private static void Delivery()
     {
         Reset();
@@ -617,7 +647,7 @@ internal static class Program
 
     private static void Main()
     {
-        Stardust(); StardustItems(); Delivery(); Blessings(); TreasuresAndDeathLink(); Curses(); Records(); Wares(); WareUi(); Pilgrimage();
+        Stardust(); StardustItems(); IdleDelivery(); Delivery(); Blessings(); TreasuresAndDeathLink(); Curses(); Records(); Wares(); WareUi(); Pilgrimage();
         Console.WriteLine($"Passed {_assertions} assertions (Stardust, delivery, blessings, treasures, curses, DeathLink, checks, wares and pilgrimage).");
     }
 

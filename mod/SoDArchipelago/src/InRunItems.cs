@@ -26,11 +26,15 @@ namespace SoDArchipelago
 
         public static void Update()
         {
-            if (_handlers.Count == 0 || !ProfileGuard.Bound || !ApClient.IsConnected || !Mirror.NetworkServer.active)
+            if (_handlers.Count == 0 || !Mirror.NetworkServer.active)
                 return;
-            var gm = NetworkedManagerBase<GameManager>.instance;
-            var zm = NetworkedManagerBase<ZoneManager>.instance;
-            if (gm == null || gm.isGameConcluded || !gm.IsLazyCallReady() || zm == null || zm.currentZone == null)
+            // instance searches the whole scene (including inactive objects) when a manager is missing.
+            // Awake maintains softInstance; polling its cache keeps title/lobby frames free of those searches.
+            var gm = NetworkedManagerBase<GameManager>.softInstance;
+            if (gm == null || gm.isGameConcluded || !gm.IsLazyCallReady() || !ProfileGuard.Bound || !ApClient.IsConnected)
+                return;
+            var zm = NetworkedManagerBase<ZoneManager>.softInstance;
+            if (zm == null || zm.currentZone == null)
                 return;
 
             var copies = new Dictionary<string, int>();

@@ -79,7 +79,17 @@ namespace Mirror
 }
 namespace Archipelago.MultiClient.Net.Models { public class ItemInfo { public long ItemId, LocationId; } }
 
-public class NetworkedManagerBase<T> { public static T instance; }
+public class NetworkedManagerBase<T>
+{
+    private static T _instance;
+    public static int instanceLookups;
+    public static T instance
+    {
+        get { instanceLookups++; return _instance; }
+        set { _instance = value; }
+    }
+    public static T softInstance => _instance;
+}
 public class SingletonBehaviour<T> { public static T instance; }
 public class UI_Constellations { public State state = new State(); public class State { public int stardust; } }
 public static class Dew

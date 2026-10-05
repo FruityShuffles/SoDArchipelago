@@ -384,6 +384,10 @@ release; this foundation alone is not published. The original 245 checks remain 
   (#10–#12) return false if no valid target exists, leaving the counter unchanged. On success, increment and save
   the counter, then show the item and sender. Unregistered kinds wait. Delivery never happens offline, in the lobby,
   during transitions or for joining players. Counters survive restarts; reconnect restores the full received list.
+  Per-frame eligibility uses cached `softInstance` manager references; `instance` searches the entire scene twice
+  when a manager is missing and must not be polled while waiting in the title screen or lobby.
+  The solo test on 2026-10-04 exposed connected frame pacing loss; the player confirmed smooth performance after
+  this change and a mod reload. The regression harness passes 686 assertions; build/deployment had zero warnings/errors.
 - Reuse the game's vanilla content, targeting, effects and networking. No custom prefabs or network messages.
   A delivered item lost by quitting before the next continue save remains spent (the counter does not rewind).
 - Ware, shrine and quest first-time checks use `AP:check:<location key>` in `experienceFlags`. Record and save at once,
