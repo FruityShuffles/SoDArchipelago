@@ -31,6 +31,9 @@ internal static class Program
         ApClient.SlotData.Clear();
         SingletonBehaviour<UI_Constellations>.instance = null;
         Mirror.NetworkServer.active = true;
+        Mirror.NetworkServer.spawned.Clear();
+        NetworkedManagerBase<ActorManager>.instance = new ActorManager();
+        Dew.deferTreasureCreate = false;
         NetworkedManagerBase<GameManager>.instance = new GameManager();
         NetworkedManagerBase<ZoneManager>.instance = new ZoneManager();
         NetworkedManagerBase<PingManager>.instance = new PingManager();
@@ -53,6 +56,8 @@ internal static class Program
         GameData.Souvenirs.Clear();
         GameData.Artifacts.Clear();
         InRunItems.Cleanup();
+        WareShopUi.Cleanup();
+        ManagerBase<FloatingWindowManager>.softInstance = null;
     }
 
     private static void Stardust()
@@ -108,7 +113,7 @@ internal static class Program
         blocked(() => gm.ready = false, () => gm.ready = true, "Transitions wait");
         blocked(() => gm.isGameConcluded = true, () => gm.isGameConcluded = false, "Ended runs wait");
         blocked(() => NetworkedManagerBase<ZoneManager>.instance.currentZone = null,
-            () => NetworkedManagerBase<ZoneManager>.instance.currentZone = new object(), "Missing worlds wait");
+            () => NetworkedManagerBase<ZoneManager>.instance.currentZone = new Zone(), "Missing worlds wait");
         blocked(() => ProfileGuard.SetSessionMarker("Archipelago:other:slot"),
             () => ProfileGuard.SetSessionMarker("Archipelago:test:slot"), "Other profiles must be untouched");
         blocked(() => ProfileGuard.OnProfileLoaded("failed", false),
@@ -218,6 +223,18 @@ internal static class Program
             "Vanilla profiles cannot place blessings");
         blocked(() => NetworkedManagerBase<PingManager>.instance = null,
             () => NetworkedManagerBase<PingManager>.instance = pings, "Wait until vanilla ping feedback is available");
+        blocked(() => zone.currentNode.type = WorldNodeType.ExitBoss,
+            () => zone.currentNode.type = WorldNodeType.Combat, "Boss rooms cannot spend blessings on unreachable nodes");
+        blocked(() => zone.isSidetracking = true, () => zone.isSidetracking = false,
+            "Sidetracks defer placement instead of selecting disconnected nodes");
+        blocked(() => zone.currentZone.useSpecialGeneration = true, () => zone.currentZone.useSpecialGeneration = false,
+            "Primus and other special maps defer placement even when the node helper would succeed");
+        blocked(() => zone.isInRoomTransition = true, () => zone.isInRoomTransition = false,
+            "Room transitions cannot place blessings");
+        blocked(() => zone.currentRoom = null, () => zone.currentRoom = new Room(), "Missing rooms leave blessings pending");
+        blocked(() => zone.currentNodeIndex = -1, () => zone.currentNodeIndex = 0, "Invalid current node leaves blessings pending");
+        blocked(() => zone.currentNodeIndex = zone.nodes.Count, () => zone.currentNodeIndex = 0,
+            "Out-of-range current node cannot invoke the vanilla helper");
         var nodes = zone.nodes.ToArray();
         blocked(() => zone.nodes.Clear(), () => zone.nodes.AddRange(nodes), "Empty maps cannot be searched");
         blocked(() => DewResources.modifiers.Remove(bonus.Target),
@@ -227,6 +244,7 @@ internal static class Program
             ApRecords.GetApplied(false, shrine.Key) == 1, "Reconnect lands only the remaining copy in the next world");
 
         // A failed ping is feedback only: replay would grant another room modifier.
+        zone.selectedNode = 1;
         pings.throwOnPing = true;
         ApClient.ReceivedItems.Add(new ItemInfo { ItemId = bonus.Id, LocationId = -1 });
         InRunItems.Update(); InRunItems.Update();
@@ -234,9 +252,65 @@ internal static class Program
             ApClient.Notices.Last() == "Blessing from server: Pure Dream, marked on your map.",
             "Ping failure cannot replay a successfully placed server-granted blessing");
         ApClient.ReceivedItems.Add(new ItemInfo { ItemId = bonus.Id, LocationId = -2 });
+        NetworkedManagerBase<ZoneManager>.instance = new ZoneManager();
         InRunItems.Update();
         Check(ApClient.Notices.Last() == "Blessing from starting items: Pure Dream, marked on your map.",
             "Starting blessings have a readable source");
+
+        Reset(); MapBlessings.Initialize();
+        GameData.ItemsById[shrine.Id] = shrine;
+        var otherShrine = items.First(i => i.Target == "RoomMod_SpawnPotOfGreed");
+        GameData.ItemsById[otherShrine.Id] = otherShrine;
+        DewResources.modifiers[shrine.Target] = new RoomModifierBase();
+        DewResources.modifiers[otherShrine.Target] = new RoomModifierBase();
+        zone = NetworkedManagerBase<ZoneManager>.instance;
+        ApClient.ReceivedItems.AddRange(new[] { new ItemInfo { ItemId = shrine.Id },
+            new ItemInfo { ItemId = shrine.Id }, new ItemInfo { ItemId = otherShrine.Id } });
+        InRunItems.Update();
+        Check(zone.additions.Count == 2 && ApRecords.GetApplied(false, shrine.Key) == 1 &&
+            ApRecords.GetApplied(false, otherShrine.Key) == 1,
+            "Identical shrine copies cannot share a node, while distinct shrines can still land there");
+        InRunItems.Update();
+        Check(zone.additions.Count == 2 && ApRecords.GetApplied(false, shrine.Key) == 1,
+            "Repeated selection of an occupied shrine target leaves the duplicate pending");
+        zone.selectedNode = 1;
+        InRunItems.Update();
+        Check(zone.additions.Count == 3 && zone.nodes[1].HasModifier(shrine.Target) &&
+            ApRecords.GetApplied(false, shrine.Key) == 2, "A later valid destination spends only the pending shrine copy");
+
+        Reset(); MapBlessings.Initialize();
+        GameData.ItemsById[shrine.Id] = shrine;
+        DewResources.modifiers[shrine.Target] = new RoomModifierBase();
+        zone = NetworkedManagerBase<ZoneManager>.instance;
+        zone.nodes[2].modifiers.Add(new ModifierData { type = shrine.Target });
+        ApClient.ReceivedItems.Add(new ItemInfo { ItemId = shrine.Id });
+        InRunItems.Update();
+        Check(zone.additions.Count == 0 && ApRecords.GetApplied(false, shrine.Key) == 0,
+            "A natively generated shrine also prevents a duplicate restore collision");
+        zone.selectedNode = 1;
+        InRunItems.Update();
+        Check(ApRecords.GetApplied(false, shrine.Key) == 1, "A shrine can land elsewhere without modifying the native copy");
+
+        Reset(); MapBlessings.Initialize();
+        var artifact = items.First(i => i.Target == "RoomMod_Artifact");
+        GameData.ItemsById[artifact.Id] = artifact;
+        DewResources.modifiers[artifact.Target] = new RoomModifierBase();
+        ApClient.ReceivedItems.Add(new ItemInfo { ItemId = artifact.Id });
+        var quests = NetworkedManagerBase<QuestManager>.instance;
+        quests.currentArtifact = "Artifact_AlreadyHeld";
+        zone = NetworkedManagerBase<ZoneManager>.instance;
+        InRunItems.Update();
+        Check(zone.searches.Count == 0 && DewSave.saves == 0 && ApClient.Notices.Count == 0,
+            "An occupied party artifact slot leaves the blessing pending without a target or feedback");
+        NetworkedManagerBase<QuestManager>.instance = null;
+        InRunItems.Update();
+        Check(zone.additions.Count == 0 && ApRecords.GetApplied(false, artifact.Key) == 0,
+            "Artifact blessing waits for its quest manager");
+        NetworkedManagerBase<QuestManager>.instance = quests;
+        quests.currentArtifact = null; quests.didCollectArtifactThisLoop = true;
+        InRunItems.Update();
+        Check(zone.additions.Count == 1 && ApRecords.GetApplied(false, artifact.Key) == 1,
+            "A hand-in enables the artifact blessing even if the world-generation loop quota was already used");
     }
 
     private static void TreasuresAndDeathLink()
@@ -288,6 +362,17 @@ internal static class Program
             blocked(() => hero.isActive = false, () => hero.isActive = true, "Inactive hero waits");
             blocked(() => DewResources.treasures.Remove(item.Target),
                 () => DewResources.treasures[item.Target] = prefab, "Missing prefab waits");
+            if (cloak || clairvoyance || map)
+            {
+                blocked(() => zone.currentNode.type = WorldNodeType.ExitBoss,
+                    () => zone.currentNode.type = WorldNodeType.Combat, "World-map Treasures wait in exit-boss rooms");
+                blocked(() => zone.currentRoom = null, () => zone.currentRoom = new Room(),
+                    "World-map Treasures wait for a current room");
+                blocked(() => zone.currentNodeIndex = -1, () => zone.currentNodeIndex = 0,
+                    "World-map Treasures cannot spend copies with an invalid current node");
+                blocked(() => zone.currentNodeIndex = zone.nodes.Count, () => zone.currentNodeIndex = 0,
+                    "World-map Treasures wait with an out-of-range current node");
+            }
             if (cloak)
                 blocked(() => zone.isHuntAdvanceDisabled = true, () => zone.isHuntAdvanceDisabled = false,
                     "Cloak waits when Hunters cannot advance, including Primus");
@@ -299,6 +384,10 @@ internal static class Program
                 var quests = NetworkedManagerBase<QuestManager>.instance;
                 blocked(() => NetworkedManagerBase<QuestManager>.instance = null,
                     () => NetworkedManagerBase<QuestManager>.instance = quests, "Maps wait for the quest manager");
+                blocked(() => zone.isSidetracking = true, () => zone.isSidetracking = false,
+                    "Maps wait in sidetracks instead of choosing a disconnected destination");
+                blocked(() => zone.currentZone.useSpecialGeneration = true,
+                    () => zone.currentZone.useSpecialGeneration = false, "Maps cannot target a Primus or other special layout");
                 var nodes = zone.nodes.ToArray();
                 blocked(() => zone.nodes.Clear(), () => zone.nodes.AddRange(nodes), "Maps wait on empty worlds");
                 int searches = zone.searches.Count;
@@ -313,10 +402,13 @@ internal static class Program
             }
             // Simulate the vanilla reveal changing eligibility during this batch; the next copy must wait.
             if (clairvoyance) prefab.onSpawn = t => prefab.eligible = false;
+            if (!cloak && !clairvoyance && !map) zone.currentNode.type = WorldNodeType.ExitBoss;
             InRunItems.Update();
             int landed = clairvoyance ? 1 : 2;
             Check(Dew.spawned.Count == landed && ApRecords.GetApplied(false, item.Key) == landed &&
                 DewSave.saves == landed && ApClient.Notices.Count == landed, "Each successful Treasure saves and announces its own copy");
+            if (!cloak && !clairvoyance && !map)
+                Check(zone.currentNode.type == WorldNodeType.ExitBoss && landed == 2, "Shards still land during a boss fight");
             foreach (var spawned in Dew.spawned)
                 Check(spawned.player == player && spawned.hero == hero && spawned.price == 0 &&
                     spawned.merchant == null && spawned.customData == null && spawned.position.x == hero.agentPosition.x &&
@@ -337,6 +429,97 @@ internal static class Program
                     "Next world's reveal lands the pending copy once, even if cleanup fails");
             }
         }
+
+        foreach (var map in items.Where(i => i.Target.EndsWith("TreasureMap", StringComparison.Ordinal)))
+        foreach (var makePending in new Func<Actor>[] { () => new Treasure_TreasureMap(),
+            () => new Treasure_TotallyGenuineTreasureMap(), () => new Quest_TreasureMap(),
+            () => new Quest_SuspiciousTreasureMap() })
+        {
+            Reset(); Treasures.Initialize();
+            GameData.ItemsById[map.Id] = map;
+            DewResources.treasures[map.Target] = map.Target == "Treasure_TreasureMap"
+                ? new Treasure_TreasureMap() : new Treasure_TotallyGenuineTreasureMap();
+            ApClient.ReceivedItems.Add(new ItemInfo { ItemId = map.Id });
+            var pending = makePending();
+            Mirror.NetworkServer.spawned[100] = new Mirror.NetworkIdentity { actor = pending };
+            InRunItems.Update();
+            Check(Dew.spawned.Count == 0 && DewSave.saves == 0 && ApClient.Notices.Count == 0 &&
+                NetworkedManagerBase<ZoneManager>.instance.searches.Count == 0,
+                "Both maps wait for every native map Treasure/quest to finish OnCreate, without drawing another target");
+            NetworkedManagerBase<ActorManager>.instance.allActors.Add(pending);
+            InRunItems.Update();
+            Check(Dew.spawned.Count == 1 && ApRecords.GetApplied(false, map.Key) == 1,
+                "An initialized active map quest or Treasure permits more maps instead of deduplicating them");
+            NetworkedManagerBase<ActorManager>.instance.allActors.Remove(pending); pending.isActive = false;
+            ApClient.ReceivedItems.Add(new ItemInfo { ItemId = map.Id });
+            InRunItems.Update();
+            Check(Dew.spawned.Count == 2 && ApRecords.GetApplied(false, map.Key) == 2,
+                "Inactive native map actors cannot block later copies");
+        }
+
+        Reset(); Treasures.Initialize();
+        var genuineMap = items.First(i => i.Target == "Treasure_TotallyGenuineTreasureMap");
+        var cloakItem = items.First(i => i.Target == "Treasure_CloakOfGuidance");
+        GameData.ItemsById[genuineMap.Id] = genuineMap; GameData.ItemsById[cloakItem.Id] = cloakItem;
+        var queuedPrefab = new Treasure_TotallyGenuineTreasureMap();
+        DewResources.treasures[genuineMap.Target] = queuedPrefab;
+        DewResources.treasures[cloakItem.Target] = new Treasure();
+        Dew.deferTreasureCreate = true;
+        Quest_SuspiciousTreasureMap pendingQuest = null;
+        queuedPrefab.onSpawn = treasure =>
+        {
+            pendingQuest = new Quest_SuspiciousTreasureMap();
+            Mirror.NetworkServer.spawned[100] = new Mirror.NetworkIdentity { actor = pendingQuest };
+            treasure.isActive = false; // Native Treasure destroys itself after starting its queued quest.
+        };
+        ApClient.ReceivedItems.AddRange(new[] { new ItemInfo { ItemId = genuineMap.Id },
+            new ItemInfo { ItemId = genuineMap.Id }, new ItemInfo { ItemId = cloakItem.Id } });
+        InRunItems.Update(); InRunItems.Update();
+        var mapZone = NetworkedManagerBase<ZoneManager>.instance;
+        Check(Dew.spawned.Count == 2 && ApRecords.GetApplied(false, genuineMap.Key) == 1 &&
+            ApRecords.GetApplied(false, cloakItem.Key) == 1 && mapZone.searches.Count == 1,
+            "Only one queued Genuine map spends a copy in a batch, while a Cloak still lands");
+        Dew.spawned[0].CompleteCreate();
+        InRunItems.Update();
+        Check(ApRecords.GetApplied(false, genuineMap.Key) == 1 && mapZone.searches.Count == 1,
+            "The child quest's queued OnCreate also blocks a stale second preflight");
+        NetworkedManagerBase<ActorManager>.instance.allActors.Add(pendingQuest);
+        mapZone.canSelect = settings => false; // The quest has claimed the sole available main-bonus destination.
+        InRunItems.Update();
+        Check(ApRecords.GetApplied(false, genuineMap.Key) == 1 && Dew.spawned.Count == 2,
+            "After initialization, a full map keeps the second copy pending rather than starting a doomed quest");
+        NetworkedManagerBase<ZoneManager>.instance = new ZoneManager();
+        Mirror.NetworkServer.spawned[101] = null;
+        Mirror.NetworkServer.spawned[102] = new Mirror.NetworkIdentity { actor = new Actor() };
+        InRunItems.Update();
+        Check(ApRecords.GetApplied(false, genuineMap.Key) == 2 && Dew.spawned.Count == 3,
+            "The remaining copy lands on a later map; null identities and unrelated unfinished actors do not block it");
+
+        Reset(); Treasures.Initialize();
+        GameData.ItemsById[genuineMap.Id] = genuineMap;
+        DewResources.treasures[genuineMap.Target] = new Treasure_TotallyGenuineTreasureMap();
+        ApClient.ReceivedItems.Add(new ItemInfo { ItemId = genuineMap.Id });
+        NetworkedManagerBase<ActorManager>.instance = null;
+        InRunItems.Update();
+        Check(Dew.spawned.Count == 0 && NetworkedManagerBase<ZoneManager>.instance.searches.Count == 0,
+            "Maps wait for the native actor registry");
+        NetworkedManagerBase<ActorManager>.instance = new ActorManager();
+        InRunItems.Update();
+        Check(ApRecords.GetApplied(false, genuineMap.Key) == 1, "Actor registry availability releases the pending map");
+
+        Reset(); Treasures.Initialize();
+        var clairvoyanceItem = items.First(i => i.Target == "Treasure_Clairvoyance");
+        var revealPrefab = new Treasure();
+        GameData.ItemsById[clairvoyanceItem.Id] = clairvoyanceItem;
+        DewResources.treasures[clairvoyanceItem.Target] = revealPrefab;
+        revealPrefab.onSpawn = treasure => revealPrefab.eligible = false;
+        Dew.deferTreasureCreate = true;
+        ApClient.ReceivedItems.AddRange(new[] { new ItemInfo { ItemId = clairvoyanceItem.Id },
+            new ItemInfo { ItemId = clairvoyanceItem.Id } });
+        InRunItems.Update();
+        Check(Dew.spawned.Count == 1 && Dew.spawned[0].created && Dew.spawned[0].destroyed &&
+            ApRecords.GetApplied(false, clairvoyanceItem.Key) == 1,
+            "Clairvoyance cleanup forces its queued reveal before rechecking the next copy");
 
         Reset(); ApClient.deathLinkEnabled = true;
         var local = DewPlayer.local.hero;
@@ -434,11 +617,70 @@ internal static class Program
 
     private static void Main()
     {
-        Stardust(); StardustItems(); Delivery(); Blessings(); TreasuresAndDeathLink(); Curses(); Records(); Wares(); Pilgrimage();
+        Stardust(); StardustItems(); Delivery(); Blessings(); TreasuresAndDeathLink(); Curses(); Records(); Wares(); WareUi(); Pilgrimage();
         Console.WriteLine($"Passed {_assertions} assertions (Stardust, delivery, blessings, treasures, curses, DeathLink, checks, wares and pilgrimage).");
     }
 
     private sealed class ExcludedCurse : CurseStatusEffect { }
+
+    private static void WareUi()
+    {
+        Reset();
+        var location = new GameData.Location { Id = 101, Key = "WARE_JONAS_1", Name = "Jonas's Ware 1",
+            Kind = "ware", Number = 1 };
+        GameData.LocationsByKey[location.Key] = location;
+        ApRecords.SetWareCount(1);
+        var manager = new FloatingWindowManager { currentTarget = new PropEnt_Merchant_Jonas() };
+        ManagerBase<FloatingWindowManager>.softInstance = manager;
+        var stock = new MerchandiseData { type = MerchandiseType.Treasure, itemName = JonasWares.Placeholder,
+            customData = "AP:" + location.Key, price = new Cost { gold = 200 }, count = 1 };
+        var view = new UI_InGame_FloatingWindow_Shop_Item { data = stock };
+        var vanilla = DewResources.treasure.icon;
+        view.treasureIcon.sprite = vanilla;
+        DewPlayer.local.buyPriceMultiplier = 0.5f;
+        WareShopUi.UpdateContent(view, stock);
+        var apIcon = view.treasureIcon.sprite;
+        Check(apIcon != vanilla && view.costDisplay.cost.gold == 100 && view.button.interactable,
+            "Ware UI applies its icon and the actual buyer discount");
+
+        // Vanilla skips its icon assignment when a reused cell's itemName is still Cloak.
+        var ordinary = stock; ordinary.customData = null;
+        manager.currentTarget = new PropEnt_Merchant_Base();
+        WareShopUi.UpdateContent(view, ordinary);
+        Check(view.treasureIcon.sprite == vanilla, "A surviving AP cell restores a normal Cloak at another shop");
+        var untouched = new UnityEngine.Sprite(); view.treasureIcon.sprite = untouched;
+        WareShopUi.UpdateContent(view, ordinary);
+        Check(view.treasureIcon.sprite == untouched, "A cell never changed by AP keeps its current icon");
+
+        manager.currentTarget = new PropEnt_Merchant_Jonas();
+        WareShopUi.UpdateContent(view, stock);
+        DewSave.profileMain.experienceFlags.Clear();
+        WareShopUi.UpdateContent(view, ordinary);
+        Check(view.treasureIcon.sprite == vanilla, "A reused AP icon also restores after switching to a vanilla profile");
+        DewSave.profileMain.experienceFlags.Add("Archipelago:test:slot");
+        ApRecords.SetWareCount(1);
+        ApClient.CheckedLocations.Add(location.Id);
+        WareShopUi.UpdateContent(view, stock);
+        Check(!view.button.interactable && view.quantityText.text == "0", "A server-released ware is disabled in the UI");
+        ApClient.CheckedLocations.Clear();
+
+        // These names exercise TMP's tag, HTML-entity and pre-tag backslash parsing boundaries.
+        ApRecords.SetScout(location.Key, @"<b>Map</b> &lt; \u2665", @"<3Alice</noparse> C:\new");
+        var tooltip = new UI_TooltipManager();
+        Check(WareShopUi.ShowTooltip(view, tooltip), "The local ware tooltip overrides vanilla");
+        const string open = "<noparse><</noparse>";
+        string expected = open + "b>Map" + open + "/b> &lt; \\u005Cu2665, for " +
+            open + "3Alice" + open + "/noparse> C:\\u005Cnew\nJonas's Ware 1\n100 gold";
+        Check(tooltip.text == expected, "Tooltip preserves literal angle brackets, noparse tags, entities and backslashes");
+        // TMP consumes each Unicode escape exactly once, so the resulting '\\u2665' stays literal.
+        string afterUnicodePass = System.Text.RegularExpressions.Regex.Replace(tooltip.text, @"\\u([0-9a-fA-F]{4})",
+            match => ((char)Convert.ToInt32(match.Groups[1].Value, 16)).ToString());
+        Check(afterUnicodePass.Contains(@"\u2665") && afterUnicodePass.Contains(@"C:\new"),
+            "TMP's Unicode escape pass reconstructs the original text without decoding it again");
+        manager.currentTarget = new PropEnt_Merchant_Base();
+        Check(!WareShopUi.ShowTooltip(view, tooltip), "Other merchants retain vanilla tooltips");
+        WareShopUi.Cleanup();
+    }
 
     private static void Curses()
     {
@@ -573,9 +815,14 @@ internal static class Program
         var next = NetworkedManagerBase<ZoneManager>.instance;
         next.currentNode.type = WorldNodeType.ExitBoss;
         InRunItems.Update();
-        Check(ApRecords.GetApplied(false, curse.Key) == 0 && ApRecords.GetApplied(false, blessing.Key) == 1,
-            "A curse waiting in a boss room cannot block a later blessing");
+        Check(ApRecords.GetApplied(false, curse.Key) == 0 && ApRecords.GetApplied(false, blessing.Key) == 0,
+            "Boss rooms keep both curses and blessings pending");
         next.currentNode.type = WorldNodeType.Merchant;
+        DewPlayer.local.hero.Status.effects.Add(typeof(Se_HeroBleedingOut));
+        InRunItems.Update();
+        Check(ApRecords.GetApplied(false, curse.Key) == 0 && ApRecords.GetApplied(false, blessing.Key) == 1,
+            "A curse waiting for an eligible hero cannot block a blessing on the reachable map");
+        DewPlayer.local.hero.Status.effects.Remove(typeof(Se_HeroBleedingOut));
         InRunItems.Update();
         Check(ApRecords.GetApplied(false, curse.Key) == 1 && DewPlayer.local.hero.curses.Count == 1,
             "The pending curse lands after leaving the boss room, including in a shop");

@@ -3,156 +3,173 @@
 ## What does randomization do to this game?
 
 In vanilla Shape of Dreams, the in-game achievement system is used to unlock Travelers, Memories, Essences and Lucid Dream run modifiers.
-In Archipelago those 93 unlocks are shuffled into the multiworld as items, and achievements, world clears and lizard
+In Archipelago those 93 unlocks are shuffled into the multiworld as items. Achievements, world clears and lizard
 shop souvenirs, Jonas's Wares, shrine uses, quest completions and artifact hand-ins become the checks that send
-items to you and to the other players. Lacerta and Mist are items too: instead of them, you start
-with 2 random Travelers.
+items to you and to the other players. You start with 2 random Travelers.
 
-Your normal save is never touched. Each seed is played on its own game profile, which the client mod binds to your
+Your normal save is never touched. Each seed is played on its own game profile, which you will need to bind to your
 slot the first time you connect.
 
 ## Where are the checks (locations)?
 
-There are 302 locations by default: 245 baseline checks, 30 Jonas's Wares and 27 pilgrimage checks.
-`jonas_wares` can change this to 272–372.
+There are 302 locations by default. Here are the different categories of checks.
 
-- **Achievements (93):** completing any achievement sends its check. You do not get the usual unlock for the achievement.
+- **Achievements (93):** completing achievements. You do not get the usual unlock for the achievement.
   That unlock is an item somewhere in the multiworld.
 - **World clears (135):** clearing worlds 1 to 5 as each of the 9 Travelers, on Deep Sleep, Ominous Dream and
   Nightmare. Winning through any ending clears all worlds. Clearing a world on a harder difficulty also sends
   that world's checks for the easier difficulties. Nap has no checks, and the worlds of later loops send nothing.
-- **Souvenirs (17):** owning each souvenir the lizard shop sells (bought, or unlocked with a code) sends its check. You
-  keep the souvenir.
-- **Jonas's Wares (30 by default):** when playing solo or hosting, each Jonas visit offers one random unbought
-  Archipelago ware for gold. Hover its AP icon to see the item and recipient. Buying sends the check; skipping
-  costs nothing, and a later visit or shop refresh may offer another ware. Wares can hold anyone's progression.
-- **Shrines (9):** your first successful use of Pot of Greed, Maw of Doom, Hatred, Paradox, Mirror of Remorse,
+- **Souvenirs (17):** buying souvenirs from the lizard shop. You keep the souvenir.
+- **Shrines (9):** your first use of Pot of Greed, Maw of Doom, Hatred, Paradox, Mirror of Remorse,
   Destiny, Entanglement, Altar of Cleansing and Ascension. Another player's use does not count for you.
 - **Quests (6):** your first completion of Stray Memory, Star Seeker's Journal, Fragment of Radiance, Call of the
-  Ravenous, Consort of Night and Hunted by Obliviax (escaping her). Failed quests send nothing.
-- **Artifacts (12):** discovering each pool artifact by handing it in to the Dream Teller sends its check for
-  every player in the run. Picking it up alone does not count. You keep the journal entry and vanilla rewards.
-
-Shrine, quest and artifact checks are always on, work for joining co-op players, and count in every run, including
-Nap and Limbo. They do not require `in_run_items`.
+  Ravenous, Consort of Night and Hunted by Obliviax.
+- **Artifacts (12):** handing artifacts in to the Dream Teller.
+- **Jonas's Wares (30 by default):** buying unique added wares from Jonas. Each Jonas shop offers one random item.
+  This only works in solo or hosted games, so you should turn these off if you will be joining another player's lobby.
 
 Deep Sleep world clears are **priority locations**, so they tend to hold progression items. Achievements can hold anything.
-Souvenirs and artifacts are always excluded (you find them at random), so they only hold filler.
+Souvenirs and artifacts are always excluded because they are very RNG dependent, so they only hold filler or traps.
 
 ### Customizing your checks
 
-You can customize which checks may hold important items using these location groups:
+You can exclude checks so they only hold filler or traps, or prioritize checks so they tend to hold progression.
+Exclusions take precedence over priorities.
 
-- `exclude_locations`: those checks only get filler (Stardust, Mastery, or another game's filler), so you never have to
-  do them to progress.
-- `priority_locations`: those checks get progression items. Deep Sleep clears are already priority; excluding one overrides that.
-
-| If you want to… | Put this in your YAML |
+| If you want to… | What to change |
 |---|---|
-| Play on an easier difficulty without progression getting stuck behind Nightmare runs | `exclude_locations: [Nightmare]` |
-| Not get stuck waiting for a lucky build | `exclude_locations: [Build-Dependent Achievements]`: the 9 achievements that need specific Memories in your build. |
-| Focus on winning runs and not chase in-game achievements | `exclude_locations: [Achievements]` |
-| Skip a Traveler you don't enjoy | `exclude_locations: [Aurena]` (that Traveler's achievements and world clears), with `goal_traveler_count` below 9 |
-| Get your progression from a Traveler you like | `priority_locations: [Aurena]` |
+| Avoid Nightmare runs | Exclude Nightmare world clears |
+| Avoid achievements that need specific Memories | Exclude Build-Dependent Achievements |
+| Focus on world clears | Exclude Achievements |
+| Skip a Traveler | Exclude that Traveler's checks and lower the number of Travelers needed for your goal |
+| Favor a Traveler | Prioritize that Traveler's checks |
 
-Groups: `Achievements`, `World Clears`, `Build-Dependent Achievements`, `Souvenirs`, `Jonas's Wares`, `Shrines`,
-`Quests`, `Artifacts`, one per Traveler (`Aurena`, `Bismuth`, `Cetus`,
-`Lacerta`, `Mist`, `Nachia`, `Shell`, `Vesper`, `Yubar`) and one per difficulty (`Deep Sleep`, `Ominous Dream`,
-`Nightmare`).
-
-You should leave at least 93 checks un-excluded (checks that are already excluded, like the souvenirs, don't count). The 93 unlock items in your pool can't go on excluded checks, so
-excluding more makes generation fail.
+A solo seed needs at least 165 non-excluded locations with default Mastery settings. The
+[example YAML](https://github.com/FruityShuffles/SoDArchipelago/blob/main/examples/Shape%20of%20Dreams.yaml)
+lists the location groups, syntax and limits when changing Mastery settings.
 
 ## What items can I receive?
 
-- **Progressive Traveler** (progression). The first copy unlocks the Traveler and the next three unlock their three alternate Memories (Q, then R, then Identity).
-  Your 2 starting Travelers' first copies are starting items (`(starting item)` in the message feed).
-- **Memory / Essence / Lucid Dream unlocks** (useful). Unlocked Memories or Essences can drop in runs. Unlocked Lucid Dream run modifiers
-   can be selected in the lobby.
-- **Mastery: \<Traveler\>** (filler): +5 mastery levels for that Traveler.
-- **Stardust** (filler): a share of `stardust_total`. Packs divide the total evenly, with one extra Stardust in
-  the first few packs when needed. Changing the number of packs keeps total income the same.
+- **Progressive Traveler** (progression): unlocks the Traveler, then their three alternate Memories in Q, R, Identity order.
+- **Memory / Essence / Lucid Dream unlocks** (useful): unlocks Memories and Essences for drops, and Lucid Dreams for selection in the lobby.
+- **Mastery: \<Traveler\>** (useful): adds 5 mastery levels to that Traveler by default.
+- **Stardust** (filler): adds Stardust to your profile.
+- **Map Blessings and Treasures** (filler): adds map destinations or gives Treasure effects during runs, if enabled.
+- **Curses** (trap): gives your Traveler a vanilla curse, if enabled.
 
-With default settings the filler alone gives every Traveler 40 mastery and enough Stardust to buy every constellation star, star slot and souvenir.
+With default settings the items give every Traveler 40 mastery and enough Stardust to buy every constellation
+star, star slot and souvenir. The default pool has 34 progression, 131 useful and 137 filler items.
 
 ## What do I see when I send or receive an item?
 
-A message feed in the top-left corner of the screen shows `Received <item> from <player>` and the items you send to
-other players. If you receive an unlock or Mastery during a run, its message ends with `(next run)`: it applies from
-your next run.
+A message feed in the top-left corner shows the items you receive and send, and who they came from or went to.
+Unlocks and Mastery received during a run say `(next run)` and apply from your next run.
 
 ## What is the goal?
 
-Win a run at `goal_difficulty` or harder with `goal_traveler_count` different Travelers. A win is reaching either
-ending, the Pure White Dream or the Starless Path.
+Win at your chosen difficulty or harder with the required number of different Travelers. Either ending counts:
+the Pure White Dream or the Starless Path.
 
 ## Options
 
-| Option | Default | Range | What it does |
-|---|---|---|---|
-| `goal_difficulty` | `nightmare` | `deep_sleep`, `ominous_dream`, `nightmare` | Lowest difficulty a win counts at |
-| `goal_traveler_count` | 9 | 1–9 | Different Travelers that must win |
-| `mastery_packs_per_traveler` | 8 | 0–15 | Mastery items per Traveler. Remaining baseline filler slots stay Stardust |
-| `mastery_pack_value` | 5 | 1–40 | Mastery levels per Mastery item |
-| `stardust_total` | 54,000 | 0–1,000,000 | Total Stardust from the seed, divided exactly across its packs |
-| `in_run_items` | off | | Fill new slots with Map Blessings and Treasures; solo/host delivery |
-| `traps` | off | | Fill 20% of new slots with Curse traps; solo/host delivery |
-| `jonas_wares` | 30 | 0–100 | Jonas's Archipelago wares; set to 0 if you mostly join other people's games |
-| `passive_mastery` | on | | Off: runs earn no mastery, so it only comes from Mastery items, and "The Road Not Taken" is excluded |
-| `death_link` | off | | When you are knocked down, everyone on DeathLink dies, and the other way round. |
-| `forced_evil_lucid_dreams` | none | see below | Evil Lucid Dreams forced on in every run until you receive their Lucid Dream item |
-| `forced_chaotic_lucid_dreams` | none | see below | The same for Chaotic Lucid Dreams |
-| `shuffle_star_requirements` | on | | Shuffles the mastery level each constellation star needs, among stars of the same Traveler (or the common stars) and category |
+Use the [example YAML](https://github.com/FruityShuffles/SoDArchipelago/blob/main/examples/Shape%20of%20Dreams.yaml)
+for the exact setting names, accepted values and defaults.
+
+### Choosing your goal
+
+You choose the difficulty and how many different Travelers must win. The default is Nightmare with all nine
+Travelers. Lowering the goal does not remove checks, so also exclude the checks for difficulties or Travelers
+you plan to skip.
+
+### Mastery, Stardust and constellation growth
+
+You can change the number of Mastery packs per Traveler and the levels each pack gives. The default is eight
+packs of five levels, giving each Traveler 40 mastery: enough for their final story and access to the Starless Path.
+
+Turning off passive mastery stops runs from earning mastery, so levels only come from Mastery items. Make sure
+your packs supply at least 40 levels per Traveler if you want to reach the final stories through those items.
+"The Road Not Taken" is excluded with passive mastery off. Mastery items are always useful.
+
+You can also change the total Stardust supplied by items. It is divided across all Stardust packs, so adding
+more packs makes each one smaller. Vanilla Stardust rewards are unchanged.
+
+### Shuffled constellation requirements
+
+Stars trade mastery requirements within the same Traveler (or the common stars) and category. This changes
+which stars you can buy first. The highest requirements and Stardust prices are unchanged. Turn this off to
+use the vanilla requirements.
+
+### Jonas's Wares and the additional item slots
+
+You can change how many wares Jonas offers across the seed, or turn them off. Wares and the 27 shrine, quest
+and artifact checks add item slots. The in-run items and traps options determine what fills those slots.
+Your unlock items and Mastery packs are unchanged.
+
+| In-run items | Traps | Items added |
+|---|---|---|
+| Off | Off | Stardust |
+| On | Off | Map Blessings and Treasures |
+| Off | On | About 20% Curses; the rest Stardust |
+| On | On | About 20% Curses; the rest Map Blessings and Treasures |
+
+### Map Blessings and Treasures
+
+These are received during a run and apply to everyone playing in the lobby.
+If an item cannot apply yet, it waits for a suitable world or run. Pending items survive reconnects and restarts.
+
+**Map Blessings** add a destination to an unvisited combat node. A marker and ping show where to go.
+Rooms and shrines keep their vanilla effects, costs and rewards.
+
+- **Room bonuses:** Pure Dream, Gold Everywhere, and Harder Fight, Better Reward.
+- **Shrines:** Blessed Guidance, Pot of Greed, Maw of Doom, Hatred, Paradox, Mirror of Remorse, Destiny,
+  Entanglement, Disintegration and Altar of Cleansing.
+- **Other destinations:** Lizard Shop and Artifact.
+
+If a blessing can't be meaningfully applied (because for example you're fighting a world boss), it will be saved for later until it can be applied.
+
+**Treasures** give Jonas's Treasure effects for free.
+
+| Treasure | Effect |
+|---|---|
+| Cloak of Guidance | Delays the next two Hunter advances |
+| Clairvoyance | Reveals the world's map |
+| Determination Shard | Absorbs a lethal hit and restores 25% health |
+| Treasure Map | Starts a quest leading to a Hidden Stash |
+| Totally Genuine Treasure Map | Starts a quest leading to a Hidden Stash, Gold Everywhere or an Ambush |
+
+Like Map Blessings, Treasures wait until their effect can be meaningfully applied.
+
+### Curse traps
+
+Traps give your Traveler a random Mild, Potent or Intense curse from the vanilla Hatred shrine pool.
+Traps wait in boss rooms until you leave. In co-op, curses apply only to the host's Traveler.
 
 ### Forced Lucid Dreams
 
-The listed dreams stay on in every run until you receive their `Lucid Dream: <name>` item. After that you can turn
-them on or off as usual. A forced dream's item is progression. Only the lobby host's forced dreams are turned on automatically.
-World clears and wins only count in a run where every still-forced dream is on.
-
-- Evil: `Fish Scales`, `Grievous Wounds`, `Mad Life`, `Marsh of Destiny`, `Overpopulation`, `Prudent Jellyfish`
-- Chaotic: `Embrace Mortality`, `Harmless Whispers`, `Sparkling Dream Flask`, `The Darkest Urge`, `WILD`
-
-```yaml
-forced_evil_lucid_dreams: ["Grievous Wounds", "Overpopulation"]
-forced_chaotic_lucid_dreams: ["WILD"]
-```
-
-### In-run presets
+You can force Evil and Chaotic dreams to stay on until you receive their Lucid Dream item. Those items become
+progression. Once received, you can turn the dream off from the next lobby.
 
 The [example YAML](https://github.com/FruityShuffles/SoDArchipelago/blob/main/examples/Shape%20of%20Dreams.yaml)
-has three presets: Default (`in_run_items: false`, `traps: false`), With in-run items (`in_run_items: true`),
-and With in-run items and traps (both `true`). Default fills the new slots with Stardust; the other presets add in-run effects.
+describes each dream's effect.
 
-In-run items wait until you are connected and playing solo or hosting, and their vanilla effect has a valid target.
-They can wait until a later world or run; reconnecting keeps pending items. Their message appears when they land.
-Quitting before the game's next continue save can lose an effect that has already landed.
+The host's forced dreams turn on automatically. If you join another player's lobby, make sure your own
+still-forced dreams are enabled. Otherwise, world clears and wins will not count for you. Other checks still count.
 
-**Map Blessings** add a shrine, room bonus, Lizard Shop or Artifact to an unvisited combat node ahead. A revealed
-marker and map ping show where it landed; the notice names the blessing and its sender. Route there to use it.
-Room bonuses and the Lizard Shop avoid replacing another bonus; shrines and Artifacts may share a bonus room.
-When no eligible node remains, the blessing waits for a later world or run. Hunters can remove a room bonus as usual;
-shrines stay. In co-op, everyone shares the room.
+### DeathLink
 
-**Treasures** give Cloak of Guidance, Clairvoyance, Determination Shard, Treasure Map or Totally Genuine Treasure Map
-for free, with their vanilla effects. Cloak waits where Hunters cannot advance; Clairvoyance waits if the world is
-fully revealed; maps wait if no eligible destination remains. Multiple maps and Shards can be active at once. A Shard
-can absorb a received DeathLink; your next normal knockdown still sends one.
+DeathLink shares knockdowns with players using it in other games. Your knockdown sends a DeathLink;
+receiving one kills your Traveler. A Determination Shard can absorb it.
 
-**Curse traps**, enabled by `traps`, give a random vanilla Mild, Potent or Intense curse to your own Traveler when
-playing solo or hosting. They wait in boss rooms, including Primus and Polaris, until you leave. The game's curse
-notification and quest tracker show the effect and its kill or travel condition for lifting it. If no curse is viable
-for your Traveler, the trap keeps waiting. Guests are not cursed by the host's trap items.
-
-**Development status:** issues #7–#12 are implemented and ship together in one matching apworld/mod release.
+Joining players can send DeathLinks but cannot receive them. Turn this off if you will be joining another
+player's lobby.
 
 ## Playing offline
 
-You can play a bound profile offline using the items you have already received. Checks are recorded in the profile and sent when you reconnect.
-Jonas's wares remain buyable offline, displayed as "an unknown ware" until you reconnect.
+You can play a bound profile offline with the items you have already received. Checks are saved and sent when
+you reconnect.
 
 ## Co-op
 
-Non-crossplay co-op is supported with other players regardless of whether they are also playing Archipelago.
-A player who joins someone else's lobby can't receive DeathLinks, buy Archipelago wares or receive in-run effects.
-In-run items wait until that player plays solo or hosts.
+Non-crossplay co-op works with players who are also playing Archipelago and with players who are not.
+If you will be joining another player's lobby, turn off Jonas's Wares, in-run items, traps and DeathLink.
+You can still collect achievements, world clears, souvenirs, shrine, quest and artifact checks.

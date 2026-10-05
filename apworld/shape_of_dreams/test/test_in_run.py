@@ -7,7 +7,7 @@ from test.general import setup_multiworld
 from worlds.AutoWorld import call_all
 
 from .. import ShapeOfDreamsWorld
-from ..items import STARDUST, curse_item_weights, in_run_item_weights, item_table
+from ..items import STARDUST, curse_item_weights, in_run_item_weights, item_table, mastery_item_names
 from ..locations import location_table
 from ..pool import largest_remainder, new_slot_counts
 from .test_tracker import _tracker_world
@@ -46,6 +46,27 @@ class TestNewSlotAllocation(unittest.TestCase):
 
 
 class TestExpandedPool(unittest.TestCase):
+    def test_useful_mastery_avoids_exclusions_at_maximum_pack_count(self):
+        # The minimum-size pool with maximum mastery has the least spare filler.
+        # Fill must still succeed for every toggle combination, including the extra
+        # Starless Path exclusion when passive mastery is disabled.
+        for passive in (False, True):
+            for in_run, traps in ((False, False), (True, False), (False, True), (True, True)):
+                with self.subTest(passive=passive, in_run=in_run, traps=traps):
+                    world = setup_multiworld(ShapeOfDreamsWorld, seed=7, options={
+                        "jonas_wares": 0, "mastery_packs_per_traveler": 15,
+                        "mastery_pack_value": 40, "passive_mastery": passive,
+                        "in_run_items": in_run, "traps": traps}).worlds[1]
+                    mastery = [item for item in world.multiworld.itempool if item.name in mastery_item_names]
+                    self.assertEqual(len(mastery), 135)
+                    self.assertTrue(all(item.classification == ItemClassification.useful for item in mastery))
+                    distribute_items_restrictive(world.multiworld)
+                    for location in world.get_locations():
+                        if location.item.name in mastery_item_names:
+                            self.assertNotEqual(location.progress_type, LocationProgressType.EXCLUDED)
+                        if location.progress_type == LocationProgressType.EXCLUDED:
+                            self.assertTrue(location.item.excludable)
+
     @staticmethod
     def finish_generation(multiworld):
         distribute_items_restrictive(multiworld)

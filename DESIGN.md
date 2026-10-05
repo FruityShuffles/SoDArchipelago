@@ -91,6 +91,8 @@ The `Jonas's Wares` location group contains all possible wares. There is no acce
   record/save/send the check, and suppress the placeholder's effect.
 - The local host's shop shows the AP icon; hovering shows the scouted item and recipient, location and final gold
   price. Purchased stock is disabled. A stale ware restored by a continue save is refused before spending gold.
+  A reused AP cell restores its vanilla Treasure icon at other shops or on vanilla profiles. Tooltip names preserve
+  literal angle brackets and backslashes using TMP-aware encoding, including user-supplied `</noparse>` text.
 - Scout every enabled ware once per connection with `LocationScouts`, `HintCreationPolicy.None` (no hints).
   Cache item/recipient strings in the marked profile (`AP:scout:<key>:<base64 item>:<base64 owner>`); the
   connection/profile-tagged main-thread queue writes them. Persist `AP:wares=<count>` on login for offline stock.
@@ -134,7 +136,7 @@ Mist (vanilla's starting Travelers), grouped as follows.
 | useful | `Memory: <name>` (general, non-Traveler Memories locked behind achievements) | 15 | Makes the Memory able to drop in runs |
 | useful | `Essence: <name>` | 29 | Makes the Essence able to drop in runs |
 | useful | `Lucid Dream: <name>` | 15 | Unlocks the Lucid Dream modifier. A **forced** dream's item is progression and releases it (see "Forced Lucid Dreams") |
-| filler | `Mastery: <Traveler>` (one item per Traveler) | 8 per Traveler (72) | +5 mastery levels to that Traveler |
+| useful | `Mastery: <Traveler>` (one item per Traveler) | 8 per Traveler (72) | +5 mastery levels to that Traveler; always useful, independently of passive mastery and pack settings |
 | filler | `Stardust` | remaining baseline slots (80) + unallocated new slots | Exact share of `stardust_total` (+675 with 80 packs and default total) |
 
 - **Starting Travelers** (replaces vanilla's Lacerta and Mist): each seed picks 2 random Travelers in `generate_early`
@@ -143,8 +145,12 @@ Mist (vanilla's starting Travelers), grouped as follows.
   item from location −2. There's no option and no slot_data field.
 - Curse traps are opt-in; see "In-run content foundation" below.
 - **Déjà vu is untouched.** It's the Pure White Dream carry-over system that costs Stardust.
-- **Baseline counts:** 34 progression + 59 useful + 72 mastery + 80 Stardust = 245, equal to the baseline location count.
-- **Filler targets:** filler alone gives exactly **40 mastery on every Traveler** (decided 2026-10-03, issue #5) and
+- **Baseline counts:** 34 progression + 131 useful (including 72 mastery) + 80 Stardust filler = 245, equal to the baseline location count.
+  With default wares and pilgrimage checks, the pool has 34 progression + 131 useful + 137 filler = 302.
+- **Mastery classification** (decided 2026-10-04): every Mastery item is useful under all options. It cannot be placed
+  on excluded checks; mastery remains outside progression logic. Stardust remains filler.
+  A solo seed needs at least `93 + 9 × mastery_packs_per_traveler` non-excluded checks (165 by default).
+- **Pool reward targets:** the default items alone give exactly **40 mastery on every Traveler** (decided 2026-10-03, issue #5) and
   **54,000 Stardust** (decided 2026-10-03, issue #4). 40 is the level of each Traveler's last story episode (`TravelerStory_<T>_Main8`,
   read from the asset bundles), which unlocks the Starless Path ending (`unlocksPolarisEnding`); stars and star slots
   need at most 35. Levels come in chunks of 5, the granularity of every mastery reward. The Stardust covers everything
@@ -210,6 +216,13 @@ Win a run at `goal_difficulty` **or harder** with `goal_traveler_count` **differ
 - The mod records in the bound profile which Travelers have counted. It sends `ClientGoal` when the count is reached.
 
 ## Options (YAML)
+
+**Player documentation:** the game info page explains what the options mean during play and how they interact.
+The YAML template describes exact setting names, accepted values, defaults and syntax. Generated YAML help follows
+the same configuration focus. README and Workshop links identify these two roles; the setup guide covers setup
+steps and points to the game info page for gameplay explanations.
+Individual Lucid Dream effects belong in YAML help beside their accepted names; the game info page covers
+forced-dream rules and links to the YAML for the effects.
 
 | Option | Type | Default | Notes |
 |---|---|---|---|
@@ -282,7 +295,7 @@ No new numbers: stars trade their vanilla requirements with each other.
 - **Groups: mastery type × category.** A star only trades levels with stars of the same Traveler (or the common stars,
   which need total mastery) and the same category (Destruction, Life, Imagination, Flexible). That's 3 common groups and
   4 per Traveler (39 groups, 305 stars). Each group keeps its vanilla set of levels, so Flexible stars stay on their
-  5/15/25/35 steps, and the highest requirement stays 35 per Traveler and 75 total: the filler targets (40 mastery per
+  5/15/25/35 steps, and the highest requirement stays 35 per Traveler and 75 total: the pool reward targets (40 mastery per
   Traveler) still cover every star.
 - **No logic.** Stars and mastery aren't in logic. Pool, IDs and `data_hash` are unchanged.
 - **Generation:** the apworld shuffles each group with the seed's random in `generate_early` and sends every star's level
@@ -322,7 +335,7 @@ mastery only comes from `Mastery: <Traveler>` items and the player's strength de
   seeds) means on.
 - **Generation:** when it's off, "Achievement: The Road Not Taken" (`ACH_THE_ROAD_NOT_TAKEN`, a Starless Path win) is
   `EXCLUDED`: the Starless Path needs a Traveler at mastery 40, which then only Mastery items give. Its access rule
-  (all 36 copies, see "Logic") stays, and Mastery items stay filler. With too few Mastery items to reach 40 the check can never be done; that's fine,
+  (all 36 copies, see "Logic") stays, and Mastery items remain useful. With too few Mastery items to reach 40 the check can never be done; that's fine,
   it only holds filler. AP keeps a world-set exclusion over the player's `priority_locations`. Pool, IDs and
   `data_hash` are unchanged.
 - **Why the reward itself is 0** *(resolved from code)*: `DewSave.ConsumeGameResult` turns a run into points with
@@ -351,7 +364,7 @@ release; this foundation alone is not published. The original 245 checks remain 
 `jonas_wares` checks; #9 adds 9 shrines, 6 quests and 12 excluded artifacts (both implemented). This gives
 57 new slots and 302 total checks with defaults. The enabled location list is built before regions and items.
 
-- Progression, useful items and Mastery packs keep their existing counts. The baseline's remaining slots (80 by
+- Unlock items and Mastery packs keep their existing counts. The baseline's remaining slots (80 by
   default) stay Stardust. Only the new slots participate in the in-run mix.
 - With `traps` on, split new slots 20% curses / 80% remaining by largest-remainder rounding. Split curses by weights
   Mild 3, Potent 2, Intense 1. With `in_run_items` on, split the remaining new slots by the following weights:
@@ -393,6 +406,14 @@ prefabs, messages, item IDs or slot data. Vanilla co-op guests share the resulti
   as Totally Genuine Treasure Map does. For shrines and Artifact, use distance 3–4 and allow a main modifier, as Treasure
   Map does. Read `isMain` from the vanilla prefab. The helper chooses unvisited, non-sidetrack combat nodes and treats
   distance as a preference. No eligible node means pending, including at a world's end or in Primus.
+- Before searching, defer in exit-boss rooms, sidetracks, special-generated maps (including Primus), transitions or
+  invalid room/node state. The vanilla helper can return a node behind an exit or use disconnected sidetrack distances;
+  a successful search alone does not establish a reachable destination ahead.
+- Reject a selected node already carrying the same modifier type; retry on later updates without spending the copy.
+  Distinct shrine modifiers may still share a node. Native shrine restoration matches by shrine class, so identical
+  shrine copies on one node would attach their cleanup to the same restored shrine. Artifact blessings also wait for
+  QuestManager and an empty shared party artifact slot. Do not impose world generation's once-per-loop quota: after a
+  hand-in, another AP artifact can be picked up. Subsequent route choices and artifact pickup restrictions stay vanilla.
 - Call `AddModifier` with `isForceRevealed = true`. Its vanilla path assigns an ID, stores the modifier's server data,
   syncs the node and creates the modifier on room arrival. The shrine modifier's normal `OnStartServer` spawns its shrine.
   The map's normal nodes-changed event draws the marker even on an unexplored node at any distance.
@@ -415,7 +436,9 @@ Bound, ready solo/host landing loop. The keys, IDs, weights and `in_run_items` o
 or slot protocol change is needed. Call `Dew.InstantiateAndSpawn` as Jonas's `SpawnMerchandise` does, at the local
 hero's `agentPosition`, setting `player`, `hero`, `price = 0`, `merchant = null` and `customData = null` before spawn.
 None of the five reads `merchant`. Their `OnCreate` runs the vanilla effect and networking, then the shared loop
-saves the counter and announces the item and sender. Missing prefabs or an inactive/missing hero leave it pending.
+records the spawned delivery and announces the item and sender. Host-side `OnCreate` is dispatched by the queued
+local Mirror spawn message; the counter does not wait for that callback. Missing prefabs or an inactive/missing
+hero leave the item pending.
 
 | Treasure | Lands when | Vanilla effect |
 |---|---|---|
@@ -431,6 +454,14 @@ saves the counter and announces the item and sender. Missing prefabs or an inact
   A second copy waits once the world is fully revealed.
 - Map preflight uses `TryGetNodeIndexForNextGoal`, default Combat types and `preferCloserToExit = true`, with the
   matching distance and main-modifier settings. Missing quest manager, empty map or no eligible node means pending.
+  Cloak, Clairvoyance and both maps also wait in exit-boss rooms or invalid room/node state; there is no further node
+  travel there, Hunter skips reset at world generation, and current-world map goals would be missed. Shards still land
+  during a boss fight. Maps additionally wait in sidetracks and special-generated worlds, including Primus.
+- Both maps wait for native map Treasures and map quests to finish `OnCreate` before another preflight. Inspect active
+  map actors in `NetworkServer.spawned`; `ActorManager.allActors` registers them only after `OnCreate` returns.
+  Cover both the Treasure and its child quest, including native shop purchases, without caching pending item/profile
+  state or invoking private lifecycle methods. An initialized active quest permits additional maps; inactive and
+  unrelated actors never block them. A missing actor manager leaves maps pending.
   The Treasure starts the actual vanilla quest; its helper chooses the destination again. Vanilla may defer the
   quest's goal until the next world when Hunter progress exceeds 55%; preserve that behavior.
 - `QuestManager.StartQuest` does not deduplicate: multiple active maps are allowed, including maps of the same kind.
@@ -453,7 +484,9 @@ and delayed DeathLink knockdowns. No in-game test.
 Issue #12. The three catalog `curse` items are opt-in traps: `Curse: Mild`, `Curse: Potent` and `Curse: Intense`.
 The `traps` option and 20% new-slot allocation (3 Mild : 2 Potent : 1 Intense) already come from #7, independently
 of `in_run_items`. No item IDs, hash or slot protocol change is needed. Only the local solo/host hero is cursed;
-co-op guests are unaffected. Delivery uses the shared Bound, connected, ready unconcluded run guard.
+co-op guests are not directly given a curse status by the host's AP items. Native curse effects on other players,
+including friendly fire, explosions and changed relations, remain intact, just as with a vanilla Hatred shrine.
+Delivery uses the shared Bound, connected, ready unconcluded run guard.
 
 - Wait in every `ExitBoss` node, including Primus, and in `Room_Special_StarlessPath_BossPolaris` (a Special sidetrack
   node). A cleared boss room still waits until the player leaves it. Also wait during room transitions, without a
@@ -503,7 +536,7 @@ deferral, duplicate copies, restart counters and independent blessing delivery. 
   `UnlockLucidDream`.
 - Unlocks are **rebuilt from the full received-item list** on every connect. Receiving one twice changes nothing,
   so no item index is needed.
-- **Filler** (Stardust to `DewProfile.stardust`, mastery points to `DewProfileStats`) needs a per-type **applied
+- **Repeatable rewards** (Stardust to `DewProfile.stardust`, mastery points to `DewProfileStats`) need a per-type **applied
   counter** stored in the profile. Store it so it is saved together with the currency it protects. Mastery lives in
   the separate `stats` file, so its counter has to be saved in that same write, or be made crash-safe some other way.
   Items that arrive several times, and server/cheat items (location −1/−2), count normally.
@@ -525,7 +558,7 @@ deferral, duplicate copies, restart counters and independent blessing delivery. 
   the `stats` file with its daily backups. If total mastery or play time went down, it adds the lost mastery levels back
   (`DewProfileStats.GetRecoveryDelta`) but not our mastery counters, so Mastery items applied between that backup and
   the loss get applied a second time. There's no exact repair: that needs the backups' counters. The over-grant is
-  bounded filler, so the mod only reports it: each new `loss_…` entry the game adds to `recoveredLossPoints` after
+  bounded mastery, so the mod only reports it: each new `loss_…` entry the game adds to `recoveredLossPoints` after
   binding logs a warning and shows a notice once (`AP:seenloss:<entry>`; entries from before the binding are marked seen
   at bind time).
 - **The unlock record.** `DewProfile.Validate` runs on every profile load and re-derives unlocks from achievements: it
@@ -625,20 +658,66 @@ buyer's own client.
 - A knockdown caused by a received DeathLink does not send a new one.
 - Each player turns it on independently. There's no co-op-specific handling.
 
-## Deferred review follow-up
+## Review verification
 
-The adversarial Claude Opus review of issues #7–#9 (`d265e47..ae009a8`) completed on 2026-10-04. Its three
-confirmed findings are fixed: unresolved scout names, Stardust totals after common-option replacements/ItemLinks,
-and sales of server-released wares. Return to the review after the remaining issues are implemented; the follow-up
-stopped at Claude's session limit, so Claude has not reviewed these fixes.
+The deferred adversarial Claude Opus review of issues #7–#9 (`d265e47..ae009a8`) was completed on 2026-10-04
+at high effort. Claude verified the three P3 fixes in `56237e8`: unresolved scout names, Stardust totals after
+common-option replacements/ItemLinks, and sales of server-released wares.
 
-- Reconcile the potential P3 icon reuse bug in `WareShopUi.UpdateContent`: a normal Cloak at Smoothie's shop may
-  retain the AP icon when a cell survives a shop change with the same cached `itemName`. It remains unmodified.
-- Resolve the remaining verification gaps: Contents subscribers to `onMerchandisePopulated` and TextMeshPro
-  rendering of escaped tooltip names. These are not confirmed bugs. The live Hatred prefab's class was verified
-  as `Shrine_Hatred` during #12 implementation on 2026-10-04.
-- Local reports and the resumable Claude session reference are in `.claude/reviews/` (git-ignored). The fixes passed
-  202 world tests, 250 AP general tests, 235 C# assertions and a build with deployment disabled.
+- **Confirmed P3, fixed:** a reused shop cell could keep its AP icon on a normal Cloak at another merchant.
+  Restore only a sprite AP replaced, before returning for other shops/profiles.
+- **Confirmed P3, fixed:** HTML entities appeared literally in TMP tooltips, and backslash sequences were decoded.
+  Encode backslashes as `\u005C` and each `<` as `<noparse><</noparse>`; preserve the original visible names.
+  Claude verified both UI fixes against the installed TMP and game sources and the regression diff.
+- **Verification gaps closed:** the live Hatred prefab uses `Shrine_Hatred` (verified during #12). A metadata/IL
+  reference scan identifies the Contents population subscribers as Cetus's Cold Discount/Fire Surcharge and Shell's
+  Shop Intimidation. Their decompiled code preserves ware tags/stock; native repricing is included in the displayed
+  and charged price. Installed TMP source verifies literal-name encoding.
+- Local reports and resumable Claude sessions are in `.claude/reviews/` (git-ignored). The earlier fixes passed
+  202 world tests, 250 AP general tests and 235 C# assertions. The UI fixes pass 614 C# assertions and a build with
+  deployment disabled, zero warnings/errors. These checks use game doubles plus static inspection of installed
+  code; no additional in-game testing was performed.
+
+The earlier combined pass counts as the review of #7–#9; it was not repeated. Separate commit reviews covered
+#10 (`251effd`), then #11 (`e33f4e1`) and #12 (`7e0e1d9`), with follow-ups in their original sessions.
+
+- **#10, Confirmed P2, fixed:** blessings could spend copies on unreachable nodes after reaching the world's exit.
+  Defer in boss/sidetrack/special-map states and reject invalid current room/node state. Claude's initial P1 was
+  re-ranked to P2 because the loss affects filler blessings, without progression or save corruption.
+- **#10, Confirmed P3, fixed:** identical shrine modifiers on one node share the first restored shrine's cleanup.
+  Reject identical modifier destinations while permitting different shrines to coexist.
+- **#10, Confirmed P3, fixed:** Artifact blessings could land while the party's artifact slot was occupied.
+  Wait for a hand-in; later pickup/route risks remain vanilla. Claude's initial P2 was re-ranked to P3.
+- **#10, Rejected/withdrawn:** only the latest ping remains visible; this is the chosen native feedback behavior,
+  while all chat lines and revealed modifier markers remain. Sidetrack distance concerns are resolved by deferral.
+- **#10, Plausible P3, accepted native route risk:** multiple Artifact blessings may land on different nodes before
+  the first pickup fills the party slot. A later drop needs an intervening hand-in, like vanilla Artifact routing.
+- **#11, Confirmed P2, fixed:** Cloak, Clairvoyance and both maps could be spent in an exit-boss room with no useful
+  destination before the world resets. Defer those four there; maps also defer in sidetracks/special maps. Shards retain
+  boss-room delivery. Invalid current room/node state also defers effects that use the world map.
+- **#11, Confirmed P3, fixed:** queued host map spawns let multiple copies pass a stale preflight before a prior map
+  claimed its node. Wait for native map Treasure/quest initialization, preserving multiple initialized quests.
+  Claude verified the installed Mirror queue; Treasure and child quest normally flush in the same late update after
+  the AP delivery loop, so the registry guard uses actual initialization rather than a frame timer.
+- **#11 verification gaps closed:** all four map Treasure/quest prefabs have exactly one root Actor component;
+  their only other root MonoBehaviour is NetworkIdentity. Installed Mirror's `GeneratedSyncVarSetter` invokes the
+  quest-step hook immediately on the host. Claude verified the fixes; 682 C# assertions and a clean mod build pass.
+- **Inherited follow-up:** a received DeathLink while already bleeding out from a normal hit can suppress that
+  eventual knockdown's outgoing DeathLink. This predates #7–#12 and is deferred separately from these commit reviews.
+- **#12, Rejected under explicit user clarification:** Claude's P2 guest-impact finding interpreted "guests are
+  unaffected" too broadly. Traps target the host's Traveler; native curse consequences on other players are intended.
+  The user explicitly required retaining the full vanilla pool, including Dark Urge, Intermittent Explosion and
+  Inductive Dream Affliction. An attempted exclusion was fully reverted; the curse handler matches `7e0e1d9`.
+  The design and player docs now state the intended co-op behavior. Claude reported no other introduced bugs.
+- **#12 verification:** installed bundle inspection confirms 23 curse prefabs, their tier flags and weights;
+  Brain Fog alone has positive weight at every tier and inherits always-true viability. Native Primus ending code
+  teleports within its existing exit-boss room, which remains covered by the guard. The exact serialized retail
+  content settings and Obliviax nest scene were not resolved by asset inspection; the handler delegates content
+  inclusion to the same native helper as Hatred and adds no special nest restriction.
+- **Pending Claude acknowledgement:** Claude hit its session limit (reset reported as 23:20 America/Chicago)
+  before responding to the user's #12 clarification. Resume the existing #12 session with the saved correction
+  prompt; do not repeat any broad commit review. The final restored implementation passes 682 C# assertions and a
+  build with deployment disabled, zero warnings/errors. The apworld packages successfully.
 
 ## Settled questions
 - ~~Map the game's difficulty IDs~~ The asset catalog has `diffTutorial`, `diffEasy`, `diffNormal`, `diffHard`,
@@ -648,7 +727,7 @@ stopped at Claude's session limit, so Claude has not reviewed these fixes.
   (`zoneCountByTier=[1,1,1,1]`).
 - ~~World-clear detection~~ Zone transition, world = `currentZoneIndex` on arrival (see "Locations").
 - ~~Star slot counts per Traveler (the Stardust buffer)~~ Logged in-game 2026-09-27: 80 buyable slots cost 4,740
-  Stardust. Since issue #4 filler covers them (see "Filler targets"). ~~Mastery cap~~,
+  Stardust. Since issue #4 the pool rewards cover them (see "Pool reward targets"). ~~Mastery cap~~,
   ~~fresh-profile test~~ and ~~UnknownFate~~: see above.
 - ~~`isAlteringGameplay`~~ Kept on.
 - ~~DeathLink for a joining co-op player~~ Accepted as a known limitation (see "DeathLink").

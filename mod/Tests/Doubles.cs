@@ -4,6 +4,20 @@ using Archipelago.MultiClient.Net.Models;
 
 namespace UnityEngine
 {
+    public class Object { public static void Destroy(Object obj) { } }
+    public class Texture2D : Object
+    {
+        public int width, height;
+        public Texture2D(int width, int height) { this.width = width; this.height = height; }
+        public void LoadImage(byte[] bytes) { }
+    }
+    public class Sprite : Object
+    {
+        public static Sprite Create(Texture2D texture, Rect rect, Vector2 pivot) => new Sprite();
+    }
+    public struct Rect { public Rect(float x, float y, float width, float height) { } }
+    public struct Vector2 { public Vector2(float x, float y) { } }
+    public class Transform { public Vector3 position; }
     public static class Debug
     {
         public static void Log(string text) { }
@@ -23,7 +37,46 @@ namespace UnityEngine
         public static int Range(int min, int max) => max - 1;
     }
 }
-namespace Mirror { public static class NetworkServer { public static bool active; } }
+namespace UnityEngine.UI
+{
+    public class Image { public UnityEngine.Sprite sprite; }
+    public class Button { public bool interactable; }
+}
+public class Label { public string text; }
+public class CostDisplay { public Cost cost; public void Setup(Cost value) { cost = value; } }
+public class UI_InGame_FloatingWindow_Shop_Item
+{
+    public UnityEngine.UI.Image treasureIcon = new UnityEngine.UI.Image();
+    public CostDisplay costDisplay = new CostDisplay();
+    public Label quantityText = new Label();
+    public UnityEngine.UI.Button button = new UnityEngine.UI.Button();
+    public UnityEngine.Transform transform = new UnityEngine.Transform();
+    public MerchandiseData data;
+    public T GetComponent<T>() where T : class => button as T;
+}
+public class UI_TooltipManager
+{
+    public string text;
+    public void ShowRawTextTooltip(UnityEngine.Vector3 position, string value) { text = value; }
+}
+public class FloatingWindowManager { public object currentTarget; }
+public class ManagerBase<T> { public static T softInstance; }
+namespace Mirror
+{
+    public static class NetworkServer
+    {
+        public static bool active;
+        public static readonly Dictionary<uint, NetworkIdentity> spawned = new Dictionary<uint, NetworkIdentity>();
+    }
+    public class NetworkIdentity
+    {
+        public Actor actor;
+        public bool TryGetComponent<T>(out T component) where T : class
+        {
+            component = actor as T; return component != null;
+        }
+    }
+}
 namespace Archipelago.MultiClient.Net.Models { public class ItemInfo { public long ItemId, LocationId; } }
 
 public class NetworkedManagerBase<T> { public static T instance; }
@@ -42,14 +95,19 @@ public static class Dew
     }
     public static int GetRequiredMasteryPointsToLevelUp(int level) => 100;
     public static readonly List<Treasure> spawned = new List<Treasure>();
+    public static bool deferTreasureCreate;
     public static T InstantiateAndSpawn<T>(T prefab, UnityEngine.Vector3 position, UnityEngine.Quaternion? rotation,
         Action<T> beforeSpawn = null) where T : Treasure
     {
-        var instance = (T)new Treasure { position = position, price = 999, merchant = new PropEnt_Merchant_Base(),
-            customData = "prefab data", throwOnDestroy = prefab.throwOnDestroy };
+        var instance = (T)Activator.CreateInstance(prefab.GetType());
+        instance.position = position; instance.price = 999; instance.merchant = new PropEnt_Merchant_Base();
+        instance.customData = "prefab data"; instance.throwOnDestroy = prefab.throwOnDestroy;
+        instance.onCreate = () => prefab.onSpawn?.Invoke(instance);
         beforeSpawn?.Invoke(instance);
         spawned.Add(instance);
-        prefab.onSpawn?.Invoke(instance);
+        Mirror.NetworkServer.spawned[(uint)Mirror.NetworkServer.spawned.Count + 1] =
+            new Mirror.NetworkIdentity { actor = instance };
+        if (!deferTreasureCreate) instance.CompleteCreate();
         return instance;
     }
 }
@@ -61,22 +119,27 @@ public class GameManager
 }
 public class ZoneManager
 {
-    public object currentZone = new object();
+    public Zone currentZone = new Zone();
     public Room currentRoom = new Room();
     public int currentNodeIndex;
     public bool isInRoomTransition;
+    public bool isSidetracking;
     public WorldNodeData currentNode => nodes[currentNodeIndex];
     public int currentZoneIndex, loopIndex;
     public bool isHuntAdvanceDisabled;
+    public int selectedNode = 2;
     public readonly List<WorldNodeData> nodes = new List<WorldNodeData> { new WorldNodeData(), new WorldNodeData(), new WorldNodeData() };
     public readonly List<GetNodeIndexSettings> searches = new List<GetNodeIndexSettings>();
     public readonly List<(int node, ModifierData mod)> additions = new List<(int, ModifierData)>();
     public Func<GetNodeIndexSettings, bool> canSelect = settings => true;
     public bool TryGetNodeIndexForNextGoal(GetNodeIndexSettings settings, out int node)
     {
-        searches.Add(settings); node = 2; return canSelect(settings);
+        searches.Add(settings); node = selectedNode; return canSelect(settings);
     }
-    public int AddModifier(int node, ModifierData mod) { additions.Add((node, mod)); return additions.Count; }
+    public int AddModifier(int node, ModifierData mod)
+    {
+        additions.Add((node, mod)); nodes[node].modifiers.Add(mod); return additions.Count;
+    }
 }
 public class GetNodeIndexSettings
 {
@@ -85,7 +148,13 @@ public class GetNodeIndexSettings
     public bool preferCloserToExit, avoidMainModifier;
 }
 public class Room { public string name = "Room_Combat"; }
-public class WorldNodeData { public WorldNodeType type; }
+public class Zone { public bool useSpecialGeneration; }
+public class WorldNodeData
+{
+    public WorldNodeType type;
+    public readonly List<ModifierData> modifiers = new List<ModifierData>();
+    public bool HasModifier(string name) => modifiers.Exists(m => m.type == name);
+}
 public enum WorldNodeType { Combat, ExitBoss, Special, Merchant }
 public struct ModifierData { public string type; public bool isForceRevealed; }
 public class RoomModifierBase { public bool isMain; }
@@ -102,10 +171,12 @@ public class PingManager
     }
 }
 public class GameSettingsManager { public string difficulty; }
-public class Entity { public DewPlayer owner; }
+public class Actor { public bool isActive = true; }
+public class ActorManager { public readonly HashSet<Actor> allActors = new HashSet<Actor>(); }
+public class Entity : Actor { public DewPlayer owner; }
 public class Hero : Entity
 {
-    public bool isActive = true, isKnockedOut;
+    public bool isKnockedOut;
     public UnityEngine.Vector3 agentPosition = new UnityEngine.Vector3 { x = 1, y = 2, z = 3 };
     public EntityStatus Status = new EntityStatus();
     public int kills;
@@ -163,26 +234,33 @@ public struct AssetRef<T>
     public T asset => DewResources.fullCurses.TryGetValue((CurseStatusEffect)(object)_asset, out var full)
         ? (T)(object)full : _asset;
 }
-public class QuestManager { }
+public class QuestManager { public string currentArtifact; public bool didCollectArtifactThisLoop; }
 public class Shrine { }
 public class Shrine_PotOfGreed : Shrine { }
 public class Shrine_Disintegration : Shrine { }
 public enum QuestState { Ongoing, Completed, Failed }
-public class DewQuest { public QuestState state; }
+public class DewQuest : Actor { public QuestState state; }
 public class Quest_StrayMemory : DewQuest { }
 public class Quest_GuidingCompass : DewQuest { }
+public class Quest_TreasureMap : DewQuest { }
+public class Quest_SuspiciousTreasureMap : DewQuest { }
 public enum UnlockStatus { Locked, NotDiscovered, Complete }
-public class DewPlayer { public static DewPlayer local; public Hero hero; public string guid; }
+public class DewPlayer { public static DewPlayer local; public Hero hero; public string guid; public float buyPriceMultiplier = 1f; }
 public enum MerchandiseType { Empty, Skill, Gem, Souvenir, Treasure }
-public struct Cost { public int gold; }
+public struct Cost
+{
+    public int gold;
+    public Cost MultiplyGold(float multiplier) => new Cost { gold = (int)(gold * multiplier) };
+}
 public struct MerchandiseData { public MerchandiseType type; public string itemName, customData; public Cost price; public int count; }
 public class PropEnt_Merchant_Base
 {
     public readonly Dictionary<string, MerchandiseData[]> merchandises = new Dictionary<string, MerchandiseData[]>();
 }
 public class PropEnt_Merchant_Jonas : PropEnt_Merchant_Base { }
-public class Treasure
+public class Treasure : Actor
 {
+    public UnityEngine.Sprite icon = new UnityEngine.Sprite();
     public int priceCalls;
     public int price;
     public string customData;
@@ -192,14 +270,26 @@ public class Treasure
     public UnityEngine.Vector3 position;
     public bool eligible = true, destroyed, throwOnDestroy;
     public Action<Treasure> onSpawn;
+    public Action onCreate;
+    public bool created;
+    public void CompleteCreate()
+    {
+        if (created) return;
+        created = true; onCreate?.Invoke();
+        NetworkedManagerBase<ActorManager>.instance?.allActors.Add(this);
+    }
     public bool ShouldBeIncludedInPool() => eligible;
     public void Destroy()
     {
         if (throwOnDestroy) throw new Exception("Cleanup failure");
+        CompleteCreate();
         destroyed = true;
+        isActive = false;
     }
     public void OnAddMerchandise(out Cost price, out string customData) { priceCalls++; price = new Cost { gold = 237 }; customData = null; }
 }
+public class Treasure_TreasureMap : Treasure { }
+public class Treasure_TotallyGenuineTreasureMap : Treasure { }
 public static class DewResources
 {
     public static readonly List<CurseStatusEffect> curses = new List<CurseStatusEffect>();

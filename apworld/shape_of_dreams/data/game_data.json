@@ -1,7 +1,7 @@
 {
   "game": "Shape of Dreams",
   "data_format_version": 5,
-  "data_hash": "af3ec74a679fd4710e8687b6424555c59166473a5753c7e4b95e8c730187dbb6",
+  "data_hash": "fbb7bcce1eae8c6c28e8e5897c08f46864789070b29a034dca88783c6f0842c0",
   "extracted_from_game_version": "r.1.4.0.13_s",
   "difficulties": [
     {
@@ -950,7 +950,7 @@
       "name": "Mastery: Aurena",
       "key": "MASTERY_Hero_Aurena",
       "kind": "mastery",
-      "classification": "filler",
+      "classification": "useful",
       "traveler": "Hero_Aurena",
       "id": 7710069
     },
@@ -958,7 +958,7 @@
       "name": "Mastery: Bismuth",
       "key": "MASTERY_Hero_Bismuth",
       "kind": "mastery",
-      "classification": "filler",
+      "classification": "useful",
       "traveler": "Hero_Bismuth",
       "id": 7710070
     },
@@ -966,7 +966,7 @@
       "name": "Mastery: Cetus",
       "key": "MASTERY_Hero_Cetus",
       "kind": "mastery",
-      "classification": "filler",
+      "classification": "useful",
       "traveler": "Hero_Cetus",
       "id": 7710071
     },
@@ -974,7 +974,7 @@
       "name": "Mastery: Lacerta",
       "key": "MASTERY_Hero_Lacerta",
       "kind": "mastery",
-      "classification": "filler",
+      "classification": "useful",
       "traveler": "Hero_Lacerta",
       "id": 7710072
     },
@@ -982,7 +982,7 @@
       "name": "Mastery: Mist",
       "key": "MASTERY_Hero_Mist",
       "kind": "mastery",
-      "classification": "filler",
+      "classification": "useful",
       "traveler": "Hero_Mist",
       "id": 7710073
     },
@@ -990,7 +990,7 @@
       "name": "Mastery: Nachia",
       "key": "MASTERY_Hero_Nachia",
       "kind": "mastery",
-      "classification": "filler",
+      "classification": "useful",
       "traveler": "Hero_Nachia",
       "id": 7710074
     },
@@ -998,7 +998,7 @@
       "name": "Mastery: Shell",
       "key": "MASTERY_Hero_Husk",
       "kind": "mastery",
-      "classification": "filler",
+      "classification": "useful",
       "traveler": "Hero_Husk",
       "id": 7710075
     },
@@ -1006,7 +1006,7 @@
       "name": "Mastery: Vesper",
       "key": "MASTERY_Hero_Vesper",
       "kind": "mastery",
-      "classification": "filler",
+      "classification": "useful",
       "traveler": "Hero_Vesper",
       "id": 7710076
     },
@@ -1014,7 +1014,7 @@
       "name": "Mastery: Yubar",
       "key": "MASTERY_Hero_Yubar",
       "kind": "mastery",
-      "classification": "filler",
+      "classification": "useful",
       "traveler": "Hero_Yubar",
       "id": 7710077
     },

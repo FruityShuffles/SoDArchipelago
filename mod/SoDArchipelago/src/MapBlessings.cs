@@ -15,10 +15,20 @@ namespace SoDArchipelago
             var zm = NetworkedManagerBase<ZoneManager>.instance;
             var pm = NetworkedManagerBase<PingManager>.instance;
             var player = DewPlayer.local;
-            if (zm == null || zm.nodes.Count == 0 || pm == null || player == null || string.IsNullOrEmpty(item.Target))
+            // The vanilla helper scores unvisited nodes even after reaching the exit, and sidetrack
+            // distances are disconnected. A selected node there is not a usable destination ahead.
+            if (zm == null || zm.currentRoom == null || zm.isInRoomTransition || zm.isSidetracking ||
+                zm.currentZone == null || zm.currentZone.useSpecialGeneration ||
+                zm.currentNodeIndex < 0 || zm.currentNodeIndex >= zm.nodes.Count ||
+                zm.currentNode.type == WorldNodeType.ExitBoss || pm == null || player == null ||
+                string.IsNullOrEmpty(item.Target))
                 return false;
             var prefab = DewResources.GetByShortTypeName<RoomModifierBase>(item.Target);
             if (prefab == null) return false;
+            // Artifact pickup has one shared party slot. A later hand-in can make this grant viable.
+            if (item.Target == "RoomMod_Artifact" &&
+                (NetworkedManagerBase<QuestManager>.instance == null ||
+                 NetworkedManagerBase<QuestManager>.instance.currentArtifact != null)) return false;
 
             // Main bonuses and the Lizard Shop must not replace another bonus. Shrines and Artifact may share it.
             var settings = new GetNodeIndexSettings
@@ -28,6 +38,9 @@ namespace SoDArchipelago
                 avoidMainModifier = prefab.isMain
             };
             if (!zm.TryGetNodeIndexForNextGoal(settings, out int node)) return false;
+            // Vanilla restores shrines by class, not modifier ID. Two copies on the same node would
+            // both attach to the first shrine after a revisit/continue load. Retry another target.
+            if (zm.nodes[node].HasModifier(item.Target)) return false;
             zm.AddModifier(node, new ModifierData { type = item.Target, isForceRevealed = true });
 
             // This is already the server: use the vanilla RPC with the host as sender. Unlike CmdSendPing,

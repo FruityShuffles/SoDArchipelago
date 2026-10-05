@@ -16,8 +16,10 @@
     <Compile Include="../SoDArchipelago/src/ProfileGuard.cs" Link="ProfileGuard.cs" />
     <Compile Include="../SoDArchipelago/src/CheckHandler.cs" Link="CheckHandler.cs" />
     <Compile Include="../SoDArchipelago/src/JonasWares.cs" Link="JonasWares.cs" />
+    <Compile Include="../SoDArchipelago/src/WareShopUi.cs" Link="WareShopUi.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="../../apworld/shape_of_dreams/data/game_data.json" LogicalName="game_data.json" />
+    <EmbeddedResource Include="../SoDArchipelago/about/icon.png" LogicalName="SoDArchipelago.ware_icon.png" />
   </ItemGroup>
 </Project>

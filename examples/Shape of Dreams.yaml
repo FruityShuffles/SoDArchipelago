@@ -1,5 +1,7 @@
-# Example player options for Shape of Dreams. Change what you like, then put this file in Archipelago's Players folder.
-# The game info page explains every option.
+# Configuration reference for Shape of Dreams. Edit these settings, then put this file in Archipelago's Players folder.
+# Each setting gives its accepted values and default. Values shown are the defaults.
+# For gameplay explanations and option interactions, read:
+# https://github.com/FruityShuffles/SoDArchipelago/blob/main/apworld/shape_of_dreams/docs/en_Shape%20of%20Dreams.md#options
 
 name: YourName
 game: Shape of Dreams
@@ -7,80 +9,79 @@ requires:
   version: 0.6.4
 
 Shape of Dreams:
-  # Lowest difficulty a winning run counts at for your goal: deep_sleep, ominous_dream or nightmare.
+  # Minimum winning difficulty for the goal. Values: deep_sleep, ominous_dream, nightmare. Default: nightmare.
   goal_difficulty: nightmare
 
-  # How many different Travelers must win a run (1-9).
+  # Number of different Travelers needed for the goal. Integer: 1-9. Default: 9.
   goal_traveler_count: 9
 
-  # "Mastery: <Traveler>" items per Traveler (0-15). Remaining baseline filler slots stay Stardust.
+  # Useful "Mastery: <Traveler>" items per Traveler. Integer: 0-15. Default: 8. 0 removes these items.
   mastery_packs_per_traveler: 8
 
-  # Mastery levels per Mastery item (1-40).
+  # Mastery levels granted by each Mastery item. Integer: 1-40. Default: 5.
   mastery_pack_value: 5
 
-  # Total Stardust from the seed (0-1000000), split exactly across its Stardust items.
-  # More Stardust packs means smaller packs, with the same total income.
-  stardust_total: 54000
-
-  # Map Blessings and Treasures in new item slots: true or false. Off keeps vanilla run balance.
-  # Delivery requires solo play or hosting; joining players keep these items waiting.
-  in_run_items: false
-
-  # Curse traps in 20% of new item slots: true or false. Delivery also requires solo play or hosting.
-  # Mild, Potent and Intense vanilla curses affect your own Traveler; traps wait until you leave a boss room.
-  # The game's quest tracker shows the kill or travel condition for lifting each curse.
-  traps: false
-
-  # Jonas's Archipelago wares (0-100). Wares require solo play or hosting.
-  # Set to 0 if you mostly join other people's games.
-  jonas_wares: 30
-
-  # Runs earn Traveler mastery as in vanilla: true or false. false: mastery only comes from "Mastery: <Traveler>" items.
+  # Mastery earned from runs. Values: true, false. Default: true. false leaves only Mastery items.
   passive_mastery: true
 
-  # Forced Lucid Dreams: the listed dreams are on in every run until you receive their "Lucid Dream: <name>" item.
-  # Those items become progression. A run only counts for world clears and the goal if every still-forced dream is on.
-  #
-  # Evil Lucid Dreams:
-  #   Fish Scales        Damage from monsters also lowers your max health until the next world (30% of it, 40% from
-  #                      bosses, less for melee Travelers). Guidance shrines restore some. Shields can't exceed your
-  #                      max health.
-  #   Grievous Wounds    Healing and shields on Travelers are halved.
-  #   Mad Life           Monsters predict your movement and aim where you're going.
-  #   Marsh of Destiny   Each world starts with a Seed of Torment shrine that offers rewards in exchange for making
-  #                      monsters stronger (health, armor, speed, Mirage Skins, curses, boss skills).
-  #   Overpopulation     50% more monsters (bosses excluded).
-  #   Prudent Jellyfish  Cooldown reduction is half as strong, and ability haste and Memory upgrades can shorten a
-  #                      cooldown by at most half.
+  # Total Stardust divided across the seed's Stardust items. Integer: 0-1000000. Default: 54000.
+  stardust_total: 54000
+
+  # Map Blessings and Treasures in additional slots. Values: true, false. Default: false. Solo/host delivery.
+  in_run_items: false
+
+  # Curse traps in about 20% of additional slots. Values: true, false. Default: false. Solo/host delivery.
+  # Independent of in_run_items.
+  traps: false
+
+  # Jonas's Archipelago ware checks. Integer: 0-100. Default: 30. Solo/host purchases; 0 disables them.
+  jonas_wares: 30
+
+  # Evil dreams forced until their release items arrive. YAML list of exact names; [] selects none. Default: [].
+  # Accepted names and effects:
+  # "Fish Scales": Monster damage also lowers your maximum health until the next world.
+  # "Grievous Wounds": Halves healing and shields on Travelers.
+  # "Mad Life": Monsters predict your movement.
+  # "Marsh of Destiny": Each world offers a Seed of Torment shrine: rewards for strengthening monsters.
+  # "Overpopulation": Adds 50% more monsters, excluding bosses.
+  # "Prudent Jellyfish": Weakens cooldown reduction and limits how much cooldowns can be shortened.
   forced_evil_lucid_dreams: []
   # For example: forced_evil_lucid_dreams: ["Grievous Wounds", "Overpopulation"]
 
-  # Chaotic Lucid Dreams:
-  #   Embrace Mortality      Everyone deals double damage, Travelers and monsters alike.
-  #   Harmless Whispers      Bosses can be crowd-controlled, but get +15% health, +10% damage and extra tenacity, and
-  #                          shield themselves when controlled too often.
-  #   Sparkling Dream Flask  Health potions and Guidance shrines give Dream Dust instead of healing.
-  #   The Darkest Urge       Monsters fight each other. A monster that kills another levels up: more health, damage
-  #                          and speed, and a full heal.
-  #   WILD                   Every monster except bosses is a Hunter.
+  # Chaotic dreams forced until their release items arrive. YAML list of exact names; [] selects none. Default: [].
+  # Accepted names and effects:
+  # "Embrace Mortality": Travelers and monsters deal double damage.
+  # "Harmless Whispers": Bosses can be crowd-controlled, but gain health, damage, tenacity
+  #   and shields against repeated control.
+  # "Sparkling Dream Flask": Health potions and Guidance shrines give Dream Dust instead of healing.
+  # "The Darkest Urge": Monsters fight each other and grow stronger when they kill another monster.
+  # "WILD": Every monster except bosses is a Hunter.
   forced_chaotic_lucid_dreams: []
   # For example: forced_chaotic_lucid_dreams: ["WILD"]
 
-  # Shuffles the mastery level each constellation star needs before you can buy it: true or false. Stars only trade
-  # levels with stars of the same Traveler (or the common stars) and the same category.
+  # Shuffle constellation mastery requirements. Values: true, false. Default: true.
   shuffle_star_requirements: true
 
-  # When you are knocked down, everyone on DeathLink dies, and the other way round: true or false.
+  # Share knockdowns through DeathLink. Values: true, false. Default: false. Receiving requires solo/hosting.
   death_link: false
 
+  # Optional Archipelago location settings. YAML lists of exact location names or group names; default: [].
+  # Uncomment and edit to use. exclude_locations prevents progression and useful items on those checks.
+  # priority_locations requests progression there; exclusions override priorities.
+  # exclude_locations: [Nightmare]
+  # priority_locations: [Aurena]
+  # Groups: Achievements, World Clears, Build-Dependent Achievements, Souvenirs, Jonas's Wares, Shrines,
+  # Quests, Artifacts, Deep Sleep, Ominous Dream, Nightmare, Aurena, Bismuth, Cetus, Lacerta, Mist, Nachia,
+  # Shell, Vesper, Yubar.
+  # For a solo seed, leave at least 93 + 9 * mastery_packs_per_traveler non-excluded checks (165 by default).
+
 # Named presets: copy these lines over the corresponding defaults above.
-# Default — runs keep the base game's balance:
+# Default:
 #   in_run_items: false
 #   traps: false
-# With in-run items — other players can send Map Blessings and Treasures:
+# With in-run items:
 #   in_run_items: true
 #   traps: false
-# With in-run items and traps — also receive Curse traps:
+# With in-run items and traps:
 #   in_run_items: true
 #   traps: true

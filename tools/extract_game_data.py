@@ -322,7 +322,7 @@ def main() -> int:
                       "lucid_dream_type": LUCID_DREAM_TYPE[key]})
     for hero in trav_order:
         items.append({"name": f"Mastery: {trav_name[hero]}", "key": f"MASTERY_{hero}", "kind": "mastery",
-                      "classification": "filler", "traveler": hero})
+                      "classification": "useful", "traveler": hero})
     items.append({"name": "Stardust", "key": STARDUST_KEY, "kind": "stardust", "classification": "filler"})
     for name, modifier, weight in BLESSINGS:
         items.append({"name": f"Blessing: {name}", "key": "BLESSING_" + modifier, "kind": "blessing",

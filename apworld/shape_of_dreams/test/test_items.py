@@ -1,5 +1,7 @@
 from collections import Counter
 
+from BaseClasses import ItemClassification
+
 from . import SoDTestBase
 from ..items import STARDUST, mastery_item_names, travelers
 from ..locations import location_table
@@ -15,10 +17,11 @@ class _PoolTest(SoDTestBase):
         self.assertEqual(len(location_table), 372)  # baseline + 100 possible wares + 27 pilgrimage checks
         self.assertEqual(sum(self._pool().values()), len(self.world.enabled_locations))
 
-    def test_filler_mix(self) -> None:
+    def test_mastery_and_stardust_mix(self) -> None:
         pool = self._pool()
         for name in mastery_item_names:
             self.assertEqual(pool[name], self.packs)
+            self.assertEqual(self.world.create_item(name).classification, ItemClassification.useful)
         self.assertEqual(pool[STARDUST], 152 - 9 * self.packs + self.world.options.jonas_wares.value + 27)
 
     def test_progressive_copies(self) -> None:
@@ -40,6 +43,11 @@ class TestDefaultPool(_PoolTest):
         self.assertEqual(slot_data["stardust_total"], 54000)
         self.assertEqual(slot_data["stardust_item_count"], 137)
         self.assertNotIn("stardust_pack_value", slot_data)
+
+    def test_default_classification_counts(self) -> None:
+        self.assertEqual(Counter(item.classification for item in self.multiworld.itempool),
+                         {ItemClassification.progression: 34, ItemClassification.useful: 131,
+                          ItemClassification.filler: 137})
 
 
 class TestNoMastery(_PoolTest):

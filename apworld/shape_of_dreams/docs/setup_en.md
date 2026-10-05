@@ -6,34 +6,28 @@
 - The [Archipelago Randomizer](https://steamcommunity.com/sharedfiles/filedetails/?id=3809735647) mod from the Steam Workshop
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases) 0.6.4 or newer, to generate and host games,
   with `shape_of_dreams.apworld` installed (double-click it, or copy it into Archipelago's `custom_worlds` folder).
-  Download the latest one from the [SoDArchipelago releases](https://github.com/FruityShuffles/SoDArchipelago/releases).
+  Download `shape_of_dreams.apworld` from the [release matching your mod version](https://github.com/FruityShuffles/SoDArchipelago/releases).
 
 ## Your YAML
+
+Read the [game info page](https://github.com/FruityShuffles/SoDArchipelago/blob/main/apworld/shape_of_dreams/docs/en_Shape%20of%20Dreams.md#options)
+to understand the gameplay choices and how the options work together. The YAML is the configuration reference:
+it gives the exact setting names, accepted values and defaults.
 
 New to Archipelago? The [Archipelago setup guide](https://archipelago.gg/tutorial/Archipelago/setup/en) explains what
 a YAML is and how to generate and host a game. Shape of Dreams has no options page on archipelago.gg, so get your YAML
 one of these ways:
 
 - Start from the [example YAML](https://github.com/FruityShuffles/SoDArchipelago/blob/main/examples/Shape%20of%20Dreams.yaml),
-  which describes every option.
+  which lists the exact settings, accepted values, defaults and syntax examples.
 - With the apworld installed, click **Generate Template Options** in the Archipelago Launcher. The template is written
   to `Players/Templates`.
 
-Generate the game on your own computer. You can then upload it to archipelago.gg to host it.
+Edit the values inside the `Shape of Dreams` section, keeping the indentation. The example's values are the defaults;
+its commented presets show alternative combinations for in-run items and traps. Copy the chosen settings over the
+corresponding defaults, then put the YAML in Archipelago's `Players` folder before generating your seed.
 
-The example YAML includes Default, With in-run items, and With in-run items and traps presets. `stardust_total`
-replaces `stardust_pack_value`: it is the seed's whole Stardust income, divided exactly across its packs.
-`jonas_wares` adds gold purchases at Jonas's shop when playing solo or hosting. Hover the AP icon to see the item
-and recipient; buying sends its check. A player who only joins other people's games should set `jonas_wares: 0`.
-Shrine uses, quest completions and artifact hand-ins always send checks, including when joining a co-op game.
-They do not require `in_run_items`. With in-run items enabled, Map Blessings mark and ping a shrine, room bonus,
-Lizard Shop or Artifact on your world map. Follow the marker to use it; if no eligible node remains, it waits for a
-later world or run. Treasures grant Cloak of Guidance, Clairvoyance, Determination Shard or either treasure map
-for free, with their vanilla effects. They wait until their effect has a valid target. A Shard can absorb a received
-DeathLink without suppressing your next normal knockdown. With `traps` enabled, Mild, Potent and Intense Curse traps
-curse your own Traveler with a vanilla curse and kill or travel condition to lift it. They wait until you leave a
-boss room (including Primus and Polaris) and a viable curse is available. Delivery requires solo play or hosting;
-the host's traps do not curse guests. All these additions ship together in one matching apworld/mod release.
+Generate the game on your own computer. You can then upload it to archipelago.gg to host it.
 
 ## Installing the mod
 
@@ -98,17 +92,13 @@ Be aware that a player who joins someone else's lobby can't receive DeathLinks. 
 be able to receive DeathLinks for the joining player.
 
 Archipelago wares and in-run effects require solo play or hosting. Set `jonas_wares: 0` if you mostly join other
-people's games. In-run items stay pending until you connect and play solo or host, with a valid target for their effect.
-They survive run endings and restarts; their notice appears when they land. Offline play delivers no new in-run items.
-Quitting before the game's next continue save can lose an effect that has already landed.
+people's games, and disable in-run items, traps and DeathLink. The
+[game info page](https://github.com/FruityShuffles/SoDArchipelago/blob/main/apworld/shape_of_dreams/docs/en_Shape%20of%20Dreams.md#co-op)
+explains co-op behavior.
 
 ## Updating
 
-Updating the mod or the apworld in the middle of a seed is almost always fine. If a release ever can't be used with an
-existing seed, its release notes say so, and the mod tells you when you connect.
-
-The combined #7–#12 release adds new content and changes compatibility. Use the previous matching mod for old seeds;
-use matching apworld and mod versions for new seeds. This foundation is not released separately.
+Updating the mod or the apworld in the middle of an Archipelago seed may or may not be ok. If you get an error saying that the mod is incompatible with your seed, your mod probably auto-updated; revert the Steam Workshop mod to the previous version until you finish your seed.
 
 ## Troubleshooting
 

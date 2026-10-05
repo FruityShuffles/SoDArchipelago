@@ -29,12 +29,14 @@ namespace SoDArchipelago
 
         public static void UpdateContent(UI_InGame_FloatingWindow_Shop_Item view, MerchandiseData data)
         {
-            if (!IsOwnShop) return;
-            if (!JonasWares.TryGetWare(data, out var location))
+            if (!IsOwnShop || !JonasWares.TryGetWare(data, out var location))
             {
-                // Cells cache only itemName; a normal Cloak in a reused AP cell needs its vanilla icon restored.
-                if (data.type == MerchandiseType.Treasure && data.itemName == JonasWares.Placeholder)
-                    view.treasureIcon.sprite = DewResources.GetByShortTypeName<Treasure>(data.itemName).icon;
+                // Cells survive shop/profile changes and cache only itemName. Restore only an icon we replaced.
+                if (_icon != null && view.treasureIcon.sprite == _icon && data.type == MerchandiseType.Treasure)
+                {
+                    var treasure = DewResources.GetByShortTypeName<Treasure>(data.itemName);
+                    if (treasure != null) view.treasureIcon.sprite = treasure.icon;
+                }
                 return;
             }
             view.treasureIcon.sprite = Icon;
@@ -48,8 +50,10 @@ namespace SoDArchipelago
         public static bool ShowTooltip(UI_InGame_FloatingWindow_Shop_Item view, UI_TooltipManager tooltip)
         {
             if (!IsOwnShop || !JonasWares.TryGetWare(view.data, out var location)) return false;
-            // Like other merchandise, the icon's tooltip supplies its name. Escape multiworld names' TMP markup.
-            string description = JonasWares.Description(location).Replace("<", "&lt;").Replace(">", "&gt;");
+            // TMP parses backslash escapes before rich-text tags and does not decode HTML entities.
+            // Protect each '<' separately so even a name containing '</noparse>' stays literal.
+            string description = JonasWares.Description(location).Replace("\\", "\\u005C")
+                .Replace("<", "<noparse><</noparse>");
             string price = view.data.price.MultiplyGold(DewPlayer.local.buyPriceMultiplier).gold.ToString("#,##0");
             tooltip.ShowRawTextTooltip(view.transform.position,
                 description + "\n" + location.Name + "\n" + price + " gold" +

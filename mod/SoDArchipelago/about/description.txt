@@ -1,34 +1,35 @@
 [h1]Archipelago Randomizer[/h1]
 [url=https://archipelago.gg/]Archipelago[/url] is a multi-game randomizer. Players in different games share one shuffled item pool, so what you find can be someone else's item, and theirs can be yours.
 
-This mod connects Shape of Dreams to an Archipelago multiworld. Achievements, world clears (worlds 1-5, per Traveler and difficulty) and lizard shop souvenirs (you keep them) become location checks, and the Traveler, Memory, Essence and Lucid Dream unlocks, plus mastery and Stardust, are shuffled into the multiworld. You start with 2 random Travelers instead of Lacerta and Mist. You can play solo or co-op with other players, whether or not they run Archipelago.
+This mod connects Shape of Dreams to an Archipelago multiworld. Achievements, world clears (worlds 1-5, per Traveler and difficulty), lizard shop souvenirs (you keep them), Jonas's Wares, shrine uses, quest completions and artifact hand-ins become location checks. Traveler, Memory, Essence and Lucid Dream unlocks, plus mastery and Stardust, are shuffled into the multiworld, with optional Map Blessings, Treasures and Curse traps. You start with 2 random Travelers instead of Lacerta and Mist. You can play solo or co-op with other players, whether or not they run Archipelago.
 
-Each seed should be played on its own fresh Shape of Dreams save profile.
+Each seed is played on its own fresh Shape of Dreams save profile, so your normal save is never touched.
 
 [h2]Options[/h2]
-Set these in your YAML. The [url=https://github.com/FruityShuffles/SoDArchipelago/blob/main/examples/Shape%20of%20Dreams.yaml]example YAML[/url] explains every one.
+The [url=https://github.com/FruityShuffles/SoDArchipelago/blob/main/apworld/shape_of_dreams/docs/en_Shape%20of%20Dreams.md#options]game info page[/url] explains how these choices change your game and how they work together. The [url=https://github.com/FruityShuffles/SoDArchipelago/blob/main/examples/Shape%20of%20Dreams.yaml]example YAML[/url] gives the exact setting names, accepted values and defaults.
 [list]
 [*][b]Goal:[/b] the lowest difficulty a win counts at, and how many different Travelers must win (1-9).
 [*][b]Forced Lucid Dreams:[/b] pick Evil or Chaotic Lucid Dreams to be forced on in every run until you receive their item.
-[*][b]No passive mastery:[/b] runs earn no mastery, so it only comes from Mastery items (off by default).
-[*][b]Shuffled constellation stars:[/b] the mastery level each star needs is shuffled (on by default).
+[*][b]No passive mastery:[/b] runs earn no mastery, so it only comes from Mastery items.
+[*][b]Shuffled constellation stars:[/b] the mastery level each star needs is shuffled.
+[*][b]Jonas's Wares:[/b] how many Archipelago checks Jonas sells for gold.
+[*][b]In-run items:[/b] Map Blessings and Treasures arrive during runs.
+[*][b]Curse traps:[/b] replace 20% of new item slots with the curses given by Hatred shrines.
 [*][b]DeathLink:[/b] when one player is knocked down, everyone on DeathLink goes down.
-[*][b]Pool and checks:[/b] how much Mastery and Stardust the filler gives, and which checks (by Traveler, difficulty or achievement type) are important or excluded.
+[*][b]Pool and checks:[/b] how much the useful Mastery items and Stardust filler give, and which checks (by Traveler, difficulty or achievement type) are important or excluded.
 [/list]
+
+In-run items like Map Blessings, Treasures and traps, Jonas's Wares, and DeathLink only work while playing solo or hosting a lobby. If you plan on joining other players' lobbies, you should disable these items and settings.
 
 [h2]Getting started[/h2]
 [list]
 [*]Download [b]shape_of_dreams.apworld[/b] from the [url=https://github.com/FruityShuffles/SoDArchipelago/releases]GitHub releases[/url] (the release matching this mod's version) and install it in Archipelago 0.6.4 or newer.
+[*]Read the [url=https://github.com/FruityShuffles/SoDArchipelago/blob/main/apworld/shape_of_dreams/docs/en_Shape%20of%20Dreams.md#options]game info page[/url] to choose your options, then customize the [url=https://github.com/FruityShuffles/SoDArchipelago/blob/main/examples/Shape%20of%20Dreams.yaml]example YAML[/url] using its setting names and accepted values.
 [*]Follow the [url=https://github.com/FruityShuffles/SoDArchipelago/blob/main/apworld/shape_of_dreams/docs/setup_en.md]setup guide[/url]: make a new profile, enter your server, slot and password in the mod's settings, then type ap_connect and ap_bind in the console.
 [/list]
 
 [h2]Network use[/h2]
 The mod connects only to the Archipelago server you enter in its settings (archipelago.gg or a server you host yourself). It contacts no other server. Achievements completed on an Archipelago profile are not sent to Steam.
-
-[h2]Known limitations[/h2]
-[list]
-[*]In co-op, a player who joins someone else's lobby can't receive DeathLinks. An Archipelago player should host co-op lobbies.
-[/list]
 
 [h2]Reporting bugs[/h2]
 Open an issue on [url=https://github.com/FruityShuffles/SoDArchipelago/issues]GitHub[/url] with:

@@ -26,7 +26,7 @@ class GoalTravelerCount(Range):
 
 class MasteryPacksPerTraveler(Range):
     """How many "Mastery: <Traveler>" items each Traveler has in the pool. 0 removes mastery from the pool.
-    The baseline filler slots that aren't mastery stay Stardust; 15 still leaves 17 Stardust items."""
+    Mastery items are always useful; remaining baseline slots stay Stardust."""
     display_name = "Mastery Packs per Traveler"
     range_start = 0
     range_end = 15
@@ -77,38 +77,34 @@ class PassiveMastery(DefaultOnToggle):
     display_name = "Passive Mastery"
 
 
-# The dream descriptions below are also in examples/Shape of Dreams.yaml; keep both in step.
+# These descriptions appear in generated YAML templates. Individual dream effects belong beside their names.
 class ForcedEvilLucidDreams(OptionSet):
-    """Evil Lucid Dreams that are forced on in every run until you receive their "Lucid Dream: <name>" item.
-    After that you can turn them on or off as usual. These items become progression.
-    A run only counts for world clears and your goal if every still-forced dream is active.
-
-    Fish Scales: damage from monsters also lowers your max health until the next world (30% of it, 40% from bosses,
-    less for melee Travelers). Guidance shrines restore some. Shields can't exceed your max health.
-    Grievous Wounds: healing and shields on Travelers are halved.
-    Mad Life: monsters predict your movement and aim where you're going.
-    Marsh of Destiny: each world starts with a Seed of Torment shrine that offers rewards in exchange for making monsters
-    stronger (health, armor, speed, Mirage Skins, curses, boss skills).
-    Overpopulation: 50% more monsters (bosses excluded).
-    Prudent Jellyfish: cooldown reduction is half as strong, and ability haste and Memory upgrades can shorten a
-    cooldown by at most half."""
+    """List of Evil Lucid Dream names forced until their release items arrive. An empty list selects none.
+    Accepted names and effects:
+    Fish Scales: Monster damage also lowers your maximum health until the next world.
+    Grievous Wounds: Halves healing and shields on Travelers.
+    Mad Life: Monsters predict your movement.
+    Marsh of Destiny: Each world offers a Seed of Torment shrine: rewards for strengthening monsters.
+    Overpopulation: Adds 50% more monsters, excluding bosses.
+    Prudent Jellyfish: Weakens cooldown reduction and limits how much cooldowns can be shortened.
+    For forced-dream rules, see the game info page:
+    https://github.com/FruityShuffles/SoDArchipelago/blob/main/apworld/shape_of_dreams/docs/en_Shape%20of%20Dreams.md#forced-lucid-dreams"""
     display_name = "Forced Evil Lucid Dreams"
     valid_keys = sorted(lucid_dreams_by_type["evil"])
     default = frozenset()
 
 
 class ForcedChaoticLucidDreams(OptionSet):
-    """Chaotic Lucid Dreams that are forced on in every run until you receive their "Lucid Dream: <name>" item.
-    After that you can turn them on or off as usual. These items become progression.
-    A run only counts for world clears and your goal if every still-forced dream is active.
-
-    Embrace Mortality: everyone deals double damage, Travelers and monsters alike.
-    Harmless Whispers: bosses can be crowd-controlled, but get +15% health, +10% damage and extra tenacity, and shield
-    themselves when controlled too often.
-    Sparkling Dream Flask: health potions and Guidance shrines give Dream Dust instead of healing.
-    The Darkest Urge: monsters fight each other. A monster that kills another levels up: more health, damage and speed,
-    and a full heal.
-    WILD: every monster except bosses is a Hunter."""
+    """List of Chaotic Lucid Dream names forced until their release items arrive. An empty list selects none.
+    Accepted names and effects:
+    Embrace Mortality: Travelers and monsters deal double damage.
+    Harmless Whispers: Bosses can be crowd-controlled, but gain health, damage, tenacity
+    and shields against repeated control.
+    Sparkling Dream Flask: Health potions and Guidance shrines give Dream Dust instead of healing.
+    The Darkest Urge: Monsters fight each other and grow stronger when they kill another monster.
+    WILD: Every monster except bosses is a Hunter.
+    For forced-dream rules, see the game info page:
+    https://github.com/FruityShuffles/SoDArchipelago/blob/main/apworld/shape_of_dreams/docs/en_Shape%20of%20Dreams.md#forced-lucid-dreams"""
     display_name = "Forced Chaotic Lucid Dreams"
     valid_keys = sorted(lucid_dreams_by_type["chaotic"])
     default = frozenset()
@@ -139,7 +135,7 @@ class SoDOptions(PerGameCommonOptions):
 
 option_groups = [
     OptionGroup("Goal", [GoalDifficulty, GoalTravelerCount]),
-    OptionGroup("Filler", [MasteryPacksPerTraveler, MasteryPackValue, StardustTotal, PassiveMastery]),
+    OptionGroup("Mastery and Stardust", [MasteryPacksPerTraveler, MasteryPackValue, StardustTotal, PassiveMastery]),
     OptionGroup("In-run Content", [InRunItems, Traps, JonasWares]),
     OptionGroup("Forced Lucid Dreams", [ForcedEvilLucidDreams, ForcedChaoticLucidDreams]),
     OptionGroup("Constellation", [ShuffleStarRequirements]),
