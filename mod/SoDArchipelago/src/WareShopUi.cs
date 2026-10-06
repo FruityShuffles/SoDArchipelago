@@ -54,10 +54,7 @@ namespace SoDArchipelago
             // Protect each '<' separately so even a name containing '</noparse>' stays literal.
             string description = JonasWares.Description(location).Replace("\\", "\\u005C")
                 .Replace("<", "<noparse><</noparse>");
-            string price = view.data.price.MultiplyGold(DewPlayer.local.buyPriceMultiplier).gold.ToString("#,##0");
-            tooltip.ShowRawTextTooltip(view.transform.position,
-                description + "\n" + location.Name + "\n" + price + " gold" +
-                (JonasWares.IsAvailable(location) && view.data.count > 0 ? "" : "\nPurchased"));
+            tooltip.ShowRawTextTooltip(view.transform.position, description + "\n" + location.Name);
             return true;
         }
 

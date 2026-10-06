@@ -4453,28 +4453,28 @@
       "id": 7720361
     },
     {
-      "name": "Artifact: Emblem of Subjugation",
+      "name": "Artifact: Token of Servitude",
       "key": "Artifact_EmblemOfSubjugation",
       "kind": "artifact",
       "traveler": null,
       "id": 7720362
     },
     {
-      "name": "Artifact: First Merchant's Token",
+      "name": "Artifact: First Merchant's Certificate",
       "key": "Artifact_FirstMerchantsToken",
       "kind": "artifact",
       "traveler": null,
       "id": 7720363
     },
     {
-      "name": "Artifact: Fool's Gold",
+      "name": "Artifact: Fool's Gold Coin",
       "key": "Artifact_FoolsGold",
       "kind": "artifact",
       "traveler": null,
       "id": 7720364
     },
     {
-      "name": "Artifact: Forest Hound Seed",
+      "name": "Artifact: Ancient Leaf Hound Egg",
       "key": "Artifact_ForestHoundSeed",
       "kind": "artifact",
       "traveler": null,
@@ -4502,28 +4502,28 @@
       "id": 7720368
     },
     {
-      "name": "Artifact: Tome of the Seeker",
+      "name": "Artifact: Seeker's Tome",
       "key": "Artifact_TomeOfTheSeeker",
       "kind": "artifact",
       "traveler": null,
       "id": 7720369
     },
     {
-      "name": "Artifact: Void Whisperer",
+      "name": "Artifact: Whispers of the Void",
       "key": "Artifact_VoidWhisperer",
       "kind": "artifact",
       "traveler": null,
       "id": 7720370
     },
     {
-      "name": "Artifact: Watcher's Note",
+      "name": "Artifact: Watcher's Records",
       "key": "Artifact_WatchersNote",
       "kind": "artifact",
       "traveler": null,
       "id": 7720371
     },
     {
-      "name": "Artifact: Wedding Ring",
+      "name": "Artifact: Ordinary Ring",
       "key": "Artifact_WeddingRing",
       "kind": "artifact",
       "traveler": null,
@@ -4916,17 +4916,17 @@
     ],
     "Artifacts": [
       "Artifact: Bouquet of Eyes",
-      "Artifact: Emblem of Subjugation",
-      "Artifact: First Merchant's Token",
-      "Artifact: Fool's Gold",
-      "Artifact: Forest Hound Seed",
+      "Artifact: Token of Servitude",
+      "Artifact: First Merchant's Certificate",
+      "Artifact: Fool's Gold Coin",
+      "Artifact: Ancient Leaf Hound Egg",
       "Artifact: Nightmare Catalyst",
       "Artifact: Star Blossom",
       "Artifact: The Starlit Stone",
-      "Artifact: Tome of the Seeker",
-      "Artifact: Void Whisperer",
-      "Artifact: Watcher's Note",
-      "Artifact: Wedding Ring"
+      "Artifact: Seeker's Tome",
+      "Artifact: Whispers of the Void",
+      "Artifact: Watcher's Records",
+      "Artifact: Ordinary Ring"
     ],
     "Aurena": [
       "Achievement: Deceiving Looks",

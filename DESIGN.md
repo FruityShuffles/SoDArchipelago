@@ -89,8 +89,9 @@ The `Jonas's Wares` location group contains all possible wares. There is no acce
   `OnAddMerchandise` price calculation (`GetAdjustedGoldAmount_Cost_Service(basePrice)`). Jonas's normal buyer
   discount still applies. No Treasure is spawned: intercept `SpawnMerchandise` after the server has spent gold,
   record/save/send the check, and suppress the placeholder's effect.
-- The local host's shop shows the AP icon; hovering shows the scouted item and recipient, location and final gold
-  price. Purchased stock is disabled. A stale ware restored by a continue save is refused before spending gold.
+- The local host's shop shows the AP icon; hovering shows the scouted item and recipient and the location
+  (the cell already shows the final gold price). Purchased stock is disabled and greyed out, with no extra text.
+  A stale ware restored by a continue save is refused before spending gold.
   A reused AP cell restores its vanilla Treasure icon at other shops or on vanilla profiles. Tooltip names preserve
   literal angle brackets and backslashes using TMP-aware encoding, including user-supplied `</noparse>` text.
 - Scout every enabled ware once per connection with `LocationScouts`, `HintCreationPolicy.None` (no hints).
@@ -114,9 +115,10 @@ and rewards are kept. Their groups are `Shrines`, `Quests` and `Artifacts`.
   `AP:check:<Quest type>`. Also check after `DewQuest.DeserializeSyncVars`: the base Actor's inactive hook can invoke
   removal before the derived quest state is read from the same network packet. Both paths share the idempotent record;
   failed and ongoing quests send nothing. QuestManager subscriptions are removed on manager cleanup/mod unload.
-- **Artifacts (12):** `Artifact: <name>` for Bouquet of Eyes, Emblem of Subjugation, First Merchant's Token,
-  Fool's Gold, Forest Hound Seed, Nightmare Catalyst, Star Blossom, The Starlit Stone, Tome of the Seeker,
-  Void Whisperer, Watcher's Note and Wedding Ring (the artifact prefabs not `excludeFromPool`). A before/after patch
+- **Artifacts (12):** `Artifact: <name>` for Bouquet of Eyes, Token of Servitude, First Merchant's Certificate,
+  Fool's Gold Coin, Ancient Leaf Hound Egg, Nightmare Catalyst, Star Blossom, The Starlit Stone, Seeker's Tome,
+  Whispers of the Void, Watcher's Records and Ordinary Ring (the artifact prefabs not `excludeFromPool`; English
+  names from the game's localization, which differ from several prefab keys). A before/after patch
   on the loaded marked profile's `DiscoverArtifact` saves/sends its check when the native journal status becomes
   `Complete`. Merely picking one up does not count. Hand-in reaches every player's client. No `AP:check:` record:
   the native flag persists and the resend reads it. Artifacts stay excluded even over `priority_locations` because
@@ -722,6 +724,13 @@ The earlier combined pass counts as the review of #7–#9; it was not repeated. 
   before responding to the user's #12 clarification. Resume the existing #12 session with the saved correction
   prompt; do not repeat any broad commit review. The final restored implementation passes 682 C# assertions and a
   build with deployment disabled, zero warnings/errors. The apworld packages successfully.
+
+## Solo test follow-ups (2026-10-04)
+
+- ~~**Jonas tooltip:** remove the gold-price line and the "Purchased" hover text from the AP ware tooltip.~~
+  Done 2026-10-05: the tooltip shows only the item, recipient and ware location.
+- ~~**Artifact name:** align "Emblem of Subjugation" with the in-game "Token of Servitude" and verify the rest.~~
+  Done 2026-10-05: all 12 names now come from the game's English localization (8 changed); keys and IDs kept.
 
 ## Settled questions
 - ~~Map the game's difficulty IDs~~ The asset catalog has `diffTutorial`, `diffEasy`, `diffNormal`, `diffHard`,

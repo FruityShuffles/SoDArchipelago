@@ -1,8 +1,11 @@
 # In-game tests
 
-The in-game tests of early development, which ended on 2026-10-03. **Testing is complete; no further testing is
-planned.** The steps stay as a record and as a reference if a game update needs a regression check. Each step lists what
-to do and the `[AP]` lines to look for in the game log:
+Early-development testing ended on 2026-10-03. Its results and steps are preserved below.
+The new [solo test plan for issues #7–#12](testing/SOLO_7_12.md) was requested on 2026-10-04.
+It covers the combined changes through `6143faa`; the environment is prepared and solo testing has started.
+No co-op testing is included in that plan.
+
+Each step lists what to do and the `[AP]` lines to look for in the game log:
 
 ```
 %USERPROFILE%\AppData\LocalLow\Lizard Smoothie\Shape of Dreams\Player.log

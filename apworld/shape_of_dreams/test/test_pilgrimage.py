@@ -10,9 +10,9 @@ EXPECTED = {
                "Entanglement", "Altar of Cleansing", "Ascension"},
     "quest": {"Stray Memory", "Star Seeker's Journal", "Fragment of Radiance", "Call of the Ravenous",
               "Consort of Night", "Hunted by Obliviax"},
-    "artifact": {"Bouquet of Eyes", "Emblem of Subjugation", "First Merchant's Token", "Fool's Gold",
-                 "Forest Hound Seed", "Nightmare Catalyst", "Star Blossom", "The Starlit Stone",
-                 "Tome of the Seeker", "Void Whisperer", "Watcher's Note", "Wedding Ring"},
+    "artifact": {"Bouquet of Eyes", "Token of Servitude", "First Merchant's Certificate", "Fool's Gold Coin",
+                 "Ancient Leaf Hound Egg", "Nightmare Catalyst", "Star Blossom", "The Starlit Stone",
+                 "Seeker's Tome", "Whispers of the Void", "Watcher's Records", "Ordinary Ring"},
 }
 
 

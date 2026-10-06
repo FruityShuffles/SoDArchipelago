@@ -700,7 +700,7 @@ internal static class Program
         Check(WareShopUi.ShowTooltip(view, tooltip), "The local ware tooltip overrides vanilla");
         const string open = "<noparse><</noparse>";
         string expected = open + "b>Map" + open + "/b> &lt; \\u005Cu2665, for " +
-            open + "3Alice" + open + "/noparse> C:\\u005Cnew\nJonas's Ware 1\n100 gold";
+            open + "3Alice" + open + "/noparse> C:\\u005Cnew\nJonas's Ware 1";
         Check(tooltip.text == expected, "Tooltip preserves literal angle brackets, noparse tags, entities and backslashes");
         // TMP consumes each Unicode escape exactly once, so the resulting '\\u2665' stays literal.
         string afterUnicodePass = System.Text.RegularExpressions.Regex.Replace(tooltip.text, @"\\u([0-9a-fA-F]{4})",

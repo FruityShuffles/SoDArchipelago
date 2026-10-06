@@ -169,21 +169,22 @@ QUESTS = {
     "Quest_TheConsortOfNight": "Consort of Night",
     "Quest_HuntedByObliviax": "Hunted by Obliviax",
 }
-# The twelve non-excluded artifact prefabs listed in issue #9; English names from MainLocalization.
+# The twelve non-excluded artifact prefabs listed in issue #9; English names from MainLocalization ("<key>" minus
+# the "Artifact_" prefix, entry "name"), several of which differ from the prefab names.
 # The journal's Complete flag means handed in to the Dream Teller, not merely picked up.
 ARTIFACTS = {
     "Artifact_BouquetOfEyes": "Bouquet of Eyes",
-    "Artifact_EmblemOfSubjugation": "Emblem of Subjugation",
-    "Artifact_FirstMerchantsToken": "First Merchant's Token",
-    "Artifact_FoolsGold": "Fool's Gold",
-    "Artifact_ForestHoundSeed": "Forest Hound Seed",
+    "Artifact_EmblemOfSubjugation": "Token of Servitude",
+    "Artifact_FirstMerchantsToken": "First Merchant's Certificate",
+    "Artifact_FoolsGold": "Fool's Gold Coin",
+    "Artifact_ForestHoundSeed": "Ancient Leaf Hound Egg",
     "Artifact_NightmareCatalyst": "Nightmare Catalyst",
     "Artifact_StarBlossom": "Star Blossom",
     "Artifact_TheStarlitStone": "The Starlit Stone",
-    "Artifact_TomeOfTheSeeker": "Tome of the Seeker",
-    "Artifact_VoidWhisperer": "Void Whisperer",
-    "Artifact_WatchersNote": "Watcher's Note",
-    "Artifact_WeddingRing": "Wedding Ring",
+    "Artifact_TomeOfTheSeeker": "Seeker's Tome",
+    "Artifact_VoidWhisperer": "Whispers of the Void",
+    "Artifact_WatchersNote": "Watcher's Records",
+    "Artifact_WeddingRing": "Ordinary Ring",
 }
 
 # Difficulties, easiest first. "rank" orders them for "this difficulty or harder". "game_id" is the

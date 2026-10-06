@@ -1,0 +1,19 @@
+# Test input only. Do not replace the player template or the checkout's existing Players files.
+name: SoDTest
+game: Shape of Dreams
+requires:
+  version: 0.6.4
+Shape of Dreams:
+  goal_difficulty: nightmare
+  goal_traveler_count: 9
+  mastery_packs_per_traveler: 8
+  mastery_pack_value: 5
+  passive_mastery: false
+  stardust_total: 54001
+  jonas_wares: 30
+  in_run_items: true
+  traps: true
+  shuffle_star_requirements: true
+  death_link: true
+  forced_evil_lucid_dreams: []
+  forced_chaotic_lucid_dreams: []
