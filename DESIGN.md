@@ -86,7 +86,7 @@ The `Jonas's Wares` location group contains all possible wares. There is no acce
 - The ware is a vanilla Treasure entry with `itemName = Treasure_CloakOfGuidance`, `count = 1` and
   `customData = AP:<location key>`. Cloak inherits the always-true `Treasure.CanBePurchased` and vanilla
   `OnAddMerchandise` price calculation (`GetAdjustedGoldAmount_Cost_Service(basePrice)`). Jonas's normal buyer
-  discount and native repricing (Cetus's Cold Discount/Fire Surcharge, Shell's Shop Intimidation) still apply.
+  discount still applies.
   No Treasure is spawned: intercept `SpawnMerchandise` after the server has spent gold, record/save/send the check,
   and suppress the placeholder's effect.
 - The local host's shop shows the AP icon; hovering shows the scouted item and recipient and the location
