@@ -1,7 +1,6 @@
 # SoDArchipelago design
 
-The agreed randomizer design for Shape of Dreams. It was settled in a design review on 2026-09-27 and replaces the
-original "achievement reward = item" scaffold. Where the code and this document disagree, this document wins.
+The agreed randomizer design for Shape of Dreams. Where the code and this document disagree, this document wins.
 Item/location IDs are frozen once a version is released: the extractor keeps every key's ID through `id_history`.
 
 ## Locations (302 by default)
@@ -16,7 +15,7 @@ Item/location IDs are frozen once a version is released: the extractor keeps eve
 | Quests | 6 | default | First completion; always on |
 | Artifacts | 12 | **excluded** | First hand-in to the Dream Teller, recorded by the journal; always on |
 
-- **World structure** (corrected 2026-09-27). A loop has **4 normal worlds**. Beating the world 4 boss opens two rifts:
+- **World structure.** A loop has **4 normal worlds**. Beating the world 4 boss opens two rifts:
   the normal exit (next loop) and the Dream rift (`Rift_Sidetrack_TheDream`, only in the last world's boss room). The Dream
   rift travels to `Zone_Primus`, which is **world 5**: a shop, then `Shrine_PrimusDoor` (a room change inside the zone) to
   the Primus boss. When Primus dies (`Mon_Primus_BossPrimusAeron.OnDeath` → `Primus_Ending.StartPrimusDeath`, server),
@@ -26,29 +25,29 @@ Item/location IDs are frozen once a version is released: the extractor keeps eve
   loading a save). On arrival `currentZoneIndex` equals the number of the world just left (it starts at -1, is 0 in
   world 1 and keeps counting through loops). Leaving world 4 is always a zone change: into `Zone_Primus` or into the
   next loop. Only indexes 1–4 count (index 5 is leaving loop 2's first world, not a World 5 clear).
-- **World clear, world 5** = beating Primus, detected as a **Pure White Dream win** (decided 2026-09-27). *Built:* on
+- **World clear, world 5** = beating Primus, detected as a **Pure White Dream win**. On
   `GameResultManager.ClientEvent_OnGameConcluded` with `result == ResultType.PureWhiteDream`, record and send the World 5
   clears (same hook as the Starless Path rule). That hook also fires on death (`GameOver`) and concede (`Conceded`), so
   the result type must be checked. The zone-change rule can't detect world 5: the index on arrival in `Zone_Primus` is 4
   (world 4), and nothing after Primus is a zone change. Accepted trade-off: quitting after killing Primus but before
   touching the light sends nothing for that run (the run isn't won either).
-- **Starless Path win = full clear** (decided 2026-09-27). A Starless Path ending (`ResultType.StarlessPath`) counts as
+- **Starless Path win = full clear.** A Starless Path ending (`ResultType.StarlessPath`) counts as
   clearing **all five worlds** for the Traveler played, at the run's difficulty (cumulative, like any clear). It's
   needed because the Starless Path is always entered partway through a world, before its boss (the Guiding Compass
   quest can't start in a boss room, and side-path rifts only spawn in combat rooms), and the run ends there with no
   zone change. So the zone-change rule alone would never clear the world it was entered from, or any later world.
-  *Built:* on `GameResultManager.ClientEvent_OnGameConcluded` with `StarlessPath`, record and send the clears for
+  On `GameResultManager.ClientEvent_OnGameConcluded` with `StarlessPath`, record and send the clears for
   worlds 1–5. Logic is unchanged: a Starless Path win needs the same Traveler copies as the clears it sends.
-- **Difficulties:** Deep Sleep, Ominous Dream, Nightmare. Nap has no locations.
-- **Priority: Deep Sleep clears only** (decided 2026-10-03). Priority fill puts any player's progression on a priority
+- **Difficulties:** Deep Sleep, Ominous Dream, Nightmare. Nap has no locations. Game ids: Nap = `diffEasy`,
+  Deep Sleep = `diffNormal` (the default), Ominous Dream = `diffHard`, Nightmare = `diffNightmare`.
+- **Priority: Deep Sleep clears only.** Priority fill puts any player's progression on a priority
   location, so all 135 clears pulled about half of a multiworld's progression into SoD runs. With 45, SoD's own
   progression still fits (34, or 45 with every dream forced), so a solo seed puts all of it on Deep Sleep clears. Any
   winning run collects them (cumulative), so a Traveler's copies come from its first win.
 - **Cumulative:** a clear on a higher difficulty also sends the same world's checks for every lower difficulty
   (Nightmare sends Nightmare, Ominous Dream and Deep Sleep).
 - **Loops:** worlds 1–4 of later loops send nothing. Limbo (`diffLimbo`) is its own difficulty id, which isn't one of the four
-  mapped difficulties, so it sends no world clears and its wins don't count for the goal *(resolved from code)*.
-- **Boss-kill locations are removed.** They duplicated world clears and achievements.
+  mapped difficulties, so it sends no world clears and its wins don't count for the goal.
 - **Naming:** `Achievement: <display name>` (unchanged), `World <n> Clear (<Difficulty>): <Traveler>`, for example
   `World 3 Clear (Nightmare): Mist`, and `Souvenir: <display name>`, for example `Souvenir: Mini Aurena`.
 - **Location groups** (for players' own `exclude_locations` / `priority_locations`): `Achievements`,
@@ -59,7 +58,7 @@ Item/location IDs are frozen once a version is released: the extractor keeps eve
 
 ### Souvenirs
 
-Decided 2026-10-03, issue #4. The lizard shop (`PropEnt_Merchant_Smoothie`, spawned by `RoomMod_GiftMerchant`) sells
+Issue #4. The lizard shop (`PropEnt_Merchant_Smoothie`, spawned by `RoomMod_GiftMerchant`) sells
 cosmetic souvenirs (`Accessory` prefabs) for 200 Stardust each. Each one it can sell is an **excluded** location, and
 you keep the souvenir exactly as in vanilla.
 
@@ -87,8 +86,9 @@ The `Jonas's Wares` location group contains all possible wares. There is no acce
 - The ware is a vanilla Treasure entry with `itemName = Treasure_CloakOfGuidance`, `count = 1` and
   `customData = AP:<location key>`. Cloak inherits the always-true `Treasure.CanBePurchased` and vanilla
   `OnAddMerchandise` price calculation (`GetAdjustedGoldAmount_Cost_Service(basePrice)`). Jonas's normal buyer
-  discount still applies. No Treasure is spawned: intercept `SpawnMerchandise` after the server has spent gold,
-  record/save/send the check, and suppress the placeholder's effect.
+  discount and native repricing (Cetus's Cold Discount/Fire Surcharge, Shell's Shop Intimidation) still apply.
+  No Treasure is spawned: intercept `SpawnMerchandise` after the server has spent gold, record/save/send the check,
+  and suppress the placeholder's effect.
 - The local host's shop shows the AP icon; hovering shows the scouted item and recipient and the location
   (the cell already shows the final gold price). Purchased stock is disabled and greyed out, with no extra text.
   A stale ware restored by a continue save is refused before spending gold.
@@ -149,11 +149,11 @@ Mist (vanilla's starting Travelers), grouped as follows.
 - **Déjà vu is untouched.** It's the Pure White Dream carry-over system that costs Stardust.
 - **Baseline counts:** 34 progression + 131 useful (including 72 mastery) + 80 Stardust filler = 245, equal to the baseline location count.
   With default wares and pilgrimage checks, the pool has 34 progression + 131 useful + 137 filler = 302.
-- **Mastery classification** (decided 2026-10-04): every Mastery item is useful under all options. It cannot be placed
+- **Mastery classification:** every Mastery item is useful under all options. It cannot be placed
   on excluded checks; mastery remains outside progression logic. Stardust remains filler.
   A solo seed needs at least `93 + 9 × mastery_packs_per_traveler` non-excluded checks (165 by default).
-- **Pool reward targets:** the default items alone give exactly **40 mastery on every Traveler** (decided 2026-10-03, issue #5) and
-  **54,000 Stardust** (decided 2026-10-03, issue #4). 40 is the level of each Traveler's last story episode (`TravelerStory_<T>_Main8`,
+- **Pool reward targets:** the default items alone give exactly **40 mastery on every Traveler** (issue #5) and
+  **54,000 Stardust** (issue #4). 40 is the level of each Traveler's last story episode (`TravelerStory_<T>_Main8`,
   read from the asset bundles), which unlocks the Starless Path ending (`unlocksPolarisEnding`); stars and star slots
   need at most 35. Levels come in chunks of 5, the granularity of every mastery reward. The Stardust covers everything
   it can buy: 45,275 for every star level, 3,400 for the 17 souvenirs and 4,740 for every star slot (40 + 20 × n
@@ -201,18 +201,17 @@ The rules are the same for every Traveler. A starting Traveler's precollected co
 | Goal | `goal_traveler_count` Travelers unlocked (the starting ones count). **No memory requirement.** |
 
 - Nothing requires a Traveler's third memory. It stays progression, but the logic never waits on it.
-- **Achievement → Traveler mapping:** use a hand-maintained table or parse "as <Traveler>" from the description.
-  Don't infer it from the reward. *Resolved:* the extractor's hand table (27 achievements, 3 per Traveler) matches both
-  the descriptions ("as/with/using <Traveler>") and the `Hero_*` types each `ACH_*` class references in `Dew.Contents`.
-  The only other class that references a Traveler, `ACH_ANGER_MANAGEMENT_PROFESSIONAL` (Vesper), isn't in RawData and
-  isn't a location.
+- **Achievement → Traveler mapping:** don't infer it from the reward. The extractor's hand table (27 achievements,
+  3 per Traveler) matches both the descriptions ("as/with/using <Traveler>") and the `Hero_*` types each `ACH_*`
+  class references in `Dew.Contents`. The only other class that references a Traveler,
+  `ACH_ANGER_MANAGEMENT_PROFESSIONAL` (Vesper), isn't in RawData and isn't a location.
 
 ## Goal
 
 Win a run at `goal_difficulty` **or harder** with `goal_traveler_count` **different** Travelers.
 
 - "Win" means reaching either ending: `ResultType.PureWhiteDream` or `ResultType.StarlessPath`.
-- `UnknownFate` doesn't count *(resolved from code)*: only demo/booth builds use it, to end the run at the end of the
+- `UnknownFate` doesn't count: only demo/booth builds use it, to end the run at the end of the
   demo's content (`PlayGameManager.LoadNextZone`). The retail build never produces it.
 - Wins are recorded in the bound profile (Traveler + difficulty id), so a win played offline counts on the next connect.
 - The mod records in the bound profile which Travelers have counted. It sends `ClientGoal` when the count is reached.
@@ -242,25 +241,25 @@ forced-dream rules and links to the YAML for the effects.
 | `forced_chaotic_lucid_dreams` | set of Chaotic Lucid Dream names | empty | See "Forced Lucid Dreams" |
 | `shuffle_star_requirements` | toggle | on | See "Shuffled star requirements" |
 
-Remove `boss_locations` and `travelers_required_for_goal`. `slot_data` must carry everything the mod needs: goal
+`slot_data` must carry everything the mod needs: goal
 settings, mastery pack values, `stardust_total`, `stardust_item_count`, `in_run_items`, `traps`, `jonas_wares`,
 `passive_mastery`, death_link, the forced Lucid Dreams (`forced_lucid_dreams`: both sets' keys), the shuffled star
 requirements (`star_requirements`), the data version and the data hash.
 
-[Universal Tracker](https://github.com/FarisTheAncient/Archipelago/releases) (decided 2026-10-03) rebuilds the world from
+[Universal Tracker](https://github.com/FarisTheAncient/Archipelago/releases) rebuilds the world from
 slot_data alone (`ut_can_gen_without_yaml`; `interpret_slot_data` → `generate_early`), so slot_data must also carry
 every setting that changes logic or location types. Starting Travelers aren't needed: UT drops precollected items and
 uses the starting items the server sends.
 
 ## Forced Lucid Dreams
 
-An optional challenge modeled on the Reverse Heat option of the Hades randomizer (Polycosmos), decided 2026-09-28.
+An optional challenge modeled on the Reverse Heat option of the Hades randomizer (Polycosmos).
 The player lists Lucid Dreams that start **forced on**. Each one stays on in every run until its `Lucid Dream: <name>`
 item is received, which **releases** it: from then on it's a normal unlocked dream the player can turn on or off.
 
 - **Two options, both empty (off) by default:** `forced_evil_lucid_dreams` and `forced_chaotic_lucid_dreams`. Each only
   accepts dreams of its own type. Good dreams can't be forced: they make runs easier.
-- **The types** (`LucidDream.type`, stored in the prefabs, read from the asset bundle 2026-09-28; the extractor's
+- **The types** (`LucidDream.type`, stored in the prefabs, read from the asset bundle; the extractor's
   `LUCID_DREAM_TYPE` table):
   - Evil (6): Fish Scales, Grievous Wounds, Mad Life, Marsh of Destiny, Overpopulation, Prudent Jellyfish.
   - Chaotic (5): Embrace Mortality, Harmless Whispers, Sparkling Dream Flask, The Darkest Urge, WILD.
@@ -290,7 +289,7 @@ item is received, which **releases** it: from then on it's a normal unlocked dre
 
 ## Shuffled star requirements
 
-An optional shuffle of the mastery level each constellation star needs before it can be bought (decided 2026-09-28).
+An optional shuffle of the mastery level each constellation star needs before it can be bought.
 No new numbers: stars trade their vanilla requirements with each other.
 
 - **Option:** `shuffle_star_requirements`, a toggle, on by default.
@@ -305,7 +304,7 @@ No new numbers: stars trade their vanilla requirements with each other.
   screen shows every requirement. The extractor writes the star list (`stars`: key, Traveler, category, vanilla level,
   from `RawData/en-US/stars.json`) to `game_data.json`, outside `data_hash`, so older seeds keep working and get vanilla
   requirements.
-- **How the game uses it** *(resolved from code)*: the requirement is the `StarEffect.requiredLevel` field of the star
+- **How the game uses it:** the requirement is the `StarEffect.requiredLevel` field of the star
   prefab. Only the lobby's constellation screens read it: the buy check (`UI_Lobby_Constellations_StarDetails`), the
   locked look (`UI_Lobby_Constellations_StarItem`), the number on the icon (`UI_StarIcon`) and the list order
   (`UI_Lobby_Constellations_StarList`). Nothing checks it at run start or on profile load, so a star already bought stays
@@ -330,7 +329,7 @@ and a key that disappears and comes back keeps its ID.
 
 ## Passive mastery
 
-An optional challenge (decided 2026-10-03, issue #5): with `passive_mastery` off, runs earn no Traveler mastery, so
+An optional challenge (issue #5): with `passive_mastery` off, runs earn no Traveler mastery, so
 mastery only comes from `Mastery: <Traveler>` items and the player's strength depends on the multiworld.
 
 - **Option:** `passive_mastery`, a toggle, on (vanilla) by default. slot_data `passive_mastery`; a missing key (older
@@ -340,7 +339,7 @@ mastery only comes from `Mastery: <Traveler>` items and the player's strength de
   (all 36 copies, see "Logic") stays, and Mastery items remain useful. With too few Mastery items to reach 40 the check can never be done; that's fine,
   it only holds filler. AP keeps a world-set exclusion over the player's `priority_locations`. Pool, IDs and
   `data_hash` are unchanged.
-- **Why the reward itself is 0** *(resolved from code)*: `DewSave.ConsumeGameResult` turns a run into points with
+- **Why the reward itself is 0:** `DewSave.ConsumeGameResult` turns a run into points with
   `Dew.GetRewardedMasteryPoints`, adds them, and reports them as `LastGamePlayReward.heroMasteryPoints`. The results
   screen (`UI_PlayRewardAnnouncer`) animates from "current points − heroMasteryPoints", so taking points back afterwards
   would show fake level-ups. With a 0 reward it skips the mastery panel, as vanilla does for a run that earned nothing,
@@ -361,9 +360,8 @@ mastery only comes from `Mastery: <Traveler>` items and the player's strength de
 
 ### In-run content foundation
 
-Issue #7 supplies the shared infrastructure for #8–#12. These issues ship together in one matching apworld/mod
-release; this foundation alone is not published. The original 245 checks remain the baseline. #8 adds
-`jonas_wares` checks; #9 adds 9 shrines, 6 quests and 12 excluded artifacts (both implemented). This gives
+Issue #7 is the shared infrastructure for #8–#12. The original 245 checks are the baseline. #8 adds
+`jonas_wares` checks; #9 adds 9 shrines, 6 quests and 12 excluded artifacts. This gives
 57 new slots and 302 total checks with defaults. The enabled location list is built before regions and items.
 
 - Unlock items and Mastery packs keep their existing counts. The baseline's remaining slots (80 by
@@ -375,7 +373,7 @@ release; this foundation alone is not published. The original 245 checks remain 
   Otherwise the remaining slots become Stardust. All in-run items are filler; curses are traps.
 - All splits use integer largest-remainder allocation, with ties broken by table order, so identical settings give
   identical counts. New keys append IDs; old keys and IDs remain intact.
-- `stardust_total` replaces `stardust_pack_value`. Divide it by the number of Stardust items; the first remainder
+- Divide `stardust_total` by the number of Stardust items; the first remainder
   copies received give one extra Stardust each. Thus all seeded Stardust items sum exactly to the configured total,
   including when there are more packs than Stardust or the total is zero. Additional server-granted copies give
   the quotient. Count seeded copies after fill, including starting Stardust and ItemLink deliveries, so common
@@ -388,15 +386,13 @@ release; this foundation alone is not published. The original 245 checks remain 
   during transitions or for joining players. Counters survive restarts; reconnect restores the full received list.
   Per-frame eligibility uses cached `softInstance` manager references; `instance` searches the entire scene twice
   when a manager is missing and must not be polled while waiting in the title screen or lobby.
-  The solo test on 2026-10-04 exposed connected frame pacing loss; the player confirmed smooth performance after
-  this change and a mod reload. The regression harness passes 686 assertions; build/deployment had zero warnings/errors.
 - Reuse the game's vanilla content, targeting, effects and networking. No custom prefabs or network messages.
   A delivered item lost by quitting before the next continue save remains spent (the counter does not rewind).
 - Ware, shrine and quest first-time checks use `AP:check:<location key>` in `experienceFlags`. Record and save at once,
   send when Bound, and resend all records on reconnect. Artifact checks use the game's discovered flag (#9).
   Buying a ware and quitting before the continue save may refund its gold while keeping the check, as in vanilla.
 - New item content changes `data_hash`; the Stardust protocol also increments the data format version. Old seeds
-  require the previous matching mod. No release is made until #8–#12 are implemented together.
+  require the previous matching mod.
 
 ### Map Blessings
 
@@ -430,10 +426,6 @@ prefabs, messages, item IDs or slot data. Vanilla co-op guests share the resulti
 - Hunter behavior stays vanilla: a hunted node loses its main bonus while shrines remain. No replacement or refund.
   Each received copy requires its own successful placement; counters prevent replay after reconnect or restart.
 
-Implementation verification (2026-10-04): all 15 installed prefabs and their four main-modifier flags match the
-catalog and placement rules. Decompiled `AddModifier` → `RoomModifiers.OnRoomStartServer` → shrine `OnStartServer`
-confirms spawning on arrival. The host uses the public server-side `BroadcastPing` RPC. C# delivery/guard tests
-cover all 15 blessings, pending duplicates, later-world delivery, restart counters and ping failure. No in-game test.
 
 ### Treasures
 
@@ -478,12 +470,6 @@ hero leave the item pending.
   effect. Retain it during bleed-out for the later knockdown event. The next normal knockdown after an absorbed kill
   sends normally.
 
-Implementation verification (2026-10-04): all five installed Treasure prefabs match their catalog classes. Cloak's
-serialized `skippedTurns` is 2, overriding the decompiled class default of 3 quoted in the issue; keep the prefab value.
-Decompiled all five Treasures, their map quests and Shard interrupt; checked
-the merchant spawn path, duplicate quest lifecycle, saved Shard attribute and synchronous death interrupts. C# tests
-cover all five delivery rules, pending copies, restart counters, Clairvoyance cleanup failure and absorbed, immediate
-and delayed DeathLink knockdowns. No in-game test.
 
 ### Curse traps
 
@@ -492,6 +478,7 @@ The `traps` option and 20% new-slot allocation (3 Mild : 2 Potent : 1 Intense) a
 of `in_run_items`. No item IDs, hash or slot protocol change is needed. Only the local solo/host hero is cursed;
 co-op guests are not directly given a curse status by the host's AP items. Native curse effects on other players,
 including friendly fire, explosions and changed relations, remain intact, just as with a vanilla Hatred shrine.
+Keep the full vanilla curse pool (including Dark Urge, Intermittent Explosion and Inductive Dream Affliction).
 Delivery uses the shared Bound, connected, ready unconcluded run guard.
 
 - Wait in every `ExitBoss` node, including Primus, and in `Room_Special_StarlessPath_BossPolaris` (a Special sidetrack
@@ -516,12 +503,6 @@ Delivery uses the shared Bound, connected, ready unconcluded run guard.
   A successful creation saves the shared applied counter and announces the tier and sender. Reconnect/restart never
   replays spent copies; traps may wait for a later room, world or run.
 
-Implementation verification (2026-10-04): the installed Hatred prefab uses `Shrine_Hatred`, with strength-choice
-weights 1,000,000 / 0.2 / 0.2 / 0.1. Its curse prefabs include tier restrictions, differing weights and a zero-weight
-quest-only curse; all three tiers have positive candidates. Decompiled shrine selection, AssetRef light/full
-resolution, status-effect spawn, quest tracking and saved/lift/knockdown lifecycle match the handler. Automated C#
-checks cover all three tiers, eligibility, full-asset resolution, both lift conditions, later-loop scaling, boss-room
-deferral, duplicate copies, restart counters and independent blessing delivery. No in-game test.
 
 ### Checks
 - **Achievements:** when an achievement completes, send its check. **Suppress the vanilla unlock reward**, since the
@@ -560,7 +541,7 @@ deferral, duplicate copies, restart counters and independent blessing delivery. 
   requirements (`AP:star:<key>=<level>`). The mastery counters (`AP:applied:MASTERY_<Traveler>=<n>`) live in
   `DewProfileStats.recoveredLossPoints`, in the `stats` file, so each is written in the same save as the value it
   protects.
-- **Known limitation: the game's stats recovery** (accepted 2026-09-27). At startup, before mods load, the game compares
+- **Known limitation: the game's stats recovery.** At startup, before mods load, the game compares
   the `stats` file with its daily backups. If total mastery or play time went down, it adds the lost mastery levels back
   (`DewProfileStats.GetRecoveryDelta`) but not our mastery counters, so Mastery items applied between that backup and
   the loss get applied a second time. There's no exact repair: that needs the backups' counters. The over-grant is
@@ -596,10 +577,9 @@ Every AP seed/slot gets its own game profile. Your normal save must never be rea
    inactive, no `GameManager`):
    the lobby's Travelers and a run's loot pool were built from the unbound unlocks.
 3. The mod refuses to bind a profile that isn't fresh: it must have no completed achievements and no runs played. There
-   is also a deliberate override for recovery (`ap_bind_force`). *Built test:* no completed achievements, no recorded
-   game results (`lastGameResults`, `recentlyConcededGames`) and a total Traveler play count of 0. In-game 2026-09-27: a
-   never-played profile with `didPlayTutorial=True` passes (0 runs, play count 0). Finishing the tutorial run wasn't
-   tested; if it makes a profile fail, `ap_bind_force` covers it.
+   is also a deliberate override for recovery (`ap_bind_force`). The test: no completed achievements, no recorded
+   game results (`lastGameResults`, `recentlyConcededGames`) and a total Traveler play count of 0. A never-played
+   profile with `didPlayTutorial=True` passes.
    **Bind after login.** `ap_bind` doesn't write the marker. It logs in provisionally; nothing acts on the profile,
    because every action needs Bound. Only after `LoginSuccessful` and the slot_data version/hash check does the mod write
    the marker, after re-checking that the same profile is loaded (attempt and profile generation unchanged), that it is
@@ -623,7 +603,7 @@ Every AP seed/slot gets its own game profile. Your normal save must never be rea
    profile** always gets pure vanilla behavior.
 8. **Block the Steam achievement sync on marked profiles** (`DewSave.SyncAchievements` and the
    `SteamUserStats` calls in `AchievementManager.CompleteAchievement`). The fresh profile would otherwise
-   overwrite Steam's stat progress with lower values. *Built:* `SyncAchievements` is skipped, and
+   overwrite Steam's stat progress with lower values. `SyncAchievements` is skipped, and
    `SteamUserStats.SetStat`/`SetAchievement` are blocked while a marked profile is loaded. That also covers the other
    two places that push the same lower stats (`AchievementManager.SetPlatformStats`,
    `DewAchievementItem.FlushProgressToProfile`).
@@ -645,7 +625,7 @@ Each player's own profile, mod and slot are independent. Jonas's Wares and in-ru
 play; joining players can set `jonas_wares` to 0 and pending in-run items wait for solo/host play. The shared loot pool is the union of
 the players' unlocks, which is vanilla co-op behavior. Pilgrimage checks also work for joining players (see above).
 Achievement, world-clear, win and souvenir checks work on a joining
-client (verified in-game 2026-10-03, joining a non-AP host): achievements are tracked per client, the zone-loaded event
+client, even with a non-AP host: achievements are tracked per client, the zone-loaded event
 is an RPC to every client, the room load before it syncs the zone index, and a souvenir is bought and unlocked on the
 buyer's own client.
 
@@ -653,94 +633,14 @@ buyer's own client.
 - **Send** when your Traveler is knocked down (`ClientEventManager.OnHeroKnockedOut` /
   `Hero.ClientHeroEvent_OnKnockedOut` for the local hero).
 - **Receive:** kill your Traveler. This ends the run only in solo. In co-op it's a normal knockdown that teammates can
-  revive. *Built:* `Entity.Kill()`, which goes through the hero's normal death interrupt (a knockdown, or a bleed-out
+  revive. `Entity.Kill()`, which goes through the hero's normal death interrupt (a knockdown, or a bleed-out
   first on difficulties with `enableBleedOuts`).
-- **Known limitation (accepted 2026-09-27): a player who *joined* someone else's co-op game can't receive DeathLinks.**
+- **Known limitation: a player who *joined* someone else's co-op game can't receive DeathLinks.**
   `Entity.Kill` is server-only and the game has no client command to kill your own Traveler, so the mod on a joining
   client can't apply one. It shows the DeathLink with "(can't be applied: only the host can kill Travelers)" and does
   nothing else. Joining players still *send* DeathLinks. The host and solo players receive them normally. The
   alternative (the host's copy of the mod kills the joining player's Traveler) was rejected: it needs custom network
   messages and only works when the host also runs the mod. The setup guide and game info page state the limitation.
-- A knockdown caused by a received DeathLink does not send a new one.
+- A knockdown caused by a received DeathLink does not send a new one. Known bug: a DeathLink received while
+  already bleeding out from a normal hit can suppress that knockdown's outgoing DeathLink.
 - Each player turns it on independently. There's no co-op-specific handling.
-
-## Review verification
-
-The deferred adversarial Claude Opus review of issues #7–#9 (`d265e47..ae009a8`) was completed on 2026-10-04
-at high effort. Claude verified the three P3 fixes in `56237e8`: unresolved scout names, Stardust totals after
-common-option replacements/ItemLinks, and sales of server-released wares.
-
-- **Confirmed P3, fixed:** a reused shop cell could keep its AP icon on a normal Cloak at another merchant.
-  Restore only a sprite AP replaced, before returning for other shops/profiles.
-- **Confirmed P3, fixed:** HTML entities appeared literally in TMP tooltips, and backslash sequences were decoded.
-  Encode backslashes as `\u005C` and each `<` as `<noparse><</noparse>`; preserve the original visible names.
-  Claude verified both UI fixes against the installed TMP and game sources and the regression diff.
-- **Verification gaps closed:** the live Hatred prefab uses `Shrine_Hatred` (verified during #12). A metadata/IL
-  reference scan identifies the Contents population subscribers as Cetus's Cold Discount/Fire Surcharge and Shell's
-  Shop Intimidation. Their decompiled code preserves ware tags/stock; native repricing is included in the displayed
-  and charged price. Installed TMP source verifies literal-name encoding.
-- Local reports and resumable Claude sessions are in `.claude/reviews/` (git-ignored). The earlier fixes passed
-  202 world tests, 250 AP general tests and 235 C# assertions. The UI fixes pass 614 C# assertions and a build with
-  deployment disabled, zero warnings/errors. These checks use game doubles plus static inspection of installed
-  code; no additional in-game testing was performed.
-
-The earlier combined pass counts as the review of #7–#9; it was not repeated. Separate commit reviews covered
-#10 (`251effd`), then #11 (`e33f4e1`) and #12 (`7e0e1d9`), with follow-ups in their original sessions.
-
-- **#10, Confirmed P2, fixed:** blessings could spend copies on unreachable nodes after reaching the world's exit.
-  Defer in boss/sidetrack/special-map states and reject invalid current room/node state. Claude's initial P1 was
-  re-ranked to P2 because the loss affects filler blessings, without progression or save corruption.
-- **#10, Confirmed P3, fixed:** identical shrine modifiers on one node share the first restored shrine's cleanup.
-  Reject identical modifier destinations while permitting different shrines to coexist.
-- **#10, Confirmed P3, fixed:** Artifact blessings could land while the party's artifact slot was occupied.
-  Wait for a hand-in; later pickup/route risks remain vanilla. Claude's initial P2 was re-ranked to P3.
-- **#10, Rejected/withdrawn:** only the latest ping remains visible; this is the chosen native feedback behavior,
-  while all chat lines and revealed modifier markers remain. Sidetrack distance concerns are resolved by deferral.
-- **#10, Plausible P3, accepted native route risk:** multiple Artifact blessings may land on different nodes before
-  the first pickup fills the party slot. A later drop needs an intervening hand-in, like vanilla Artifact routing.
-- **#11, Confirmed P2, fixed:** Cloak, Clairvoyance and both maps could be spent in an exit-boss room with no useful
-  destination before the world resets. Defer those four there; maps also defer in sidetracks/special maps. Shards retain
-  boss-room delivery. Invalid current room/node state also defers effects that use the world map.
-- **#11, Confirmed P3, fixed:** queued host map spawns let multiple copies pass a stale preflight before a prior map
-  claimed its node. Wait for native map Treasure/quest initialization, preserving multiple initialized quests.
-  Claude verified the installed Mirror queue; Treasure and child quest normally flush in the same late update after
-  the AP delivery loop, so the registry guard uses actual initialization rather than a frame timer.
-- **#11 verification gaps closed:** all four map Treasure/quest prefabs have exactly one root Actor component;
-  their only other root MonoBehaviour is NetworkIdentity. Installed Mirror's `GeneratedSyncVarSetter` invokes the
-  quest-step hook immediately on the host. Claude verified the fixes; 682 C# assertions and a clean mod build pass.
-- **Inherited follow-up:** a received DeathLink while already bleeding out from a normal hit can suppress that
-  eventual knockdown's outgoing DeathLink. This predates #7–#12 and is deferred separately from these commit reviews.
-- **#12, Rejected under explicit user clarification:** Claude's P2 guest-impact finding interpreted "guests are
-  unaffected" too broadly. Traps target the host's Traveler; native curse consequences on other players are intended.
-  The user explicitly required retaining the full vanilla pool, including Dark Urge, Intermittent Explosion and
-  Inductive Dream Affliction. An attempted exclusion was fully reverted; the curse handler matches `7e0e1d9`.
-  The design and player docs now state the intended co-op behavior. Claude reported no other introduced bugs.
-- **#12 verification:** installed bundle inspection confirms 23 curse prefabs, their tier flags and weights;
-  Brain Fog alone has positive weight at every tier and inherits always-true viability. Native Primus ending code
-  teleports within its existing exit-boss room, which remains covered by the guard. The exact serialized retail
-  content settings and Obliviax nest scene were not resolved by asset inspection; the handler delegates content
-  inclusion to the same native helper as Hatred and adds no special nest restriction.
-- **Pending Claude acknowledgement:** Claude hit its session limit (reset reported as 23:20 America/Chicago)
-  before responding to the user's #12 clarification. Resume the existing #12 session with the saved correction
-  prompt; do not repeat any broad commit review. The final restored implementation passes 682 C# assertions and a
-  build with deployment disabled, zero warnings/errors. The apworld packages successfully.
-
-## Solo test follow-ups (2026-10-04)
-
-- ~~**Jonas tooltip:** remove the gold-price line and the "Purchased" hover text from the AP ware tooltip.~~
-  Done 2026-10-05: the tooltip shows only the item, recipient and ware location.
-- ~~**Artifact name:** align "Emblem of Subjugation" with the in-game "Token of Servitude" and verify the rest.~~
-  Done 2026-10-05: all 12 names now come from the game's English localization (8 changed); keys and IDs kept.
-
-## Settled questions
-- ~~Map the game's difficulty IDs~~ The asset catalog has `diffTutorial`, `diffEasy`, `diffNormal`, `diffHard`,
-  `diffNightmare` and `diffLimbo`. The build maps Nap = `diffEasy`, Deep Sleep = `diffNormal` (the default),
-  Ominous Dream = `diffHard`, Nightmare = `diffNightmare`. Verified in-game 2026-09-27 (`[AP] Difficulty ids -> display
-  names`: Tutorial, Nap, Deep Sleep, Ominous Dream, Nightmare, Limbo). The build has 4 worlds per loop
-  (`zoneCountByTier=[1,1,1,1]`).
-- ~~World-clear detection~~ Zone transition, world = `currentZoneIndex` on arrival (see "Locations").
-- ~~Star slot counts per Traveler (the Stardust buffer)~~ Logged in-game 2026-09-27: 80 buyable slots cost 4,740
-  Stardust. Since issue #4 the pool rewards cover them (see "Pool reward targets"). ~~Mastery cap~~,
-  ~~fresh-profile test~~ and ~~UnknownFate~~: see above.
-- ~~`isAlteringGameplay`~~ Kept on.
-- ~~DeathLink for a joining co-op player~~ Accepted as a known limitation (see "DeathLink").
