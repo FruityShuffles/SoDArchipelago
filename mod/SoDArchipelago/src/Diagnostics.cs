@@ -62,7 +62,7 @@ namespace SoDArchipelago
                          $"[{string.Join(", ", missing)}], not sold [{string.Join(", ", extra)}]");
         }
 
-        // DESIGN.md "Filler targets": star slot counts live in the hero prefabs (HeroConstellationSettings).
+        // DESIGN.md "Pool reward targets": star slot counts live in the hero prefabs (HeroConstellationSettings).
         private static void LogStarSlots()
         {
             int extraSlots = 0, stardust = 0;
