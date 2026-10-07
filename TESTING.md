@@ -7,6 +7,7 @@ shrine/quest/artifact check hooks, map deferral, curse tiers and Shard/DeathLink
 The record includes fixes through `095f0cc` and separates skipped and unobserved cases.
 Startup passive mastery is an accepted limitation ([issue #13](https://github.com/FruityShuffles/SoDArchipelago/issues/13)).
 No co-op or goal-completion testing was included in this session.
+Automatic reconnect (step 17, issue #3) passed on 2026-10-06 on the same seed; see Results.
 
 Each step lists what to do and the `[AP]` lines to look for in the game log:
 
@@ -38,6 +39,17 @@ whole log, or at least every `[AP]` line, plus anything in the "Report" lines be
 friend's lobby): 15 and 16 passed. On the joining client, achievements, World 1–5 (Deep Sleep), the win, the goal and
 two souvenirs all sent, items received mid-run applied, and the win's mastery reward was suppressed with no mastery
 panel.
+
+**Automatic reconnect** (2026-10-06, issue #3, solo #7–#12 seed, profile AP 7-12): 17.1–17.5 passed, except the
+different-seed case, which was skipped.
+- A clean `/exit` and a hard kill of MultiServer both drop the socket without a close handshake. The mod caught both
+  at once and retried after 2, 5, 10, 30, then 60 s. It reconnected on the first retry after the server came back
+  (title screen and mid-run).
+- After each reconnect, every check was resent, including a Jonas ware bought offline mid-run, and no item applied
+  twice. The ware's own item arrived after the reconnect and applied once. DeathLink sent a knockdown afterwards.
+- `ap_disconnect`, a profile switch and disabling the mod during a retry each logged `Reconnecting stopped.` and nothing
+  after.
+- A failed retry against a stopped local server reads "timed out": MultiClient.Net cancels a refused connect.
 
 Every connect logs `connection rejected (400 Bad Request)` on the local server, then connects: MultiClient.Net tries
 `wss://` first and falls back to `ws://`.
