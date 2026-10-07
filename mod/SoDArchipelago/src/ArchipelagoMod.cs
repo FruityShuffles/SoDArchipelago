@@ -132,7 +132,7 @@ namespace SoDArchipelago
                 ProfileGuard.OnProfileLoaded(how, ok);
                 StarRequirements.Refresh();
                 ApClient.OnProfileChanged();
-                if (ProfileGuard.Marked && !ProfileGuard.Bound)
+                if (ProfileGuard.Marked && !ProfileGuard.Bound && !ApClient.IsReconnecting)
                     ApClient.Say("Archipelago profile loaded (offline). Type ap_connect to connect.");
             }
             catch (Exception e)
@@ -191,7 +191,7 @@ namespace SoDArchipelago
 
         [ConsoleCommand("Show the Archipelago connection and profile status.", "ap_status")]
         private void ApStatus() =>
-            ApClient.Say($"{ApClient.Status}; server={config.server} slot={config.slot}; profile " +
+            ApClient.Say($"{ApClient.StatusText}; server={config.server} slot={config.slot}; profile " +
                          $"'{DewSave.profileMain?.name}' marker={ProfileGuard.MarkerOf(DewSave.profileMain) ?? "<none>"} " +
                          $"bound={ProfileGuard.Bound}; received {ApClient.ReceivedItems.Count} items");
 
@@ -223,7 +223,7 @@ namespace SoDArchipelago
             }
             GUILayout.BeginArea(new Rect(10, 10, 760, 420));
             if (ProfileGuard.Marked && !ProfileGuard.Bound)
-                GUILayout.Label("OFFLINE — checks will send on reconnect", _offlineStyle);
+                GUILayout.Label(ApClient.OfflineText, _offlineStyle);
             else if (ProfileGuard.Bound)
                 GUILayout.Label($"Archipelago: {ApClient.SlotName}");
             else if (ApClient.Status != ApClient.State.Disconnected)

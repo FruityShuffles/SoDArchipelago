@@ -23,9 +23,13 @@ namespace SoDArchipelago
     // this seed/slot logs in right away. An unmarked profile waits for ap_bind, then logs in *provisionally*: nothing acts
     // on the profile until it is Bound, and the marker is written only after the login and the slot_data checks succeed,
     // so a wrong slot name or password never marks a profile. A profile bound to anything else never logs in.
+    //
+    // A Connected session that loses its connection reconnects on its own (DESIGN.md "Reconnecting"): each retry is a
+    // normal connection with the dropped session's server, slot and password, and goes through the same seed check and
+    // login. A failure to reach the server schedules the next retry; a refusal, or anything that disconnects, stops them.
     public static class ApClient
     {
-        public enum State { Disconnected, Connecting, AwaitingBind, LoggingIn, Connected }
+        public enum State { Disconnected, Connecting, AwaitingBind, LoggingIn, Connected, Reconnecting }
 
         public static State Status { get; private set; } = State.Disconnected;
         public static string Seed { get; private set; }
@@ -86,11 +90,28 @@ namespace SoDArchipelago
             public bool Force;
         }
 
+        // The dropped session, while retrying. Status is Reconnecting while waiting for the next retry, and goes through
+        // Connecting and LoggingIn during one.
+        private sealed class Reconnect
+        {
+            public string Server, Slot, Password, Seed;
+            public int Tries;
+            public float NextTry; // while waiting
+            public float Deadline; // while retrying
+        }
+
+        private static readonly float[] RetryDelays = { 2f, 5f, 10f, 30f, 60f };
+        // ConnectAsync never completes if the socket opens but no RoomInfo arrives, so a retry gives up after this.
+        private const float RetryTimeoutSeconds = 15f;
+
         private static readonly ConcurrentQueue<Work> _queue = new ConcurrentQueue<Work>();
         private static volatile int _attempt;
         private static Connection _conn; // main thread only
         private static DeathLinkService _deathLink;
+        private static string _server;
         private static string _password;
+        private static string _socketError;
+        private static Reconnect _reconnect;
         private static string _pendingMarker;
         private static BindRequest _bindRequest;
 
@@ -118,15 +139,19 @@ namespace SoDArchipelago
                 Say("The transient profile (or a profile that failed to load) can't be used. Load a profile first.");
                 return;
             }
+            Open(server.Trim(), slot.Trim(), string.IsNullOrEmpty(password) ? null : password);
+        }
 
+        private static void Open(string server, string slot, string password)
+        {
             ArchipelagoSession session;
             try
             {
-                session = ArchipelagoSessionFactory.CreateSession(server.Trim());
+                session = ArchipelagoSessionFactory.CreateSession(server);
             }
             catch (Exception e)
             {
-                Say("Couldn't connect: " + Describe(e));
+                Failed("Couldn't connect: " + Describe(e));
                 return;
             }
 
@@ -135,11 +160,21 @@ namespace SoDArchipelago
             int attempt = ++_attempt;
             var conn = _conn = new Connection(session);
             Status = State.Connecting;
-            SlotName = slot.Trim();
-            _password = string.IsNullOrEmpty(password) ? null : password;
-            Say($"Connecting to {server} as {SlotName}...");
+            _server = server;
+            SlotName = slot;
+            _password = password;
+            _socketError = null;
+            if (_reconnect == null) Say($"Connecting to {server} as {SlotName}...");
+            else Log.Info($"Reconnecting to {server} as {SlotName} (attempt {_reconnect.Tries})...");
 
-            session.Socket.SocketClosed += reason => Enqueue(attempt, () => Disconnect("Connection closed: " + reason));
+            session.Socket.SocketClosed += reason => Enqueue(attempt, () => OnSocketClosed(reason));
+            // An abrupt drop only raises this (the socket aborts without SocketClosed); Pump notices the closed socket.
+            session.Socket.ErrorReceived += (_, message) => Enqueue(attempt, () =>
+            {
+                if (Status != State.Connected) return; // failed connection attempts report their own error
+                _socketError = message;
+                Log.Warn("Socket error: " + message);
+            });
             session.Items.ItemReceived += _ => Enqueue(attempt, () => ItemsChanged?.Invoke());
             // Subscribed after MultiClient.Net's own handler, so every item of the packet is in ReceivedItems by now.
             session.Socket.PacketReceived += packet =>
@@ -172,7 +207,7 @@ namespace SoDArchipelago
                 catch (Exception e)
                 {
                     if (attempt != _attempt) conn.Close();
-                    else Enqueue(attempt, () => Disconnect("Couldn't connect: " + Describe(e)));
+                    else Enqueue(attempt, () => Failed("Couldn't connect: " + Describe(e)));
                 }
             });
         }
@@ -180,6 +215,12 @@ namespace SoDArchipelago
         // DESIGN.md step 5: the seed check happens here, before logging in.
         private static void OnRoomInfo(int attempt, string seed)
         {
+            if (_reconnect != null && seed != _reconnect.Seed)
+            {
+                Disconnect($"{_reconnect.Server} now hosts a different seed ({seed}), so reconnecting stopped. Set the " +
+                           "server for this profile's seed and type ap_connect.");
+                return;
+            }
             Seed = seed;
             var marker = ProfileGuard.Marker(seed, SlotName);
             var current = ProfileGuard.MarkerOf(DewSave.profileMain);
@@ -281,13 +322,16 @@ namespace SoDArchipelago
                         Enqueue(attempt, () => OnLoggedIn(ok));
                     else
                     {
-                        var errors = string.Join("; ", ((LoginFailure)result).Errors);
-                        Enqueue(attempt, () => Disconnect("Login failed: " + errors + NothingBound()));
+                        // The server's refusals carry error codes; a timeout or a closed socket has none.
+                        var failure = (LoginFailure)result;
+                        var text = "Login failed: " + string.Join("; ", failure.Errors) + NothingBound();
+                        if (failure.ErrorCodes?.Length > 0) Enqueue(attempt, () => Disconnect(text));
+                        else Enqueue(attempt, () => Failed(text));
                     }
                 }
                 catch (Exception e)
                 {
-                    Enqueue(attempt, () => Disconnect("Login failed: " + Describe(e) + NothingBound()));
+                    Enqueue(attempt, () => Failed("Login failed: " + Describe(e) + NothingBound()));
                 }
             });
         }
@@ -355,6 +399,8 @@ namespace SoDArchipelago
             _pendingMarker = null;
             ProfileGuard.SetSessionMarker(marker);
             Status = State.Connected;
+            if (_reconnect != null) Log.Info($"Reconnected after {_reconnect.Tries} attempt(s).");
+            _reconnect = null;
             Say($"Connected: seed {Seed}, slot {SlotName} (profile '{DewSave.profileMain.name}').");
             Log.Info("slot_data: " + string.Join(", ", slotData.Select(kv => kv.Key + "=" + kv.Value)));
 
@@ -418,7 +464,19 @@ namespace SoDArchipelago
             return true;
         }
 
+        // Also stops reconnecting: every caller is a player action, a profile change, unloading or a refusal.
         public static void Disconnect(string reason)
+        {
+            var wasActive = Status != State.Disconnected;
+            if (_reconnect != null) Log.Info("Reconnecting stopped.");
+            _reconnect = null;
+            Close();
+            Status = State.Disconnected;
+            if (reason != null && wasActive) Say(reason);
+        }
+
+        // Closes the connection and drops its queued work.
+        private static void Close()
         {
             _attempt++;
             var conn = _conn;
@@ -429,11 +487,66 @@ namespace SoDArchipelago
             _waitingLogin = null;
             SlotData = null;
             ProfileGuard.SetSessionMarker(null);
-            var wasActive = Status != State.Disconnected;
-            Status = State.Disconnected;
-            if (reason != null && wasActive) Say(reason);
             conn?.Close();
         }
+
+        private static void OnSocketClosed(string reason)
+        {
+            var text = "Connection closed" + (string.IsNullOrEmpty(reason) ? "" : ": " + reason);
+            if (Status == State.Connected) Drop(text);
+            else Failed(text);
+        }
+
+        // A logged-in session lost its connection: play on offline and retry with its settings.
+        private static void Drop(string reason)
+        {
+            Log.Info("Connection lost: " + reason);
+            _reconnect = new Reconnect { Server = _server, Slot = SlotName, Password = _password, Seed = Seed };
+            Close();
+            Say("Connection lost; reconnecting...");
+            ScheduleRetry();
+        }
+
+        // A connection attempt failed without a refusal: the next retry while reconnecting, else disconnected.
+        private static void Failed(string reason)
+        {
+            if (_reconnect == null)
+            {
+                Disconnect(reason);
+                return;
+            }
+            Close();
+            Say($"Couldn't reconnect to {_reconnect.Server} ({reason}). If the room moved, set the new server and type " +
+                "ap_connect.");
+            ScheduleRetry();
+        }
+
+        private static void ScheduleRetry()
+        {
+            float delay = RetryDelays[Math.Min(_reconnect.Tries, RetryDelays.Length - 1)];
+            _reconnect.NextTry = Time.realtimeSinceStartup + delay;
+            Status = State.Reconnecting;
+            Log.Info($"Reconnect attempt {_reconnect.Tries + 1} in {delay} s.");
+        }
+
+        // The offline indicator's text, with the countdown while reconnecting.
+        public static string OfflineText
+        {
+            get
+            {
+                const string checks = "checks will send on reconnect";
+                var r = _reconnect;
+                if (r == null) return "OFFLINE — " + checks;
+                if (Status != State.Reconnecting) return $"OFFLINE — reconnecting (attempt {r.Tries}); {checks}";
+                int seconds = Mathf.Max(0, Mathf.CeilToInt(r.NextTry - Time.realtimeSinceStartup));
+                return $"OFFLINE — reconnecting in {seconds} s (attempt {r.Tries + 1}); {checks}";
+            }
+        }
+
+        public static bool IsReconnecting => _reconnect != null;
+
+        public static string StatusText => _reconnect == null ? Status.ToString() :
+            $"{Status} (reconnecting to {_reconnect.Server}; {_reconnect.Tries} retries so far)";
 
         public static bool HasCheckedLocation(long id) => ProfileGuard.Bound && IsConnected &&
             _conn.Session.Locations.AllLocationsChecked.Contains(id);
@@ -572,8 +685,23 @@ namespace SoDArchipelago
                 catch (Exception e) { Debug.LogException(e); }
             }
 
-            if (_waitingLogin != null && Time.realtimeSinceStartup >= _waitingLoginDeadline)
+            float now = Time.realtimeSinceStartup;
+            if (_waitingLogin != null && now >= _waitingLoginDeadline)
                 Disconnect($"The server sent no items within {BindItemWaitSeconds} s of logging in. Nothing was bound.");
+
+            if (Status == State.Connected && _conn != null && !_conn.Session.Socket.Connected)
+                Drop(_socketError ?? "the socket closed");
+
+            var r = _reconnect;
+            if (r == null) return;
+            if (Status == State.Reconnecting && now >= r.NextTry)
+            {
+                r.Tries++;
+                r.Deadline = now + RetryTimeoutSeconds;
+                Open(r.Server, r.Slot, r.Password);
+            }
+            else if (Status != State.Reconnecting && now >= r.Deadline)
+                Failed($"no answer within {RetryTimeoutSeconds} s");
         }
 
         // Called when a profile is loaded, created or converted (or a load failed).
@@ -592,6 +720,18 @@ namespace SoDArchipelago
                 // Same bound profile reloaded: queued work was dropped, so rebuild everything.
                 Log.Info("Bound profile reloaded; rebuilding checks and items.");
                 LoggedIn?.Invoke();
+                return;
+            }
+            if (DewSave.profileMainPath != null && _reconnect != null &&
+                marker == ProfileGuard.Marker(_reconnect.Seed, _reconnect.Slot))
+            {
+                // Same bound profile reloaded while reconnecting: a running retry's queued work was dropped, so retry now.
+                if (Status != State.Reconnecting)
+                {
+                    Close();
+                    Status = State.Reconnecting;
+                    _reconnect.NextTry = Time.realtimeSinceStartup;
+                }
                 return;
             }
             Disconnect("Profile switched, so Archipelago disconnected. Type ap_connect again.");

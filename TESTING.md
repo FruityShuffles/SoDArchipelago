@@ -398,3 +398,23 @@ and play until one appears.
    - The Stardust counter drops by 200, and the souvenir is owned and can be worn (vanilla).
 3. **Co-op join:** as a player who joined someone else's lobby, buy a souvenir. The check is logged and sent on the
    joining client.
+
+## 17. Reconnecting (issue #3)
+
+Any seed on the local server, connected and bound. "Stop the server" means stopping the MultiServer process (it saves
+the `.apsave`); "start it again" restarts it on the same seed and port.
+
+1. **Title screen.** Stop the server.
+   - Feed: "Connection lost; reconnecting...". `[AP] Connection lost: ...`, then `[AP] Reconnect attempt 1 in 2 s.`
+   - The notice reads `OFFLINE — reconnecting in N s (attempt N)` and counts down. Failed retries log
+     `Couldn't reconnect to ...` with the delays 2, 5, 10, 30, then 60 s.
+2. Start the server again: `[AP] Reconnected after N attempt(s).`, `Connected: ...`, `Resending N checks`, and no item
+   applies twice.
+3. **Mid-run.** Stop the server, complete an achievement or a world clear (`- offline, sent on reconnect`), start the
+   server and `/send` an item: after the reconnect the check reaches the server and the item applies once.
+4. **DeathLink** (seed with DeathLink on): after a reconnect, `DeathLink enabled.` is logged and step 8.1 still works.
+5. **Stopping the retries.** While reconnecting, each of these logs `[AP] Reconnecting stopped.` and no more retries:
+   - `ap_disconnect`;
+   - switching to another profile;
+   - hosting a different seed on the same port (a seed message names it);
+   - disabling the mod in the mod manager (`[AP] Unloaded`, then nothing more from the old instance).

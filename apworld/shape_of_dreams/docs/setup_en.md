@@ -53,6 +53,7 @@ isn't bound to the slot you're connected to, so your normal save profile will be
    type `ap_bind`. The profile is then bound to that seed and slot for good, and your 2 random starting Travelers are
    unlocked.
 5. Play. If you restart the game, load the same profile and type `ap_connect` to reconnect to the archipelago server.
+   If the connection drops while you play, the mod reconnects on its own.
 
 Steam achievements aren't updated while you are playing on an Archipelago bound profile.
 
@@ -85,6 +86,9 @@ the Archipelago Launcher and connect with your slot name. It doesn't need your Y
 A bound profile keeps working when you're not connected: you keep what you've already received, completed achievements,
 world clears and souvenirs are saved in the profile, and everything is sent the next time you connect. An
 "OFFLINE — checks will send on reconnect" notice stays on screen while you're disconnected.
+
+If the connection drops, the mod keeps retrying the same server, and the notice counts down to the next try. If your
+room moved to a new port, set the new server and type `ap_connect`.
 
 ## Co-op
 If you disable crossplay, you may play co-op with other players regardless of whether they are also playing Archipelago or not.

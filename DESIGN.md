@@ -529,6 +529,20 @@ Every AP seed/slot gets its own game profile. Your normal save must never be rea
 Allowed. A marked profile plays offline with the items it has already received. Checks are recorded in the profile
 and sent on reconnect. An **always-visible "OFFLINE — checks will send on reconnect" indicator** is shown.
 
+### Reconnecting
+A logged-in, bound session that loses its connection retries on its own (AP client requirement). Binding never retries.
+- **Detection:** an abrupt server stop aborts MultiClient.Net's socket without `SocketClosed` (only `ErrorReceived`), so
+  `Pump` also treats `Socket.Connected` turning false on a Connected session as a drop.
+- **Retries** back off 2, 5, 10, 30, then every 60 s, without limit, and play on offline in between. Each retry is a
+  normal connection (new attempt, seed check, login, `LoggedIn` rebuild) with the **dropped session's** server, slot
+  and password, not the mod config: if a room moves port, the player sets the new server and types `ap_connect`. A
+  retry gives up after 15 s (`ConnectAsync` never completes if no RoomInfo arrives).
+- **A failure to reach the server** (connect error or timeout, closed socket, a `LoginFailure` without error codes)
+  schedules the next retry. **A refusal stops them:** a different seed, a `LoginFailure` with error codes (slot,
+  password), the slot_data checks, a profile change. So does anything that disconnects: `ap_connect`, `ap_disconnect`,
+  a profile switch, unloading. Reloading the same bound profile retries at once.
+- The indicator shows the countdown and attempt number; `ap_status` shows the reconnect state.
+
 ### Co-op
 Each player's own profile, mod and slot are independent. Jonas's Wares and in-run item delivery require solo/host
 play; pending in-run items wait for it. The shared loot pool is the union of the players' unlocks, as in vanilla.

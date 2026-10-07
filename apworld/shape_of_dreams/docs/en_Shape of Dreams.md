@@ -166,7 +166,7 @@ player's lobby.
 ## Playing offline
 
 You can play a bound profile offline with the items you have already received. Checks are saved and sent when
-you reconnect.
+you reconnect. If the connection drops, the mod reconnects on its own.
 
 ## Co-op
 
