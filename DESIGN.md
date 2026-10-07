@@ -286,9 +286,12 @@ mastery only comes from `Mastery: <Traveler>` items and the player's strength de
   (`lastUnrewardedGameResult`), caught up on the title screen (`TitleManager.CheckForOtherRoutine`) or in the lobby.
   Redeem codes and the free-version mastery reward also call `GetRewardedMasteryPoints`, outside `ConsumeGameResult`,
   and are untouched.
-- **Known limitation:** mods load about 2 seconds after the title scene (`DewMod.OnInit`'s cancel countdown), and the
-  title screen can catch up a run left unrewarded from the previous session before that, so such a run still earns
-  mastery once. Accepted.
+- **Known limitation** ([issue #13](https://github.com/FruityShuffles/SoDArchipelago/issues/13), accepted): a run
+  in progress is saved as an unrewarded conceded result, and after a mid-run game close the title screen rewards it
+  before mods load (`DewMod.OnInit` waits for the title scene, then a 2-second cancel countdown), with the normal
+  mastery popup. The mastery is temporary: a conceded reward is recorded in `recentlyConcededGames` and taken back the
+  next time that run is rewarded (continued, then quit or finished). It stays only if the run is abandoned. Until then
+  the extra levels count in the lobby (star requirements, Traveler story claims).
 - **Co-op:** each player's client rewards their own profile, so it only affects that player.
 
 ## Client mod behavior

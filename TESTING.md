@@ -1,9 +1,12 @@
 # In-game tests
 
 Early-development testing ended on 2026-10-03. Its results and steps are preserved below.
-The new [solo test plan for issues #7–#12](testing/SOLO_7_12.md) was requested on 2026-10-04.
-It covers the combined changes through `6143faa`; the environment is prepared and solo testing has started.
-No co-op testing is included in that plan.
+The [solo tests for issues #7–#12](testing/SOLO_7_12.md) ran from 2026-10-04 through 2026-10-06
+and are complete. Core delivery/persistence, queue independence, online/offline Jonas purchases,
+shrine/quest/artifact check hooks, map deferral, curse tiers and Shard/DeathLink tests passed.
+The record includes fixes through `095f0cc` and separates skipped and unobserved cases.
+Startup passive mastery is an accepted limitation ([issue #13](https://github.com/FruityShuffles/SoDArchipelago/issues/13)).
+No co-op or goal-completion testing was included in this session.
 
 Each step lists what to do and the `[AP]` lines to look for in the game log:
 
