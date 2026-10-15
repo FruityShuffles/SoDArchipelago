@@ -460,13 +460,6 @@ Delivery uses the shared Bound, connected, ready unconcluded run guard.
   requirements (`AP:star:<key>=<level>`). The mastery counters (`AP:applied:MASTERY_<Traveler>=<n>`) live in
   `DewProfileStats.recoveredLossPoints`, in the `stats` file, so each is written in the same save as the value it
   protects.
-- **Known limitation: the game's stats recovery.** At startup, before mods load, the game compares
-  the `stats` file with its daily backups. If total mastery or play time went down, it adds the lost mastery levels back
-  (`DewProfileStats.GetRecoveryDelta`) but not our mastery counters, so Mastery items applied between that backup and
-  the loss get applied a second time. There's no exact repair: that needs the backups' counters. The over-grant is
-  bounded mastery, so the mod only reports it: each new `loss_…` entry the game adds to `recoveredLossPoints` after
-  binding logs a warning and shows a notice once (`AP:seenloss:<entry>`; entries from before the binding are marked seen
-  at bind time).
 - **The unlock record.** `DewProfile.Validate` runs on every profile load and re-derives unlocks from achievements: it
   locks the target of every incomplete achievement and unlocks the target of every completed one. `UnlockHero` also
   unlocks a Traveler's alternate memories whose achievement is complete. On a marked profile the mod therefore keeps
@@ -524,6 +517,11 @@ Every AP seed/slot gets its own game profile. Your normal save must never be rea
    loaded, which covers every caller.
 9. Connection details (host:port, slot, password) are stored as **editable settings**, separate from identity.
    archipelago.gg rooms can change port.
+10. **Known limitation: Cross-Save** (needs a linked console account; the player docs say not to sync an AP profile).
+   A sync merges the cloud copy into the loaded profile outside `LoadProfile` (`DewCloudSave` →
+   `DewSave.OverwriteLoadedProfile`, which runs `Validate`, so unlocks are still enforced). `experienceFlags` are
+   unioned, so a stale copy's `AP:applied:` counter can be read first and filler applied again, and a synced copy can
+   be imported as a second profile with the same marker.
 
 ### Offline play
 Allowed. A marked profile plays offline with the items it has already received. Checks are recorded in the profile

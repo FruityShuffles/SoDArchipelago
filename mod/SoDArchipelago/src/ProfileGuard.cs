@@ -90,8 +90,6 @@ namespace SoDArchipelago
             DewSave.profileMain.experienceFlags.Add(marker);
             DewSave.profileMain.experienceFlags.Add(ApRecords.FormatFlag);
             UnlockState.Enforce(DewSave.profileMain, "bind");
-            // Stats-recovery events from before the binding are none of AP's business (ApRecords.CheckStatsRecovery).
-            if (ApRecords.AcknowledgeStatsRecoveries() > 0) DewSave.SaveProfileStats(immediate: true);
             Log.Info($"Bound profile '{DewSave.profileMain.name}' ({DewSave.profileMainPath}) to {marker}");
             return true;
         }
@@ -108,7 +106,7 @@ namespace SoDArchipelago
             {
                 try
                 {
-                    DewSave.profileStats.Validate();
+                    DewSave.profileStats.Validate(DewSave.profileMain);
                 }
                 catch (Exception e)
                 {
@@ -362,31 +360,6 @@ namespace SoDArchipelago
             list.RemoveAll(f => f.StartsWith(prefix, StringComparison.Ordinal));
             list.Add(prefix + count);
         }
-
-        // Known limitation (DESIGN.md "Received items"): at startup, before mods load, the game's stats rollback check
-        // (DewSave, via DewProfileStats.GetRecoveryDelta) can restore lost mastery levels without restoring the AP
-        // mastery counters kept next to them, so those packs would be applied again. There's no exact repair, so each new
-        // recovery (a "loss_..." entry the game adds to recoveredLossPoints) is reported once. Returns the new entries
-        // and marks them as seen.
-        private const string LossPrefix = "loss_";
-        private const string SeenLossPrefix = "AP:seenloss:";
-
-        public static List<string> CheckStatsRecovery()
-        {
-            var found = new List<string>();
-            if (!ProfileGuard.Marked) return found;
-            var list = StatsFlags;
-            foreach (var f in list.ToList())
-                if (f.StartsWith(LossPrefix, StringComparison.Ordinal) && !list.Contains(SeenLossPrefix + f))
-                {
-                    found.Add(f);
-                    list.Add(SeenLossPrefix + f);
-                }
-            return found;
-        }
-
-        // At bind time: every recovery so far happened before AP, so mark them all as seen without reporting them.
-        public static int AcknowledgeStatsRecoveries() => CheckStatsRecovery().Count;
     }
 
     public static class Log

@@ -170,6 +170,7 @@ you reconnect. If the connection drops, the mod reconnects on its own.
 
 ## Co-op
 
-Non-crossplay co-op works with players who are also playing Archipelago and with players who are not.
+Co-op works with players who are also playing Archipelago and with players who are not. While the mod is on, only PC
+players can join your lobby.
 If you will be joining another player's lobby, turn off Jonas's Wares, in-run items, traps and DeathLink.
 You can still collect achievements, world clears, souvenirs, shrine, quest and artifact checks.

@@ -336,7 +336,7 @@ public class DewProfileStats
     public List<string> recoveredLossPoints = new List<string>();
     public Dictionary<string, Stats> heroes = new Dictionary<string, Stats>();
     public class Stats { public long playCount; public int masteryLevel, currentMasteryPoints; }
-    public void Validate() { }
+    public void Validate(DewProfile main) { }
     public void AddMasteryPoints(string key, long points) { }
 }
 public static class DewSave

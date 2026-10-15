@@ -430,3 +430,12 @@ the `.apsave`); "start it again" restarts it on the same seed and port.
    - switching to another profile;
    - hosting a different seed on the same port (a seed message names it);
    - disabling the mod in the mod manager (`[AP] Unloaded`, then nothing more from the old instance).
+
+## 18. Game 1.4.1 (mod 0.6.1)
+
+Not yet run. 1.4.1 changed `DewProfileStats.Validate`, which the mod calls when it loads with a bound profile.
+
+1. Start the game with a bound profile loaded.
+   `[AP] Loaded com.sodarchipelago.archipelago 0.6.1; ... extracted from game r.1.4.1.2_s`, then
+   `[AP] Loaded profile '...'` with its marker, and no `MissingMethodException` or "stats don't validate" warning.
+2. `ap_connect`, receive an item, play one room: no new `[AP]` errors.

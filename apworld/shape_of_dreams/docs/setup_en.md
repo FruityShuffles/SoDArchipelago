@@ -57,6 +57,8 @@ isn't bound to the slot you're connected to, so your normal save profile will be
 
 Steam achievements aren't updated while you are playing on an Archipelago bound profile.
 
+Don't turn on Cross-Save sync for a bound profile. Syncing can apply Mastery and Stardust items a second time.
+
 ## Commands
 
 | Command | What it does |
@@ -91,7 +93,8 @@ If the connection drops, the mod keeps retrying the same server, and the notice 
 room moved to a new port, set the new server and type `ap_connect`.
 
 ## Co-op
-If you disable crossplay, you may play co-op with other players regardless of whether they are also playing Archipelago or not.
+You can play co-op with other players whether or not they are also playing Archipelago. While the mod is on, only PC
+players can join your lobby.
 Be aware that a player who joins someone else's lobby can't receive DeathLinks. Two archipelago players playing together won't
 be able to receive DeathLinks for the joining player.
 

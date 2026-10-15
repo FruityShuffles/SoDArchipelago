@@ -261,7 +261,8 @@ def main() -> int:
     essences = load(raw, "essences")
     achievements = load(raw, "achievements")
     stars = load(raw, "stars")
-    game_version = (Path(args.game_dir) / "version.txt").read_text().strip()
+    # version.txt starts with the version; later lines (since 1.4.1) are build details.
+    game_version = (Path(args.game_dir) / "version.txt").read_text().strip().splitlines()[0].strip()
 
     targets = {a["unlocked"]: key for key, a in achievements.items() if a.get("unlocked")}
     if len(targets) != len(achievements):
