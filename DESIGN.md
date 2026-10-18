@@ -7,7 +7,7 @@ Item/location IDs are frozen once a version is released: the extractor keeps eve
 
 | Kind | Count | Progress type | Notes |
 |---|---|---|---|
-| Achievements (`ACH_*`) | 93 | default | Every achievement in `RawData/en-US/achievements.json`. "Who's the Prey Now" is **excluded** (`BROKEN_ACHIEVEMENTS`, issue #6). |
+| Achievements (`ACH_*`) | 93 | default | Every achievement in `RawData/en-US/achievements.json`. |
 | World clears | 135 | **priority** (Deep Sleep), default | 5 worlds × 3 difficulties × 9 Travelers. The 45 Deep Sleep clears are the only priority locations. |
 | Souvenirs | 17 | **excluded** | Every souvenir the lizard shop sells (see "Souvenirs"). Always on, no option. |
 | Jonas's Wares | 0–100 (30 by default) | default | One random unbought ware per Jonas visit, bought with gold; host/solo only |

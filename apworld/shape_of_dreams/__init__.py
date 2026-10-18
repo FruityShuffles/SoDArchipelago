@@ -17,8 +17,6 @@ STARLESS_PATH_ACHIEVEMENT = "ACH_THE_ROAD_NOT_TAKEN"
 # "Enter the Pure White Dream on Nightmare difficulty": a World 4 Nightmare clear with any Traveler (DESIGN.md "Logic").
 NIGHTMARE_DREAM_ACHIEVEMENT = "ACH_VIVID_DREAM"
 NIGHTMARE_COPIES = max(d.copies_required for d in location_table.values())
-# Achievements a game bug makes impossible: always excluded until the game fixes them (issue #6).
-BROKEN_ACHIEVEMENTS = {"ACH_WHOS_THE_PREY_NOW"}
 # Only these clears are priority: every priority location takes some player's progression, so more would pull a
 # multiworld's progression into SoD runs (DESIGN.md "Locations").
 PRIORITY_DIFFICULTY = "DEEP_SLEEP"
@@ -126,8 +124,6 @@ class ShapeOfDreamsWorld(World):
                 location.progress_type = LocationProgressType.PRIORITY
             elif data.kind in ("souvenir", "artifact"):
                 # Souvenirs and artifacts come from random offers/finds, so they only ever hold filler.
-                location.progress_type = LocationProgressType.EXCLUDED
-            elif data.key in BROKEN_ACHIEVEMENTS:
                 location.progress_type = LocationProgressType.EXCLUDED
             elif data.key == STARLESS_PATH_ACHIEVEMENT and not self.options.passive_mastery:
                 # Without passive mastery only Mastery items reach 40, so this check only ever holds filler.
